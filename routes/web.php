@@ -8,6 +8,7 @@ use App\Http\Livewire\Auth\Passwords\Email;
 use App\Http\Livewire\Auth\Passwords\Reset;
 use App\Http\Livewire\Auth\Register;
 use App\Http\Livewire\Auth\Verify;
+use App\Http\Livewire\ShowDashboard;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +22,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome')->name('home');
+Route::get('/', ShowDashboard::class)
+    ->name('dashboard');
 
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)
