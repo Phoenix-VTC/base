@@ -7,7 +7,8 @@
             <h3 class="text-2xl leading-6 font-bold text-gray-900 pb-5">
                 Log in with Steam
             </h3>
-            <img class="object-contain h-48 w-full pb-5" src="{{ asset('img/illustrations/hire.svg') }}"/>
+            <img class="object-contain h-48 w-full pb-5" src="{{ asset('img/illustrations/hire.svg') }}"
+                 alt="Illustration"/>
             <a class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                href="{{ route('driver-application.auth.steam') }}">
                 <svg class="-ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
