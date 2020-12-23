@@ -50,9 +50,9 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->domain('apply.' . config('app.url'))
-                ->name('application.')
+                ->name('driver-application.')
                 ->namespace($this->namespace)
-                ->group(base_path('routes/application.php'));
+                ->group(base_path('routes/driver-application.php'));
         });
     }
 
