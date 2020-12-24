@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
 use Invisnik\LaravelSteamAuth\SteamAuth;
 
 class AuthController extends Controller
@@ -38,9 +37,9 @@ class AuthController extends Controller
     /**
      * Redirect the user to the authentication page
      *
-     * @return RedirectResponse|Redirector
+     * @return RedirectResponse
      */
-    public function redirectToSteam(): Redirector|RedirectResponse
+    public function redirectToSteam(): RedirectResponse
     {
         return $this->steam->redirect();
     }
@@ -49,10 +48,10 @@ class AuthController extends Controller
      * Get user info and log in
      *
      * @param Request $request
-     * @return RedirectResponse|Redirector
+     * @return RedirectResponse
      * @throws GuzzleException
      */
-    public function handle(Request $request): Redirector|RedirectResponse
+    public function handle(Request $request): RedirectResponse
     {
         if ($this->steam->validate()) {
             $info = $this->steam->getUserInfo();
@@ -63,6 +62,7 @@ class AuthController extends Controller
                 return redirect($this->redirectURL);
             }
         }
+
         return $this->redirectToSteam();
     }
 
