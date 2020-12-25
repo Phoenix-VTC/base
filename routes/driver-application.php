@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', DriverAuth::class)->name('authenticate');
 
 Route::prefix('auth/steam')->name('auth.')->group(function () {
-    Route::get('/', [AuthController::class, 'redirectToSteam'])->name('steam');
+    Route::post('/', [AuthController::class, 'redirectToSteam'])->name('steam');
     Route::name('steam.')->group(function () {
         Route::get('handle', [AuthController::class, 'handle'])->name('handle');
         Route::get('logout', [AuthController::class, 'logout'])->name('logout');
