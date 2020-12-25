@@ -44,6 +44,6 @@ class BanHistoryPublic implements Rule
             This can be done <a class="font-medium underline text-red-700 hover:text-red-600" href="https://truckersmp.com/profile/settings" target="_blank">here</a>. (Display your bans on your profile and API)
             <br>
             <span class="underline">Keep this on public until your application has been fully processed.</span>
-            ';
+        ';
     }
 }
