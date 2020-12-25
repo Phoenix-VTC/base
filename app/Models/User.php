@@ -19,6 +19,9 @@ class User extends Authenticatable
     protected $fillable = [
         'username',
         'email',
+        'steam_id',
+        'truckersmp_id',
+        'last_ip_address',
         'password',
     ];
 

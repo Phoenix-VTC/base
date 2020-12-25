@@ -18,9 +18,13 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->bigInteger('steam_id')->nullable();
+            $table->biginteger('truckersmp_id')->nullable();
             $table->string('password');
+            $table->string('last_ip_address')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
