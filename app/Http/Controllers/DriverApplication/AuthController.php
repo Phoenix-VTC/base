@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\DriverApplication;
 
 use App\Http\Controllers\Controller;
+use App\Rules\Steam\HasGame;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Invisnik\LaravelSteamAuth\SteamAuth;
 
 class AuthController extends Controller
@@ -57,6 +59,16 @@ class AuthController extends Controller
             $info = $this->steam->getUserInfo();
 
             if (!is_null($info)) {
+                $validator = Validator::make($info->toArray(), [
+                    'steamID64' => [new HasGame],
+                ]);
+
+                if ($validator->fails()) {
+                    return redirect(route('driver-application.authenticate'))
+                        ->withErrors($validator)
+                        ->withInput();
+                }
+
                 $request->session()->put('steam_user', $info);
 
                 return redirect($this->redirectURL);
