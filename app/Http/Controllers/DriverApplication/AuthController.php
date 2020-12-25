@@ -5,6 +5,7 @@ namespace App\Http\Controllers\DriverApplication;
 use App\Http\Controllers\Controller;
 use App\Rules\Steam\HasGame;
 use App\Rules\Steam\MinHours;
+use App\Rules\TMP\AccountExists;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -61,7 +62,7 @@ class AuthController extends Controller
 
             if (!is_null($info)) {
                 $validator = Validator::make($info->toArray(), [
-                    'steamID64' => [new HasGame, new MinHours],
+                    'steamID64' => [new HasGame, new MinHours, new AccountExists],
                 ]);
 
                 if ($validator->fails()) {
