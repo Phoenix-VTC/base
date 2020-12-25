@@ -19,8 +19,8 @@ class HasGame implements Rule
 
         $games = $games->contains(function ($value) {
             return (
-                $value->appId === 227300 ||
-                $value->appId === 270880
+                $value->appId === 227300 || // ETS2
+                $value->appId === 270880 // ATS
             );
         });
 
