@@ -7,6 +7,7 @@ use App\Rules\Steam\HasGame;
 use App\Rules\Steam\MinHours;
 use App\Rules\TMP\AccountExists;
 use App\Rules\TMP\BanHistoryPublic;
+use App\Rules\TMP\NoRecentBans;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -63,7 +64,7 @@ class AuthController extends Controller
 
             if (!is_null($info)) {
                 $validator = Validator::make($info->toArray(), [
-                    'steamID64' => [new HasGame, new MinHours, new AccountExists, new BanHistoryPublic],
+                    'steamID64' => [new HasGame, new MinHours, new AccountExists, new BanHistoryPublic, new NoRecentBans],
                 ]);
 
                 if ($validator->fails()) {
