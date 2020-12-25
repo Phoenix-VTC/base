@@ -23,6 +23,11 @@ class BanHistoryPublic implements Rule
         $response = $client->request('GET', 'https://api.truckersmp.com/v2/player/' . $value)->getBody();
         $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
+        if ($response['response']['bansCount'] === null) {
+            // User is staff if bansCount is null, staff can't set their ban history to public. So return true here so they can apply anyway.
+            return true;
+        }
+
         return $response['response']['displayBans'];
     }
 
