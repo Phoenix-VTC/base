@@ -9,6 +9,7 @@ use App\Rules\TMP\AccountExists;
 use App\Rules\TMP\BanHistoryPublic;
 use App\Rules\TMP\NoRecentBans;
 use App\Rules\TMP\NotInVTC;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,13 +24,6 @@ class AuthController extends Controller
      * @var SteamAuth
      */
     protected SteamAuth $steam;
-
-    /**
-     * The redirect URL.
-     *
-     * @var string
-     */
-    protected string $redirectURL = '/';
 
     /**
      * AuthController constructor.
@@ -57,6 +51,7 @@ class AuthController extends Controller
      * @param Request $request
      * @return RedirectResponse
      * @throws GuzzleException
+     * @throws \JsonException
      */
     public function handle(Request $request): RedirectResponse
     {
@@ -65,7 +60,8 @@ class AuthController extends Controller
 
             if (!is_null($info)) {
                 $validator = Validator::make($info->toArray(), [
-                    'steamID64' => ['bail', new HasGame, new MinHours, new AccountExists, new BanHistoryPublic, new NoRecentBans, new NotInVTC],
+                    // Temporarily disabled the validation for testing purposes
+//                    'steamID64' => ['bail', new HasGame, new MinHours, new AccountExists, new BanHistoryPublic, new NoRecentBans, new NotInVTC],
                 ]);
 
                 if ($validator->fails()) {
@@ -74,13 +70,24 @@ class AuthController extends Controller
                         ->withInput();
                 }
 
+                $this->storeTruckersMPAccount($info->toArray()['steamID64']);
+
                 $request->session()->put('steam_user', $info);
 
-                return redirect($this->redirectURL);
+                return redirect(route('driver-application.form'));
             }
         }
 
         return $this->redirectToSteam();
+    }
+
+    public function storeTruckersMPAccount($steamId): void {
+        $client = new Client();
+
+        $response = $client->request('GET', 'https://api.truckersmp.com/v2/player/' . $steamId)->getBody();
+        $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+
+        session()->put('truckersmp_user', collect($response['response']));
     }
 
     /**
@@ -92,6 +99,7 @@ class AuthController extends Controller
     public function logout(Request $request): RedirectResponse
     {
         $request->session()->forget('steam_user');
+        $request->session()->forget('truckersmp_user');
 
         return redirect()->back();
     }
