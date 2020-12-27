@@ -3,8 +3,8 @@
         <li class="md:flex-1">
             <!-- Completed Step -->
             <a href="#"
-               class="group pl-4 py-2 flex flex-col border-l-4 border-red-600 hover:border-red-800 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4">
-                <span class="text-xs text-red-600 font-semibold uppercase group-hover:text-red-800">Step 1</span>
+               class="group pl-4 py-2 flex flex-col border-l-4 border-orange-600 hover:border-orange-800 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4">
+                <span class="text-xs text-orange-600 font-semibold uppercase group-hover:text-orange-800">Step 1</span>
                 <span class="text-sm font-medium">Personal Information</span>
             </a>
         </li>
@@ -12,9 +12,9 @@
         <li class="md:flex-1">
             <!-- Current Step -->
             <a href="#"
-               class="pl-4 py-2 flex flex-col border-l-4 border-red-600 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4"
+               class="pl-4 py-2 flex flex-col border-l-4 border-orange-600 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4"
                aria-current="step">
-                <span class="text-xs text-red-600 font-semibold uppercase">Step 2</span>
+                <span class="text-xs text-orange-600 font-semibold uppercase">Step 2</span>
                 <span class="text-sm font-medium">Digital Interview</span>
             </a>
         </li>
