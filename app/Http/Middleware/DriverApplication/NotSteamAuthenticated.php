@@ -16,7 +16,7 @@ class NotSteamAuthenticated
      * @param Closure $next
      * @return Response|RedirectResponse
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next): Response|RedirectResponse
     {
         if (session()->has('steam_user')) {
             return redirect(route('driver-application.form'));
