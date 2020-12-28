@@ -49,7 +49,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
 
             Route::middleware('web')
-                ->domain('apply.' . config('app.url'))
+                ->domain(config('app.apply_url'))
                 ->name('driver-application.')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/driver-application.php'));
