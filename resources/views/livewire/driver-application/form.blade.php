@@ -10,7 +10,7 @@
             </div>
             <div class="mt-5 md:mt-0 md:col-span-2">
                 <div class="grid grid-cols-6 gap-6">
-                    <div class="col-span-3 sm:col-span-3">
+                    <div class="col-span-6 sm:col-span-3">
                         <label for="steam_username" class="block text-sm font-medium text-gray-700">
                             Steam Username
                         </label>
