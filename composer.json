@@ -7,6 +7,12 @@
         "laravel"
     ],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/kenanduman1988/steam-api"
+        }
+    ],
     "require": {
         "php": "^8.0",
         "anhskohbo/no-captcha": "^3.3",
@@ -18,7 +24,7 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.3",
-        "syntax/steam-api": "^2.2",
+        "syntax/steam-api": "dev-master",
         "ext-json": "*"
     },
     "require-dev": {
