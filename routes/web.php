@@ -25,10 +25,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', ShowDashboard::class)
     ->name('dashboard');
 
-Route::get('/error', function () {
-    throw new Exception('My first Sentry error!');
-});
-
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)
         ->name('login');
