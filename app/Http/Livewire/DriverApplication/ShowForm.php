@@ -259,6 +259,44 @@ class ShowForm extends Component
         'ZW' => 'Zimbabwe',
     ];
 
+    public string $username = '';
+    public string $email = '';
+    public string $date_of_birth = '';
+    public string $country = '';
+    public string $another_vtc = '';
+    public string $games = '';
+    public string $fluent = '';
+    public string $about = '';
+    public string $why_join = '';
+    public string $terms = '';
+    public string $find_us = '';
+
+    protected $rules = [
+        'username' => 'required|min:3|unique:users',
+        'email' => 'required|email',
+        'date_of_birth' => 'required|date',
+        'country' => 'required',
+        'another_vtc' => 'required|boolean',
+        'games' => 'required|in:ets2,ats,both',
+        'fluent' => 'required|boolean',
+        'about' => 'required',
+        'why_join' => 'required',
+        'terms' => 'required|boolean',
+        'find_us' => 'required',
+    ];
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
+    public function submit()
+    {
+        $validatedData = $this->validate();
+
+        // Validation passes, handle the application
+    }
+
     public function render()
     {
         return view('livewire.driver-application.form')->extends('layouts.driver-application');
