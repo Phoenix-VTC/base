@@ -74,7 +74,7 @@ class AuthController extends Controller
 
                 $request->session()->put('steam_user', $info);
 
-                return redirect(route('driver-application.form'));
+                return redirect(route('driver-application.apply'));
             }
         }
 

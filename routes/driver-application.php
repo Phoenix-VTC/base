@@ -28,4 +28,4 @@ Route::prefix('auth/steam')->name('auth.')->group(function () {
     });
 });
 
-Route::get('/form', ShowForm::class)->middleware(SteamAuthenticated::class)->name('form');
+Route::get('/apply', ShowForm::class)->middleware(SteamAuthenticated::class)->name('apply');

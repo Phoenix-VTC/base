@@ -19,7 +19,7 @@ class NotSteamAuthenticated
     public function handle(Request $request, Closure $next)
     {
         if (session()->has('steam_user')) {
-            return redirect(route('driver-application.form'));
+            return redirect(route('driver-application.apply'));
         }
 
         return $next($request);
