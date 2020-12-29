@@ -69,8 +69,12 @@
 
                     <div class="col-span-6 sm:col-span-3">
                         <label for="date_of_birth" class="block text-sm font-medium text-gray-700">Date of Birth</label>
-                        <input type="date" name="date_of_birth" id="date_of_birth" autocomplete="bday" wire:model.lazy="date_of_birth"
+                        <input type="date" name="date_of_birth" id="date_of_birth" autocomplete="bday"
+                               wire:model.lazy="date_of_birth"
                                class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('date_of_birth') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
+                        @error('date_of_birth')
+                        <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="col-span-6 sm:col-span-3">
@@ -82,7 +86,7 @@
                                 <option value="{{ $key }}">{{ $country }}</option>
                             @endforeach
                         </select>
-                        @error('date_of_birth')
+                        @error('country')
                         <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
                         @enderror
                     </div>
@@ -116,14 +120,16 @@
                         </div>
                         <div class="mt-4 space-y-4">
                             <div class="flex items-center">
-                                <input id="another_vtc_yes" name="another_vtc" type="radio" value="1" wire:model.lazy="another_vtc"
+                                <input id="another_vtc_yes" name="another_vtc" type="radio" value="1"
+                                       wire:model.lazy="another_vtc"
                                        class="focus:ring-orange-500 h-4 w-4 text-orange-600 border border-gray-300">
                                 <label for="another_vtc_yes" class="ml-3 block text-sm font-medium text-gray-700">
                                     Yes
                                 </label>
                             </div>
                             <div class="flex items-center">
-                                <input id="another_vtc_no" name="another_vtc" type="radio" value="0" wire:model.lazy="another_vtc"
+                                <input id="another_vtc_no" name="another_vtc" type="radio" value="0"
+                                       wire:model.lazy="another_vtc"
                                        class="focus:ring-orange-500 h-4 w-4 text-orange-600 border border-gray-300">
                                 <label for="another_vtc_no" class="ml-3 block text-sm font-medium text-gray-700">
                                     No
