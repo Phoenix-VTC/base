@@ -82,7 +82,7 @@
                                 <option value="{{ $key }}">{{ $country }}</option>
                             @endforeach
                         </select>
-                        @error('country')
+                        @error('date_of_birth')
                         <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
                         @enderror
                     </div>
