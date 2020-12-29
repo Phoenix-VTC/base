@@ -1,7 +1,7 @@
 <form class="text-center" action="{{ route('driver-application.auth.steam') }}" method="POST">
     @csrf
     <h3 class="text-2xl leading-6 font-bold text-gray-900 pb-5">
-        Log in with Steam
+        {{ __('slugs.login_steam') }}
     </h3>
     <img class="object-contain h-48 w-full pb-5" src="{{ asset('img/illustrations/hire.svg') }}"
          alt="Illustration"/>
@@ -14,6 +14,6 @@
                   d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z"
                   clip-rule="evenodd"/>
         </svg>
-        Authenticate
+        {{ __('actions.authenticate') }}
     </button>
 </form>

@@ -21,9 +21,9 @@
                                 </div>
                                 <div class="ml-3">
                                     <h3 class="text-sm font-medium text-red-800">
-                                        <strong>Whoops, something went wrong!</strong>
+                                        <strong>{{ __('validation.form_validation_fail.title') }}</strong>
                                         <br>
-                                        Please check the errors and try again.
+                                        {{ __('validation.form_validation_fail.description') }}
                                     </h3>
                                     <div class="mt-2 text-sm text-red-800">
                                         <ul class="list-disc pl-5 space-y-1">
@@ -52,8 +52,8 @@
                                         <a href="{{ session('steam_user.profileurl') }}"
                                            target="_blank">{{ session('steam_user.personaname') }}</a>
                                     </p>
-                                    <p class="text-xs font-medium text-gray-500 group-hover:text-gray-700" href="#">
-                                        <a href="{{ route('driver-application.auth.steam.logout') }}">Log out</a>
+                                    <p class="text-xs font-medium text-gray-500 group-hover:text-gray-700">
+                                        <a href="{{ route('driver-application.auth.steam.logout') }}">{{ __('actions.logout') }}</a>
                                     </p>
                                 </div>
                             </div>
