@@ -98,7 +98,7 @@
         </div>
     </div>
 
-    <div x-show.transition.in="formStep === 2" x-cloak>
+    <div x-show.transition.in="formStep === 2">
         <div class="md:grid md:grid-cols-3 md:gap-6">
             <div class="md:col-span-1">
                 <h3 class="text-lg font-medium leading-6 text-gray-900">Digital Interview</h3>
