@@ -8,6 +8,6 @@ class ShowDashboard extends Component
 {
     public function render(): \Illuminate\Contracts\View\View
     {
-        return view('livewire.show-dashboard');
+        return view('livewire.dashboard');
     }
 }
