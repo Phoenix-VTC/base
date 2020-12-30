@@ -84,7 +84,7 @@
                                class="block text-sm font-medium text-gray-700">{{ __('driver-application.default_questions.country') }}</label>
                         <select id="country" name="country" autocomplete="country" wire:model.lazy="country"
                                 class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('country') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
-                            <option selected
+                            <option value="" selected
                                     disabled>{{ __('driver-application.default_questions.country_dropdown') }}</option>
                             @foreach($countries as $key => $country)
                                 <option value="{{ $key }}">{{ $country }}</option>
