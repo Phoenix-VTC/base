@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', ShowDashboard::class)
+    ->middleware('auth')
     ->name('dashboard');
 
 Route::middleware('guest')->group(function () {
