@@ -21,7 +21,8 @@ return [
             "subtitle" => "Tell us some things about yourself"
         ],
         "third" => [
-            "title" => "Confirmation"
+            "title" => "Confirmation",
+            "subtitle" => "Make sure that everything is correct, and then press apply!"
         ]
     ],
 
