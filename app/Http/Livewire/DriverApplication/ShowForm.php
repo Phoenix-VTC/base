@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\DriverApplication;
 
+use App\Models\Application;
 use Livewire\Component;
 
 class ShowForm extends Component
@@ -292,9 +293,31 @@ class ShowForm extends Component
 
     public function submit()
     {
-        $validatedData = $this->validate();
+        $applicationData = $this->validate();
 
-        // Validation passes, handle the application
+        $application = new Application;
+        $application->username = $applicationData['username'];
+        $application->email = $applicationData['email'];
+        $application->date_of_birth = $applicationData['date_of_birth'];
+        $application->country = $applicationData['country'];
+        $application->steam_data = json_encode(session('steam_user'));
+        $application->truckersmp_data = json_encode(session('truckersmp_user'));
+
+        $application_answers = [
+            __('driver-application.default_questions.another_vtc') => $applicationData['another_vtc'],
+            __('driver-application.default_questions.games') => $applicationData['games'],
+            __('driver-application.default_questions.fluent') => $applicationData['fluent'],
+            __('driver-application.additional_questions.about') => $applicationData['about'],
+            __('driver-application.additional_questions.why_join') => $applicationData['why_join'],
+            __('driver-application.default_questions.terms') => $applicationData['terms'],
+            __('driver-application.default_questions.find_us') => $applicationData['find_us'],
+        ];
+
+        $application->application_answers = json_encode($application_answers);
+
+        $application->save();
+
+        // Redirect
     }
 
     public function render()
