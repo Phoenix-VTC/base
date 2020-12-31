@@ -1,5 +1,7 @@
 <?php
 
+use \App\Http\Livewire\Recruitment\ShowApplication;
+use \App\Http\Livewire\Recruitment\ShowIndex;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Livewire\Auth\Login;
@@ -25,6 +27,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', ShowDashboard::class)
     ->middleware('auth')
     ->name('dashboard');
+
+Route::prefix('recruitment')->name('recruitment.')->middleware('auth')->group(function () {
+    Route::get('index', ShowIndex::class)->name('index');
+    Route::get('application/{uuid}', ShowApplication::class)->name('show');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)
