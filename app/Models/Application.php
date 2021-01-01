@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Concerns\HasComments;
 use App\Concerns\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,7 @@ class Application extends Model
 {
     use HasFactory;
     use HasUuid;
+    use HasComments;
 
     /**
      * The attributes that aren't mass assignable.
