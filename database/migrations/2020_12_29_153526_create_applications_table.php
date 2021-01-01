@@ -26,7 +26,7 @@ class CreateApplicationsTable extends Migration
             $table->date('date_of_birth');
             $table->string('country');
             $table->json('steam_data');
-            $table->json('truckersmp_data');
+            $table->bigInteger('truckersmp_id');
             $table->json('application_answers');
             $table->enum('status', ['pending', 'awaiting_response', 'investigation', 'incomplete', 'accepted', 'denied'])->default('pending');
             $table->timestamps();
