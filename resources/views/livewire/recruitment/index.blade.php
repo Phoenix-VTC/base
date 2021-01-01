@@ -20,6 +20,7 @@
                                     <div>
                                         <p class="text-sm font-medium text-grey-600 truncate">{{ $application->username }}</p>
                                         <p class="flex items-center text-sm mt-2 text-gray-500">
+                                            {{-- at-symbol --}}
                                             <svg class="flex-shrink-0 mr-0.5 h-3.5 w-3.5 text-gray-400"
                                                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                  stroke="currentColor">
