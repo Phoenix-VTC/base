@@ -301,7 +301,7 @@ class ShowForm extends Component
         $application->date_of_birth = $applicationData['date_of_birth'];
         $application->country = $applicationData['country'];
         $application->steam_data = json_encode(session('steam_user'));
-        $application->truckersmp_data = json_encode(session('truckersmp_user'));
+        $application->truckersmp_id = json_encode(session('truckersmp_user.id'));
 
         $application_answers = [
             __('driver-application.default_questions.another_vtc') => $applicationData['another_vtc'],

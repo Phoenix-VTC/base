@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Concerns\HasComments;
 use App\Concerns\HasUuid;
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -44,12 +45,35 @@ class Application extends Model
     /**
      * Get the user's TruckersMP data.
      *
-     * @param $value
      * @return Collection
      */
-    public function getTruckersMPDataAttribute($value): Collection
+    public function getTruckersMPDataAttribute(): Collection
     {
-        return collect(json_decode($value));
+        return \Cache::remember($this->uuid . "_truckersmp_data", 86400, function () {
+            $client = new Client();
+
+            $response = $client->request('GET', 'https://api.truckersmp.com/v2/player/' . $this->truckersmp_id)->getBody();
+            $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+
+            return collect($response['response']);
+        });
+    }
+
+    /**
+     * Get the user's TruckersMP ban history.
+     *
+     * @return Collection
+     */
+    public function getBanHistoryAttribute(): Collection
+    {
+        return \Cache::remember($this->uuid . "_truckersmp_ban_history", 86400, function () {
+            $client = new Client();
+
+            $response = $client->request('GET', 'https://api.truckersmp.com/v2/bans/' . $this->truckersmp_id)->getBody();
+            $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+
+            return collect($response['response'])->reverse();
+        });
     }
 
     /**
