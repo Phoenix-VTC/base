@@ -274,7 +274,7 @@ class ShowForm extends Component
 
     protected $rules = [
         'username' => 'required|min:3|unique:users',
-        'email' => 'required|email',
+        'email' => 'required|email|unique:users',
         'date_of_birth' => 'required|date',
         'country' => 'required',
         'another_vtc' => 'required|boolean',
