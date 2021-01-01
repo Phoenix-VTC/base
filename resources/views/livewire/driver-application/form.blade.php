@@ -1,6 +1,6 @@
-<form wire:submit.prevent="submit">
+<form wire:submit.prevent="submit" x-data="{formStep: 1}">
     @csrf
-    <div x-show.transition.in="formStep === 1">
+    <div x-show.transition.in="formStep === 1" style="">
         <div class="md:grid md:grid-cols-3 md:gap-6">
             <div class="md:col-span-1">
                 <h3 class="text-lg font-medium leading-6 text-gray-900">{{ __('driver-application.steps.first.title') }}</h3>
@@ -105,7 +105,7 @@
         </div>
     </div>
 
-    <div x-show.transition.in="formStep === 2">
+    <div x-show.transition.in="formStep === 2" style="">
         <div class="md:grid md:grid-cols-3 md:gap-6">
             <div class="md:col-span-1">
                 <h3 class="text-lg font-medium leading-6 text-gray-900">{{ __('driver-application.steps.second.title') }}</h3>
@@ -303,7 +303,7 @@
         </div>
     </div>
 
-    <div x-show.transition.in="formStep === 3">
+    <div x-show.transition.in="formStep === 3" style="">
         <h3 class="text-lg leading-6 font-medium text-gray-900">
             {{ __('driver-application.steps.third.title') }}
         </h3>
