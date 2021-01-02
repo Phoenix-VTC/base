@@ -208,6 +208,8 @@
             @include('livewire.recruitment.components.staff-comments')
         </div>
 
-        @include('livewire.recruitment.components.truckersmp-information')
+        <div class="lg:col-start-3 lg:col-span-1 space-y-6">
+            @include('livewire.recruitment.components.truckersmp-information')
+        </div>
     </div>
 </main>
