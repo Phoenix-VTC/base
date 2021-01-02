@@ -61,7 +61,7 @@ class ShowApplication extends Component
         $comment->delete();
     }
 
-    public function clearTMPData()
+    public function clearTMPData(): void
     {
         \Cache::forget($this->application->uuid . "_truckersmp_data");
         \Cache::forget($this->application->uuid . "_truckersmp_ban_history");
