@@ -56,7 +56,7 @@
                                         @if(!$application->claimed_by)
                                             Unclaimed
                                         @else
-                                            {{ ucfirst($application->status) }}
+                                            {{ ucwords(str_replace("_", " ", $application->status)) }}
                                         @endif
                                     </strong>
                                 </p>
