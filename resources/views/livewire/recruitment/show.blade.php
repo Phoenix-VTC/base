@@ -27,7 +27,9 @@
                     </time>
                 </p>
                 @if($application->claimed_by)
-                    <p class="text-sm font-medium text-gray-500 font-bold mt-1">Claimed by {{ $application->owner->username }}</p>
+                    <p class="text-sm font-medium text-gray-500 font-bold mt-1">
+                        Claimed by {{ $application->owner->username }}
+                    </p>
                 @endif
             </div>
         </div>
