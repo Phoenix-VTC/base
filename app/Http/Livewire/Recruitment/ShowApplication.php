@@ -15,6 +15,11 @@ class ShowApplication extends Component
         $this->application = Application::where('uuid', $uuid)->firstOrFail();
     }
 
+    public function render()
+    {
+        return view('livewire.recruitment.show')->extends('layouts.app');
+    }
+
     public function claim()
     {
         $this->application->claimed_by = Auth::id();
@@ -25,10 +30,5 @@ class ShowApplication extends Component
     {
         $this->application->claimed_by = null;
         $this->application->save();
-    }
-
-    public function render()
-    {
-        return view('livewire.recruitment.show')->extends('layouts.app');
     }
 }
