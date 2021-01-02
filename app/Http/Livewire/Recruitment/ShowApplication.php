@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class ShowApplication extends Component
 {
-    public \App\Models\Application $application;
+    public Application $application;
 
     public function mount($uuid)
     {
