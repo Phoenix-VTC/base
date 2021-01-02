@@ -3,12 +3,18 @@
 namespace App\Http\Livewire\Recruitment;
 
 use App\Models\Application;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ShowApplication extends Component
 {
-    public Application $application;
+    public object $application;
+    public string $comment = '';
+
+    protected $rules = [
+        'comment' => 'required',
+    ];
 
     public function mount($uuid)
     {
@@ -30,5 +36,33 @@ class ShowApplication extends Component
     {
         $this->application->claimed_by = null;
         $this->application->save();
+    }
+
+    public function submitComment()
+    {
+        $commentData = $this->validate();
+
+        $comment = new Comment([
+            'body' => $commentData['comment'],
+            'author' => Auth::id(),
+        ]);
+
+        $this->application->comments()->save($comment);
+
+        // Empty the comment textarea
+        $this->comment = '';
+
+        // Refresh the application
+        $this->application = $this->application->fresh();
+    }
+
+    public function deleteComment($uuid)
+    {
+        $comment = Comment::where('uuid', $uuid)->firstOrFail();
+
+        $comment->delete();
+
+        // Refresh the application
+        $this->application = $this->application->fresh();
     }
 }
