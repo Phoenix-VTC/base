@@ -49,7 +49,7 @@
                         id="user-menu" aria-haspopup="true" @click="profileOpen = true">
                         <span class="sr-only">Open user menu</span>
                         <img class="h-8 w-8 rounded-full"
-                             src="https://eu.ui-avatars.com/api/?name={{ Auth::user()->username }}"
+                             src="{{ Auth::user()->profile_picture }}"
                              alt="">
                     </button>
                 </div>

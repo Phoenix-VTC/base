@@ -43,4 +43,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the user's profile picture.
+     *
+     * @return string
+     */
+    public function getProfilePictureAttribute(): string
+    {
+        return "https://eu.ui-avatars.com/api/?name=$this->username";
+    }
 }
