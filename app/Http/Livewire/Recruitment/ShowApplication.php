@@ -67,6 +67,36 @@ class ShowApplication extends Component
         \Cache::forget($this->application->uuid . "_truckersmp_ban_history");
     }
 
+    public function accept(): void
+    {
+        $this->application->status = 'accepted';
+        $this->application->save();
+
+        // Handle acceptation email
+    }
+
+    public function deny(): void
+    {
+        $this->application->status = 'denied';
+        $this->application->save();
+
+        // Handle denied email
+    }
+
+    public function setStatus($status): void
+    {
+        $this->application->status = $status;
+        $this->application->save();
+    }
+
+    public function blacklist(): void
+    {
+        $this->application->status = 'denied';
+        $this->application->save();
+
+        // Handle blacklist
+    }
+
     public function hydrate(): void
     {
         $this->application = $this->application->fresh();
