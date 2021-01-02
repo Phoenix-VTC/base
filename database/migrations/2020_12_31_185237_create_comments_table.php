@@ -15,7 +15,7 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->uuid('unique_id')->unique();
+            $table->uuid('uuid')->unique();
             $table->foreignId('author')
                 ->constrained('users')
                 ->cascadeOnUpdate()
