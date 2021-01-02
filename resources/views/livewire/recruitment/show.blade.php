@@ -26,11 +26,6 @@
                         ({{ \Carbon\Carbon::parse($application->created_at)->toDayDateTimeString() }})
                     </time>
                 </p>
-                @if($application->claimed_by)
-                    <p class="text-sm font-medium text-gray-500 font-bold mt-1">
-                        Claimed by {{ $application->owner->username }}
-                    </p>
-                @endif
             </div>
         </div>
         <div
@@ -44,11 +39,6 @@
                 <button type="button" wire:click="unclaim"
                         class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500">
                     Unclaim
-                </button>
-
-                <button type="button"
-                        class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500">
-                    Change status
                 </button>
             @endif
         </div>
@@ -210,6 +200,8 @@
 
         <div class="lg:col-start-3 lg:col-span-1 space-y-6">
             @include('livewire.recruitment.components.truckersmp-information')
+
+            @include('livewire.recruitment.components.application-actions')
         </div>
     </div>
 </main>
