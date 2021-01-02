@@ -51,9 +51,6 @@ class ShowApplication extends Component
 
         // Empty the comment textarea
         $this->comment = '';
-
-        // Refresh the application
-        $this->application = $this->application->fresh();
     }
 
     public function deleteComment($uuid)
@@ -61,8 +58,10 @@ class ShowApplication extends Component
         $comment = Comment::where('uuid', $uuid)->firstOrFail();
 
         $comment->delete();
+    }
 
-        // Refresh the application
+    public function hydrate()
+    {
         $this->application = $this->application->fresh();
     }
 }
