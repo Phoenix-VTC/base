@@ -317,7 +317,10 @@ class ShowForm extends Component
 
         $application->save();
 
-        // Redirect
+        session()->forget('steam_user');
+        session()->forget('truckersmp_user');
+
+        return redirect()->route('driver-application.status', ['uuid' => $application->uuid]);
     }
 
     public function render()

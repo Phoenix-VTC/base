@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DriverApplication\AuthController;
 use App\Http\Livewire\DriverApplication\Auth as DriverAuth;
+use App\Http\Livewire\DriverApplication\ShowCompletion;
 use App\Http\Livewire\DriverApplication\ShowForm;
 use App\Http\Middleware\DriverApplication\NotSteamAuthenticated;
 use App\Http\Middleware\DriverApplication\SteamAuthenticated;
@@ -29,3 +30,5 @@ Route::prefix('auth/steam')->name('auth.')->group(function () {
 });
 
 Route::get('/apply', ShowForm::class)->middleware(SteamAuthenticated::class)->name('apply');
+
+Route::get('application/status/{uuid}', ShowCompletion::class)->name('status');
