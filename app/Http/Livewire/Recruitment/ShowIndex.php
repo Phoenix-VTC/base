@@ -11,7 +11,7 @@ class ShowIndex extends Component
 
     public function mount()
     {
-        $this->applications = Application::all();
+        $this->applications = Application::all()->reverse();
     }
 
     public function render()
