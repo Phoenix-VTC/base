@@ -4,9 +4,11 @@
     <div class="flex flex-col justify-center min-h-screen py-12 bg-gray-900 sm:px-6 lg:px-8">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-gray-50 overflow-hidden shadow rounded-lg divide-y divide-gray-200">
-                <div class="px-4 py-5 sm:px-6">
-                    @include('livewire.driver-application.components.steps')
-                </div>
+                @hasSection('steps')
+                    <div class="px-4 py-5 sm:px-6">
+                        @yield('steps')
+                    </div>
+                @endif
                 <div class="px-4 py-5 sm:p-6 pb-5 min-h-96">
                     @if ($errors->any())
                         <div class="rounded-md bg-red-200 p-4 mb-5">
