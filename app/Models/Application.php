@@ -96,4 +96,18 @@ class Application extends Model
     {
         return collect(json_decode($value));
     }
+
+    /**
+     * Get whether the application has been completed.
+     *
+     * @return bool
+     */
+    public function getIsCompletedAttribute(): bool
+    {
+        if ($this->status === 'accepted' | $this->status === 'denied') {
+            return true;
+        }
+
+        return false;
+    }
 }
