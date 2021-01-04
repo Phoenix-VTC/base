@@ -140,7 +140,7 @@
         </div>
     </div>
 
-    <div x-show.transition.in="formStep === 2" style="">
+    <div x-show.transition.in="formStep === 2" x-cloak style="">
         <div class="md:grid md:grid-cols-3 md:gap-6">
             <div class="md:col-span-1">
                 <h3 class="text-lg font-medium leading-6 text-gray-900">{{ __('driver-application.steps.second.title') }}</h3>
@@ -338,7 +338,7 @@
         </div>
     </div>
 
-    <div x-show.transition.in="formStep === 3" style="">
+    <div x-show.transition.in="formStep === 3" x-cloak style="">
         <h3 class="text-lg leading-6 font-medium text-gray-900">
             {{ __('driver-application.steps.third.title') }}
         </h3>
