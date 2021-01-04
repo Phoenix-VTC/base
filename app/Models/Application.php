@@ -106,11 +106,7 @@ class Application extends Model
      */
     public function getIsCompletedAttribute(): bool
     {
-        if ($this->status === 'accepted' | $this->status === 'denied') {
-            return true;
-        }
-
-        return false;
+        return $this->status === 'accepted' | $this->status === 'denied';
     }
 
     /**
