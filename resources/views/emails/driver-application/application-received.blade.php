@@ -16,5 +16,5 @@ View application status
 Good luck, and maybe we'll see you on the road soon!
 
 Thanks, <br>
-The Phoenix team
+The Phoenix Team
 @endcomponent
