@@ -1,3 +1,5 @@
+{{-- Do NOT indent this code, otherwise the markdown breaks. --}}
+
 @component('mail::message')
 # Driver application received
 
