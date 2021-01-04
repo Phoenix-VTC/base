@@ -4,6 +4,7 @@ namespace App\Http\Livewire\DriverApplication;
 
 use App\Mail\DriverApplication\ApplicationReceived;
 use App\Models\Application;
+use App\Notifications\Recruitment\NewDriverApplication;
 use Livewire\Component;
 use Mail;
 
@@ -326,6 +327,8 @@ class ShowForm extends Component
             'email' => $application->email,
             'name' => $application->username
         ]])->send(new ApplicationReceived($application));
+
+        $application->notify(new NewDriverApplication($application));
 
         return redirect()->route('driver-application.status', ['uuid' => $application->uuid]);
     }
