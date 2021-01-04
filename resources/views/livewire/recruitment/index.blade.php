@@ -175,8 +175,9 @@
                     <img class="mx-auto" width="45%" src="{{ asset('img/illustrations/team_spirit.svg') }}"/>
                 </div>
                 <div class="px-4 py-5 sm:p-6">
-                    <h1 class="text-4xl font-semibold text-gray-900">This is where you'll see the driver
-                        applications.</h1>
+                    <h1 class="text-4xl font-semibold text-gray-900">
+                        This is where you'll see the driver applications.
+                    </h1>
                 </div>
             </div>
         @endempty
