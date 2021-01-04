@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\DriverApplication;
 
+use App\Mail\DriverApplication\ApplicationReceived;
 use App\Models\Application;
 use Livewire\Component;
+use Mail;
 
 class ShowForm extends Component
 {
@@ -319,6 +321,11 @@ class ShowForm extends Component
 
         session()->forget('steam_user');
         session()->forget('truckersmp_user');
+
+        Mail::to([[
+            'email' => $application->email,
+            'name' => $application->username
+        ]])->send(new ApplicationReceived($application));
 
         return redirect()->route('driver-application.status', ['uuid' => $application->uuid]);
     }

@@ -1,0 +1,18 @@
+@component('mail::message')
+# Driver application received
+
+Hey {{ $application->username }}!
+
+Thanks for applying to Phoenix VTC.
+<br>
+We have successfully received your application, and you should receive an answer from one of our Recruiters within 12 hours.
+
+@component('mail::button', ['url' => route('driver-application.status', $application->uuid)])
+View application status
+@endcomponent
+
+Good luck, and maybe we'll see you on the road soon!
+
+Thanks, <br>
+The Phoenix team
+@endcomponent
