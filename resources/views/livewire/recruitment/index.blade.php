@@ -172,7 +172,7 @@
         @empty($applications->count())
             <div class="bg-white overflow-hidden shadow rounded-lg text-center">
                 <div class="px-4 py-5 sm:px-6 flex">
-                    <img class="mx-auto" width="45%" src="{{ asset('img/illustrations/team_spirit.svg') }}"/>
+                    <img class="mx-auto" width="45%" src="{{ asset('img/illustrations/team_spirit.svg') }}" alt="Team spirit illustration"/>
                 </div>
                 <div class="px-4 py-5 sm:p-6">
                     <h1 class="text-4xl font-semibold text-gray-900">
