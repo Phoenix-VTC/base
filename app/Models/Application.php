@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 
 class Application extends Model
@@ -15,6 +16,7 @@ class Application extends Model
     use HasFactory;
     use HasUuid;
     use HasComments;
+    use Notifiable;
 
     /**
      * The attributes that aren't mass assignable.
@@ -109,5 +111,15 @@ class Application extends Model
         }
 
         return false;
+    }
+
+    /**
+     * Route notifications for the Discord channel.
+     *
+     * @return string
+     */
+    public function routeNotificationForDiscord(): string
+    {
+        return config('services.discord.recruitment_channel_id');
     }
 }

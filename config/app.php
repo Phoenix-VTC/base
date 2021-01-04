@@ -168,6 +168,7 @@ return [
          * Package Service Providers...
          */
         App\Providers\HorizonServiceProvider::class,
+        NotificationChannels\Discord\DiscordServiceProvider::class,
 
         /*
          * Application Service Providers...
