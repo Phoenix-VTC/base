@@ -14,7 +14,7 @@ class CreateUser extends Command
      *
      * @var string
      */
-    protected $signature = 'user:create';
+    protected $signature = 'user:create {--superadmin}';
 
     /**
      * The console command description.
@@ -54,6 +54,10 @@ class CreateUser extends Command
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        if ($this->option('superadmin')) {
+            $user->assignRole('super admin');
+        }
 
         $this->info("User $user->username created successfully");
     }
