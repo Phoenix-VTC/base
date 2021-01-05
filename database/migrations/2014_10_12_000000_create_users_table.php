@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->bigInteger('steam_id')->nullable();
             $table->biginteger('truckersmp_id')->nullable();
+            $table->date('date_of_birth')->nullable();
             $table->string('password');
             $table->string('last_ip_address')->nullable();
             $table->rememberToken();

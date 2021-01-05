@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'steam_id',
         'truckersmp_id',
+        'date_of_birth',
         'last_ip_address',
         'password',
     ];
