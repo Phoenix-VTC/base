@@ -13,10 +13,10 @@
 
 @can('handle driver applications')
     <a href="{{ route('recruitment.index') }}"
-       class="@if(Request::routeIs('recruitment.index')) bg-gray-900 text-white @else text-gray-300 hover:bg-gray-700 hover:text-white @endif group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+       class="@if(Request::routeIs('recruitment.*')) bg-gray-900 text-white @else text-gray-300 hover:bg-gray-700 hover:text-white @endif group flex items-center px-2 py-2 text-sm font-medium rounded-md">
         {{-- inbox --}}
         <svg
-            class="@if(Request::routeIs('recruitment.index')) text-gray-300 @else text-gray-400 group-hover:text-gray-300 @endif mr-3 h-6 w-6"
+            class="@if(Request::routeIs('recruitment.*')) text-gray-300 @else text-gray-400 group-hover:text-gray-300 @endif mr-3 h-6 w-6"
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
             stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
