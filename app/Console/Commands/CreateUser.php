@@ -36,7 +36,7 @@ class CreateUser extends Command
         $data['passwordConfirmation'] = $this->secret('Please confirm the password');
 
         $validator = Validator::make($data, [
-            'username' => ['required'],
+            'username' => ['required', 'unique:users'],
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:8', 'same:passwordConfirmation'],
         ]);
