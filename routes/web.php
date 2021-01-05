@@ -28,7 +28,7 @@ Route::get('/', ShowDashboard::class)
     ->middleware('auth')
     ->name('dashboard');
 
-Route::prefix('recruitment')->name('recruitment.')->middleware('auth')->group(function () {
+Route::prefix('recruitment')->name('recruitment.')->middleware(['auth', 'can:handle driver applications'])->group(function () {
     Route::get('index', ShowIndex::class)->name('index');
     Route::get('application/{uuid}', ShowApplication::class)->name('show');
 });
