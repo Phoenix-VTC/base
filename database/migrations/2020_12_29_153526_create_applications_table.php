@@ -21,8 +21,8 @@ class CreateApplicationsTable extends Migration
                 ->constrained('users')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->string('username')->unique();
-            $table->string('email')->unique();
+            $table->string('username');
+            $table->string('email');
             $table->date('date_of_birth');
             $table->string('country');
             $table->json('steam_data');
