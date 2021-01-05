@@ -74,7 +74,7 @@ class Application extends Model
             $response = $client->request('GET', 'https://api.truckersmp.com/v2/bans/' . $this->truckersmp_id)->getBody();
             $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
-            return collect($response['response'])->reverse();
+            return collect($response)->reverse();
         });
     }
 

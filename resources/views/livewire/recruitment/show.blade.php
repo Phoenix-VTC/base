@@ -65,7 +65,11 @@
                                     Steam Username
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ $application->steam_data['personaname'] }}
+                                    @empty($application->steam_data['personaname'])
+                                        Could not resolve Steam name
+                                    @else
+                                        {{ $application->steam_data['personaname'] }}
+                                    @endempty
                                 </dd>
                             </div>
                             <div class="sm:col-span-1">
@@ -73,7 +77,11 @@
                                     TruckersMP Username
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ $application->truckersmp_data['name'] }}
+                                    @empty($application->truckersmp_data['name'])
+                                        Could not resolve TMP name
+                                    @else
+                                        {{ $application->truckersmp_data['name'] }}
+                                    @endempty
                                 </dd>
                             </div>
                             <div class="sm:col-span-1">
