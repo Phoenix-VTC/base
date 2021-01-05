@@ -3,19 +3,23 @@
 namespace App\Http\Livewire\Recruitment;
 
 use App\Models\Application;
+use Illuminate\View\View;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ShowIndex extends Component
 {
-    public object $applications;
+    use WithPagination;
 
-    public function mount()
+    public function paginationView(): string
     {
-        $this->applications = Application::all()->reverse();
+        return 'vendor.livewire.pagination-links';
     }
 
-    public function render()
+    public function render(): View
     {
-        return view('livewire.recruitment.index');
+        return view('livewire.recruitment.index', [
+            'applications' => Application::latest()->paginate(10),
+        ])->extends('layouts.app');
     }
 }
