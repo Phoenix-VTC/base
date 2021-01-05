@@ -1,8 +1,8 @@
-<!-- Current: "bg-gray-200 text-gray-900", Default: "text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->
+{{-- Current: "bg-gray-200 text-gray-900", Default: "text-gray-600 hover:bg-gray-50 hover:text-gray-900" --}}
 <a href="{{ route('dashboard') }}"
    class="bg-gray-900 text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-    <!-- Current: "text-gray-300", Default: "text-gray-400 group-hover:text-gray-300" -->
-    <!-- Heroicon name: home -->
+    {{-- Current: "text-gray-300", Default: "text-gray-400 group-hover:text-gray-300" --}}
+    {{-- home --}}
     <svg class="text-gray-300 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
          viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -14,7 +14,7 @@
 @can('handle driver applications')
     <a href="{{ route('recruitment.index') }}"
        class="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-        <!-- Heroicon name: inbox -->
+        {{-- inbox --}}
         <svg class="text-gray-400 group-hover:text-gray-300 mr-3 h-6 w-6"
              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
              stroke="currentColor" aria-hidden="true">
