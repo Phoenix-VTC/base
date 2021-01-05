@@ -51,7 +51,7 @@ class Application extends Model
      */
     public function getTruckersMPDataAttribute(): Collection
     {
-        return \Cache::remember($this->uuid . "_truckersmp_data", 86400, function () {
+        return \Cache::remember($this->truckersmp_id . "_truckersmp_data", 86400, function () {
             $client = new Client();
 
             $response = $client->request('GET', 'https://api.truckersmp.com/v2/player/' . $this->truckersmp_id)->getBody();
@@ -68,7 +68,7 @@ class Application extends Model
      */
     public function getBanHistoryAttribute(): Collection
     {
-        return \Cache::remember($this->uuid . "_truckersmp_ban_history", 86400, function () {
+        return \Cache::remember($this->truckersmp_id . "_truckersmp_ban_history", 86400, function () {
             $client = new Client();
 
             $response = $client->request('GET', 'https://api.truckersmp.com/v2/bans/' . $this->truckersmp_id)->getBody();
