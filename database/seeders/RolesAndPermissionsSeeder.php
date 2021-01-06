@@ -21,10 +21,15 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Create permissions
         Permission::create(['name' => 'handle driver applications']);
+        Permission::create(['name' => 'manage users']);
+        Permission::create(['name' => 'delete users']);
 
         // Create roles and assign created permissions
         Role::create(['name' => 'recruiter'])
-            ->givePermissionTo(['handle driver applications']);
+            ->givePermissionTo(['handle driver applications', 'manage users']);
+
+        Role::create(['name' => 'human resources'])
+            ->givePermissionTo(['handle driver applications', 'manage users', 'delete users']);
 
         Role::create(['name' => 'super admin']);
     }
