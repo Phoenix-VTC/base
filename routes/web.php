@@ -1,7 +1,7 @@
 <?php
 
 use \App\Http\Livewire\Recruitment\ShowApplication;
-use \App\Http\Livewire\Recruitment\ShowIndex;
+use \App\Http\Livewire\Recruitment\ShowIndex as RecruitmentShowIndex;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Livewire\Auth\Login;
@@ -11,6 +11,7 @@ use App\Http\Livewire\Auth\Passwords\Reset;
 use App\Http\Livewire\Auth\Register;
 use App\Http\Livewire\Auth\Verify;
 use App\Http\Livewire\ShowDashboard;
+use App\Http\Livewire\UserManagement\ShowIndex as UserManagementShowIndex;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,8 +30,12 @@ Route::get('/', ShowDashboard::class)
     ->name('dashboard');
 
 Route::prefix('recruitment')->name('recruitment.')->middleware(['auth', 'can:handle driver applications'])->group(function () {
-    Route::get('index', ShowIndex::class)->name('index');
+    Route::get('index', RecruitmentShowIndex::class)->name('index');
     Route::get('application/{uuid}', ShowApplication::class)->name('show');
+});
+
+Route::prefix('user-management')->name('user-management.')->middleware(['auth', 'can:manage users'])->group(function () {
+    Route::get('index', UserManagementShowIndex::class)->name('index');
 });
 
 Route::middleware('guest')->group(function () {
