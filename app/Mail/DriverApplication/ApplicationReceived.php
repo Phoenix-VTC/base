@@ -14,7 +14,7 @@ class ApplicationReceived extends Mailable implements ShouldQueue
     use SerializesModels;
 
     /**
-     * The order instance.
+     * The application instance.
      *
      * @var Application
      */
