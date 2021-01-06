@@ -63,8 +63,8 @@ class ShowApplication extends Component
 
     public function clearTMPData(): void
     {
-        \Cache::forget($this->application->uuid . "_truckersmp_data");
-        \Cache::forget($this->application->uuid . "_truckersmp_ban_history");
+        \Cache::forget($this->application->truckersmp_id . "_truckersmp_data");
+        \Cache::forget($this->application->truckersmp_id . "_truckersmp_ban_history");
     }
 
     public function accept(): void
