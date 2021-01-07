@@ -2,7 +2,7 @@
     <h2 id="tmp-information-title" class="text-lg font-medium text-gray-900">TruckersMP Information</h2>
     <div class="mt-6 flow-root">
         <ul class="-mb-8">
-            @if(!isset($application->truckersmp_data['name']) || isset($application->ban_history['error']))
+            @if(!isset($application->ban_history['error'], $application->truckersmp_data['name']))
                 {{-- TruckersMP Error --}}
                 <li>
                     <div class="relative pb-8">
