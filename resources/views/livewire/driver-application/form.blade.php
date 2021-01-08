@@ -1,4 +1,4 @@
-@section('steps')
+{{-- @section('steps')
     <nav aria-label="Progress">
         <ol class="space-y-4 md:flex md:space-y-0 md:space-x-8">
             <li class="md:flex-1">
@@ -31,7 +31,7 @@
             </li>
         </ol>
     </nav>
-@endsection
+@endsection --}}
 
 <form wire:submit.prevent="submit" x-data="{formStep: 1}">
     @csrf
