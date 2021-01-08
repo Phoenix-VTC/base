@@ -31,5 +31,23 @@
 @endsection
 
 <div>
-    {{-- Close your eyes. Count to one. That is how long forever feels. --}}
+    <div class="overflow-hidden rounded-lg text-center">
+        <div class="px-4 py-5 sm:px-6 flex">
+            <img class="mx-auto" width="35%" src="{{ asset('img/illustrations/completed.svg') }}"
+                 alt="Team spirit illustration"/>
+        </div>
+        <div class="px-4 py-5 sm:p-6">
+            <h1 class="text-4xl font-semibold text-gray-900">
+                Thank you for applying!
+            </h1>
+            <h2 class="text-xl text-gray-900">
+                Our Recruitment team is currently reviewing your application.
+                <br>
+                To view the current status of your application, you can check the progress bar at the top of this page.
+            </h2>
+            <h2 class="text-xl font-semibold text-gray-900">
+                After your application has been processed, you will receive an email.
+            </h2>
+        </div>
+    </div>
 </div>
