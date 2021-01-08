@@ -47,6 +47,8 @@ class CreateUser extends Command
             foreach ($validator->errors()->all() as $error) {
                 $this->error($error);
             }
+
+            exit;
         }
 
         $user = User::create([
