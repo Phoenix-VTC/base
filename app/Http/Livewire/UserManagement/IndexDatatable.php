@@ -11,6 +11,7 @@ use Mediconesystems\LivewireDatatables\NumberColumn;
 class IndexDatatable extends LivewireDatatable
 {
     public $model = User::class;
+    public $exportable = true;
 
     public function columns(): array
     {
