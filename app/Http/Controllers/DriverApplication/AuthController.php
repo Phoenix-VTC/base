@@ -62,6 +62,7 @@ class AuthController extends Controller
                 $validator = Validator::make($info->toArray(), [
                     // Temporarily disabled the validation for testing purposes
 //                    'steamID64' => ['bail', new HasGame, new MinHours, new AccountExists, new BanHistoryPublic, new NoRecentBans, new NotInVTC],
+                    'steamID64' => ['bail', new HasGame, new MinHours, new AccountExists, new BanHistoryPublic, new NoRecentBans],
                 ]);
 
                 if ($validator->fails()) {
