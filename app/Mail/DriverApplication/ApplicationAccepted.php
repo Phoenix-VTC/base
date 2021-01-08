@@ -18,13 +18,23 @@ class ApplicationAccepted extends Mailable
     public User $user;
 
     /**
+     * The token instance.
+     *
+     * @var string
+     */
+    public string $token;
+
+    /**
      * Create a new message instance.
      *
      * @param User $user
+     * @param string $token
      */
-    public function __construct(User $user)
+    public function __construct(User $user, string $token)
     {
         $this->user = $user;
+
+        $this->token = $token;
     }
 
     /**

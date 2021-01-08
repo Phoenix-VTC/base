@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\DriverApplication\WelcomeNotification;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\WelcomeNotification\ReceivesWelcomeNotification;
 
 class User extends Authenticatable
 {
@@ -15,6 +17,7 @@ class User extends Authenticatable
     use Notifiable;
     use HasRoles;
     use SoftDeletes;
+    use ReceivesWelcomeNotification;
 
     /**
      * The attributes that are mass assignable.
@@ -58,5 +61,16 @@ class User extends Authenticatable
     public function getProfilePictureAttribute(): string
     {
         return "https://eu.ui-avatars.com/api/?name=$this->username";
+    }
+
+    /**
+     * Send the welcome notification
+     *
+     * @param User $user
+     * @param Carbon $validUntil
+     */
+    public function sendWelcomeNotification(User $user, Carbon $validUntil): void
+    {
+        $this->notify(new WelcomeNotification($user, $validUntil));
     }
 }

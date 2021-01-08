@@ -7,12 +7,15 @@ We are very happy to share with you that have been accepted into PhoenixVTC!
 
 To activate your {{ config('app.name') }} account, please press the button below.
 
-{{--@component('mail::button', ['url' => route('driver-application.status', $user->id)])--}}
-{{--Choose password--}}
-{{--@endcomponent--}}
+@component('mail::button', ['url' => $showWelcomeFormUrl])
+Choose password
+@endcomponent
 
 Congratulations, and we're hoping to see you on the road soon!
 
 Thanks, <br>
 The Phoenix Team
+
+<br>
+<strong><small>Please note that the choose password link expires on {{ $validUntil }}</small></strong>
 @endcomponent
