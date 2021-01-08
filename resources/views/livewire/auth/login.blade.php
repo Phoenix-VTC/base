@@ -2,16 +2,14 @@
 
 <div>
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <a href="{{ route('dashboard') }}">
-            <x-logo class="w-auto h-16 mx-auto text-indigo-600" />
-        </a>
+        <x-logo class="w-auto h-40 mx-auto"/>
 
         <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900 leading-9">
             Sign in to your account
         </h2>
         <p class="mt-2 text-sm text-center text-gray-600 leading-5 max-w">
             Or
-            <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
+            <a href="{{ route('register') }}" class="font-medium text-orange-600 hover:text-orange-500 focus:outline-none focus:underline transition ease-in-out duration-150">
                 create a new account
             </a>
         </p>
@@ -50,14 +48,14 @@
 
                 <div class="flex items-center justify-between mt-6">
                     <div class="flex items-center">
-                        <input wire:model.lazy="remember" id="remember" type="checkbox" class="form-checkbox w-4 h-4 text-indigo-600 transition duration-150 ease-in-out" />
+                        <input wire:model.lazy="remember" id="remember" type="checkbox" class="form-checkbox w-4 h-4 text-orange-600 transition duration-150 ease-in-out" />
                         <label for="remember" class="block ml-2 text-sm text-gray-900 leading-5">
                             Remember
                         </label>
                     </div>
 
                     <div class="text-sm leading-5">
-                        <a href="{{ route('password.request') }}" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
+                        <a href="{{ route('password.request') }}" class="font-medium text-orange-600 hover:text-orange-500 focus:outline-none focus:underline transition ease-in-out duration-150">
                             Forgot your password?
                         </a>
                     </div>
@@ -65,7 +63,7 @@
 
                 <div class="mt-6">
                     <span class="block w-full rounded-md shadow-sm">
-                        <button type="submit" class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                        <button type="submit" class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-500 focus:outline-none focus:border-orange-700 focus:shadow-outline-orange active:bg-orange-700 transition duration-150 ease-in-out">
                             Sign in
                         </button>
                     </span>
