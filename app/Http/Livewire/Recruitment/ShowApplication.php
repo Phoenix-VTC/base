@@ -2,11 +2,14 @@
 
 namespace App\Http\Livewire\Recruitment;
 
+use App\Jobs\Recruitment\ProcessAcceptation;
 use App\Models\Application;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Component;
+use Validator;
 
 class ShowApplication extends Component
 {
@@ -69,10 +72,18 @@ class ShowApplication extends Component
 
     public function accept(): void
     {
+        Validator::make($this->application->toArray(), [
+            'email' => ['email', Rule::unique('users')->whereNull('deleted_at')],
+            'truckersmp_id' => [Rule::unique('users')->whereNull('deleted_at')],
+            'steam_data.steamID64' => ['required', Rule::unique('users', 'steam_id')->whereNull('deleted_at')],
+        ])->validate();
+
+        ProcessAcceptation::dispatch($this->application);
+
         $this->application->status = 'accepted';
         $this->application->save();
 
-        // Handle acceptation email
+        session()->flash('success', ['message' => 'Application successfully accepted!']);
     }
 
     public function deny(): void
