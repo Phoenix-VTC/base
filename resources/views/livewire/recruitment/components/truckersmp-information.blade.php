@@ -58,7 +58,7 @@
                 </li>
 
                 {{-- No Bans --}}
-                @if($application->truckersmp_data['displayBans'] && $application->ban_history->count() === 0)
+                @if($application->truckersmp_data['displayBans'] && empty($application->ban_history['response']))
                     <li>
                         <div class="relative pb-8">
                             <div class="relative flex space-x-3">
