@@ -36,6 +36,13 @@ class MinHours implements Rule
      */
     public function message(): string
     {
-        return 'It looks like you do not have at least 75 in-game hours on Euro Truck Simulator 2 <strong>and/or</strong> American Truck Simulator.<br>Please make sure that you are using the correct Steam account.';
+        return '
+            It looks like you do not have at least 75 in-game hours on Euro Truck Simulator 2 <strong>and/or</strong> American Truck Simulator.
+            <br>
+            Please make sure that you are using the correct Steam account.
+            <br>
+            If you think that this is an error, please make sure that your profile is set to public here:
+            <a class="prose" target="_blank" href="https://support.steampowered.com/kb_article.php">https://support.steampowered.com/kb_article.php</a>
+        ';
     }
 }
