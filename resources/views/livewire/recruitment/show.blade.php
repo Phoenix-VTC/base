@@ -171,7 +171,7 @@
                                     <dd class="mt-1 text-sm text-gray-900">
                                         @if(is_numeric($answer))
                                             <div class="flex items-center mt-0.5">
-                                                @if($answer === 0)
+                                                @if($answer === "0")
                                                     {{-- exclamation --}}
                                                     <svg class="h-5 w-5 text-orange-400"
                                                          xmlns="http://www.w3.org/2000/svg"
