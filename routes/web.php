@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Auth\WelcomeController;
+use App\Http\Livewire\Auth\ShowWelcomeForm;
 use \App\Http\Livewire\Recruitment\ShowApplication;
 use \App\Http\Livewire\Recruitment\ShowIndex as RecruitmentShowIndex;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -14,7 +14,6 @@ use App\Http\Livewire\Auth\Verify;
 use App\Http\Livewire\ShowDashboard;
 use App\Http\Livewire\UserManagement\ShowIndex as UserManagementShowIndex;
 use Illuminate\Support\Facades\Route;
-use Spatie\WelcomeNotification\WelcomesNewUsers;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,10 +39,7 @@ Route::prefix('user-management')->name('user-management.')->middleware(['auth', 
     Route::get('index', UserManagementShowIndex::class)->name('index');
 });
 
-Route::group(['middleware' => ['web', WelcomesNewUsers::class,]], function () {
-    Route::get('welcome/{user}', [WelcomeController::class, 'showWelcomeForm'])->name('welcome');
-    Route::post('welcome/{user}', [WelcomeController::class, 'savePassword']);
-});
+Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
 
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)

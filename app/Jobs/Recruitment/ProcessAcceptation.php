@@ -4,6 +4,7 @@ namespace App\Jobs\Recruitment;
 
 use App\Models\Application;
 use App\Models\User;
+use App\Notifications\DriverApplication\WelcomeNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -52,10 +53,11 @@ class ProcessAcceptation implements ShouldQueue
             'email' => $this->application->email,
             'username' => $this->application->username,
             'password' => Hash::make(Str::random()),
+            'welcome_valid_until' => now()->addDays(3),
+            'welcome_token' => Str::random(64),
         ]);
         $user->assignRole('driver');
 
-        $expiresAt = now()->addDays(3);
-        $user->sendWelcomeNotification($user, $expiresAt);
+        $user->notify(new WelcomeNotification($user));
     }
 }

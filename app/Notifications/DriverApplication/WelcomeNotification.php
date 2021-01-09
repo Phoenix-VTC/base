@@ -3,23 +3,35 @@
 namespace App\Notifications\DriverApplication;
 
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
-class WelcomeNotification extends \Spatie\WelcomeNotification\WelcomeNotification implements ShouldQueue
+class WelcomeNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public $validUntil;
-    public $user;
+    public User $user;
 
-    public function __construct(User $user, Carbon $validUntil)
+    /**
+     * Create a new notification instance.
+     *
+     * @param User $user
+     */
+    public function __construct(User $user)
     {
-        $this->validUntil = $validUntil;
-
         $this->user = $user;
+    }
+
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @return array
+     */
+    public function via(): array
+    {
+        return ['mail'];
     }
 
     /**
@@ -27,10 +39,10 @@ class WelcomeNotification extends \Spatie\WelcomeNotification\WelcomeNotificatio
      *
      * @return MailMessage
      */
-    public function buildWelcomeNotificationMessage(): MailMessage
+    public function toMail(): MailMessage
     {
         return (new MailMessage)
-            ->markdown('emails.driver-application.application-accepted', ['user' => $this->user, 'showWelcomeFormUrl' => $this->showWelcomeFormUrl, 'validUntil' => $this->validUntil])
-            ->subject('Application Accepted!');
+            ->subject('Application Accepted!')
+            ->markdown('emails.driver-application.application-accepted', ['user' => $this->user]);
     }
 }
