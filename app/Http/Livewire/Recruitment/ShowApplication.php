@@ -3,12 +3,14 @@
 namespace App\Http\Livewire\Recruitment;
 
 use App\Jobs\Recruitment\ProcessAcceptation;
+use App\Mail\DriverApplication\ApplicationDenied;
 use App\Models\Application;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Component;
+use Mail;
 use Validator;
 
 class ShowApplication extends Component
@@ -91,7 +93,12 @@ class ShowApplication extends Component
         $this->application->status = 'denied';
         $this->application->save();
 
-        // Handle denied email
+        Mail::to([[
+            'email' => $this->application->email,
+            'name' => $this->application->username
+        ]])->send(new ApplicationDenied($this->application));
+
+        session()->flash('success', ['message' => 'Application successfully denied!']);
     }
 
     public function setStatus($status): void
