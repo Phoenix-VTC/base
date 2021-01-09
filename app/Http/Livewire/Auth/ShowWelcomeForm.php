@@ -54,7 +54,7 @@ class ShowWelcomeForm extends Component
         return redirect()->intended(route('dashboard'));
     }
 
-    public function validateToken(): void
+    private function validateToken(): void
     {
         if (strlen($this->user->welcome_token) !== 64) {
             abort(403, 'This welcome link has already been used.');
