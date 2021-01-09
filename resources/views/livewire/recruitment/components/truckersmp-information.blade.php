@@ -85,7 +85,7 @@
                     </li>
                 @else
                     {{-- Ban History --}}
-                    @foreach($application->ban_history['response'] as $ban)
+                    @foreach(collect($application->ban_history['response'])->reverse() as $ban)
                         <li>
                             <div class="relative pb-8">
                                 @if(!$loop->last)
