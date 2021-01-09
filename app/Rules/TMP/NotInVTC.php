@@ -23,6 +23,11 @@ class NotInVTC implements Rule
         $response = $client->request('GET', 'https://api.truckersmp.com/v2/player/' . $value)->getBody();
         $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
+        if ($response['response']['vtc']['id'] === 30294) {
+            // Return true if the VTC is Phoenix
+            return true;
+        }
+
         return !$response['response']['vtc']['inVTC'];
     }
 
