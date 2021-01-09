@@ -15,7 +15,7 @@ use Validator;
 
 class ShowApplication extends Component
 {
-    public object $application;
+    public Application $application;
     public string $comment = '';
 
     protected array $rules = [
