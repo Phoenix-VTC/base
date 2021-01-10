@@ -16,7 +16,7 @@ class IndexDatatable extends LivewireDatatable
     public function builder(): Builder
     {
         return User::query()
-            ->join('roles', 'roles.id', 'users.id');
+            ->with('roles');
     }
 
     public function columns(): array
@@ -28,7 +28,7 @@ class IndexDatatable extends LivewireDatatable
 
             Column::name('email')->truncate()->filterable()->searchable(),
 
-            Column::raw('roles.name')->label('Highest Role')->filterable()->searchable(),
+            Column::name('roles.name')->label('Roles')->filterable()->searchable(),
 
             Column::name('steam_id')->searchable()->filterable()->searchable(),
 
