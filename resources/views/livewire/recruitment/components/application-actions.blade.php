@@ -67,7 +67,7 @@
             </li>
         </ul>
     </div>
-    @if($application->claimed_by)
+    @if($application->claimed_by === Auth::id())
         @if ($errors->any())
             <div class="rounded-md bg-red-50 p-4 mt-4">
                 <div class="flex">
