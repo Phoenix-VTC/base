@@ -1,6 +1,8 @@
 @section('title', "Viewing $application->username's application")
 
 <main class="py-10">
+    <x-alert/>
+
     {{-- Page header --}}
     <div
         class="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
