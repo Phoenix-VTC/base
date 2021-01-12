@@ -28,6 +28,16 @@
                         ({{ \Carbon\Carbon::parse($application->created_at)->toDayDateTimeString() }})
                     </time>
                 </p>
+                @if($application->is_completed)
+                    <p class="text-sm font-bold font-medium text-gray-500">
+                        Completed
+                        <time
+                            datetime="{{ \Carbon\Carbon::parse($application->completed_at)->toDateString() }}">
+                            {{ $application->time_until_completion }}
+                        </time>
+                        submission
+                    </p>
+                @endif
             </div>
         </div>
         @if(!$application->is_completed)
