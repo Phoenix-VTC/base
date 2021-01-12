@@ -36,12 +36,16 @@ class ShowApplication extends Component
     {
         $this->application->claimed_by = Auth::id();
         $this->application->save();
+
+        session()->flash('alert', ['type' => 'info', 'message' => 'Application claimed']);
     }
 
     public function unclaim(): void
     {
         $this->application->claimed_by = null;
         $this->application->save();
+
+        session()->flash('alert', ['type' => 'info', 'message' => 'Application unclaimed']);
     }
 
     public function submitComment(): void
@@ -57,6 +61,8 @@ class ShowApplication extends Component
 
         // Empty the comment textarea
         $this->comment = '';
+
+        session()->flash('alert', ['type' => 'success', 'message' => 'Comment submitted!']);
     }
 
     public function deleteComment($uuid): void
@@ -64,12 +70,16 @@ class ShowApplication extends Component
         $comment = Comment::where('uuid', $uuid)->firstOrFail();
 
         $comment->delete();
+
+        session()->flash('alert', ['type' => 'info', 'message' => 'Comment deleted!']);
     }
 
     public function clearTMPData(): void
     {
         \Cache::forget($this->application->truckersmp_id . "_truckersmp_data");
         \Cache::forget($this->application->truckersmp_id . "_truckersmp_ban_history");
+
+        session()->flash('alert', ['type' => 'success', 'message' => 'TruckersMP successfully refreshed!']);
     }
 
     public function accept(): void
@@ -85,7 +95,7 @@ class ShowApplication extends Component
         $this->application->status = 'accepted';
         $this->application->save();
 
-        session()->flash('success', ['message' => 'Application successfully accepted!']);
+        session()->flash('alert', ['type' => 'success', 'message' => 'Application successfully <b>accepted</b>!']);
     }
 
     public function deny(): void
@@ -98,13 +108,15 @@ class ShowApplication extends Component
             'name' => $this->application->username
         ]])->send(new ApplicationDenied($this->application));
 
-        session()->flash('success', ['message' => 'Application successfully denied!']);
+        session()->flash('alert', ['type' => 'success', 'message' => 'Application successfully <b>denied</b>!']);
     }
 
     public function setStatus($status): void
     {
         $this->application->status = $status;
         $this->application->save();
+
+        session()->flash('alert', ['type' => 'info', 'message' => 'Application status changed to <b>' . str_replace("_", " ", $status) . '</b>']);
     }
 
     public function blacklist(): void
