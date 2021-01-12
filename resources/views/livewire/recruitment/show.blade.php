@@ -1,6 +1,8 @@
 @section('title', "Viewing $application->username's application")
 
 <main class="py-10">
+    <x-alert/>
+
     {{-- Page header --}}
     <div
         class="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
@@ -26,6 +28,16 @@
                         ({{ \Carbon\Carbon::parse($application->created_at)->toDayDateTimeString() }})
                     </time>
                 </p>
+                @if($application->is_completed)
+                    <p class="text-sm font-bold font-medium text-gray-500">
+                        Completed
+                        <time
+                            datetime="{{ \Carbon\Carbon::parse($application->completed_at)->toDateString() }}">
+                            {{ $application->time_until_completion }}
+                        </time>
+                        submission
+                    </p>
+                @endif
             </div>
         </div>
         @if(!$application->is_completed)

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Concerns\HasComments;
 use App\Concerns\HasUuid;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -85,7 +86,7 @@ class Application extends Model
      */
     public function getAgeAttribute(): int
     {
-        return \Carbon\Carbon::parse($this->date_of_birth)->age;
+        return Carbon::parse($this->date_of_birth)->age;
     }
 
     /**
@@ -117,5 +118,18 @@ class Application extends Model
     public function routeNotificationForDiscord(): string
     {
         return config('services.discord.recruitment_channel_id');
+    }
+
+    /**
+     * Get the time between application creation and completion.
+     *
+     */
+    public function getTimeUntilCompletionAttribute(): ?string
+    {
+        if ($this->is_completed) {
+            return Carbon::parse($this->updated_at)->diffForHumans($this->created_at);
+        }
+
+        return null;
     }
 }
