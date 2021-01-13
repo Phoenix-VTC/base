@@ -28,7 +28,7 @@ class IndexDatatable extends LivewireDatatable
 
             Column::name('email')->truncate()->filterable()->searchable(),
 
-            Column::name('roles.name')->label('Roles')->filterable()->searchable(),
+            Column::name('roles.name')->label('Roles')->filterable(),
 
             Column::name('steam_id')->searchable()->filterable()->searchable(),
 

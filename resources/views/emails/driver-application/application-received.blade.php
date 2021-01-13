@@ -5,7 +5,7 @@
 
 Hey {{ $application->username }}!
 
-Thanks for applying to Phoenix VTC.
+Thanks for applying to PhoenixVTC.
 <br>
 We have successfully received your application, and you should receive an answer from one of our Recruiters within 12 hours.
 
