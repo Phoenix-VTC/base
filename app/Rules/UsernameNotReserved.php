@@ -54,8 +54,8 @@ class UsernameNotReserved implements Rule
      */
     private function stripValue($value): string
     {
-        $strippedValue = preg_replace("/[^a-zA-Z0-9]/", "", $value);
+        $stripped_value = preg_replace("/[^a-zA-Z0-9]/", "", $value);
 
-        return strtolower($strippedValue);
+        return strtolower($stripped_value);
     }
 }
