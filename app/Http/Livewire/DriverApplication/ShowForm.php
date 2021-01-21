@@ -5,6 +5,7 @@ namespace App\Http\Livewire\DriverApplication;
 use App\Mail\DriverApplication\ApplicationReceived;
 use App\Models\Application;
 use App\Notifications\Recruitment\NewDriverApplication;
+use App\Rules\UsernameNotReserved;
 use Livewire\Component;
 use Mail;
 
@@ -278,7 +279,7 @@ class ShowForm extends Component
     public function rules(): array
     {
         return [
-            'username' => ['required', 'min:3', 'unique:users'],
+            'username' => ['required', 'min:3', 'unique:users', new UsernameNotReserved],
             'email' => 'required|email|unique:users',
             'date_of_birth' => 'required|date',
             'country' => 'required',
