@@ -5,6 +5,7 @@ namespace App\Http\Livewire\DriverApplication;
 use App\Mail\DriverApplication\ApplicationReceived;
 use App\Models\Application;
 use App\Notifications\Recruitment\NewDriverApplication;
+use App\Rules\UsernameNotReserved;
 use Livewire\Component;
 use Mail;
 
@@ -275,19 +276,22 @@ class ShowForm extends Component
     public string $terms = '';
     public string $find_us = '';
 
-    protected $rules = [
-        'username' => 'required|min:3|unique:users',
-        'email' => 'required|email|unique:users',
-        'date_of_birth' => 'required|date',
-        'country' => 'required',
-        'another_vtc' => 'required|boolean',
-        'games' => 'required|in:ets2,ats,both',
-        'fluent' => 'required|boolean',
-        'about' => 'required',
-        'why_join' => 'required',
-        'terms' => 'required|boolean',
-        'find_us' => 'required',
-    ];
+    public function rules(): array
+    {
+        return [
+            'username' => ['required', 'min:3', 'unique:users', new UsernameNotReserved],
+            'email' => 'required|email|unique:users',
+            'date_of_birth' => 'required|date',
+            'country' => 'required',
+            'another_vtc' => 'required|boolean',
+            'games' => 'required|in:ets2,ats,both',
+            'fluent' => 'required|boolean',
+            'about' => 'required',
+            'why_join' => 'required',
+            'terms' => 'required|boolean',
+            'find_us' => 'required',
+        ];
+    }
 
     public function updated($propertyName)
     {
