@@ -52,6 +52,9 @@ class ProcessAcceptation implements ShouldQueue
         $user = User::create([
             'email' => $this->application->email,
             'username' => $this->application->username,
+            'date_of_birth' => $this->application->date_of_birth,
+            'steam_id' => $this->application->steam_data['steamID64'],
+            'truckersmp_id' => $this->application->truckersmp_id,
             'password' => Hash::make(Str::random()),
             'welcome_valid_until' => now()->addDays(3),
             'welcome_token' => Str::random(64),
