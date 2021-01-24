@@ -27,7 +27,7 @@ class CreateVacationRequestsTable extends Migration
             $table->text('reason');
             $table->boolean('leaving');
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
