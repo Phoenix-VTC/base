@@ -14,7 +14,11 @@ class ShowIndex extends Component
 
     public function mount(): void
     {
-        $this->vacation_requests = VacationRequest::where('user_id', Auth::id())->with('staff')->get();
+        $this->vacation_requests = VacationRequest::withTrashed()
+            ->where('user_id', Auth::id())
+            ->with('staff')
+            ->orderBy('start_date', 'DESC')
+            ->get();
     }
 
     public function render(): View
