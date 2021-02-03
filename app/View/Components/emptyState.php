@@ -2,24 +2,30 @@
 
 namespace App\View\Components;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class emptyState extends Component
 {
+    public string $image;
+    public string $alt;
+
     /**
      * Create a new component instance.
      *
-     * @return void
+     * @param string $image
+     * @param string $alt
      */
-    public function __construct()
+    public function __construct(string $image, string $alt)
     {
-        //
+        $this->image = $image;
+        $this->alt = $alt;
     }
 
     /**
      * Get the view / contents that represent the component.
      *
-     * @return \Illuminate\Contracts\View\View|string
+     * @return View
      */
     public function render()
     {

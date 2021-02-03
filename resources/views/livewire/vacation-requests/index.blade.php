@@ -103,7 +103,11 @@
                                 </tbody>
                             </table>
                         @else
-                            <x-empty-state/>
+                            <x-empty-state :image="asset('img/illustrations/travel_plans.svg')" alt="Travel plans illustration">
+                                Going away for a while?
+                                <br>
+                                Your vacation requests will show here.
+                            </x-empty-state>
                         @endempty
                     </div>
                 </div>
