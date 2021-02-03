@@ -12,6 +12,7 @@ use App\Http\Livewire\Auth\Passwords\Reset;
 use App\Http\Livewire\Auth\Register;
 use App\Http\Livewire\Auth\Verify;
 use App\Http\Livewire\ShowDashboard;
+use App\Http\Livewire\VacationRequests\ShowCreate as VacationRequestsShowCreate;
 use App\Http\Livewire\VacationRequests\ShowIndex as VacationRequestsShowIndex;
 use App\Http\Livewire\UserManagement\ShowIndex as UserManagementShowIndex;
 use Illuminate\Support\Facades\Route;
@@ -41,7 +42,8 @@ Route::prefix('user-management')->name('user-management.')->middleware(['auth', 
 });
 
 Route::prefix('vacation-requests')->name('vacation-requests.')->middleware(['auth'])->group(function () {
-    Route::get('index', VacationRequestsShowIndex::class)->name('index');
+    Route::get('/', VacationRequestsShowIndex::class)->name('index');
+    Route::get('create', VacationRequestsShowCreate::class)->name('create');
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');

@@ -1,13 +1,13 @@
-<div x-data="{ showModal: @entangle('showModal') }">
+<div>
     <div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
         <h3 class="text-2xl font-semibold text-gray-900">
             Your Vacation Requests
         </h3>
         <div class="mt-3 sm:mt-0 sm:ml-4">
-            <button type="button" @click="showModal = true"
-                    class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-500 focus:outline-none focus:border-orange-700 focus:shadow-outline-orange active:bg-orange-700">
+            <a href="{{ route('vacation-requests.create') }}"
+               class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-500 focus:outline-none focus:border-orange-700 focus:shadow-outline-orange active:bg-orange-700">
                 New vacation request
-            </button>
+            </a>
         </div>
     </div>
 
@@ -109,7 +109,5 @@
                 </div>
             </div>
         </div>
-
-        @include('livewire.vacation-requests.components.modal')
     </div>
 </div>
