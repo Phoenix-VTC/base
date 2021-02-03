@@ -66,8 +66,10 @@
                                                 </div>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $vacation_request->staff->username ?? '' }}
+                                        <td class="px-6 py-4 flex whitespace-nowrap text-sm text-gray-500">
+                                            @isset($vacation_request->handled_by)
+                                                {{ $vacation_request->staff->username ?? 'Unknown User' }}
+                                            @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                                             @empty($vacation_request->claimed_by)
@@ -103,7 +105,8 @@
                                 </tbody>
                             </table>
                         @else
-                            <x-empty-state :image="asset('img/illustrations/travel_plans.svg')" alt="Travel plans illustration">
+                            <x-empty-state :image="asset('img/illustrations/travel_plans.svg')"
+                                           alt="Travel plans illustration">
                                 Going away for a while?
                                 <br>
                                 Your vacation requests will show here.
