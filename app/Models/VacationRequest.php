@@ -39,4 +39,9 @@ class VacationRequest extends Model
     {
         return Carbon::parse($this->start_date)->isFuture();
     }
+
+    public function getDurationAttribute(): string
+    {
+        return Carbon::parse($this->end_date)->diffForHumans($this->start_date, true);
+    }
 }
