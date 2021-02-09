@@ -52,7 +52,7 @@ class NewDriverApplication extends Notification implements ShouldQueue
             'timestamp' => $this->application->created_at,
             'author' => [
                 'name' => config('app.name'),
-                'url' => url(''),
+                'url' => route('recruitment.show', $this->application->uuid),
                 'icon_url' => 'https://phoenixvtc.com/assets/images/branding/logo.png'
             ],
             'fields' => [
