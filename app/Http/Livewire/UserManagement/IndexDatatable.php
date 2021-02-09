@@ -15,7 +15,7 @@ class IndexDatatable extends LivewireDatatable
 
     public function builder(): Builder
     {
-        return User::query()
+        return User::withTrashed()
             ->with('roles');
     }
 
