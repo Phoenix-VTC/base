@@ -35,6 +35,8 @@
                                wire:model.lazy="end_date" @if($leaving) disabled @endif
                                class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @if($leaving) bg-gray-200 @endif @error('end_date') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
                         <p class="mt-2 text-sm text-gray-500">
+                            The end date must be at least one week after the start.
+                            <br>
                             Not required if you're leaving Phoenix.
                         </p>
                         @error('end_date')
