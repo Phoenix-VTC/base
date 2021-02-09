@@ -12,6 +12,6 @@ For any additional information about this decision, you can contact our Recruitm
 
 If you meet our entry requirements, you’re welcome to re-apply after 1 week!
 
-Thanks, <br>
+Thank you, <br>
 The Phoenix Team
 @endcomponent
