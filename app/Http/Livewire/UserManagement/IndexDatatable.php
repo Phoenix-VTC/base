@@ -13,6 +13,8 @@ class IndexDatatable extends LivewireDatatable
 {
     public $exportable = true;
 
+    public $model = User::class;
+
     public function builder(): Builder
     {
         return User::withTrashed()
@@ -37,6 +39,8 @@ class IndexDatatable extends LivewireDatatable
             DateColumn::name('created_at')->filterable(),
 
             DateColumn::name('deleted_at'),
+
+            Column::delete(),
         ];
     }
 }
