@@ -48,12 +48,12 @@ class NewVacationRequest extends Notification implements ShouldQueue
         $embed = [
             'title' => 'New Vacation Request!',
             'description' => 'A new vacation request has just been submitted, view the details below.',
-            'url' => route('recruitment.show', $this->vacation_request->id),
+            'url' => route('vacation-requests.manage.index'),
             'color' => 14429954, // #DC2F02
             'timestamp' => $this->vacation_request->created_at,
             'author' => [
                 'name' => config('app.name'),
-                'url' => route('recruitment.show', $this->vacation_request->id),
+                'url' => route('vacation-requests.manage.index'),
                 'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
             ],
             'fields' => [
