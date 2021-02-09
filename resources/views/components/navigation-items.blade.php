@@ -54,6 +54,20 @@
         </a>
     @endcan
 
+    @can('manage vacation requests')
+        <a href="{{ route('vacation-requests.manage.index') }}"
+           class="@if(Request::routeIs('vacation-requests.manage.*')) bg-gray-900 text-white @else text-gray-300 hover:bg-gray-700 hover:text-white @endif group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+            {{-- document-search --}}
+            <svg
+                class="@if(Request::routeIs('vacation-requests.index')) text-gray-300 @else text-gray-400 group-hover:text-gray-300 @endif mr-3 h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Vacation Requests
+        </a>
+    @endcan
+
     @can('manage users')
         <a href="{{ route('user-management.index') }}"
            class="@if(Request::routeIs('user-management.*')) bg-gray-900 text-white @else text-gray-300 hover:bg-gray-700 hover:text-white @endif group flex items-center px-2 py-2 text-sm font-medium rounded-md">
