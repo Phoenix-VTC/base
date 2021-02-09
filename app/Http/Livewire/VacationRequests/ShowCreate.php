@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\VacationRequests;
 
 use App\Models\VacationRequest;
+use App\Notifications\VacationRequest\NewVacationRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -55,13 +56,15 @@ class ShowCreate extends Component
     {
         $validatedData = $this->validate();
 
-        VacationRequest::create([
+        $vacation_request = VacationRequest::create([
             'user_id' => Auth::id(),
             'reason' => $validatedData['reason'],
             'leaving' => $validatedData['leaving'],
             'start_date' => $validatedData['start_date'],
             'end_date' => $validatedData['end_date'] ?? null,
         ]);
+
+        $vacation_request->notify(new NewVacationRequest($vacation_request));
 
         session()->flash('alert', ['type' => 'success', 'message' => 'Vacation request successfully submitted!']);
 
