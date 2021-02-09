@@ -4,6 +4,7 @@ namespace App\Http\Livewire\VacationRequests;
 
 use App\Models\VacationRequest;
 use App\Notifications\VacationRequest\NewVacationRequest;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -23,7 +24,7 @@ class ShowCreate extends Component
                     return $query->where('user_id', Auth::id());
                 })
             ],
-            'end_date' => ['exclude_if:leaving,1', 'required_unless:leaving,1', 'date', 'after_or_equal:tomorrow', 'after:start_date',
+            'end_date' => ['exclude_if:leaving,1', 'required_unless:leaving,1', 'date', 'after_or_equal:tomorrow', 'after:start_date', 'after_or_equal:' . Carbon::parse($this->start_date)->addWeek(),
                 Rule::unique('vacation_requests')->where(function ($query) {
                     return $query->where('user_id', Auth::id());
                 })
