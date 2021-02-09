@@ -42,7 +42,7 @@ class MinHours implements Rule
             Please make sure that you are using the correct Steam account.
             <br>
             If you think that this is an error, please make sure that your profile is set to public here:
-            <a class="prose" target="_blank" href="https://support.steampowered.com/kb_article.php">https://support.steampowered.com/kb_article.php</a>
+            <a class="prose" target="_blank" href="https://support.steampowered.com/kb_article.php?ref=4113-YUDH-6401">https://support.steampowered.com/kb_article.php?ref=4113-YUDH-6401</a>
         ';
     }
 }
