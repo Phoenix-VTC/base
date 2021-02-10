@@ -38,4 +38,18 @@ class Event extends Model
     {
         return $this->belongsTo(User::class, 'hosted_by');
     }
+
+    // TODO: Find a better way to do this. Perhaps integrate it with the Game model.
+    public function getDistanceMetricAttribute(): string
+    {
+        if ($this->game_id === 1) {
+            $unit = 'kilometres';
+        }
+
+        if ($this->game_id === 2) {
+            $unit = 'miles';
+        }
+
+        return "$this->distance $unit";
+    }
 }
