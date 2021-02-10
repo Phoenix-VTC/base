@@ -20,8 +20,8 @@ class CreateEventsTable extends Migration
                 ->constrained('users')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->string('featured_image_path');
-            $table->string('map_image_path');
+            $table->string('featured_image_url');
+            $table->string('map_image_url');
             $table->text('description')->nullable();
             $table->string('server')->nullable();
             $table->string('departure_location')->nullable();
