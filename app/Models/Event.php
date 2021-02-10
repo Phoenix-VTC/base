@@ -17,6 +17,11 @@ class Event extends Model
      */
     protected $guarded = [];
 
+    public static function getFeaturedEvents()
+    {
+        return self::where('featured', true)->get();
+    }
+
     public function host(): BelongsTo
     {
         return $this->belongsTo(User::class, 'hosted_by');
