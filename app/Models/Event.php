@@ -23,6 +23,7 @@ class Event extends Model
      * @var array
      */
     protected $casts = [
+        'start_date' => 'datetime',
         'published' => 'boolean',
         'featured' => 'boolean',
         'external_event' => 'boolean',
