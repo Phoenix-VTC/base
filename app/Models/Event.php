@@ -19,7 +19,7 @@ class Event extends Model
 
     public static function getFeaturedEvents()
     {
-        return self::where('featured', true)->get();
+        return self::where('published', true)->where('featured', true)->get();
     }
 
     public function host(): BelongsTo
