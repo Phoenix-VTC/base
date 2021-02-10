@@ -24,6 +24,7 @@ class CreateEventsTable extends Migration
             $table->string('map_image_url');
             $table->text('description')->nullable();
             $table->string('server')->nullable();
+            $table->string('required_dlcs')->nullable();
             $table->string('departure_location')->nullable();
             $table->string('arrival_location')->nullable();
             $table->dateTime('start_date');
