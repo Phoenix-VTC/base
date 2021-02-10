@@ -33,6 +33,7 @@ class CreateEventsTable extends Migration
             $table->boolean('published')->default(false);
             $table->boolean('featured')->default(false);
             $table->boolean('external_event')->default(false);
+            $table->boolean('public_event')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
