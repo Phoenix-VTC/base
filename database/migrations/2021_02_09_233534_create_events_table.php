@@ -28,6 +28,7 @@ class CreateEventsTable extends Migration
             $table->string('departure_location')->nullable();
             $table->string('arrival_location')->nullable();
             $table->dateTime('start_date');
+            $table->integer('distance');
             $table->integer('game_id');
             $table->bigInteger('tmp_event_id')->nullable();
             $table->boolean('published')->default(false);

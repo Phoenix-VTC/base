@@ -34,6 +34,7 @@ class EventFactory extends Factory
             'departure_location' => $this->faker->word,
             'arrival_location' => $this->faker->word,
             'start_date' => $this->faker->dateTimeBetween('+1 day', '+2 week'),
+            'distance' => random_int(1000, 2000),
             'game_id' => random_int(1, 2),
             'published' => random_int(0, 1),
             'featured' => random_int(0, 1),
