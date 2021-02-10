@@ -17,6 +17,18 @@ class Event extends Model
      */
     protected $guarded = [];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'published' => 'boolean',
+        'featured' => 'boolean',
+        'external_event' => 'boolean',
+        'public_event' => 'boolean',
+    ];
+
     public static function getFeaturedEvents()
     {
         return self::where('published', true)->where('featured', true)->get();
