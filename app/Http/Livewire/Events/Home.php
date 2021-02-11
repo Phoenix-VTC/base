@@ -9,11 +9,14 @@ use Livewire\Component;
 
 class Home extends Component
 {
+    public Collection $events;
     public Collection $featured_events;
 
     public function mount(): void
     {
-        $this->featured_events = Event::getFeaturedEvents();
+        $this->events = Event::with('host')->get();
+
+        $this->featured_events = $this->events->where('published', true)->where('featured', true);
     }
 
     public function render(): View

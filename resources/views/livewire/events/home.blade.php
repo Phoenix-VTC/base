@@ -34,6 +34,23 @@
         </div>
     </div>
 
+    <!-- Upcoming Events -->
+    <div class="relative bg-gray-900 py-16 sm:py-24 lg:py-32">
+        <div class="relative">
+            <div class="text-center mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl">
+                <p class="text-3xl font-extrabold text-white tracking-tight sm:text-4xl">
+                    Upcoming Events
+                </p>
+            </div>
+            <div
+                class="mt-12 mx-auto max-w-md px-4 grid gap-8 sm:max-w-lg sm:px-6 lg:px-8 lg:grid-cols-3 lg:max-w-7xl">
+                @foreach($events as $event)
+                    <livewire:events.components.event-card :event="$event"/>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
     <livewire:events.components.call-to-action
         tag="Hosting an event?" title="Invite Phoenix"
         button-text="Contact our event team"
