@@ -102,7 +102,14 @@ class Event extends Model
         return $value;
     }
 
+    public function getDepartureLocationAttribute($value): string
+    {
+        if ($value === 'truckersmp') {
+            return $this->truckersmp_event_data['response']['departure']['location'] . ", " . $this->truckersmp_event_data['response']['departure']['city'];
+        }
 
+        return $value;
+    }
 
     public function getTruckersMPEventDataAttribute()
     {
