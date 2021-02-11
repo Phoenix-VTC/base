@@ -75,6 +75,15 @@ class Event extends Model
         return $value;
     }
 
+    public function getMapImageUrlAttribute($value): string
+    {
+        if ($value === 'truckersmp') {
+            return $this->truckersmp_event_data['response']['map'];
+        }
+
+        return $value;
+    }
+
     public function getTruckersMPEventDataAttribute()
     {
         if ($this->tmp_event_id) {
