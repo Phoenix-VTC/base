@@ -93,6 +93,17 @@ class Event extends Model
         return $value;
     }
 
+    public function getRequiredDlcsAttribute($value)
+    {
+        if ($value === 'truckersmp') {
+            return $this->truckersmp_event_data['response']['dlcs'];
+        }
+
+        return $value;
+    }
+
+
+
     public function getTruckersMPEventDataAttribute()
     {
         if ($this->tmp_event_id) {
