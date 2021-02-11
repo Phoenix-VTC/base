@@ -5,7 +5,9 @@
         <div class="relative overflow-hidden">
             @include('components.events.navigation')
 
-            @yield('content')
+            <main>
+                @yield('content')
+            </main>
 
             @include('components.events.footer')
         </div>
