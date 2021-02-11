@@ -1,6 +1,6 @@
 {{-- If your happiness depends on money, you will never be happy with yourself. --}}
 
-<div class="relative bg-gray-900">
+<div class="relative {{ $backgroundColor ?? 'bg-gray-900' }}">
     <div class="relative h-56 bg-indigo-600 sm:h-72 md:absolute md:left-0 md:h-full md:w-1/2">
         <img class="w-full h-full object-cover"
              src="https://phoenixvtc.com/img/9d317252-3439-41ca-aba8-368f6b668d24/ets2-20210113-201532-00.png"

@@ -11,6 +11,7 @@ class CallToAction extends Component
     public string $description;
     public string $buttonText;
     public string $buttonUrl;
+    public string $backgroundColor;
 
     public function render()
     {
