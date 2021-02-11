@@ -121,7 +121,7 @@ class Event extends Model
         return $value;
     }
 
-    public function getStartDateAttribute($value): string
+    public function getStartDateAttribute($value): Carbon
     {
         if (isset($this->truckersmp_event_data['response'])) {
             return Carbon::parse($this->truckersmp_event_data['response']['start_at']);
