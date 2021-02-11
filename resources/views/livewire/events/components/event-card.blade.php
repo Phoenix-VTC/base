@@ -20,9 +20,9 @@
                 <p class="text-xl font-semibold text-gray-900">
                     {{ $event->name }}
                 </p>
-                <p class="text-base text-gray-500">
-                    {{ Str::words($event->description, 20) }}
-                </p>
+                <div class="text-base text-gray-500 prose-sm">
+                    {!! Str::words($event->description, 20) !!}
+                </div>
             </a>
         </div>
         <div class="mt-3 space-y-2">
@@ -55,25 +55,44 @@
                 </div>
             @endif
         </div>
-        <div class="mt-6 flex items-center">
-            <div class="flex-shrink-0">
-                <a href="#">
-                    <span class="sr-only">{{ $event->host->username ?? 'Unknown User' }}</span>
+        @isset($event->truckersmp_event_vtc_data)
+            <div class="mt-6 flex items-center">
+                <div class="flex-shrink-0">
                     <img class="h-10 w-10 rounded-full"
-                         src="{{ $event->host->profile_picture ?? '' }}"
-                         alt="{{ $event->host->username ?? 'Unknown User' }}">
-                </a>
-            </div>
-            <div class="ml-3">
-                <p class="text-sm font-medium capitalize text-gray-900">
-                    {{ $event->host->username ?? 'Unknown User' }}
-                </p>
-                <div class="flex space-x-1 text-sm text-gray-500">
-                    @if(!$event->tmp_event_id)
-                        <span>Phoenix</span>
-                    @endif
+                         src="{{ $event->truckersmp_event_vtc_data['response']['logo'] ?? '' }}"
+                         alt="{{ $event->truckersmp_event_vtc_data['response']['name'] ?? 'Unknown VTC' }}">
+                </div>
+                <div class="ml-3">
+                    <div class="flex space-x-1 text-sm text-gray-500">
+                        <span>Hosted By</span>
+                    </div>
+                    <p class="text-sm font-medium capitalize text-gray-900">
+                        <a href="https://truckersmp.com{{ $event->truckersmp_event_data['response']['url'] ?? '#' }}" target="_blank">
+                            {{ $event->truckersmp_event_vtc_data['response']['name'] ?? 'Unknown VTC' }}
+                        </a>
+                    </p>
                 </div>
             </div>
-        </div>
+        @else
+            <div class="mt-6 flex items-center">
+                <div class="flex-shrink-0">
+                    <a href="#">
+                        <img class="h-10 w-10 rounded-full"
+                             src="{{ $event->host->profile_picture ?? '' }}"
+                             alt="{{ $event->host->username ?? 'Unknown User' }}">
+                    </a>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium capitalize text-gray-900">
+                        {{ $event->host->username ?? 'Unknown User' }}
+                    </p>
+                    <div class="flex space-x-1 text-sm text-gray-500">
+                        @if(!$event->tmp_event_id)
+                            <span>Phoenix</span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 </div>
