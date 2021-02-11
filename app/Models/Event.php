@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -118,6 +119,15 @@ class Event extends Model
         }
 
         return $value;
+    }
+
+    public function getStartDateAttribute($value): string
+    {
+        if (isset($this->truckersmp_event_data['response'])) {
+            return Carbon::parse($this->truckersmp_event_data['response']['start_at']);
+        }
+
+        return Carbon::parse($value);
     }
 
     public function getTruckersMPEventDataAttribute()
