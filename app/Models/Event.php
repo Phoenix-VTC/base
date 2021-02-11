@@ -84,6 +84,15 @@ class Event extends Model
         return $value;
     }
 
+    public function getServerAttribute($value): string
+    {
+        if ($value === 'truckersmp') {
+            return $this->truckersmp_event_data['response']['server']['name'];
+        }
+
+        return $value;
+    }
+
     public function getTruckersMPEventDataAttribute()
     {
         if ($this->tmp_event_id) {
