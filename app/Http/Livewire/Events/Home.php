@@ -11,12 +11,21 @@ class Home extends Component
 {
     public Collection $events;
     public Collection $featured_events;
+    public Collection $upcoming_events;
 
     public function mount(): void
     {
         $this->events = Event::with('host')->get();
 
-        $this->featured_events = $this->events->where('published', true)->where('featured', true);
+        $this->featured_events = $this->events
+            ->where('published', true)
+            ->where('featured', true)
+            ->sortBy('start_date');
+
+        $this->upcoming_events = $this->events
+            ->where('published', true)
+            ->sortBy('start_date')
+            ->take(10);
     }
 
     public function render(): View
