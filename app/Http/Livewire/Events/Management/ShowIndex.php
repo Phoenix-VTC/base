@@ -13,7 +13,7 @@ class ShowIndex extends Component
 
     public function mount(): void
     {
-        $this->events = Event::with('host')->get();
+        $this->events = Event::with('host')->orderBy('start_date')->get();
     }
 
     public function render(): View
