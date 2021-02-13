@@ -67,7 +67,8 @@
                         <span>Hosted By</span>
                     </div>
                     <p class="text-sm font-medium capitalize text-gray-900">
-                        <a href="https://truckersmp.com{{ $event->truckersmp_event_data['response']['url'] ?? '#' }}" target="_blank">
+                        <a href="https://truckersmp.com{{ $event->truckersmp_event_data['response']['url'] ?? '#' }}"
+                           target="_blank">
                             {{ $event->truckersmp_event_vtc_data['response']['name'] ?? 'Unknown VTC' }}
                         </a>
                     </p>
