@@ -28,7 +28,9 @@
             <div
                 class="mt-12 mx-auto max-w-md px-4 grid gap-8 sm:max-w-lg sm:px-6 lg:px-8 lg:grid-cols-3 lg:max-w-7xl">
                 @foreach($featured_events as $event)
-                    <livewire:events.components.event-card :event="$event"/>
+                    @if($event->public_event || $event->external_event || (Auth::check() && !$event->public_event))
+                        <livewire:events.components.event-card :event="$event"/>
+                    @endif
                 @endforeach
             </div>
         </div>
@@ -45,7 +47,9 @@
             <div
                 class="mt-12 mx-auto max-w-md px-4 grid gap-8 sm:max-w-lg sm:px-6 lg:px-8 lg:grid-cols-3 lg:max-w-7xl">
                 @foreach($upcoming_events as $event)
-                    <livewire:events.components.event-card :event="$event"/>
+                    @if($event->public_event || $event->external_event || (Auth::check() && !$event->public_event))
+                        <livewire:events.components.event-card :event="$event"/>
+                    @endif
                 @endforeach
             </div>
         </div>
