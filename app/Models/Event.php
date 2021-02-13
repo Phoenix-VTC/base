@@ -58,36 +58,23 @@ class Event extends Model
         return "$this->distance $unit";
     }
 
-    public function getDescriptionAttribute($value): string
+    public function getNameAttribute($value): string
     {
         if ($value === 'truckersmp') {
-            return Markdown::convertToHtml($this->truckersmp_event_data['response']['description']);
+            return $this->truckersmp_event_data['response']['name'];
         }
 
         return $value;
     }
 
-    public function getFeaturedImageUrlAttribute($value): string
+    public function getTMPDescriptionAttribute($value): string
     {
-        if ($value === 'truckersmp') {
-            return $this->truckersmp_event_data['response']['banner'];
-        }
-
-        return $value;
-    }
-
-    public function getMapImageUrlAttribute($value): string
-    {
-        if ($value === 'truckersmp') {
-            return $this->truckersmp_event_data['response']['map'];
-        }
-
-        return $value;
+        return Markdown::convertToHtml($this->truckersmp_event_data['response']['description']);
     }
 
     public function getServerAttribute($value): string
     {
-        if ($value === 'truckersmp') {
+        if ($this->tmp_event_id) {
             return $this->truckersmp_event_data['response']['server']['name'];
         }
 
@@ -96,7 +83,7 @@ class Event extends Model
 
     public function getRequiredDlcsAttribute($value)
     {
-        if ($value === 'truckersmp') {
+        if ($this->tmp_event_id) {
             return $this->truckersmp_event_data['response']['dlcs'];
         }
 
@@ -105,7 +92,7 @@ class Event extends Model
 
     public function getDepartureLocationAttribute($value): string
     {
-        if ($value === 'truckersmp') {
+        if ($this->tmp_event_id) {
             return $this->truckersmp_event_data['response']['departure']['location'] . ", " . $this->truckersmp_event_data['response']['departure']['city'];
         }
 
@@ -114,7 +101,7 @@ class Event extends Model
 
     public function getArrivalLocationAttribute($value): string
     {
-        if ($value === 'truckersmp') {
+        if ($this->tmp_event_id) {
             return $this->truckersmp_event_data['response']['arrive']['location'] . ", " . $this->truckersmp_event_data['response']['arrive']['city'];
         }
 
@@ -123,7 +110,7 @@ class Event extends Model
 
     public function getStartDateAttribute($value): Carbon
     {
-        if (isset($this->truckersmp_event_data['response'])) {
+        if ($this->tmp_event_id) {
             return Carbon::parse($this->truckersmp_event_data['response']['start_at']);
         }
 
