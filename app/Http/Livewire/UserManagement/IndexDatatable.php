@@ -13,9 +13,11 @@ class IndexDatatable extends LivewireDatatable
 {
     public $exportable = true;
 
+    public $model = User::class;
+
     public function builder(): Builder
     {
-        return User::query()
+        return User::withTrashed()
             ->with('roles');
     }
 
@@ -26,7 +28,7 @@ class IndexDatatable extends LivewireDatatable
 
             Column::name('username')->filterable()->searchable()->view('livewire.user-management.datatable-components.username-field'),
 
-            Column::name('email')->truncate()->filterable()->searchable(),
+            Column::name('email')->filterable()->searchable(),
 
             Column::name('roles.name')->label('Roles')->filterable(),
 
@@ -37,6 +39,8 @@ class IndexDatatable extends LivewireDatatable
             DateColumn::name('created_at')->filterable(),
 
             DateColumn::name('deleted_at'),
+
+            Column::delete(),
         ];
     }
 }

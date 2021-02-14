@@ -29,7 +29,7 @@ class NoRecentBans implements Rule
         }
 
         $bans = collect($response['response']);
-        $ban = $bans->firstWhere('expiration', '>', Carbon::now()->subMonths(3));
+        $ban = $bans->firstWhere('timeAdded', '>', Carbon::now()->subMonths(3));
         return is_null($ban);
     }
 
