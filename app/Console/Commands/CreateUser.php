@@ -27,6 +27,7 @@ class CreateUser extends Command
     /**
      * Execute the console command.
      *
+     * @param  UserRepositoryInterface  $userRepository
      * @return void
      */
     public function handle(UserRepositoryInterface $userRepository): void

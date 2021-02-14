@@ -42,6 +42,7 @@ class ProcessAcceptation implements ShouldQueue
     /**
      * Execute the job.
      *
+     * @param  UserRepositoryInterface  $userRepository
      * @return void
      */
     public function handle(UserRepositoryInterface $userRepository): void

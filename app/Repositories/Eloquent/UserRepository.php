@@ -21,6 +21,6 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     /** {@inheritdoc} */
     public function all(): Collection
     {
-        return $this->model->all();
+        return $this->model::all();
     }
 }
