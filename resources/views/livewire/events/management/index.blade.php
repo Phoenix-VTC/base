@@ -8,7 +8,7 @@
             Events Management
         </h3>
         <div class="mt-3 sm:mt-0 sm:ml-4">
-            <a href="{{ route('events-management.create') }}"
+            <a href="{{ route('event-management.create') }}"
                class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-500 focus:outline-none focus:border-orange-700 focus:shadow-outline-orange active:bg-orange-700">
                 Create new event
             </a>
@@ -40,6 +40,9 @@
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Start Date
                                     </th>
+                                    <th scope="col" class="relative px-6 py-3">
+                                        <span class="sr-only">Edit</span>
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -65,6 +68,9 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $event->start_date->format('d M H:m') }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                         </td>
                                     </tr>
                                 @endforeach

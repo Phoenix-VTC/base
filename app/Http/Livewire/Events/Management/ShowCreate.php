@@ -91,7 +91,7 @@ class ShowCreate extends Component
 
         session()->flash('alert', ['type' => 'success', 'message' => 'Event successfully created!']);
 
-        return redirect(route('events-management.index'));
+        return redirect(route('event-management.index'));
     }
 
     public function mount(): void

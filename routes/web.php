@@ -53,7 +53,7 @@ Route::prefix('vacation-requests/manage')->name('vacation-requests.manage.')->mi
     Route::get('index', VacationRequestsManagementShowIndex::class)->name('index');
 });
 
-Route::prefix('events-management')->name('events-management.')->middleware(['auth', 'can:manage events'])->group(function () {
+Route::prefix('event-management')->name('event-management.')->middleware(['auth', 'can:manage events'])->group(function () {
     Route::get('/', EventsManagementShowIndex::class)->name('index');
     Route::get('create', EventsManagementShowCreate::class)->name('create');
 });
