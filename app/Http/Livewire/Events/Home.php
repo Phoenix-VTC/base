@@ -20,12 +20,13 @@ class Home extends Component
         $this->featured_events = $this->events
             ->where('published', true)
             ->where('featured', true)
-            ->sortBy('start_date');
+            ->sortBy('start_date')
+            ->take(6);
 
         $this->upcoming_events = $this->events
             ->where('published', true)
             ->sortBy('start_date')
-            ->take(10);
+            ->take(6);
     }
 
     public function render(): View
