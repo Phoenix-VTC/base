@@ -3,21 +3,23 @@
 namespace App\Http\Livewire\Events\Management;
 
 use App\Models\Event;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ShowIndex extends Component
 {
-    public Collection $events;
+    use WithPagination;
 
-    public function mount(): void
+    public function paginationView(): string
     {
-        $this->events = Event::with('host')->orderBy('start_date')->get();
+        return 'vendor.livewire.pagination-links';
     }
 
     public function render(): View
     {
-        return view('livewire.events.management.index')->extends('layouts.app');
+        return view('livewire.events.management.index', [
+            'events' => Event::with('host')->orderBy('start_date')->paginate(10),
+        ])->extends('layouts.app');
     }
 }

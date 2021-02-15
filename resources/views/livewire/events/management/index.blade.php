@@ -76,6 +76,7 @@
                                 All events will show up here.
                             </x-empty-state>
                         @endempty
+                        {{ $events->links() }}
                     </div>
                 </div>
             </div>
