@@ -58,63 +58,9 @@ class Event extends Model
         return "$this->distance $unit";
     }
 
-    public function getNameAttribute($value): string
-    {
-        if ($value === 'truckersmp') {
-            return $this->truckersmp_event_data['response']['name'];
-        }
-
-        return $value;
-    }
-
     public function getTMPDescriptionAttribute($value): string
     {
         return Markdown::convertToHtml($this->truckersmp_event_data['response']['description']);
-    }
-
-    public function getServerAttribute($value): string
-    {
-        if ($this->tmp_event_id) {
-            return $this->truckersmp_event_data['response']['server']['name'];
-        }
-
-        return $value;
-    }
-
-    public function getRequiredDlcsAttribute($value)
-    {
-        if ($this->tmp_event_id) {
-            return $this->truckersmp_event_data['response']['dlcs'];
-        }
-
-        return $value;
-    }
-
-    public function getDepartureLocationAttribute($value): string
-    {
-        if ($this->tmp_event_id) {
-            return $this->truckersmp_event_data['response']['departure']['location'] . ", " . $this->truckersmp_event_data['response']['departure']['city'];
-        }
-
-        return $value;
-    }
-
-    public function getArrivalLocationAttribute($value): string
-    {
-        if ($this->tmp_event_id) {
-            return $this->truckersmp_event_data['response']['arrive']['location'] . ", " . $this->truckersmp_event_data['response']['arrive']['city'];
-        }
-
-        return $value;
-    }
-
-    public function getStartDateAttribute($value): Carbon
-    {
-        if ($this->tmp_event_id) {
-            return Carbon::parse($this->truckersmp_event_data['response']['start_at']);
-        }
-
-        return Carbon::parse($value);
     }
 
     public function getTruckersMPEventDataAttribute()
