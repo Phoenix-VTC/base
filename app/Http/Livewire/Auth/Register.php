@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Auth;
 
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
@@ -23,7 +24,7 @@ class Register extends Component
     /** @var string */
     public $passwordConfirmation = '';
 
-    public function register()
+    public function register(UserRepositoryInterface $userRepository)
     {
         $this->validate([
             'username' => ['required', 'unique:users'],
@@ -31,7 +32,7 @@ class Register extends Component
             'password' => ['required', 'min:8', 'same:passwordConfirmation'],
         ]);
 
-        $user = User::create([
+        $user = $userRepository->create([
             'email' => $this->email,
             'username' => $this->username,
             'password' => Hash::make($this->password),

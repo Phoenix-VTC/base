@@ -5,6 +5,7 @@ namespace App\Jobs\Recruitment;
 use App\Models\Application;
 use App\Models\User;
 use App\Notifications\DriverApplication\WelcomeNotification;
+use App\Repositories\UserRepositoryInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -41,15 +42,16 @@ class ProcessAcceptation implements ShouldQueue
     /**
      * Execute the job.
      *
+     * @param  UserRepositoryInterface  $userRepository
      * @return void
      */
-    public function handle(): void
+    public function handle(UserRepositoryInterface $userRepository): void
     {
         if (User::where('username', '=', $this->application->username)->exists()) {
             $this->application->username .= "-" . Uuid::uuid4()->getHex();
         }
 
-        $user = User::create([
+        $user = $userRepository->create([
             'email' => $this->application->email,
             'username' => $this->application->username,
             'date_of_birth' => $this->application->date_of_birth,
