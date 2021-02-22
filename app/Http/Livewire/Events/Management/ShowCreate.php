@@ -31,7 +31,7 @@ class ShowCreate extends Component
     public string $start_date = '';
     public string $distance = '';
     public string $game_id = '';
-    public string $published = '';
+    public string $published = '1';
     public string $featured = '';
     public string $external_event = '';
     public string $public_event = '';
@@ -53,7 +53,7 @@ class ShowCreate extends Component
             'start_date' => ['required_without:tmp_event_id', 'date'],
             'distance' => ['sometimes', 'integer', 'min:1'],
             'game_id' => ['required_without:tmp_event_id'],
-            'published' => ['sometimes', 'boolean'],
+            'published' => ['required', 'boolean'],
             'featured' => ['sometimes', 'boolean'],
             'external_event' => ['sometimes', 'boolean'],
             'public_event' => ['sometimes', 'boolean'],

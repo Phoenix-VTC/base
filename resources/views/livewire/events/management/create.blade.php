@@ -317,6 +317,33 @@
                             </div>
                         </div>
                     </fieldset>
+
+                    <fieldset class="col-span-6 sm:col-span-4">
+                        <div>
+                            <legend class="block text-sm font-medium text-gray-700">
+                                Publish Event
+                            </legend>
+                        </div>
+                        <div class="mt-4 space-y-4">
+                            <div class="flex items-center">
+                                <input wire:model.lazy="published" id="published_yes" name="published" type="radio" value="1"
+                                       class="focus:ring-orange-500 h-4 w-4 text-orange-600 border border-gray-300">
+                                <label for="published_yes" class="ml-3 block text-sm font-medium text-gray-700">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input wire:model.lazy="published" id="published_no" name="published" type="radio" value="0"
+                                       class="focus:ring-orange-500 h-4 w-4 text-orange-600 border border-gray-300">
+                                <label for="published_no" class="ml-3 block text-sm font-medium text-gray-700">
+                                    No
+                                </label>
+                            </div>
+                            @error('published')
+                            <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </fieldset>
                 </div>
             </div>
         </div>
