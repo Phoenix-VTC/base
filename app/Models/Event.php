@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class Event extends Model
 {
@@ -93,5 +94,10 @@ class Event extends Model
         }
 
         return null;
+    }
+
+    public function getSlugAttribute(): string
+    {
+        return Str::slug($this->name);
     }
 }
