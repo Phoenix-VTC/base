@@ -21,15 +21,15 @@ class CreateEventsTable extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->string('featured_image_url');
-            $table->string('map_image_url');
+            $table->string('map_image_url')->nullable();
             $table->text('description');
-            $table->string('server');
-            $table->string('required_dlcs');
-            $table->string('departure_location');
-            $table->string('arrival_location');
+            $table->string('server')->nullable();
+            $table->string('required_dlcs')->nullable();
+            $table->string('departure_location')->nullable();
+            $table->string('arrival_location')->nullable();
             $table->dateTime('start_date');
             $table->integer('distance')->nullable();
-            $table->integer('game_id');
+            $table->integer('game_id')->nullable();
             $table->bigInteger('tmp_event_id')->nullable();
             $table->boolean('published')->default(false);
             $table->boolean('featured')->default(false);
