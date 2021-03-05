@@ -61,7 +61,7 @@ class Event extends Model
 
     public function getTMPDescriptionAttribute($value): string
     {
-        return Markdown::convertToHtml($this->truckersmp_event_data['response']['description']);
+        return Markdown::convertToHtml($this->truckersmp_event_data['response']['description'] ?? '');
     }
 
     public function getTruckersMPEventDataAttribute()
@@ -99,5 +99,14 @@ class Event extends Model
     public function getSlugAttribute(): string
     {
         return Str::slug($this->name);
+    }
+
+    public function game(bool $abbreviation = true): string
+    {
+        if (!$abbreviation) {
+            return Game::getQualifiedName($this->game_id);
+        }
+
+        return Game::getAbbreviationById($this->game_id);
     }
 }

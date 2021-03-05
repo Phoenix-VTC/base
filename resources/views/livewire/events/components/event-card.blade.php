@@ -1,8 +1,10 @@
 <div class="flex flex-col rounded-lg shadow-lg overflow-hidden">
     <div class="flex-shrink-0">
-        <img class="h-48 w-full object-cover object-left"
-             src="{{ $event->featured_image_url }}"
-             alt="{{ $event->name }}">
+        <a href="{{ route('events.show', ['id' => $event->id, 'slug' => $event->slug]) }}">
+            <img class="h-48 w-full object-cover object-left"
+                 src="{{ $event->featured_image_url }}"
+                 alt="{{ $event->name }}">
+        </a>
     </div>
     <div class="flex-1 bg-white p-6 flex flex-col justify-between">
         <div class="flex-1 space-y-2">
@@ -16,7 +18,7 @@
                     <span>Featured</span>
                 </div>
             @endif
-            <a href="#" class="block mt-2">
+            <a href="{{ route('events.show', ['id' => $event->id, 'slug' => $event->slug]) }}" class="block mt-2">
                 <p class="text-xl font-semibold text-gray-900">
                     {{ $event->name }}
                 </p>
@@ -77,7 +79,7 @@
         @else
             <div class="mt-6 flex items-center">
                 <div class="flex-shrink-0">
-                    <a href="#">
+                    <a href="{{ route('events.show', ['id' => $event->id, 'slug' => $event->slug]) }}">
                         <img class="h-10 w-10 rounded-full"
                              src="{{ $event->host->profile_picture ?? '' }}"
                              alt="{{ $event->host->username ?? 'Unknown User' }}">
