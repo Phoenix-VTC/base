@@ -78,8 +78,8 @@
     <livewire:events.components.call-to-action
         tag="Hosting an event?" title="Invite Phoenix"
         button-text="Contact our event team"
-        button-url="#"
+        button-url="mailto:events@phoenixvtc.com"
         background-color="bg-gray-800"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et, egestas tempus tellus etiam sed. Quam a scelerisque amet ullamcorper eu enim et fermentum, augue. Aliquet amet volutpat quisque ut interdum tincidunt duis.">
+        description="We are very active within the TruckersMP Community, attending lots of Public Events as well as hosting our own.<br><br>If you would like Phoenix to attend your event, feel free to reach out to us!">
     </livewire:events.components.call-to-action>
 </div>

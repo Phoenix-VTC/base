@@ -18,7 +18,7 @@
                 {{ $title }}
             </p>
             <p class="mt-3 text-lg text-gray-300">
-                {{ $description }}
+                {!! $description !!}
             </p>
             @if($buttonText)
                 <div class="mt-8">
