@@ -14,7 +14,7 @@
             @isset($event->truckersmp_event_vtc_data)
                     {{ $event->truckersmp_event_vtc_data['response']['name'] ?? 'Unknown VTC' }}
                 @else
-                    {{ $event->host->username ?? 'Unknown User' }}
+                    {{ ucfirst($event->host->username) ?? 'Unknown User' }}
                 @endif
             </span>
         </span>
