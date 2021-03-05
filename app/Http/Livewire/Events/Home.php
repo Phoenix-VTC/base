@@ -18,6 +18,7 @@ class Home extends Component
     {
         $this->events = Event::with('host')
             ->where('start_date', '>=', Carbon::now()->toDateTimeString())
+            ->where('published', true)
             ->get();
 
         $this->featured_events = $this->events
