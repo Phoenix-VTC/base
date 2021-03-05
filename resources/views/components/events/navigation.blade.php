@@ -32,6 +32,11 @@
                         </div>
                     </div>
                     <div class="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
+                        <a href="{{ route('events.home') }}"
+                           class="font-medium text-white hover:text-gray-200">
+                            Home
+                        </a>
+
                         @guest
                             <a href="https://phoenixvtc.com"
                                class="font-medium text-white hover:text-gray-200">
@@ -85,6 +90,11 @@
                     </div>
                     <div role="menu" aria-orientation="vertical" aria-labelledby="main-menu">
                         <div class="px-2 pt-2 pb-3 space-y-1" role="none">
+                            <a href="{{ route('events.home') }}"
+                               class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-900 hover:bg-gray-50">
+                                Home
+                            </a>
+
                             @guest
                                 <a href="https://phoenixvtc.com"
                                    class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-900 hover:bg-gray-50">
