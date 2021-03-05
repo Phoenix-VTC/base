@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Events;
 
 use App\Models\Event;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -15,7 +16,9 @@ class Home extends Component
 
     public function mount(): void
     {
-        $this->events = Event::with('host')->get();
+        $this->events = Event::with('host')
+            ->where('start_date', '>=', Carbon::now()->toDateTimeString())
+            ->get();
 
         $this->featured_events = $this->events
             ->where('published', true)
