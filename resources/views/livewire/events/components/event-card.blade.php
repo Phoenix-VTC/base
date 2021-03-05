@@ -23,7 +23,7 @@
                     {{ $event->name }}
                 </p>
                 <div class="text-base text-gray-500 prose-sm">
-                    {!! Str::words($event->description, 20) !!}
+                    {!! Str::words(strip_tags($event->description), 15) !!}
                 </div>
             </a>
         </div>
