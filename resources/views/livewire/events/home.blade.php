@@ -35,7 +35,7 @@
             </div>
             <div class="text-center mt-12">
                 <a class="inline-flex items-center px-6 py-3 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
-                   href="#">
+                   href="{{ route('events.overview') }}">
                     View all events
                     {{-- chevron-double-right --}}
                     <svg class="ml-3 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -64,7 +64,7 @@
             </div>
             <div class="text-center mt-12">
                 <a class="inline-flex items-center px-6 py-3 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
-                href="#">
+                href="{{ route('events.overview') }}">
                     View all events
                     {{-- chevron-double-right --}}
                     <svg class="ml-3 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -108,14 +108,16 @@
                 </div>
             </div>
 
-            {{-- TruckersMP Event Description --}}
-            <div class="grid grid-cols-1 gap-4 lg:col-span-2">
-                <x-info-card title="TruckersMP Event Description">
-                    <div class="prose lg:prose-lg">
-                        {!! $event->tmp_description !!}
-                    </div>
-                </x-info-card>
-            </div>
+            @if($event->tmp_description)
+                {{-- TruckersMP Event Description --}}
+                <div class="grid grid-cols-1 gap-4 lg:col-span-2">
+                    <x-info-card title="TruckersMP Event Description">
+                        <div class="prose lg:prose-lg">
+                            {!! $event->tmp_description !!}
+                        </div>
+                    </x-info-card>
+                </div>
+            @endif
         </div>
     </div>
 </div>
