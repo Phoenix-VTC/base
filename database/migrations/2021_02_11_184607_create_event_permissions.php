@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class CreateManageVacationRequestsPermission extends Migration
+class CreateEventPermissions extends Migration
 {
     /**
      * Run the migrations.
@@ -15,10 +15,13 @@ class CreateManageVacationRequestsPermission extends Migration
      */
     public function up()
     {
-        $permission = Permission::create(['name' => 'manage vacation requests']);
+        $manage_events = Permission::create(['name' => 'manage events']);
 
-        $hr = Role::findByName('human resources');
-        $hr->givePermissionTo($permission);
+        $events = Role::findByName('events');
+        $events->givePermissionTo($manage_events);
+
+        $community_interactions = Role::findByName('community interactions');
+        $community_interactions->givePermissionTo('manage events');
     }
 
     /**
