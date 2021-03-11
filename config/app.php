@@ -56,8 +56,6 @@ return [
 
     'apply_url' => env('APPLY_URL', null),
 
-    'events_url' => env('EVENTS_URL', null),
-
     'asset_url' => env('ASSET_URL', null),
 
     /*
@@ -180,7 +178,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\RepositoryServiceProvider::class,
 
     ],
 
