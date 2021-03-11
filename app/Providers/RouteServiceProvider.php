@@ -53,6 +53,12 @@ class RouteServiceProvider extends ServiceProvider
                 ->name('driver-application.')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/driver-application.php'));
+
+            Route::middleware('web')
+                ->domain(config('app.events_url'))
+                ->name('events.')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/events.php'));
         });
     }
 
