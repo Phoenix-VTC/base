@@ -131,7 +131,8 @@
                         <label for="description" class="mb-1 block text-sm font-medium text-gray-700">
                             Description
                         </label>
-                        <x-input.rich-text wire:model.lazy="description" id="description" :initialValue="$this->event->description"/>
+                        <x-input.rich-text wire:model.lazy="description" id="description"
+                                           :initialValue="$this->event->description"/>
                         @error('description')
                         <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
                         @enderror
@@ -344,14 +345,16 @@
                                 </div>
                                 <div class="mt-4 space-y-4">
                                     <div class="flex items-center">
-                                        <input wire:model.lazy="published" id="published_yes" name="published" type="radio" value="1"
+                                        <input wire:model.lazy="published" id="published_yes" name="published"
+                                               type="radio" value="1"
                                                class="focus:ring-orange-500 h-4 w-4 text-orange-600 border border-gray-300">
                                         <label for="published_yes" class="ml-3 block text-sm font-medium text-gray-700">
                                             Yes
                                         </label>
                                     </div>
                                     <div class="flex items-center">
-                                        <input wire:model.lazy="published" id="published_no" name="published" type="radio" value="0"
+                                        <input wire:model.lazy="published" id="published_no" name="published"
+                                               type="radio" value="0"
                                                class="focus:ring-orange-500 h-4 w-4 text-orange-600 border border-gray-300">
                                         <label for="published_no" class="ml-3 block text-sm font-medium text-gray-700">
                                             No
@@ -362,6 +365,17 @@
                                     @enderror
                                 </div>
                             </fieldset>
+
+                            <div class="col-span-6 sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700 mt-12">
+                                    Delete Event
+                                </label>
+                                <button wire:click="delete" type="button"
+                                        class="inline-flex mt-3 bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-500 focus:outline-none focus:border-orange-700 focus:shadow-outline-orange active:bg-orange-700">
+                                    <x-heroicon-o-trash class="mr-2 w-5 h-5"/>
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     </fieldset>
                 </div>

@@ -177,4 +177,9 @@ class ShowEdit extends Component
 
         $this->form_data_changed = true;
     }
+
+    public function delete(): void
+    {
+        $this->event->delete();
+    }
 }
