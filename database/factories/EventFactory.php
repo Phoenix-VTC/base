@@ -40,6 +40,7 @@ class EventFactory extends Factory
             'featured' => random_int(0, 1),
             'external_event' => random_int(0, 1),
             'public_event' => random_int(0, 1),
+            'points' => random_int(100, 500),
         ];
     }
 }
