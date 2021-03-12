@@ -28,6 +28,6 @@ class CreateManageVacationRequestsPermission extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('manage_vacation_requests_permission');
     }
 }

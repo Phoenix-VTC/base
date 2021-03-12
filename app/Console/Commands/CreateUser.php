@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
-use App\Repositories\UserRepositoryInterface;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Validator;
@@ -27,10 +26,9 @@ class CreateUser extends Command
     /**
      * Execute the console command.
      *
-     * @param  UserRepositoryInterface  $userRepository
      * @return void
      */
-    public function handle(UserRepositoryInterface $userRepository): void
+    public function handle(): void
     {
         $data['username'] = $this->ask('Please enter the username');
         $data['email'] = $this->ask('Please enter the email address');
@@ -53,7 +51,7 @@ class CreateUser extends Command
             exit;
         }
 
-        $user = $userRepository->create([
+        $user = User::create([
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),

@@ -1,6 +1,4 @@
-@section('title', 'Your Vacation Requests')
-
-@section('custom-title')
+<div>
     <div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
         <h3 class="text-2xl font-semibold text-gray-900">
             Your Vacation Requests
@@ -12,9 +10,7 @@
             </a>
         </div>
     </div>
-@endsection
 
-<div>
     <x-alert/>
 
     <div class="mt-5">

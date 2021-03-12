@@ -1,6 +1,4 @@
-@section('title', 'New Vacation Request')
-
-@section('custom-title')
+<div>
     <div class="pb-5 border-b border-gray-200">
         <h3 class="text-2xl font-semibold text-gray-900">
             New Vacation Request
@@ -11,9 +9,7 @@
             You can submit a vacation request here.
         </p>
     </div>
-@endsection
 
-<div>
     <form class="space-y-8 divide-y divide-gray-200" wire:submit.prevent="submit">
         <div class="space-y-8 divide-y divide-gray-200">
             <div>
@@ -101,10 +97,10 @@
 
         <div class="pt-5">
             <div class="flex justify-end">
-                <a href="{{ route('vacation-requests.index') }}"
-                   class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <button type="button"
+                        class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     Cancel
-                </a>
+                </button>
                 <button type="submit"
                         class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-600 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 sm:w-auto sm:text-sm">
                     Submit
