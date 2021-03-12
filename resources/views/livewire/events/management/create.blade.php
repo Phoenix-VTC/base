@@ -321,7 +321,7 @@
                                 <div class="ml-3 text-sm">
                                     <label for="public_event" class="font-medium text-gray-700">Public event</label>
                                     <p class="text-gray-500">
-                                        Will be displayed on the public events page.
+                                        For events that non-phoenix members can attend.
                                     </p>
                                     @error('public_event')
                                     <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
