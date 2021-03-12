@@ -28,6 +28,7 @@ class ShowEdit extends Component
     public string $arrival_location = '';
     public string $start_date = '';
     public string $distance = '';
+    public string $points = '';
     public string $game_id = '';
     public string $published = '1';
     public string $featured = '';
@@ -50,6 +51,7 @@ class ShowEdit extends Component
             'arrival_location' => ['required_without:tmp_event_id', 'string'],
             'start_date' => ['required_without:tmp_event_id', 'date'],
             'distance' => ['sometimes', 'integer', 'min:1'],
+            'points' => ['required', 'integer', 'min:100', 'max:500'],
             'game_id' => ['required_without:tmp_event_id'],
             'published' => ['required', 'boolean'],
             'featured' => ['sometimes', 'boolean'],
@@ -78,6 +80,7 @@ class ShowEdit extends Component
         $event->arrival_location = $validatedData['arrival_location'];
         $event->start_date = $validatedData['start_date'];
         $event->distance = (int)$validatedData['distance'];
+        $event->points = (int)$validatedData['points'];
         $event->game_id = (int)$validatedData['game_id'];
         $event->published = (bool)$validatedData['published'];
         $event->tmp_event_id = $validatedData['tmp_event_id'] ?: null;
@@ -105,6 +108,7 @@ class ShowEdit extends Component
         $this->arrival_location = $this->event->arrival_location;
         $this->start_date = Carbon::parse($this->event->start_date)->format('Y-m-d\TH:i');
         $this->distance = $this->event->distance;
+        $this->points = $this->event->points;
         $this->game_id = $this->event->game_id;
         $this->published = (int)$this->event->published;
         $this->featured = $this->event->featured;
