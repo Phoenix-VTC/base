@@ -178,8 +178,11 @@ class ShowEdit extends Component
         $this->form_data_changed = true;
     }
 
-    public function delete(): void
+    public function delete()
     {
         $this->event->delete();
+
+        session()->flash('alert', ['type' => 'success', 'message' => 'Event deleted successfully!']);
+        return redirect(route('event-management.index'));
     }
 }
