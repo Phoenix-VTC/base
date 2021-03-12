@@ -70,7 +70,7 @@
 
                     <div class="col-span-6 sm:col-span-3">
                         <label for="featured_image_url" class="block text-sm font-medium text-gray-700">
-                            Featured Image URL {{ $this->form_data_changed }}
+                            Featured Image URL
                         </label>
                         <input wire:model.lazy="featured_image_url" type="text" name="featured_image_url"
                                id="featured_image_url"
