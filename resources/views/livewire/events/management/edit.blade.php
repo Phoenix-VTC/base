@@ -10,7 +10,7 @@
             crossorigin="anonymous"></script>
 @endpush
 
-@section('title', 'New Event')
+@section('title', 'Edit Event')
 
 @section('custom-title')
     <div class="pb-5 border-b border-gray-200">
