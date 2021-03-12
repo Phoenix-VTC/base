@@ -236,7 +236,7 @@
                         </label>
                         <input wire:model.lazy="points" type="number" min="1" name="points"
                                id="points"
-                               placeholder="1200"
+                               placeholder="100"
                                class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 placeholder-gray-400 rounded-md @error('points') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
                         @error('points')
                         <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
