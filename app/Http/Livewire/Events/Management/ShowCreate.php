@@ -41,7 +41,7 @@ class ShowCreate extends Component
     public function rules(): array
     {
         return [
-            'tmp_event_url' => ['required_without:name', 'url'],
+            'tmp_event_url' => ['required_without:name'],
             'tmp_event_id' => ['required_without:name', 'integer'],
             'name' => ['required_without:tmp_event_id', 'string'],
             'featured_image_url' => ['required_without:tmp_event_id', 'url'],
