@@ -1,5 +1,9 @@
 {{-- Nothing in the world is as soft and yielding as water. --}}
 
+@php
+    $tmp_attendees = array_merge($event->truckersmp_event_data['response']['attendances']['confirmed_users'], $event->truckersmp_event_data['response']['attendances']['unsure_users']);
+@endphp
+
 @section('title', $event->name)
 
 @section('hero-title')
@@ -163,7 +167,7 @@
                 <x-info-card title="Attendees">
                     <div class="flow-root">
                         <ul class="-my-5 divide-y divide-gray-200">
-                            @foreach($event->attendees as $attendee)
+                            @foreach($event->attendees->take(100) as $attendee)
                                 <li class="py-4">
                                     <div class="flex items-center space-x-4">
                                         <div class="flex-shrink-0">
@@ -196,6 +200,15 @@
                                     </div>
                                 </li>
                             @endforeach
+                            @if($event->attendees->count() > 100)
+                                <li class="py-4">
+                                    <div class="flex items-center space-x-4">
+                                        <p class="text-sm font-medium text-gray-900 truncate">
+                                            And {{ $event->attendees->count() - 100 }} more attendees
+                                        </p>
+                                    </div>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </x-info-card>
@@ -206,10 +219,10 @@
         @isset($event->truckersmp_event_data['response']['attendances'])
             <div class="rounded-lg overflow-hidden shadow">
                 <x-info-card
-                    title="TruckersMP Attendees ({{ $event->truckersmp_event_data['response']['attendances']['confirmed'] + $event->truckersmp_event_data['response']['attendances']['unsure'] }})">
+                    title="TruckersMP Attendees ({{ count($tmp_attendees) }})">
                     <div class="flow-root">
                         <ul class="-my-5 divide-y divide-gray-200">
-                            @foreach($event->truckersmp_event_data['response']['attendances']['confirmed_users'] as $attendee)
+                            @foreach(array_slice($tmp_attendees, 0, 10) as $attendee)
                                 <li class="py-4">
                                     <div class="flex items-center space-x-4">
                                         <div class="flex-shrink-0">
@@ -234,31 +247,15 @@
                                     </div>
                                 </li>
                             @endforeach
-                            @foreach($event->truckersmp_event_data['response']['attendances']['unsure_users'] as $attendee)
+                            @if(count($tmp_attendees) > 10)
                                 <li class="py-4">
                                     <div class="flex items-center space-x-4">
-                                        <div class="flex-shrink-0">
-                                            <img class="h-8 w-8 rounded-full"
-                                                 src="https://eu.ui-avatars.com/api/?name={{ $attendee['username'] }}"
-                                                 alt="{{ $attendee['username'] }}">
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <p class="text-sm font-medium text-gray-900 truncate">
-                                                {{ $attendee['username'] }}
-                                            </p>
-                                            <p class="text-sm text-gray-500 truncate">
-                                                {{ Carbon\Carbon::parse($attendee['updated_at'])->diffForHumans() }}
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <div
-                                                class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-gray-200">
-                                                Unsure
-                                            </div>
-                                        </div>
+                                        <p class="text-sm font-medium text-gray-900 truncate">
+                                            And {{ count($tmp_attendees) - 10 }} more attendees
+                                        </p>
                                     </div>
                                 </li>
-                            @endforeach
+                            @endif
                         </ul>
                     </div>
                 </x-info-card>
