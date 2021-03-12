@@ -99,6 +99,7 @@ class ShowEdit extends Component
     {
         $this->event = $event;
 
+        $this->tmp_event_id = $this->event->tmp_event_id;
         $this->name = $this->event->name;
         $this->featured_image_url = $this->event->featured_image_url;
         $this->map_image_url = $this->event->map_image_url;
