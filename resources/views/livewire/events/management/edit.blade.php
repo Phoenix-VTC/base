@@ -15,10 +15,10 @@
 @section('custom-title')
     <div class="pb-5 border-b border-gray-200">
         <h3 class="text-2xl font-semibold text-gray-900">
-            New Event
+            Edit Event
         </h3>
         <p class="mt-2 max-w-4xl text-sm text-gray-500">
-            Nothing is too crazy!
+            {{ $event->name }}
         </p>
     </div>
 @endsection
