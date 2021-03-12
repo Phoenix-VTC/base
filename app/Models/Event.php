@@ -88,7 +88,7 @@ class Event extends Model
 
     public function getTruckersMPEventVTCDataAttribute()
     {
-        if (isset($this->truckersmp_event_data['response']['vtc'])) {
+        if (isset($this->truckersmp_event_data['response']['vtc']['name'])) {
             return Cache::remember($this->truckersmp_event_data['response']['vtc']['id'] . "_tmp_event_vtc_data", 86400, function () {
                 $client = new Client();
 
