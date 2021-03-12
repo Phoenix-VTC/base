@@ -75,10 +75,13 @@ class ShowEvent extends Component
         }
 
         if (Auth::check()) {
-            EventAttendee::where('user_id', Auth::id())
+            $event_attendee = EventAttendee::where('user_id', Auth::id())
                 ->where('event_id', $this->event->id)
-                ->firstOrFail()
-                ->delete();
+                ->first();
+
+            if ($event_attendee) {
+                $event_attendee->delete();
+            }
         }
     }
 
