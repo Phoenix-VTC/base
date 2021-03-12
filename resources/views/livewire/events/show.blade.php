@@ -131,5 +131,138 @@
                 </dl>
             </x-info-card>
         </div>
+
+        {{-- Attending Options --}}
+        @auth
+            <div class="rounded-lg overflow-hidden shadow">
+                <x-info-card title="Will you be attending?">
+                    <div class="flex flex-col justify-stretch space-y-3">
+                        <button type="button"
+                                class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                            <x-heroicon-s-check-circle class="mr-1 h-5 w-5"/>
+                            Yes
+                        </button>
+                        <button type="button"
+                                class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-400">
+                            <x-heroicon-s-question-mark-circle class="mr-1 h-5 w-5"/>
+                            Not sure
+                        </button>
+                        <button type="button"
+                                class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400">
+                            <x-heroicon-s-x-circle class="mr-1 h-5 w-5"/>
+                            No
+                        </button>
+                    </div>
+                </x-info-card>
+            </div>
+        @endauth
+
+        {{-- Attendees --}}
+        @if($event->attendees->count())
+            <div class="rounded-lg overflow-hidden shadow">
+                <x-info-card title="Attendees">
+                    <div class="flow-root">
+                        <ul class="-my-5 divide-y divide-gray-200">
+                            @foreach($event->attendees as $attendee)
+                                <li class="py-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="flex-shrink-0">
+                                            <img class="h-8 w-8 rounded-full"
+                                                 src="{{ $attendee->user->profile_picture }}"
+                                                 alt="{{ $attendee->user->username }}">
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 truncate">
+                                                {{ $attendee->user->username }}
+                                            </p>
+                                            <p class="text-sm text-gray-500 truncate">
+                                                {{ $attendee->updated_at->diffForHumans() }}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            @if($attendee->attending->value === App\Enums\Attending::Yes)
+                                                <div
+                                                    class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white">
+                                                    Attending
+                                                </div>
+                                            @endif
+                                            @if($attendee->attending->value === App\Enums\Attending::Maybe)
+                                                <div
+                                                    class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-gray-200">
+                                                    Unsure
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </x-info-card>
+            </div>
+        @endif
+
+        {{-- TruckersMP Attendees --}}
+        @isset($event->truckersmp_event_data['response']['attendances'])
+            <div class="rounded-lg overflow-hidden shadow">
+                <x-info-card
+                    title="TruckersMP Attendees ({{ $event->truckersmp_event_data['response']['attendances']['confirmed'] + $event->truckersmp_event_data['response']['attendances']['unsure'] }})">
+                    <div class="flow-root">
+                        <ul class="-my-5 divide-y divide-gray-200">
+                            @foreach($event->truckersmp_event_data['response']['attendances']['confirmed_users'] as $attendee)
+                                <li class="py-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="flex-shrink-0">
+                                            <img class="h-8 w-8 rounded-full"
+                                                 src="https://eu.ui-avatars.com/api/?name={{ $attendee['username'] }}"
+                                                 alt="{{ $attendee['username'] }}">
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 truncate">
+                                                {{ $attendee['username'] }}
+                                            </p>
+                                            <p class="text-sm text-gray-500 truncate">
+                                                {{ Carbon\Carbon::parse($attendee['updated_at'])->diffForHumans() }}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white">
+                                                Attending
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                            @foreach($event->truckersmp_event_data['response']['attendances']['unsure_users'] as $attendee)
+                                <li class="py-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="flex-shrink-0">
+                                            <img class="h-8 w-8 rounded-full"
+                                                 src="https://eu.ui-avatars.com/api/?name={{ $attendee['username'] }}"
+                                                 alt="{{ $attendee['username'] }}">
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 truncate">
+                                                {{ $attendee['username'] }}
+                                            </p>
+                                            <p class="text-sm text-gray-500 truncate">
+                                                {{ Carbon\Carbon::parse($attendee['updated_at'])->diffForHumans() }}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-gray-200">
+                                                Unsure
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </x-info-card>
+            </div>
+        @endisset
     </div>
 </div>

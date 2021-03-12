@@ -13,7 +13,7 @@ class ShowEvent extends Component
 
     public function mount($id)
     {
-        $this->event = Event::findOrFail($id);
+        $this->event = Event::with('attendees', 'attendees.user')->findOrFail($id);
 
         if (!$this->event->public_event && !$this->event->external_event && Auth::guest()) {
             return redirect(route('login'));
@@ -23,5 +23,20 @@ class ShowEvent extends Component
     public function render(): View
     {
         return view('livewire.events.show')->extends('layouts.events');
+    }
+
+    public function markAsAttending(): void
+    {
+        //
+    }
+
+    public function markAsMaybeAttending(): void
+    {
+        //
+    }
+
+    public function markAsNotAttending(): void
+    {
+        //
     }
 }
