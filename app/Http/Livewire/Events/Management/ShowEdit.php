@@ -71,7 +71,7 @@ class ShowEdit extends Component
         $validatedData = $this->validate();
 
         $event->name = $validatedData['name'];
-        $event->featured_image_url = $validatedData['map_image_url'];
+        $event->featured_image_url = $validatedData['featured_image_url'];
         $event->map_image_url = $validatedData['map_image_url'];
         $event->description = $validatedData['description'];
         $event->server = $validatedData['server'];
