@@ -14,7 +14,7 @@ class AddPointsToEventsTable extends Migration
     public function up()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->smallInteger('points')->default(0)->after('public_event');
+            $table->smallInteger('points')->default(0)->after('distance');
         });
     }
 
