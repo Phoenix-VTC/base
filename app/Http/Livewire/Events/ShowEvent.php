@@ -5,12 +5,16 @@ namespace App\Http\Livewire\Events;
 use App\Enums\Attending;
 use App\Models\Event;
 use App\Models\EventAttendee;
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Component;
 
 class ShowEvent extends Component
 {
+    use WithRateLimiting;
+
     public Event $event;
 
     public function mount($id)
@@ -29,6 +33,13 @@ class ShowEvent extends Component
 
     public function markAsAttending(): void
     {
+        try {
+            $this->rateLimit(5);
+        } catch (TooManyRequestsException $exception) {
+            session()->flash('alert', ['type' => 'danger', 'message' => "Slow down! Please wait another $exception->secondsUntilAvailable seconds."]);
+            return;
+        }
+
         if (Auth::check()) {
             EventAttendee::updateOrCreate(
                 ['user_id' => Auth::id(), 'event_id' => $this->event->id],
@@ -39,6 +50,13 @@ class ShowEvent extends Component
 
     public function markAsMaybeAttending(): void
     {
+        try {
+            $this->rateLimit(5);
+        } catch (TooManyRequestsException $exception) {
+            session()->flash('alert', ['type' => 'danger', 'message' => "Slow down! Please wait another $exception->secondsUntilAvailable seconds."]);
+            return;
+        }
+
         if (Auth::check()) {
             EventAttendee::updateOrCreate(
                 ['user_id' => Auth::id(), 'event_id' => $this->event->id],
@@ -49,6 +67,13 @@ class ShowEvent extends Component
 
     public function markAsNotAttending(): void
     {
+        try {
+            $this->rateLimit(5);
+        } catch (TooManyRequestsException $exception) {
+            session()->flash('alert', ['type' => 'danger', 'message' => "Slow down! Please wait another $exception->secondsUntilAvailable seconds."]);
+            return;
+        }
+
         if (Auth::check()) {
             EventAttendee::where('user_id', Auth::id())
                 ->where('event_id', $this->event->id)

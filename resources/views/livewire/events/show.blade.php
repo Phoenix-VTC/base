@@ -158,6 +158,8 @@
                             <x-heroicon-s-x-circle class="mr-1 h-5 w-5"/>
                             No
                         </button>
+
+                        <x-alert/>
                     </div>
                 </x-info-card>
             </div>
