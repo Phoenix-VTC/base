@@ -70,7 +70,7 @@
 
                     <div class="col-span-6 sm:col-span-3">
                         <label for="featured_image_url" class="block text-sm font-medium text-gray-700">
-                            Featured Image URL {{ $this->form_data_changed }}
+                            Featured Image URL
                         </label>
                         <input wire:model.lazy="featured_image_url" type="text" name="featured_image_url"
                                id="featured_image_url"
@@ -218,7 +218,7 @@
                         <label for="distance" class="block text-sm font-medium text-gray-700">
                             Distance
                         </label>
-                        <input wire:model.lazy="distance" type="number" min="1" name="distance"
+                        <input wire:model.lazy="distance" type="number" name="distance"
                                id="distance"
                                placeholder="1200"
                                class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 placeholder-gray-400 rounded-md @error('distance') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
