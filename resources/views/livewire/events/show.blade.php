@@ -143,17 +143,17 @@
             <div class="rounded-lg overflow-hidden shadow">
                 <x-info-card title="Will you be attending?">
                     <div class="flex flex-col justify-stretch space-y-3">
-                        <button type="button"
+                        <button type="button" wire:click="markAsAttending"
                                 class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
                             <x-heroicon-s-check-circle class="mr-1 h-5 w-5"/>
                             Yes
                         </button>
-                        <button type="button"
+                        <button type="button" wire:click="markAsMaybeAttending"
                                 class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-400">
                             <x-heroicon-s-question-mark-circle class="mr-1 h-5 w-5"/>
                             Not sure
                         </button>
-                        <button type="button"
+                        <button type="button" wire:click="markAsNotAttending"
                                 class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400">
                             <x-heroicon-s-x-circle class="mr-1 h-5 w-5"/>
                             No

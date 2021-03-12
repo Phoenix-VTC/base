@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Events;
 
+use App\Enums\Attending;
 use App\Models\Event;
+use App\Models\EventAttendee;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -27,16 +29,36 @@ class ShowEvent extends Component
 
     public function markAsAttending(): void
     {
-        //
+        if (Auth::check()) {
+            EventAttendee::updateOrCreate(
+                ['user_id' => Auth::id(), 'event_id' => $this->event->id],
+                ['attending' => Attending::Yes]
+            );
+        }
     }
 
     public function markAsMaybeAttending(): void
     {
-        //
+        if (Auth::check()) {
+            EventAttendee::updateOrCreate(
+                ['user_id' => Auth::id(), 'event_id' => $this->event->id],
+                ['attending' => Attending::Maybe]
+            );
+        }
     }
 
     public function markAsNotAttending(): void
     {
-        //
+        if (Auth::check()) {
+            EventAttendee::where('user_id', Auth::id())
+                ->where('event_id', $this->event->id)
+                ->firstOrFail()
+                ->delete();
+        }
+    }
+
+    public function hydrate(): void
+    {
+        $this->event = $this->event->fresh();
     }
 }
