@@ -15,7 +15,7 @@ class ShowEvent extends Component
 
     public function mount($id)
     {
-        $this->event = Event::with('attendees', 'attendees.user')->findOrFail($id);
+        $this->event = Event::with('host', 'attendees', 'attendees.user')->findOrFail($id);
 
         if (!$this->event->public_event && !$this->event->external_event && Auth::guest()) {
             return redirect(route('login'));
