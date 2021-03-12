@@ -30,6 +30,7 @@ class ShowCreate extends Component
     public string $arrival_location = '';
     public string $start_date = '';
     public string $distance = '';
+    public string $points = '';
     public string $game_id = '';
     public string $published = '1';
     public string $featured = '';
@@ -52,6 +53,7 @@ class ShowCreate extends Component
             'arrival_location' => ['required_without:tmp_event_id', 'string'],
             'start_date' => ['required_without:tmp_event_id', 'date'],
             'distance' => ['sometimes', 'integer', 'min:1'],
+            'points' => ['required', 'integer', 'min:100', 'max:500'],
             'game_id' => ['required_without:tmp_event_id'],
             'published' => ['required', 'boolean'],
             'featured' => ['sometimes', 'boolean'],
@@ -81,6 +83,7 @@ class ShowCreate extends Component
             'arrival_location' => $validatedData['arrival_location'],
             'start_date' => $validatedData['start_date'],
             'distance' => (int)$validatedData['distance'],
+            'points' => (int)$validatedData['points'],
             'game_id' => (int)$validatedData['game_id'],
             'tmp_event_id' => $this->tmp_event_id ?? null,
             'published' => (bool)$validatedData['published'],
