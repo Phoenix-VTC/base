@@ -1,5 +1,11 @@
 {{-- Nothing in the world is as soft and yielding as water. --}}
 
+@php
+    if (isset($event->truckersmp_event_data['response']['attendances'])) {
+        $tmp_attendees = array_merge($event->truckersmp_event_data['response']['attendances']['confirmed_users'], $event->truckersmp_event_data['response']['attendances']['unsure_users']);
+    }
+@endphp
+
 @section('title', $event->name)
 
 @section('hero-title')
@@ -73,66 +79,191 @@
 
 @section('hero-image', $event->featured_image_url)
 
-<div>
-    <div class="mt-10 max-w-3xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-        <div class="grid grid-cols-1 gap-4 items-start lg:grid-cols-3 lg:gap-8 gap-1">
-            {{-- Event Description --}}
-            @if($event->description)
-                <div class="grid grid-cols-1 gap-4 lg:col-span-2">
-                    <x-info-card title="Description">
-                        <div class="prose lg:prose-lg">
-                            {!! $event->description !!}
-                        </div>
-                    </x-info-card>
+<div
+    class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
+    {{-- Main Column --}}
+    <div class="space-y-6 lg:col-start-1 lg:col-span-2">
+        {{-- Event Description --}}
+        @if($event->description)
+            <x-info-card title="Description">
+                <div class="prose lg:prose-lg">
+                    {!! $event->description !!}
                 </div>
-            @endif
+            </x-info-card>
+        @endif
 
-            {{-- Event Information --}}
-            <div class="grid grid-cols-1 gap-4">
-                <div class="rounded-lg overflow-hidden shadow">
-                    <x-info-card title="Event Information">
-                        <dl class="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2">
-                            <div class="sm:col-span-2">
-                                <dt class="text-sm font-medium text-gray-500">Game</dt>
-                                <dd class="mt-1 text-sm text-gray-900">{{ $event->game(false) ?? 'Unknown Game' }}</dd>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <dt class="text-sm font-medium text-gray-500">Server</dt>
-                                <dd class="mt-1 text-sm text-gray-900">{{ $event->server ?? 'Unknown Game' }}</dd>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <dt class="text-sm font-medium text-gray-500">Departure Location</dt>
-                                <dd class="mt-1 text-sm text-gray-900">{{ $event->departure_location }}</dd>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <dt class="text-sm font-medium text-gray-500">Arrival Location</dt>
-                                <dd class="mt-1 text-sm text-gray-900">{{ $event->arrival_location }}</dd>
-                            </div>
-                            @isset($event->distance)
-                                <div class="sm:col-span-2">
-                                    <dt class="text-sm font-medium text-gray-500">Distance</dt>
-                                    <dd class="mt-1 text-sm text-gray-900">{{ $event->distance . ucwords($event->distance_metric) }}</dd>
-                                </div>
-                            @endisset
-                            <div class="sm:col-span-2">
-                                <dt class="text-sm font-medium text-gray-500">Required DLCs</dt>
-                                <dd class="mt-1 text-sm text-gray-900">{{ $event->required_dlcs ?: 'None' }}</dd>
-                            </div>
-                        </dl>
-                    </x-info-card>
+        @if($event->tmp_description)
+            {{-- TruckersMP Event Description --}}
+            <x-info-card title="TruckersMP Event Description">
+                <div class="prose lg:prose-lg">
+                    {!! $event->tmp_description !!}
                 </div>
-            </div>
+            </x-info-card>
+        @endif
+    </div>
 
-            @if($event->tmp_description)
-                {{-- TruckersMP Event Description --}}
-                <div class="grid grid-cols-1 gap-4 lg:col-span-2">
-                    <x-info-card title="TruckersMP Event Description">
-                        <div class="prose lg:prose-lg">
-                            {!! $event->tmp_description !!}
+    {{-- Sidebar --}}
+    <div class="lg:col-start-3 lg:col-span-1 space-y-6">
+        {{-- Event Information --}}
+        <div class="rounded-lg overflow-hidden shadow">
+            <x-info-card title="Event Information">
+                <dl class="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2">
+                    <div class="sm:col-span-2">
+                        <dt class="text-sm font-medium text-gray-500">Game</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $event->game(false) ?? 'Unknown Game' }}</dd>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <dt class="text-sm font-medium text-gray-500">Server</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $event->server ?? 'Unknown Game' }}</dd>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <dt class="text-sm font-medium text-gray-500">Departure Location</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $event->departure_location }}</dd>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <dt class="text-sm font-medium text-gray-500">Arrival Location</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $event->arrival_location }}</dd>
+                    </div>
+                    @isset($event->distance)
+                        <div class="sm:col-span-2">
+                            <dt class="text-sm font-medium text-gray-500">Distance</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $event->distance . ucwords($event->distance_metric) }}</dd>
                         </div>
-                    </x-info-card>
-                </div>
-            @endif
+                    @endisset
+                    <div class="sm:col-span-2">
+                        <dt class="text-sm font-medium text-gray-500">Required DLCs</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $event->required_dlcs ?: 'None' }}</dd>
+                    </div>
+                </dl>
+            </x-info-card>
         </div>
+
+        {{-- Attending Options --}}
+        @auth
+            <div class="rounded-lg overflow-hidden shadow">
+                <x-info-card title="Will you be attending?">
+                    <div class="flex flex-col justify-stretch space-y-3">
+                        <button type="button" wire:click="markAsAttending"
+                                class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                            <x-heroicon-s-check-circle class="mr-1 h-5 w-5"/>
+                            Yes
+                        </button>
+                        <button type="button" wire:click="markAsMaybeAttending"
+                                class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-400">
+                            <x-heroicon-s-question-mark-circle class="mr-1 h-5 w-5"/>
+                            Not sure
+                        </button>
+                        <button type="button" wire:click="markAsNotAttending"
+                                class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400">
+                            <x-heroicon-s-x-circle class="mr-1 h-5 w-5"/>
+                            No
+                        </button>
+
+                        <x-alert/>
+                    </div>
+                </x-info-card>
+            </div>
+        @endauth
+
+        {{-- Attendees --}}
+        @if($event->attendees->count())
+            <div class="rounded-lg overflow-hidden shadow">
+                <x-info-card title="Attendees">
+                    <div class="flow-root">
+                        <ul class="-my-5 divide-y divide-gray-200">
+                            @foreach($event->attendees->take(100) as $attendee)
+                                <li class="py-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="flex-shrink-0">
+                                            <img class="h-8 w-8 rounded-full"
+                                                 src="{{ $attendee->user->profile_picture }}"
+                                                 alt="{{ $attendee->user->username }}">
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 truncate">
+                                                {{ $attendee->user->username }}
+                                            </p>
+                                            <p class="text-sm text-gray-500 truncate">
+                                                {{ $attendee->updated_at->diffForHumans() }}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            @if($attendee->attending->value === App\Enums\Attending::Yes)
+                                                <div
+                                                    class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white">
+                                                    Attending
+                                                </div>
+                                            @endif
+                                            @if($attendee->attending->value === App\Enums\Attending::Maybe)
+                                                <div
+                                                    class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-gray-200">
+                                                    Unsure
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                            @if($event->attendees->count() > 100)
+                                <li class="py-4">
+                                    <div class="flex items-center space-x-4">
+                                        <p class="text-sm font-medium text-gray-900 truncate">
+                                            And {{ $event->attendees->count() - 100 }} more attendees
+                                        </p>
+                                    </div>
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                </x-info-card>
+            </div>
+        @endif
+
+        {{-- TruckersMP Attendees --}}
+        @isset($event->truckersmp_event_data['response']['attendances'])
+            <div class="rounded-lg overflow-hidden shadow">
+                <x-info-card
+                    title="TruckersMP Attendees ({{ count($tmp_attendees) }})">
+                    <div class="flow-root">
+                        <ul class="-my-5 divide-y divide-gray-200">
+                            @foreach(array_slice($tmp_attendees, 0, 10) as $attendee)
+                                <li class="py-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="flex-shrink-0">
+                                            <img class="h-8 w-8 rounded-full"
+                                                 src="https://eu.ui-avatars.com/api/?name={{ $attendee['username'] }}"
+                                                 alt="{{ $attendee['username'] }}">
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 truncate">
+                                                {{ $attendee['username'] }}
+                                            </p>
+                                            <p class="text-sm text-gray-500 truncate">
+                                                {{ Carbon\Carbon::parse($attendee['updated_at'])->diffForHumans() }}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white">
+                                                Attending
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                            @if(count($tmp_attendees) > 10)
+                                <li class="py-4">
+                                    <div class="flex items-center space-x-4">
+                                        <p class="text-sm font-medium text-gray-900 truncate">
+                                            And {{ count($tmp_attendees) - 10 }} more attendees
+                                        </p>
+                                    </div>
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                </x-info-card>
+            </div>
+        @endisset
     </div>
 </div>

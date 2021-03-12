@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
@@ -43,6 +43,11 @@ class Event extends Model
     public function host(): BelongsTo
     {
         return $this->belongsTo(User::class, 'hosted_by');
+    }
+
+    public function attendees(): HasMany
+    {
+        return $this->hasMany(EventAttendee::class);
     }
 
     // TODO: Find a better way to do this. Perhaps integrate it with the Game model.
@@ -82,7 +87,7 @@ class Event extends Model
 
     public function getTruckersMPEventVTCDataAttribute()
     {
-        if (isset($this->truckersmp_event_data['response']['vtc'])) {
+        if (isset($this->truckersmp_event_data['response']['vtc']['name'])) {
             return Cache::remember($this->truckersmp_event_data['response']['vtc']['id'] . "_tmp_event_vtc_data", 86400, function () {
                 $client = new Client();
 
