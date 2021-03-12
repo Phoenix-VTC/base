@@ -109,4 +109,9 @@ class Event extends Model
 
         return Game::getAbbreviationById($this->game_id);
     }
+
+    public function getIsHighRewardingAttribute(): bool
+    {
+        return ($this->points >= 400);
+    }
 }
