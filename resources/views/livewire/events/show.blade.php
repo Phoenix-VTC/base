@@ -73,66 +73,63 @@
 
 @section('hero-image', $event->featured_image_url)
 
-<div>
-    <div class="mt-10 max-w-3xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-        <div class="grid grid-cols-1 gap-4 items-start lg:grid-cols-3 lg:gap-8 gap-1">
-            {{-- Event Description --}}
-            @if($event->description)
-                <div class="grid grid-cols-1 gap-4 lg:col-span-2">
-                    <x-info-card title="Description">
-                        <div class="prose lg:prose-lg">
-                            {!! $event->description !!}
-                        </div>
-                    </x-info-card>
+<div
+    class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
+    {{-- Main Column --}}
+    <div class="space-y-6 lg:col-start-1 lg:col-span-2">
+        {{-- Event Description --}}
+        @if($event->description)
+            <x-info-card title="Description">
+                <div class="prose lg:prose-lg">
+                    {!! $event->description !!}
                 </div>
-            @endif
+            </x-info-card>
+        @endif
 
-            {{-- Event Information --}}
-            <div class="grid grid-cols-1 gap-4">
-                <div class="rounded-lg overflow-hidden shadow">
-                    <x-info-card title="Event Information">
-                        <dl class="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2">
-                            <div class="sm:col-span-2">
-                                <dt class="text-sm font-medium text-gray-500">Game</dt>
-                                <dd class="mt-1 text-sm text-gray-900">{{ $event->game(false) ?? 'Unknown Game' }}</dd>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <dt class="text-sm font-medium text-gray-500">Server</dt>
-                                <dd class="mt-1 text-sm text-gray-900">{{ $event->server ?? 'Unknown Game' }}</dd>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <dt class="text-sm font-medium text-gray-500">Departure Location</dt>
-                                <dd class="mt-1 text-sm text-gray-900">{{ $event->departure_location }}</dd>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <dt class="text-sm font-medium text-gray-500">Arrival Location</dt>
-                                <dd class="mt-1 text-sm text-gray-900">{{ $event->arrival_location }}</dd>
-                            </div>
-                            @isset($event->distance)
-                                <div class="sm:col-span-2">
-                                    <dt class="text-sm font-medium text-gray-500">Distance</dt>
-                                    <dd class="mt-1 text-sm text-gray-900">{{ $event->distance . ucwords($event->distance_metric) }}</dd>
-                                </div>
-                            @endisset
-                            <div class="sm:col-span-2">
-                                <dt class="text-sm font-medium text-gray-500">Required DLCs</dt>
-                                <dd class="mt-1 text-sm text-gray-900">{{ $event->required_dlcs ?: 'None' }}</dd>
-                            </div>
-                        </dl>
-                    </x-info-card>
+        @if($event->tmp_description)
+            {{-- TruckersMP Event Description --}}
+            <x-info-card title="TruckersMP Event Description">
+                <div class="prose lg:prose-lg">
+                    {!! $event->tmp_description !!}
                 </div>
-            </div>
+            </x-info-card>
+        @endif
+    </div>
 
-            @if($event->tmp_description)
-                {{-- TruckersMP Event Description --}}
-                <div class="grid grid-cols-1 gap-4 lg:col-span-2">
-                    <x-info-card title="TruckersMP Event Description">
-                        <div class="prose lg:prose-lg">
-                            {!! $event->tmp_description !!}
+    {{-- Sidebar --}}
+    <div class="lg:col-start-3 lg:col-span-1 space-y-6">
+        {{-- Event Information --}}
+        <div class="rounded-lg overflow-hidden shadow">
+            <x-info-card title="Event Information">
+                <dl class="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2">
+                    <div class="sm:col-span-2">
+                        <dt class="text-sm font-medium text-gray-500">Game</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $event->game(false) ?? 'Unknown Game' }}</dd>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <dt class="text-sm font-medium text-gray-500">Server</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $event->server ?? 'Unknown Game' }}</dd>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <dt class="text-sm font-medium text-gray-500">Departure Location</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $event->departure_location }}</dd>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <dt class="text-sm font-medium text-gray-500">Arrival Location</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $event->arrival_location }}</dd>
+                    </div>
+                    @isset($event->distance)
+                        <div class="sm:col-span-2">
+                            <dt class="text-sm font-medium text-gray-500">Distance</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $event->distance . ucwords($event->distance_metric) }}</dd>
                         </div>
-                    </x-info-card>
-                </div>
-            @endif
+                    @endisset
+                    <div class="sm:col-span-2">
+                        <dt class="text-sm font-medium text-gray-500">Required DLCs</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $event->required_dlcs ?: 'None' }}</dd>
+                    </div>
+                </dl>
+            </x-info-card>
         </div>
     </div>
 </div>
