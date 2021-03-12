@@ -53,6 +53,21 @@
                 <span>Members Only</span>
             </div>
         @endif
+        @auth
+            @if($event->is_high_rewarding)
+                <div class="flex space-x-2 text-sm font-bold text-orange-600">
+                    <x-heroicon-o-sparkles class="h-5 w-5 text-white"/>
+                    <span>High Rewarding Event</span>
+                </div>
+            @endif
+
+            <div class="flex space-x-2 text-sm font-medium text-white">
+                <span>
+                    <strong>{{ $event->points }}</strong>
+                    Event Points
+                </span>
+            </div>
+        @endauth
     </div>
 @endsection
 

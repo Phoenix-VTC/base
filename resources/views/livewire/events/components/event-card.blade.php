@@ -56,6 +56,22 @@
                     <span>Members Only</span>
                 </div>
             @endif
+            @auth
+                <div class="flex space-x-2 text-sm font-medium text-gray-900">
+                    <x-heroicon-o-star class="h-5 w-5"/>
+                    <span>
+                        <strong>{{ $event->points }}</strong>
+                        Event Points
+                    </span>
+                </div>
+
+                @if($event->is_high_rewarding)
+                    <div class="flex space-x-2 text-sm font-bold text-red-600">
+                        <x-heroicon-o-sparkles class="h-5 w-5"/>
+                        <span>High Rewarding Event</span>
+                    </div>
+                @endif
+            @endauth
         </div>
         @isset($event->truckersmp_event_vtc_data)
             <div class="mt-6 flex items-center">

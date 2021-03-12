@@ -230,6 +230,19 @@
                         @enderror
                     </div>
 
+                    <div class="col-span-6 sm:col-span-3">
+                        <label for="points" class="block text-sm font-medium text-gray-700">
+                            Event Points
+                        </label>
+                        <input wire:model.lazy="points" type="number" min="1" name="points"
+                               id="points"
+                               placeholder="1200"
+                               class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 placeholder-gray-400 rounded-md @error('points') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
+                        @error('points')
+                        <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <fieldset class="col-span-6 sm:col-span-4">
                         <div>
                             <legend class="block text-sm font-medium text-gray-700">
