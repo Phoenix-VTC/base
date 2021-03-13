@@ -3,9 +3,10 @@
     'for',
     'error' => false,
     'helpText' => false,
+    'colSpan' => 4
 ])
 
-<div class="col-span-6 sm:col-span-4">
+<div class="col-span-6 sm:col-span-{{ $colSpan }}">
     <label for="{{ $for }}" class="block text-sm font-medium text-gray-700">{{ $label }}</label>
 
     {{ $slot }}
