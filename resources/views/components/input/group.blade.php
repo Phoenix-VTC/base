@@ -7,7 +7,7 @@
 ])
 
 <div class="col-span-6 sm:col-span-{{ $colSpan }}">
-    <label for="{{ $for }}" class="block text-sm font-medium text-gray-700">{{ $label }}</label>
+    <label @isset($for) for="{{ $for }}" @endisset class="block text-sm font-medium text-gray-700">{{ $label }}</label>
 
     {{ $slot }}
 
