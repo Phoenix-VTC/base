@@ -85,7 +85,7 @@ class ShowCreate extends Component
             'distance' => (int)$validatedData['distance'],
             'points' => (int)$validatedData['points'],
             'game_id' => (int)$validatedData['game_id'],
-            'tmp_event_id' => $this->tmp_event_id ?? null,
+            'tmp_event_id' => $this->tmp_event_id ?: null,
             'published' => (bool)$validatedData['published'],
             'featured' => (bool)$validatedData['featured'],
             'external_event' => (bool)$validatedData['external_event'],
