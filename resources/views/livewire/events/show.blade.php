@@ -100,6 +100,13 @@
                 </div>
             </x-info-card>
         @endif
+
+        @if($event->map_image_url)
+            {{-- Map Image --}}
+            <x-info-card title="Route Map">
+                <img src="{{ $event->map_image_url }}" alt="{{ $event->name }} Route Map"/>
+            </x-info-card>
+        @endif
     </div>
 
     {{-- Sidebar --}}
