@@ -103,6 +103,7 @@ class ShowEdit extends Component
         $this->name = $this->event->name;
         $this->featured_image_url = $this->event->featured_image_url;
         $this->map_image_url = $this->event->map_image_url;
+        $this->description = $this->event->description;
         $this->server = $this->event->server;
         $this->required_dlcs = $this->event->required_dlcs;
         $this->departure_location = $this->event->departure_location;
