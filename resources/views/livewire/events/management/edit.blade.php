@@ -8,6 +8,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"
             integrity="sha512-2RLMQRNr+D47nbLnsbEqtEmgKy67OSCpWJjJM394czt99xj3jJJJBQ43K7lJpfYAYtvekeyzqfZTx2mqoDh7vg=="
             crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener("trix-file-accept", function(event) {
+            event.preventDefault();
+        });
+    </script>
+
+    <style>
+        trix-toolbar .trix-button-group--file-tools {
+            display: none;
+        }
+    </style>
 @endpush
 
 @section('title', 'Edit Event')
