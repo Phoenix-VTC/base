@@ -6,7 +6,7 @@
     'colSpan' => 4
 ])
 
-<div class="col-span-6 sm:col-span-{{ $colSpan }}">
+<div {{ $attributes->merge(['class' => 'col-span-6 sm:col-span-' . $colSpan]) }}>
     <label @isset($for) for="{{ $for }}" @endisset class="block text-sm font-medium text-gray-700">{{ $label }}</label>
 
     {{ $slot }}
