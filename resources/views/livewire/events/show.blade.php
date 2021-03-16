@@ -115,28 +115,36 @@
         <div class="rounded-lg overflow-hidden shadow">
             <x-info-card title="Event Information">
                 <dl class="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2">
-                    <div class="sm:col-span-2">
-                        <dt class="text-sm font-medium text-gray-500">Game</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $event->game(false) ?? 'Unknown Game' }}</dd>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <dt class="text-sm font-medium text-gray-500">Server</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $event->server ?? 'Unknown Game' }}</dd>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <dt class="text-sm font-medium text-gray-500">Departure Location</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $event->departure_location }}</dd>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <dt class="text-sm font-medium text-gray-500">Arrival Location</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $event->arrival_location }}</dd>
-                    </div>
-                    @isset($event->distance)
+                    @if($event->game())
+                        <div class="sm:col-span-2">
+                            <dt class="text-sm font-medium text-gray-500">Game</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $event->game() }}</dd>
+                        </div>
+                    @endif
+                    @if($event->server)
+                        <div class="sm:col-span-2">
+                            <dt class="text-sm font-medium text-gray-500">Server</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $event->server }}</dd>
+                        </div>
+                    @endif
+                    @if($event->departure_location)
+                        <div class="sm:col-span-2">
+                            <dt class="text-sm font-medium text-gray-500">Departure Location</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $event->departure_location }}</dd>
+                        </div>
+                    @endif
+                    @if($event->arrival_location)
+                        <div class="sm:col-span-2">
+                            <dt class="text-sm font-medium text-gray-500">Arrival Location</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $event->arrival_location }}</dd>
+                        </div>
+                    @endif
+                    @if($event->distance)
                         <div class="sm:col-span-2">
                             <dt class="text-sm font-medium text-gray-500">Distance</dt>
                             <dd class="mt-1 text-sm text-gray-900">{{ $event->distance . ucwords($event->distance_metric) }}</dd>
                         </div>
-                    @endisset
+                    @endif
                     <div class="sm:col-span-2">
                         <dt class="text-sm font-medium text-gray-500">Required DLCs</dt>
                         <dd class="mt-1 text-sm text-gray-900">{{ $event->required_dlcs ?: 'None' }}</dd>
