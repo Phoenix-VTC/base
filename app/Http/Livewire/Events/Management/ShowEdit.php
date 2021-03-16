@@ -13,11 +13,7 @@ use Livewire\Component;
 class ShowEdit extends Component
 {
     public Event $event;
-    public Collection $tmp_event_data;
 
-    public ?string $tmp_event_url = null;
-    public ?string $tmp_event_id = null;
-    public ?string $tmp_event_description = '';
     public string $name = '';
     public string $featured_image_url = '';
     public string $map_image_url = '';
@@ -34,13 +30,10 @@ class ShowEdit extends Component
     public string $featured = '';
     public string $external_event = '';
     public string $public_event = '';
-    public bool $form_data_changed = false;
 
     public function rules(): array
     {
         return [
-            'tmp_event_url' => ['required_without:name'],
-            'tmp_event_id' => ['required_without:name', 'integer'],
             'name' => ['required_without:tmp_event_id', 'string'],
             'featured_image_url' => ['required_without:tmp_event_id', 'url'],
             'map_image_url' => ['required_without:tmp_event_id', 'url'],
@@ -83,7 +76,6 @@ class ShowEdit extends Component
         $event->points = (int)$validatedData['points'];
         $event->game_id = (int)$validatedData['game_id'];
         $event->published = (bool)$validatedData['published'];
-        $event->tmp_event_id = $validatedData['tmp_event_id'] ?: null;
         $event->featured = (bool)$validatedData['featured'];
         $event->external_event = (bool)$validatedData['external_event'];
         $event->public_event = (bool)$validatedData['public_event'];
@@ -99,7 +91,6 @@ class ShowEdit extends Component
     {
         $this->event = $event;
 
-        $this->tmp_event_id = $this->event->tmp_event_id;
         $this->name = $this->event->name;
         $this->featured_image_url = $this->event->featured_image_url;
         $this->map_image_url = $this->event->map_image_url;
@@ -116,32 +107,6 @@ class ShowEdit extends Component
         $this->featured = $this->event->featured;
         $this->external_event = $this->event->external_event;
         $this->public_event = $this->event->public_event;
-
-        if ($this->tmp_event_id) {
-            $this->tmp_event_data = $this->getTruckersMPEventData();
-        }
-    }
-
-    public function updated($propertyName): void
-    {
-        $this->tmp_event_id = $this->parseTruckersMPEventID($this->tmp_event_url, 'https://truckersmp.com/events/', '-');
-
-        if ($this->tmp_event_id && $this->form_data_changed === false) {
-            $this->setTruckersMPFormData();
-        }
-
-        $this->validateOnly($propertyName);
-    }
-
-    private function parseTruckersMPEventID($string, $start, $end)
-    {
-        $string = ' ' . $string;
-        $ini = strpos($string, $start);
-        if ($ini == 0) return '';
-        $ini += strlen($start);
-        $len = strpos($string, $end, $ini) - $ini;
-
-        return (int)substr($string, $ini, $len);
     }
 
     public function getTruckersMPEventData(): Collection
@@ -154,29 +119,6 @@ class ShowEdit extends Component
 
             return collect($response);
         });
-    }
-
-    public function setTruckersMPFormData(): void
-    {
-        $this->tmp_event_data = $this->getTruckersMPEventData();
-
-        $this->name = $this->tmp_event_data['response']['name'];
-        $this->featured_image_url = $this->tmp_event_data['response']['banner'];
-        $this->map_image_url = $this->tmp_event_data['response']['map'];
-        $this->tmp_event_description = Markdown::convertToHtml($this->tmp_event_data['response']['description']);
-        $this->server = $this->tmp_event_data['response']['server']['name'];
-        $this->required_dlcs = implode(',', $this->tmp_event_data['response']['dlcs']);
-        $this->departure_location = $this->tmp_event_data['response']['departure']['location'] . ", " . $this->tmp_event_data['response']['departure']['city'];
-        $this->arrival_location = $this->tmp_event_data['response']['arrive']['location'] . ", " . $this->tmp_event_data['response']['arrive']['city'];
-        $this->start_date = Carbon::parse($this->tmp_event_data['response']['start_at'])->format('Y-m-d\TH:i');
-        if ($this->tmp_event_data['response']['game'] === 'ETS2') {
-            $this->game_id = 1;
-        }
-        if ($this->tmp_event_data['response']['game'] === 'ATS') {
-            $this->game_id = 2;
-        }
-
-        $this->form_data_changed = true;
     }
 
     public function delete()
