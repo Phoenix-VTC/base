@@ -53,6 +53,8 @@ class Event extends Model
     // TODO: Find a better way to do this. Perhaps integrate it with the Game model.
     public function getDistanceMetricAttribute(): string
     {
+        $unit = 'unknown';
+
         if ($this->game_id === 1) {
             $unit = 'kilometres';
         }
@@ -106,7 +108,7 @@ class Event extends Model
         return Str::slug($this->name);
     }
 
-    public function game(bool $abbreviation = true): string
+    public function game(bool $abbreviation = true): ?string
     {
         if (!$abbreviation) {
             return Game::getQualifiedName($this->game_id);
