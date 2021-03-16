@@ -1,9 +1,8 @@
 @props(['initialValue' => ''])
 
 <div
-    class="rounded-md shadow-sm"
     wire:ignore
-    {{ $attributes }}
+    {{ $attributes->merge(['class' => 'rounded-md shadow-sm']) }}
     x-data
     @trix-blur="$dispatch('change', $event.target.value)"
 >
