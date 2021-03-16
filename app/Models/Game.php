@@ -23,9 +23,13 @@ class Game extends Model
      * @param int $gameId
      * @return string
      */
-    public static function getAbbreviationById(int $gameId): string
+    public static function getAbbreviationById(int $gameId): ?string
     {
-        return self::GAMES[$gameId][0];
+        try {
+            return self::GAMES[$gameId][0];
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     /**
@@ -34,8 +38,12 @@ class Game extends Model
      * @param int $gameId
      * @return string
      */
-    public static function getQualifiedName(int $gameId): string
+    public static function getQualifiedName(int $gameId): ?string
     {
-        return self::GAMES[$gameId][1];
+        try {
+            return self::GAMES[$gameId][1];
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }

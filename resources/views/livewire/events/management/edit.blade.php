@@ -64,7 +64,7 @@
                     <x-input.group col-span="3" label="Map Image URL" for="map_image_url"
                                    :error="$errors->first('map_image_url')">
                         <x-input.text wire:model.lazy="map_image_url" type="text" id="map_image_url"
-                                      :error="$errors->first('map_image_url')" placeholder="Kenji's Weekly Drive"/>
+                                      :error="$errors->first('map_image_url')" placeholder="https://i.imgur.com/vJOyb72.png"/>
 
                         @if($map_image_url && !$errors->has('map_image_url'))
                             <p class="flex mt-2 text-sm items-center text-gray-500">
