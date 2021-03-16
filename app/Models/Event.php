@@ -53,6 +53,8 @@ class Event extends Model
     // TODO: Find a better way to do this. Perhaps integrate it with the Game model.
     public function getDistanceMetricAttribute(): string
     {
+        $unit = 'unknown';
+
         if ($this->game_id === 1) {
             $unit = 'kilometres';
         }
