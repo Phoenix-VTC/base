@@ -97,9 +97,8 @@
                         @endif
                     </x-input.group>
 
-                    <x-input.group col-span="6" label="Description" for="description"
-                                   :error="$errors->first('description')">
-                        <x-input.rich-text wire:model.lazy="description" id="description"/>
+                    <x-input.group col-span="6" label="Description" for="description">
+                        <x-input.rich-text wire:model.lazy="description" id="description" :initial-value="$description"/>
                     </x-input.group>
 
                     @if($tmp_event_description ?? null)
