@@ -46,7 +46,7 @@ class ShowCreate extends Component
             'name' => ['required_without:tmp_event_id', 'string'],
             'featured_image_url' => ['required_without:tmp_event_id', 'url'],
             'map_image_url' => ['required_without:tmp_event_id', 'url'],
-            'description' => ['required_without:tmp_event_id', 'string'],
+            'description' => ['required', 'string'],
             'server' => ['required_without:tmp_event_id', 'string'],
             'required_dlcs' => ['required_without:tmp_event_id', 'string'],
             'departure_location' => ['required_without:tmp_event_id', 'string'],
