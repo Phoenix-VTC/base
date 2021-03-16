@@ -108,7 +108,7 @@ class Event extends Model
         return Str::slug($this->name);
     }
 
-    public function game(bool $abbreviation = true): string
+    public function game(bool $abbreviation = true): ?string
     {
         if (!$abbreviation) {
             return Game::getQualifiedName($this->game_id);
