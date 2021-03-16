@@ -8,6 +8,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"
             integrity="sha512-2RLMQRNr+D47nbLnsbEqtEmgKy67OSCpWJjJM394czt99xj3jJJJBQ43K7lJpfYAYtvekeyzqfZTx2mqoDh7vg=="
             crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener("trix-file-accept", function(event) {
+            event.preventDefault();
+        });
+    </script>
+
+    <style>
+        trix-toolbar .trix-button-group--file-tools {
+            display: none;
+        }
+    </style>
 @endpush
 
 @section('title', 'Edit Event')
@@ -28,39 +40,6 @@
         <div class="space-y-8 divide-y divide-gray-200">
             <div>
                 <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                    <x-input.group label="TruckersMP Event URL" for="tmp_event_url" :error="$errors->first('tmp_event_url')">
-                        <x-input.text wire:model.lazy="tmp_event_url" type="text" id="tmp_event_url"
-                                      :error="$errors->first('tmp_event_url')" placeholder="https://truckersmp.com/events/123-event-name"/>
-
-                        <input type="hidden" id="tmp_event_id" name="tmp_event_id" wire:model.lazy="tmp_event_id"/>
-
-                        @if(!$tmp_event_url)
-                            <p class="mt-2 text-sm text-gray-500">
-                                Optional, leave empty if there is no TruckersMP Event.
-                            </p>
-                        @endif
-
-                        @if($this->event->tmp_event_id && !$tmp_event_url)
-                            <p class="mt-2 text-sm text-gray-500">
-                                Current Event ID: <b>{{ $this->event->tmp_event_id }}</b>
-                                <br>
-                                Current Event Name: <b>{{ $this->event->truckersmp_event_data['response']['name'] }}</b>
-                            </p>
-                        @endif
-
-                        @if(!$tmp_event_id && $tmp_event_url)
-                            <p class="mt-2 text-sm text-red-600">
-                                Could not find TruckersMP Event ID.
-                            </p>
-                        @endif
-
-                        @if($tmp_event_id)
-                            <p class="mt-2 text-sm text-gray-500">
-                                TruckersMP Event ID: {{ $tmp_event_id }}
-                            </p>
-                        @endif
-                    </x-input.group>
-
                     <x-input.group label="Event Name" for="name" :error="$errors->first('name')">
                         <x-input.text wire:model.lazy="name" type="text" id="name"
                                       :error="$errors->first('name')" placeholder="Kenji's Weekly Drive"/>
@@ -97,16 +76,15 @@
                         @endif
                     </x-input.group>
 
-                    <x-input.group col-span="6" label="Description" for="description"
-                                   :error="$errors->first('description')">
-                        <x-input.rich-text wire:model.lazy="description" id="description"/>
+                    <x-input.group col-span="6" label="Description" for="description">
+                        <x-input.rich-text wire:model.lazy="description" id="description" :initial-value="$description"/>
                     </x-input.group>
 
-                    @if($tmp_event_description ?? null)
+                    @if($event->tmp_description ?? null)
                         <x-input.group col-span="6" label="TruckersMP Event Description">
                             <div
-                                class="shadow-sm block w-full p-2 sm:text-sm border border-gray-300 bg-gray-200 rounded-md prose lg:prose-xl">
-                                {!! $tmp_event_description !!}
+                                class="shadow-sm block w-full p-2 sm:text-sm border border-gray-300 bg-gray-200 rounded-md prose lg:prose-xl max-w-none">
+                                {!! $event->tmp_description !!}
                             </div>
                         </x-input.group>
                     @endif

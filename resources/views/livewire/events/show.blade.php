@@ -86,7 +86,7 @@
         {{-- Event Description --}}
         @if($event->description)
             <x-info-card title="Description">
-                <div class="prose lg:prose-lg">
+                <div class="prose">
                     {!! $event->description !!}
                 </div>
             </x-info-card>
@@ -95,7 +95,7 @@
         @if($event->tmp_description)
             {{-- TruckersMP Event Description --}}
             <x-info-card title="TruckersMP Event Description">
-                <div class="prose lg:prose-lg">
+                <div class="prose">
                     {!! $event->tmp_description !!}
                 </div>
             </x-info-card>
