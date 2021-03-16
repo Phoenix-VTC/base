@@ -104,7 +104,7 @@
                     @if($tmp_event_description ?? null)
                         <x-input.group col-span="6" label="TruckersMP Event Description">
                             <div
-                                class="shadow-sm block w-full p-2 sm:text-sm border border-gray-300 bg-gray-200 rounded-md prose lg:prose-xl">
+                                class="shadow-sm block w-full p-2 sm:text-sm border border-gray-300 bg-gray-200 rounded-md prose lg:prose-xl max-w-none">
                                 {!! $tmp_event_description !!}
                             </div>
                         </x-input.group>
