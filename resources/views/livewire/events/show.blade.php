@@ -70,7 +70,7 @@
             <div class="flex space-x-2 text-sm font-medium text-white">
                 <span>
                     <strong>{{ $event->points }}</strong>
-                    Event Points
+                    Event XP
                 </span>
             </div>
         @endauth
