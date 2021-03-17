@@ -144,7 +144,7 @@
                                       :error="$errors->first('distance')" placeholder="1200"/>
                     </x-input.group>
 
-                    <x-input.group col-span="3" label="Event Points" for="points"
+                    <x-input.group col-span="3" label="Event XP" for="points"
                                    :error="$errors->first('points')">
                         <x-input.text wire:model.lazy="points" type="number" id="points"
                                       :error="$errors->first('points')" min="100" max="500" step="10"
