@@ -70,6 +70,7 @@
                                             {{ $event->start_date->format('d M H:i') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="{{ route('event-management.attendee-management', $event->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Manage Attendees</a>
                                             <a href="{{ route('event-management.edit', $event) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                         </td>
                                     </tr>
