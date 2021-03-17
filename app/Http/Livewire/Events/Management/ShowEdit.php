@@ -6,13 +6,18 @@ use App\Models\Event;
 use Carbon\Carbon;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class ShowEdit extends Component
 {
     public Event $event;
+
+    public EloquentCollection $manage_event_users;
 
     public string $name = '';
     public string $featured_image_url = '';
@@ -30,6 +35,7 @@ class ShowEdit extends Component
     public string $featured = '';
     public string $external_event = '';
     public string $public_event = '';
+    public string $hosted_by = '';
 
     public function rules(): array
     {
@@ -50,6 +56,7 @@ class ShowEdit extends Component
             'featured' => ['sometimes', 'boolean'],
             'external_event' => ['sometimes', 'boolean'],
             'public_event' => ['sometimes', 'boolean'],
+            'hosted_by' => ['required', 'int'],
         ];
     }
 
@@ -79,6 +86,7 @@ class ShowEdit extends Component
         $event->featured = (bool)$validatedData['featured'];
         $event->external_event = (bool)$validatedData['external_event'];
         $event->public_event = (bool)$validatedData['public_event'];
+        $event->hosted_by = (int)$validatedData['hosted_by'];
 
         $event->save();
 
@@ -90,6 +98,9 @@ class ShowEdit extends Component
     public function mount(Event $event): void
     {
         $this->event = $event;
+
+        $this->manage_event_users = Permission::findByName('manage events')->users;
+        $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('super admin')->users);
 
         $this->name = $this->event->name;
         $this->featured_image_url = $this->event->featured_image_url;
@@ -107,6 +118,7 @@ class ShowEdit extends Component
         $this->featured = $this->event->featured;
         $this->external_event = $this->event->external_event;
         $this->public_event = $this->event->public_event;
+        $this->hosted_by = $this->event->hosted_by;
     }
 
     public function getTruckersMPEventData(): Collection
