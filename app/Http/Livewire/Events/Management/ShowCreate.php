@@ -6,16 +6,21 @@ use App\Models\Event;
 use Carbon\Carbon;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Component;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class ShowCreate extends Component
 {
     public Collection $tmp_event_data;
+
+    public EloquentCollection $manage_event_users;
 
     public ?string $tmp_event_url = null;
     public ?string $tmp_event_id = null;
@@ -36,6 +41,7 @@ class ShowCreate extends Component
     public string $featured = '';
     public string $external_event = '';
     public string $public_event = '';
+    public string $hosted_by = '';
     public bool $form_data_changed = false;
 
     public function rules(): array
@@ -59,6 +65,7 @@ class ShowCreate extends Component
             'featured' => ['sometimes', 'boolean'],
             'external_event' => ['sometimes', 'boolean'],
             'public_event' => ['sometimes', 'boolean'],
+            'hosted_by' => ['required', 'int'],
         ];
     }
 
@@ -73,7 +80,7 @@ class ShowCreate extends Component
 
         Event::create([
             'name' => $validatedData['name'],
-            'hosted_by' => Auth::id(),
+            'hosted_by' => $validatedData['hosted_by'],
             'featured_image_url' => $validatedData['featured_image_url'],
             'map_image_url' => $validatedData['map_image_url'],
             'description' => $validatedData['description'],
@@ -99,6 +106,9 @@ class ShowCreate extends Component
 
     public function mount(): void
     {
+        $this->manage_event_users = Permission::findByName('manage events')->users;
+        $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('super admin')->users);
+
         if ($this->tmp_event_id) {
             $this->tmp_event_data = $this->getTruckersMPEventData();
         }

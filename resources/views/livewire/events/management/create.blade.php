@@ -173,6 +173,14 @@
                         </div>
                     </x-input.group>
 
+                    <x-input.group col-span="3" label="Event Host" for="hosted_by" :error="$errors->first('hosted_by')">
+                        <x-input.select id="hosted_by" wire:model.lazy="hosted_by" placeholder="Choose a host/lead">
+                            @foreach($manage_event_users as $user)
+                                <option value="{{ $user->id }}">{{ $user->username }}</option>
+                            @endforeach
+                        </x-input.select>
+                    </x-input.group>
+
                     <x-input.radio-group legend="Publish Event" :error="$errors->first('published')">
                         <x-input.radio id="published" wire:model.lazy="published" value="1"
                                        label="Yes"/>
