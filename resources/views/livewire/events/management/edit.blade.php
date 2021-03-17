@@ -9,6 +9,8 @@
             integrity="sha512-2RLMQRNr+D47nbLnsbEqtEmgKy67OSCpWJjJM394czt99xj3jJJJBQ43K7lJpfYAYtvekeyzqfZTx2mqoDh7vg=="
             crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <script>
         document.addEventListener("trix-file-accept", function(event) {
             event.preventDefault();
@@ -77,7 +79,8 @@
                     </x-input.group>
 
                     <x-input.group col-span="6" label="Description" for="description">
-                        <x-input.rich-text wire:model.lazy="description" id="description" :initial-value="$description"/>
+                        <x-input.rich-text wire:model.lazy="description" id="description"
+                                           :initial-value="$description"/>
                     </x-input.group>
 
                     @if($event->tmp_description ?? null)
