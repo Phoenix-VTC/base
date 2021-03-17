@@ -12,7 +12,7 @@
     <div class="space-y-2">
         <span class="flex">{{ $event->name }}</span>
         <span class="flex text-4xl">
-            {{ $event->start_date->format('d M H:m') }}
+            {{ $event->start_date->format('d M H:i') }}
         </span>
         <span class="flex text-2xl">
             Hosted by&nbsp;
