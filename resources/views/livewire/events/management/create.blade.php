@@ -30,9 +30,11 @@
         <div class="space-y-8 divide-y divide-gray-200">
             <div>
                 <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                    <x-input.group label="TruckersMP Event URL" for="tmp_event_url" :error="$errors->first('tmp_event_url')">
+                    <x-input.group label="TruckersMP Event URL" for="tmp_event_url"
+                                   :error="$errors->first('tmp_event_url')">
                         <x-input.text wire:model.lazy="tmp_event_url" type="text" id="tmp_event_url"
-                                      :error="$errors->first('tmp_event_url')" placeholder="https://truckersmp.com/events/123-event-name"/>
+                                      :error="$errors->first('tmp_event_url')"
+                                      placeholder="https://truckersmp.com/events/123-event-name"/>
 
                         <input type="hidden" id="tmp_event_id" name="tmp_event_id" wire:model.lazy="tmp_event_id"/>
 
@@ -79,7 +81,8 @@
                     <x-input.group col-span="3" label="Map Image URL" for="map_image_url"
                                    :error="$errors->first('map_image_url')">
                         <x-input.text wire:model.lazy="map_image_url" type="text" id="map_image_url"
-                                      :error="$errors->first('map_image_url')" placeholder="https://i.imgur.com/vJOyb72.png"/>
+                                      :error="$errors->first('map_image_url')"
+                                      placeholder="https://i.imgur.com/vJOyb72.png"/>
 
                         @if($map_image_url && !$errors->has('map_image_url'))
                             <p class="flex mt-2 text-sm items-center text-gray-500">
@@ -130,7 +133,8 @@
                     </x-input.group>
 
                     <x-input.group label="Start Date and Time" for="start_date" :error="$errors->first('start_date')">
-                        <x-input.date id="start_date" wire:model.lazy="start_date" :error="$errors->first('start_date')" trailing-icon="o-calendar"/>
+                        <x-input.date id="start_date" wire:model.lazy="start_date" :error="$errors->first('start_date')"
+                                      trailing-icon="o-calendar"/>
                     </x-input.group>
 
                     <x-input.group col-span="3" label="Distance" for="distance"
