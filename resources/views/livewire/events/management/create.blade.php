@@ -8,6 +8,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"
             integrity="sha512-2RLMQRNr+D47nbLnsbEqtEmgKy67OSCpWJjJM394czt99xj3jJJJBQ43K7lJpfYAYtvekeyzqfZTx2mqoDh7vg=="
             crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 
 @section('title', 'New Event')
@@ -128,8 +130,7 @@
                     </x-input.group>
 
                     <x-input.group label="Start Date and Time" for="start_date" :error="$errors->first('start_date')">
-                        <x-input.text wire:model.lazy="start_date" type="datetime-local" id="start_date"
-                                      :error="$errors->first('start_date')"/>
+                        <x-input.date id="start_date" wire:model.lazy="start_date" :error="$errors->first('start_date')" trailing-icon="o-calendar"/>
                     </x-input.group>
 
                     <x-input.group col-span="3" label="Distance" for="distance"

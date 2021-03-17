@@ -23,7 +23,7 @@ class ShowEdit extends Component
     public string $departure_location = '';
     public string $arrival_location = '';
     public string $start_date = '';
-    public string $distance = '';
+    public ?string $distance = '';
     public string $points = '';
     public string $game_id = '';
     public string $published = '1';
@@ -38,7 +38,7 @@ class ShowEdit extends Component
             'featured_image_url' => ['required', 'url'],
             'map_image_url' => ['sometimes', 'url'],
             'description' => ['required', 'string'],
-            'server' => ['required', 'string'],
+            'server' => ['sometimes', 'string'],
             'required_dlcs' => ['sometimes', 'string'],
             'departure_location' => ['sometimes', 'string'],
             'arrival_location' => ['sometimes', 'string'],
@@ -72,7 +72,7 @@ class ShowEdit extends Component
         $event->departure_location = $validatedData['departure_location'];
         $event->arrival_location = $validatedData['arrival_location'];
         $event->start_date = $validatedData['start_date'];
-        $event->distance = (int)$validatedData['distance'];
+        $event->distance = (int)$validatedData['distance'] ?: null;
         $event->points = (int)$validatedData['points'];
         $event->game_id = (int)$validatedData['game_id'];
         $event->published = (bool)$validatedData['published'];

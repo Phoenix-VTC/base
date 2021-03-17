@@ -9,8 +9,10 @@
             integrity="sha512-2RLMQRNr+D47nbLnsbEqtEmgKy67OSCpWJjJM394czt99xj3jJJJBQ43K7lJpfYAYtvekeyzqfZTx2mqoDh7vg=="
             crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <script>
-        document.addEventListener("trix-file-accept", function(event) {
+        document.addEventListener("trix-file-accept", function (event) {
             event.preventDefault();
         });
     </script>
@@ -64,7 +66,8 @@
                     <x-input.group col-span="3" label="Map Image URL" for="map_image_url"
                                    :error="$errors->first('map_image_url')">
                         <x-input.text wire:model.lazy="map_image_url" type="text" id="map_image_url"
-                                      :error="$errors->first('map_image_url')" placeholder="https://i.imgur.com/vJOyb72.png"/>
+                                      :error="$errors->first('map_image_url')"
+                                      placeholder="https://i.imgur.com/vJOyb72.png"/>
 
                         @if($map_image_url && !$errors->has('map_image_url'))
                             <p class="flex mt-2 text-sm items-center text-gray-500">
@@ -77,7 +80,8 @@
                     </x-input.group>
 
                     <x-input.group col-span="6" label="Description" for="description">
-                        <x-input.rich-text wire:model.lazy="description" id="description" :initial-value="$description"/>
+                        <x-input.rich-text wire:model.lazy="description" id="description"
+                                           :initial-value="$description"/>
                     </x-input.group>
 
                     @if($event->tmp_description ?? null)
@@ -114,8 +118,8 @@
                     </x-input.group>
 
                     <x-input.group label="Start Date and Time" for="start_date" :error="$errors->first('start_date')">
-                        <x-input.text wire:model.lazy="start_date" type="datetime-local" id="start_date"
-                                      :error="$errors->first('start_date')"/>
+                        <x-input.date id="start_date" wire:model.lazy="start_date" :error="$errors->first('start_date')"
+                                      trailing-icon="o-calendar"/>
                     </x-input.group>
 
                     <x-input.group col-span="3" label="Distance" for="distance"
