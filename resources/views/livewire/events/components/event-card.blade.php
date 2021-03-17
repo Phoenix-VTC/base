@@ -61,7 +61,7 @@
                     <x-heroicon-o-star class="h-5 w-5"/>
                     <span>
                         <strong>{{ $event->points }}</strong>
-                        Event Points
+                        Event XP
                     </span>
                 </div>
 
