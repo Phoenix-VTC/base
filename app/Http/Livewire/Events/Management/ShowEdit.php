@@ -38,7 +38,7 @@ class ShowEdit extends Component
             'featured_image_url' => ['required', 'url'],
             'map_image_url' => ['sometimes', 'url'],
             'description' => ['required', 'string'],
-            'server' => ['required', 'string'],
+            'server' => ['sometimes', 'string'],
             'required_dlcs' => ['sometimes', 'string'],
             'departure_location' => ['sometimes', 'string'],
             'arrival_location' => ['sometimes', 'string'],
