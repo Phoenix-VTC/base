@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Events\Management;
 
 use App\Models\Event;
 use Carbon\Carbon;
-use GrahamCampbell\Markdown\Facades\Markdown;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
