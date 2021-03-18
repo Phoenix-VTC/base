@@ -33,6 +33,7 @@ class Event extends Model
         'featured' => 'boolean',
         'external_event' => 'boolean',
         'public_event' => 'boolean',
+        'completed' => 'boolean',
     ];
 
     public static function getFeaturedEvents()
