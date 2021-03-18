@@ -74,6 +74,10 @@ class ShowAttendeeManagement extends Component
            return session()->flash('alert', ['type' => 'danger', 'message' => 'This event is already completed.']);
         }
 
+        if (!$this->event->is_past) {
+            return session()->flash('alert', ['type' => 'danger', 'message' => 'Please wait until the event is finished before rewarding Event XP.']);
+        }
+
         ProcessUserRewards::dispatch($this->event);
 
         $this->event->completed = true;

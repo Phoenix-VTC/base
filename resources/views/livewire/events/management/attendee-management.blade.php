@@ -120,9 +120,14 @@
                     This event is already completed, and the XP has already been rewarded.
                 </x-empty-state>
             @endif
+            @if(!$event->completed && !$event->is_past)
+                <h3 class="text-2xl text-center font-semibold text-gray-900 p-3">
+                    You'll be able to reward the Event XP after the event has finished.
+                </h3>
+            @endif
         </ul>
     </div>
-    @if(!$event->completed)
+    @if(!$event->completed && $event->is_past)
         <div class="mt-4">
             <button type="button" wire:click="submitRewards"
                     class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-500 focus:outline-none focus:border-orange-700 focus:shadow-outline-orange active:bg-orange-700">
