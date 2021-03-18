@@ -8,12 +8,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class Event extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+    use Notifiable;
 
     /**
      * The attributes that aren't mass assignable.
@@ -64,7 +68,7 @@ class Event extends Model
             $unit = 'miles';
         }
 
-        return "$this->distance $unit";
+        return $unit;
     }
 
     public function getTMPDescriptionAttribute($value): string
@@ -126,5 +130,15 @@ class Event extends Model
     public function getIsPastAttribute(): bool
     {
         return $this->start_date->isPast();
+    }
+
+    /**
+     * Route notifications for the Discord Member Events channel.
+     *
+     * @return string
+     */
+    public function routeNotificationForDiscord(): string
+    {
+        return config('services.discord.member_events_channel_id');
     }
 }
