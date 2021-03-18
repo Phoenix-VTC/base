@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Bavix\Wallet\Interfaces\Wallet;
+use Bavix\Wallet\Traits\HasWallet;
+use Bavix\Wallet\Traits\HasWallets;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,13 +12,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Wallet
 {
     use HasFactory;
     use Notifiable;
     use HasRoles;
     use SoftDeletes;
     use HasRoles;
+    use HasWallet;
+    use HasWallets;
 
     /**
      * The attributes that are mass assignable.

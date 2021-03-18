@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Events\Management;
 
 use App\Enums\Attending;
+use App\Jobs\Events\ProcessUserRewards;
 use App\Models\Event;
 use App\Models\EventAttendee;
 use App\Models\User;
@@ -67,11 +68,20 @@ class ShowAttendeeManagement extends Component
         session()->flash('alert', ['type' => 'success', 'message' => 'User <b>' . $user->username . '</b> successfully marked as attending.']);
     }
 
-    public function submitRewards(): void
+    public function submitRewards()
     {
-        // Do something
+        if ($this->event->completed) {
+           return session()->flash('alert', ['type' => 'danger', 'message' => 'This event is already completed.']);
+        }
 
-        session()->flash('alert', ['type' => 'success', 'message' => 'Do something']);
+        ProcessUserRewards::dispatch($this->event);
+
+        $this->event->completed = true;
+        $this->event->save();
+
+        session()->flash('alert', ['type' => 'success', 'message' => 'Successfully submitted rewards for <b>' . $this->event->name . '</b>.']);
+
+        return redirect(route('event-management.index'));
     }
 
     public function hydrate(): void
