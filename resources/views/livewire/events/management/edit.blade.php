@@ -38,6 +38,8 @@
 @endsection
 
 <div>
+    <x-alert/>
+
     <form class="space-y-8 divide-y divide-gray-200" wire:submit.prevent="submit">
         <div class="space-y-8 divide-y divide-gray-200">
             <div>

@@ -154,7 +154,7 @@
         </div>
 
         {{-- Attending Options --}}
-        @auth
+        @if(!$event->is_past && Auth::check())
             <div class="rounded-lg overflow-hidden shadow">
                 <x-info-card title="Will you be attending?">
                     <div class="flex flex-col justify-stretch space-y-3">
@@ -178,7 +178,7 @@
                     </div>
                 </x-info-card>
             </div>
-        @endauth
+        @endif
 
         {{-- Attendees --}}
         @if($event->attendees->count())

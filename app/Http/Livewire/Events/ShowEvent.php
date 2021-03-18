@@ -40,7 +40,7 @@ class ShowEvent extends Component
             return;
         }
 
-        if (Auth::check()) {
+        if (!$this->event->is_past && Auth::check()) {
             EventAttendee::updateOrCreate(
                 ['user_id' => Auth::id(), 'event_id' => $this->event->id],
                 ['attending' => Attending::Yes]
@@ -57,7 +57,7 @@ class ShowEvent extends Component
             return;
         }
 
-        if (Auth::check()) {
+        if (!$this->event->is_past && Auth::check()) {
             EventAttendee::updateOrCreate(
                 ['user_id' => Auth::id(), 'event_id' => $this->event->id],
                 ['attending' => Attending::Maybe]
@@ -74,7 +74,7 @@ class ShowEvent extends Component
             return;
         }
 
-        if (Auth::check()) {
+        if (!$this->event->is_past && Auth::check()) {
             $event_attendee = EventAttendee::where('user_id', Auth::id())
                 ->where('event_id', $this->event->id)
                 ->first();

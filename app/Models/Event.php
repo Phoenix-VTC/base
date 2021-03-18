@@ -122,4 +122,9 @@ class Event extends Model
     {
         return ($this->points >= 400);
     }
+
+    public function getIsPastAttribute(): bool
+    {
+        return $this->start_date->isPast();
+    }
 }
