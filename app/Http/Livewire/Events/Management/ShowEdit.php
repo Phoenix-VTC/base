@@ -40,8 +40,8 @@ class ShowEdit extends Component
     {
         return [
             'name' => ['required', 'string'],
-            'featured_image_url' => ['required', 'url'],
-            'map_image_url' => ['sometimes', 'url'],
+            'featured_image_url' => ['required', 'url', 'starts_with:https://'],
+            'map_image_url' => ['sometimes', 'url', 'starts_with:https://'],
             'description' => ['required', 'string'],
             'server' => ['sometimes', 'string'],
             'required_dlcs' => ['sometimes', 'string'],
@@ -58,6 +58,10 @@ class ShowEdit extends Component
             'hosted_by' => ['required', 'int'],
         ];
     }
+
+    protected array $messages = [
+        'starts_with' => 'The URL must begin with https://',
+    ];
 
     public function render()
     {
