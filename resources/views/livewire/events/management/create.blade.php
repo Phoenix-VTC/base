@@ -188,6 +188,14 @@
                         <x-input.radio id="published" wire:model.lazy="published" value="0"
                                        label="No"/>
                     </x-input.radio-group>
+
+                    <x-input.radio-group legend="Announce Event" :error="$errors->first('announce')">
+                        <x-input.radio id="announce" wire:model.lazy="announce" value="1"
+                                       label="Yes"/>
+
+                        <x-input.radio id="announce" wire:model.lazy="announce" value="0"
+                                       label="No"/>
+                    </x-input.radio-group>
                 </div>
             </div>
         </div>
