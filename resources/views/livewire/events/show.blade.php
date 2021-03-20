@@ -142,7 +142,7 @@
                     @if($event->distance)
                         <div class="sm:col-span-2">
                             <dt class="text-sm font-medium text-gray-500">Distance</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $event->distance . ucwords($event->distance_metric) }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $event->distance }} {{ ucwords($event->distance_metric) }}</dd>
                         </div>
                     @endif
                     <div class="sm:col-span-2">
