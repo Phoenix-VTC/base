@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Events\Management;
 
 use App\Models\Event;
+use App\Notifications\Events\NewEvent;
 use Carbon\Carbon;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use GuzzleHttp\Client;
@@ -40,6 +41,7 @@ class ShowCreate extends Component
     public string $external_event = '';
     public string $public_event = '';
     public string $hosted_by = '';
+    public string $announce = '';
     public bool $form_data_changed = false;
 
     public function rules(): array
@@ -64,6 +66,7 @@ class ShowCreate extends Component
             'external_event' => ['sometimes', 'boolean'],
             'public_event' => ['sometimes', 'boolean'],
             'hosted_by' => ['required', 'int'],
+            'announce' => ['required', 'boolean'],
         ];
     }
 
@@ -80,7 +83,7 @@ class ShowCreate extends Component
     {
         $validatedData = $this->validate();
 
-        Event::create([
+        $event = Event::create([
             'name' => $validatedData['name'],
             'hosted_by' => $validatedData['hosted_by'],
             'featured_image_url' => $validatedData['featured_image_url'],
@@ -100,6 +103,10 @@ class ShowCreate extends Component
             'external_event' => (bool)$validatedData['external_event'],
             'public_event' => (bool)$validatedData['public_event'],
         ]);
+
+        if ($this->announce) {
+            $event->notify(new NewEvent($event));
+        }
 
         session()->flash('alert', ['type' => 'success', 'message' => 'Event successfully created!']);
 

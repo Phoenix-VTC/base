@@ -34,6 +34,7 @@ return [
         'token' => env('DISCORD_BOT_TOKEN'),
         'recruitment_channel_id' => env('DISCORD_RECRUITMENT_CHANNEL_ID'),
         'hr_channel_id' => env('DISCORD_HR_CHANNEL_ID'),
+        'member_events_channel_id' => env('DISCORD_MEMBER_EVENTS_CHANNEL_ID'),
     ],
 
 ];
