@@ -12,7 +12,7 @@
     <div class="space-y-2">
         <span class="flex">{{ $event->name }}</span>
         <span class="flex text-4xl">
-            {{ $event->start_date->format('d M H:m') }}
+            {{ $event->start_date->format('d M H:i') }}
         </span>
         <span class="flex text-2xl">
             Hosted by&nbsp;
@@ -70,7 +70,7 @@
             <div class="flex space-x-2 text-sm font-medium text-white">
                 <span>
                     <strong>{{ $event->points }}</strong>
-                    Event Points
+                    Event XP
                 </span>
             </div>
         @endauth
@@ -86,7 +86,7 @@
         {{-- Event Description --}}
         @if($event->description)
             <x-info-card title="Description">
-                <div class="prose lg:prose-lg">
+                <div class="prose">
                     {!! $event->description !!}
                 </div>
             </x-info-card>
@@ -95,9 +95,16 @@
         @if($event->tmp_description)
             {{-- TruckersMP Event Description --}}
             <x-info-card title="TruckersMP Event Description">
-                <div class="prose lg:prose-lg">
+                <div class="prose">
                     {!! $event->tmp_description !!}
                 </div>
+            </x-info-card>
+        @endif
+
+        @if($event->map_image_url)
+            {{-- Map Image --}}
+            <x-info-card title="Route Map">
+                <img src="{{ $event->map_image_url }}" alt="{{ $event->name }} Route Map"/>
             </x-info-card>
         @endif
     </div>
@@ -108,28 +115,36 @@
         <div class="rounded-lg overflow-hidden shadow">
             <x-info-card title="Event Information">
                 <dl class="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2">
-                    <div class="sm:col-span-2">
-                        <dt class="text-sm font-medium text-gray-500">Game</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $event->game(false) ?? 'Unknown Game' }}</dd>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <dt class="text-sm font-medium text-gray-500">Server</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $event->server ?? 'Unknown Game' }}</dd>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <dt class="text-sm font-medium text-gray-500">Departure Location</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $event->departure_location }}</dd>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <dt class="text-sm font-medium text-gray-500">Arrival Location</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $event->arrival_location }}</dd>
-                    </div>
-                    @isset($event->distance)
+                    @if($event->game())
+                        <div class="sm:col-span-2">
+                            <dt class="text-sm font-medium text-gray-500">Game</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $event->game() }}</dd>
+                        </div>
+                    @endif
+                    @if($event->server)
+                        <div class="sm:col-span-2">
+                            <dt class="text-sm font-medium text-gray-500">Server</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $event->server }}</dd>
+                        </div>
+                    @endif
+                    @if($event->departure_location)
+                        <div class="sm:col-span-2">
+                            <dt class="text-sm font-medium text-gray-500">Departure Location</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $event->departure_location }}</dd>
+                        </div>
+                    @endif
+                    @if($event->arrival_location)
+                        <div class="sm:col-span-2">
+                            <dt class="text-sm font-medium text-gray-500">Arrival Location</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $event->arrival_location }}</dd>
+                        </div>
+                    @endif
+                    @if($event->distance)
                         <div class="sm:col-span-2">
                             <dt class="text-sm font-medium text-gray-500">Distance</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $event->distance . ucwords($event->distance_metric) }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $event->distance }} {{ ucwords($event->distance_metric) }}</dd>
                         </div>
-                    @endisset
+                    @endif
                     <div class="sm:col-span-2">
                         <dt class="text-sm font-medium text-gray-500">Required DLCs</dt>
                         <dd class="mt-1 text-sm text-gray-900">{{ $event->required_dlcs ?: 'None' }}</dd>
@@ -139,7 +154,7 @@
         </div>
 
         {{-- Attending Options --}}
-        @auth
+        @if(!$event->is_past && Auth::check())
             <div class="rounded-lg overflow-hidden shadow">
                 <x-info-card title="Will you be attending?">
                     <div class="flex flex-col justify-stretch space-y-3">
@@ -163,7 +178,7 @@
                     </div>
                 </x-info-card>
             </div>
-        @endauth
+        @endif
 
         {{-- Attendees --}}
         @if($event->attendees->count())

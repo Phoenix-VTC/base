@@ -8,12 +8,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class Event extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+    use Notifiable;
 
     /**
      * The attributes that aren't mass assignable.
@@ -33,6 +37,7 @@ class Event extends Model
         'featured' => 'boolean',
         'external_event' => 'boolean',
         'public_event' => 'boolean',
+        'completed' => 'boolean',
     ];
 
     public static function getFeaturedEvents()
@@ -53,6 +58,8 @@ class Event extends Model
     // TODO: Find a better way to do this. Perhaps integrate it with the Game model.
     public function getDistanceMetricAttribute(): string
     {
+        $unit = 'unknown';
+
         if ($this->game_id === 1) {
             $unit = 'kilometres';
         }
@@ -61,7 +68,7 @@ class Event extends Model
             $unit = 'miles';
         }
 
-        return "$this->distance $unit";
+        return $unit;
     }
 
     public function getTMPDescriptionAttribute($value): string
@@ -106,7 +113,7 @@ class Event extends Model
         return Str::slug($this->name);
     }
 
-    public function game(bool $abbreviation = true): string
+    public function game(bool $abbreviation = true): ?string
     {
         if (!$abbreviation) {
             return Game::getQualifiedName($this->game_id);
@@ -118,5 +125,65 @@ class Event extends Model
     public function getIsHighRewardingAttribute(): bool
     {
         return ($this->points >= 400);
+    }
+
+    public function getIsPastAttribute(): bool
+    {
+        return $this->start_date->isPast();
+    }
+
+    /**
+     * Route notifications for the Discord Member Events channel.
+     *
+     * @return string
+     */
+    public function routeNotificationForDiscord(): string
+    {
+        return config('services.discord.member_events_channel_id');
+    }
+
+    /**
+     * Get the total amount of events attended.
+     *
+     * Cached for 24 hours.
+     *
+     * @return int
+     */
+    public static function getTotalEventsAttended(): int
+    {
+        return Cache::remember("total_events_attended", 86400, function () {
+            return self::where('external_event', true)->count();
+        });
+    }
+
+    /**
+     * Get the total amount of events hosted.
+     *
+     * Cached for 24 hours.
+     *
+     * @return int
+     */
+    public static function getTotalEventsHosted(): int
+    {
+        return Cache::remember("total_events_hosted", 86400, function () {
+            return self::where('external_event', false)->count();
+        });
+    }
+
+    /**
+     * Get the total distance driven in events, in kilometres.
+     *
+     * Cached for 24 hours.
+     *
+     * @return int
+     */
+    public static function getTotalEventsDistance(): int
+    {
+        return Cache::remember("total_event_distance", 86400, function () {
+            $ets = self::where('game_id', 1)->sum('distance');
+            $ats = self::where('game_id', 2)->sum('distance') * 1.60934;
+
+            return $ets + $ats;
+        });
     }
 }

@@ -8,7 +8,7 @@
 @endsection
 
 @section('hero-description')
-    Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua.
+    At Phoenix we love events and aim to attend lots of public events each month, as well as hosting our own monthly public convoy and regular private member convoys.
 @endsection
 
 @section('hero-image', 'https://phoenixvtc.com/img/fc4b88a6-7864-41d8-a79b-eda11a2b915c/euro-truck-simulator-2-screenshot-20210108-14360243-edit.png')
@@ -23,8 +23,9 @@
                     All Events
                 </p>
                 <p class="mt-5 mx-auto max-w-prose text-xl text-gray-500">
-                    Phasellus lorem quam molestie id quisque diam aenean nulla in. Accumsan in quis quis
-                    nunc, ullamcorper malesuada. Eleifend condimentum id viverra nulla.
+                    Browse through all of our upcoming events here.
+                    <br>
+                    If you're a member, make sure that you are logged in to view member-only events.
                 </p>
             </div>
             <div
@@ -42,11 +43,12 @@
     </div>
 
     <livewire:events.components.call-to-action
-        tag="Lorem Ipsum"
+        tag="Sounds good?"
         title="Join Phoenix"
-        button-text="Lorem Ipsum"
-        button-url="#"
-        background-color="bg-gray-800"
-        description="Lorem Ipsum">
+        button-text="Apply Now"
+        button-url="https://phoenixvtc.com/en/apply"
+        background-color="bg-orange-600"
+        text-color="text-gray-100"
+        description="We're a fairly new VTC, founded by experienced members of the VTC Community, who believe in forward-thinking and strive for excellence.">
     </livewire:events.components.call-to-action>
 </div>

@@ -2,20 +2,26 @@
 
 namespace App\Models;
 
+use Bavix\Wallet\Interfaces\Wallet;
+use Bavix\Wallet\Traits\HasWallet;
+use Bavix\Wallet\Traits\HasWallets;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Wallet
 {
     use HasFactory;
     use Notifiable;
     use HasRoles;
     use SoftDeletes;
     use HasRoles;
+    use HasWallet;
+    use HasWallets;
 
     /**
      * The attributes that are mass assignable.
@@ -62,6 +68,14 @@ class User extends Authenticatable
     public function vacation_requests(): HasMany
     {
         return $this->hasMany(VacationRequest::class);
+    }
+
+    /**
+     * Get the driver application of the user.
+     */
+    public function application(): BelongsTo
+    {
+        return $this->belongsTo(Application::class);
     }
 
     /**
