@@ -22,12 +22,12 @@ class SeedCities extends Command
      *
      * @var string
      */
-    protected $description = 'Seed the cities table with';
+    protected $description = 'Seed the cities table with the Trucky cities API';
 
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
     public function handle(): void
     {
