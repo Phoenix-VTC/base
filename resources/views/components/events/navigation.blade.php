@@ -37,12 +37,19 @@
                             Home
                         </a>
 
-                        @guest
-                            <a href="https://phoenixvtc.com"
+                        @auth
+                            <a href="{{ route('dashboard') }}"
                                class="font-medium text-white hover:text-gray-200">
-                                Back to our main website
+                                PhoenixBase
                             </a>
+                        @endauth
 
+                        <a href="{{ route('events.leaderboard') }}"
+                           class="font-medium text-white hover:text-gray-200">
+                            Leaderboard
+                        </a>
+
+                        @guest
                             <a href="{{ route('events.login') }}"
                                class="font-medium text-orange-500 hover:text-orange-600">
                                 Member Access
@@ -50,11 +57,6 @@
                         @endguest
 
                         @auth
-                            <a href="{{ route('dashboard') }}"
-                               class="font-medium text-white hover:text-gray-200">
-                                Back to PhoenixBase
-                            </a>
-
                             <a class="font-medium text-white">
                                 Logged in as
                                 <span class="font-bold text-orange-500">{{ Auth::user()->username }}</span>
@@ -72,9 +74,9 @@
                 <div
                     class="rounded-lg shadow-md bg-gray-900 ring-1 ring-black ring-opacity-5 overflow-hidden">
                     <div class="px-5 pt-4 flex items-center justify-between">
-                        <div>
+                        <a href="https://phoenixvtc.com">
                             <x-logo class="h-8 w-auto"/>
-                        </div>
+                        </a>
                         <div class="-mr-2">
                             <button @click="open = false" type="button"
                                     class="bg-gray-900 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
@@ -95,12 +97,19 @@
                                 Home
                             </a>
 
-                            @guest
-                                <a href="https://phoenixvtc.com"
+                            @auth
+                                <a href="{{ route('dashboard') }}"
                                    class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-900 hover:bg-gray-50">
-                                    Back to our main website
+                                    PhoenixBase
                                 </a>
+                            @endauth
 
+                            <a href="{{ route('events.leaderboard') }}"
+                               class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-900 hover:bg-gray-50">
+                                Leaderboard
+                            </a>
+
+                            @guest
                                 <a href="{{ route('events.login') }}"
                                    class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-900 hover:bg-gray-50">
                                     Member Access
@@ -108,13 +117,7 @@
                             @endguest
 
                             @auth
-                                <a href="{{ route('dashboard') }}"
-                                   class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-900 hover:bg-gray-50">
-                                    Back to PhoenixBase
-                                </a>
-
-                                <a
-                                    class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-900 hover:bg-gray-50">
+                                <a class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-900 hover:bg-gray-50">
                                     Logged in as
                                     <span class="font-bold text-orange-500">{{ Auth::user()->username }}</span>
                                 </a>
