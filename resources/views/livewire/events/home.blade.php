@@ -6,7 +6,9 @@
 @endsection
 
 @section('hero-description')
-    Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua.
+    At Phoenix we love events and aim to attend lots of public events each month, as well as hosting our own monthly public convoy and regular private member convoys.
+    <br><br>
+    Feel free to through our upcoming events here.
 @endsection
 
 @section('hero-image', 'https://phoenixvtc.com/img/fc4b88a6-7864-41d8-a79b-eda11a2b915c/euro-truck-simulator-2-screenshot-20210108-14360243-edit.png')
@@ -21,8 +23,8 @@
                     Featured Events
                 </p>
                 <p class="mt-5 mx-auto max-w-prose text-xl text-gray-500">
-                    Phasellus lorem quam molestie id quisque diam aenean nulla in. Accumsan in quis quis
-                    nunc, ullamcorper malesuada. Eleifend condimentum id viverra nulla.
+                    Looking for events that will be a blast to attend? These events are what you're looking for!
+                    We've selected the best upcoming events for you, and marked them as featured.
                 </p>
             </div>
             <div
@@ -38,8 +40,10 @@
                    href="{{ route('events.overview') }}">
                     View all events
                     {{-- chevron-double-right --}}
-                    <svg class="ml-3 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                    <svg class="ml-3 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
                     </svg>
                 </a>
             </div>
@@ -64,11 +68,13 @@
             </div>
             <div class="text-center mt-12">
                 <a class="inline-flex items-center px-6 py-3 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
-                href="{{ route('events.overview') }}">
+                   href="{{ route('events.overview') }}">
                     View all events
                     {{-- chevron-double-right --}}
-                    <svg class="ml-3 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                    <svg class="ml-3 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
                     </svg>
                 </a>
             </div>
