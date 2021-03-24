@@ -141,4 +141,49 @@ class Event extends Model
     {
         return config('services.discord.member_events_channel_id');
     }
+
+    /**
+     * Get the total amount of events attended.
+     *
+     * Cached for 24 hours.
+     *
+     * @return int
+     */
+    public static function getTotalEventsAttended(): int
+    {
+        return Cache::remember("total_events_attended", 86400, function () {
+            return self::where('external_event', true)->count();
+        });
+    }
+
+    /**
+     * Get the total amount of events hosted.
+     *
+     * Cached for 24 hours.
+     *
+     * @return int
+     */
+    public static function getTotalEventsHosted(): int
+    {
+        return Cache::remember("total_events_hosted", 86400, function () {
+            return self::where('external_event', false)->count();
+        });
+    }
+
+    /**
+     * Get the total distance driven in events, in kilometres.
+     *
+     * Cached for 24 hours.
+     *
+     * @return int
+     */
+    public static function getTotalEventsDistance(): int
+    {
+        return Cache::remember("total_event_distance", 86400, function () {
+            $ets = self::where('game_id', 1)->sum('distance');
+            $ats = self::where('game_id', 2)->sum('distance') * 1.60934;
+
+            return $ets + $ats;
+        });
+    }
 }
