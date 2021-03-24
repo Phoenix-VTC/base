@@ -163,7 +163,7 @@ class ShowCreate extends Component
 
         $this->name = $this->tmp_event_data['response']['name'];
         $this->featured_image_url = $this->tmp_event_data['response']['banner'];
-        $this->map_image_url = $this->tmp_event_data['response']['map'];
+        $this->map_image_url = $this->tmp_event_data['response']['map'] ?? '';
         $this->tmp_event_description = Markdown::convertToHtml($this->tmp_event_data['response']['description']);
         $this->server = $this->tmp_event_data['response']['server']['name'];
         $this->required_dlcs = implode(',', $this->tmp_event_data['response']['dlcs']);
