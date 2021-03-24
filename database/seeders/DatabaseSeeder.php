@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             EventAttendeeSeeder::class,
             CitySeeder::class,
             CargoSeeder::class,
+            CompanySeeder::class,
         ]);
     }
 }
