@@ -35,7 +35,7 @@ class CargoFactory extends Factory
             'name' => $this->faker->word,
             'dlc' => $dlc ?? null,
             'mod' => $mod ?? null,
-            'weight' => random_int(0, 60),
+            'weight' => random_int(1, 60),
             'game_id' => random_int(1, 2),
             'world_of_trucks' => (bool)random_int(0, 1),
         ];
