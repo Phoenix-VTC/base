@@ -17,7 +17,7 @@
             <p class="mt-2 text-white text-3xl font-extrabold tracking-tight sm:text-4xl">
                 {{ $title }}
             </p>
-            <p class="mt-3 text-lg text-gray-300">
+            <p class="mt-3 text-lg {{ $textColor ?? 'text-gray-300' }}">
                 {!! $description !!}
             </p>
             @if($buttonText)
