@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             ApplicationSeeder::class,
             EventSeeder::class,
             EventAttendeeSeeder::class,
+            CitySeeder::class,
         ]);
     }
 }
