@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             CargoSeeder::class,
             CompanySeeder::class,
+            JobSeeder::class,
         ]);
     }
 }
