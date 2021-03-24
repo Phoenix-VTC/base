@@ -39,8 +39,14 @@
                     @break
                 @endswitch
             </div>
-            <div class="ml-3">
-                <p class="text-sm font-medium @switch(session('alert.type')) @case('info') text-blue-800 @break @case('success') text-green-800 @break @case('warning') text-yellow-800 @break @case('danger') text-red-800 @break @default text-gray-800 @endswitch">
+            <div
+                class="ml-3 @switch(session('alert.type')) @case('info') text-blue-800 @break @case('success') text-green-800 @break @case('warning') text-yellow-800 @break @case('danger') text-red-800 @break @default text-gray-800 @endswitch">
+                @if(session('alert.title'))
+                    <h3 class="mb-2 text-sm font-bold">
+                        {{ session('alert.title') }}
+                    </h3>
+                @endif
+                <p class="text-sm font-medium">
                     {!! session('alert.message') !!}
                 </p>
             </div>

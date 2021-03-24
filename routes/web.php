@@ -4,6 +4,7 @@ use App\Http\Livewire\Auth\ShowWelcomeForm;
 use App\Http\Livewire\Events\Management\ShowEdit as EventsManagementShowEdit;
 use App\Http\Livewire\Events\Management\ShowCreate as EventsManagementShowCreate;
 use App\Http\Livewire\Events\Management\ShowIndex as EventsManagementShowIndex;
+use App\Http\Livewire\Events\Management\ShowAttendeeManagement as EventsManagementShowAttendeeManagement;
 use \App\Http\Livewire\Recruitment\ShowApplication;
 use \App\Http\Livewire\Recruitment\ShowIndex as RecruitmentShowIndex;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -58,6 +59,7 @@ Route::prefix('event-management')->name('event-management.')->middleware(['auth'
     Route::get('/', EventsManagementShowIndex::class)->name('index');
     Route::get('create', EventsManagementShowCreate::class)->name('create');
     Route::get('{event}/edit', EventsManagementShowEdit::class)->name('edit');
+    Route::get('{id}/manage-attendees', EventsManagementShowAttendeeManagement::class)->name('attendee-management');
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');

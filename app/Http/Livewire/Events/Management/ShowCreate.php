@@ -3,19 +3,23 @@
 namespace App\Http\Livewire\Events\Management;
 
 use App\Models\Event;
+use App\Notifications\Events\NewEvent;
 use Carbon\Carbon;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Component;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class ShowCreate extends Component
 {
     public Collection $tmp_event_data;
+
+    public EloquentCollection $manage_event_users;
 
     public ?string $tmp_event_url = null;
     public ?string $tmp_event_id = null;
@@ -36,6 +40,8 @@ class ShowCreate extends Component
     public string $featured = '';
     public string $external_event = '';
     public string $public_event = '';
+    public string $hosted_by = '';
+    public string $announce = '';
     public bool $form_data_changed = false;
 
     public function rules(): array
@@ -43,24 +49,30 @@ class ShowCreate extends Component
         return [
             'tmp_event_url' => ['required_without:name'],
             'tmp_event_id' => ['required_without:name', 'integer'],
-            'name' => ['required_without:tmp_event_id', 'string'],
-            'featured_image_url' => ['required_without:tmp_event_id', 'url'],
-            'map_image_url' => ['required_without:tmp_event_id', 'url'],
-            'description' => ['required_without:tmp_event_id', 'string'],
-            'server' => ['required_without:tmp_event_id', 'string'],
-            'required_dlcs' => ['required_without:tmp_event_id', 'string'],
-            'departure_location' => ['required_without:tmp_event_id', 'string'],
-            'arrival_location' => ['required_without:tmp_event_id', 'string'],
-            'start_date' => ['required_without:tmp_event_id', 'date'],
+            'name' => ['required', 'string'],
+            'featured_image_url' => ['required', 'url', 'starts_with:https://'],
+            'map_image_url' => ['sometimes', 'url', 'starts_with:https://'],
+            'description' => ['required', 'string'],
+            'server' => ['sometimes', 'string'],
+            'required_dlcs' => ['sometimes', 'string'],
+            'departure_location' => ['sometimes', 'string'],
+            'arrival_location' => ['sometimes', 'string'],
+            'start_date' => ['required', 'date'],
             'distance' => ['sometimes', 'integer', 'min:1'],
             'points' => ['required', 'integer', 'min:100', 'max:500'],
-            'game_id' => ['required_without:tmp_event_id'],
+            'game_id' => ['sometimes', 'integer'],
             'published' => ['required', 'boolean'],
             'featured' => ['sometimes', 'boolean'],
             'external_event' => ['sometimes', 'boolean'],
             'public_event' => ['sometimes', 'boolean'],
+            'hosted_by' => ['required', 'int'],
+            'announce' => ['required', 'boolean'],
         ];
     }
+
+    protected array $messages = [
+        'starts_with' => 'The URL must begin with https://',
+    ];
 
     public function render(): View
     {
@@ -71,9 +83,9 @@ class ShowCreate extends Component
     {
         $validatedData = $this->validate();
 
-        Event::create([
+        $event = Event::create([
             'name' => $validatedData['name'],
-            'hosted_by' => Auth::id(),
+            'hosted_by' => $validatedData['hosted_by'],
             'featured_image_url' => $validatedData['featured_image_url'],
             'map_image_url' => $validatedData['map_image_url'],
             'description' => $validatedData['description'],
@@ -82,15 +94,19 @@ class ShowCreate extends Component
             'departure_location' => $validatedData['departure_location'],
             'arrival_location' => $validatedData['arrival_location'],
             'start_date' => $validatedData['start_date'],
-            'distance' => (int)$validatedData['distance'],
+            'distance' => (int)$validatedData['distance'] ?: null,
             'points' => (int)$validatedData['points'],
             'game_id' => (int)$validatedData['game_id'],
-            'tmp_event_id' => $this->tmp_event_id ?? null,
+            'tmp_event_id' => $this->tmp_event_id ?: null,
             'published' => (bool)$validatedData['published'],
             'featured' => (bool)$validatedData['featured'],
             'external_event' => (bool)$validatedData['external_event'],
             'public_event' => (bool)$validatedData['public_event'],
         ]);
+
+        if ($this->announce) {
+            $event->notify(new NewEvent($event));
+        }
 
         session()->flash('alert', ['type' => 'success', 'message' => 'Event successfully created!']);
 
@@ -99,6 +115,9 @@ class ShowCreate extends Component
 
     public function mount(): void
     {
+        $this->manage_event_users = Permission::findByName('manage events')->users;
+        $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('super admin')->users);
+
         if ($this->tmp_event_id) {
             $this->tmp_event_data = $this->getTruckersMPEventData();
         }

@@ -4,20 +4,20 @@ namespace App\Http\Livewire\Events\Management;
 
 use App\Models\Event;
 use Carbon\Carbon;
-use GrahamCampbell\Markdown\Facades\Markdown;
 use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class ShowEdit extends Component
 {
     public Event $event;
-    public Collection $tmp_event_data;
 
-    public ?string $tmp_event_url = null;
-    public ?string $tmp_event_id = null;
-    public ?string $tmp_event_description = '';
+    public EloquentCollection $manage_event_users;
+
     public string $name = '';
     public string $featured_image_url = '';
     public string $map_image_url = '';
@@ -27,38 +27,41 @@ class ShowEdit extends Component
     public string $departure_location = '';
     public string $arrival_location = '';
     public string $start_date = '';
-    public string $distance = '';
+    public ?string $distance = '';
     public string $points = '';
     public string $game_id = '';
     public string $published = '1';
     public string $featured = '';
     public string $external_event = '';
     public string $public_event = '';
-    public bool $form_data_changed = false;
+    public string $hosted_by = '';
 
     public function rules(): array
     {
         return [
-            'tmp_event_url' => ['required_without:name'],
-            'tmp_event_id' => ['required_without:name', 'integer'],
-            'name' => ['required_without:tmp_event_id', 'string'],
-            'featured_image_url' => ['required_without:tmp_event_id', 'url'],
-            'map_image_url' => ['required_without:tmp_event_id', 'url'],
-            'description' => ['required_without:tmp_event_id', 'string'],
-            'server' => ['required_without:tmp_event_id', 'string'],
-            'required_dlcs' => ['required_without:tmp_event_id', 'string'],
-            'departure_location' => ['required_without:tmp_event_id', 'string'],
-            'arrival_location' => ['required_without:tmp_event_id', 'string'],
-            'start_date' => ['required_without:tmp_event_id', 'date'],
+            'name' => ['required', 'string'],
+            'featured_image_url' => ['required', 'url', 'starts_with:https://'],
+            'map_image_url' => ['sometimes', 'url', 'starts_with:https://'],
+            'description' => ['required', 'string'],
+            'server' => ['sometimes', 'string'],
+            'required_dlcs' => ['sometimes', 'string'],
+            'departure_location' => ['sometimes', 'string'],
+            'arrival_location' => ['sometimes', 'string'],
+            'start_date' => ['required', 'date'],
             'distance' => ['sometimes', 'integer', 'min:1'],
             'points' => ['required', 'integer', 'min:100', 'max:500'],
-            'game_id' => ['required_without:tmp_event_id'],
+            'game_id' => ['sometimes', 'integer'],
             'published' => ['required', 'boolean'],
             'featured' => ['sometimes', 'boolean'],
             'external_event' => ['sometimes', 'boolean'],
             'public_event' => ['sometimes', 'boolean'],
+            'hosted_by' => ['required', 'int'],
         ];
     }
+
+    protected array $messages = [
+        'starts_with' => 'The URL must begin with https://',
+    ];
 
     public function render()
     {
@@ -79,14 +82,14 @@ class ShowEdit extends Component
         $event->departure_location = $validatedData['departure_location'];
         $event->arrival_location = $validatedData['arrival_location'];
         $event->start_date = $validatedData['start_date'];
-        $event->distance = (int)$validatedData['distance'];
+        $event->distance = (int)$validatedData['distance'] ?: null;
         $event->points = (int)$validatedData['points'];
         $event->game_id = (int)$validatedData['game_id'];
         $event->published = (bool)$validatedData['published'];
-        $event->tmp_event_id = $validatedData['tmp_event_id'] ?: null;
         $event->featured = (bool)$validatedData['featured'];
         $event->external_event = (bool)$validatedData['external_event'];
         $event->public_event = (bool)$validatedData['public_event'];
+        $event->hosted_by = (int)$validatedData['hosted_by'];
 
         $event->save();
 
@@ -99,10 +102,13 @@ class ShowEdit extends Component
     {
         $this->event = $event;
 
-        $this->tmp_event_id = $this->event->tmp_event_id;
+        $this->manage_event_users = Permission::findByName('manage events')->users;
+        $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('super admin')->users);
+
         $this->name = $this->event->name;
         $this->featured_image_url = $this->event->featured_image_url;
         $this->map_image_url = $this->event->map_image_url;
+        $this->description = $this->event->description;
         $this->server = $this->event->server;
         $this->required_dlcs = $this->event->required_dlcs;
         $this->departure_location = $this->event->departure_location;
@@ -115,32 +121,11 @@ class ShowEdit extends Component
         $this->featured = $this->event->featured;
         $this->external_event = $this->event->external_event;
         $this->public_event = $this->event->public_event;
+        $this->hosted_by = $this->event->hosted_by;
 
-        if ($this->tmp_event_id) {
-            $this->tmp_event_data = $this->getTruckersMPEventData();
+        if ($this->event->is_past) {
+            session()->flash('alert', ['type' => 'info', 'title' => 'Heads-up!', 'message' => "You're editing an event that is in the past."]);
         }
-    }
-
-    public function updated($propertyName): void
-    {
-        $this->tmp_event_id = $this->parseTruckersMPEventID($this->tmp_event_url, 'https://truckersmp.com/events/', '-');
-
-        if ($this->tmp_event_id && $this->form_data_changed === false) {
-            $this->setTruckersMPFormData();
-        }
-
-        $this->validateOnly($propertyName);
-    }
-
-    private function parseTruckersMPEventID($string, $start, $end)
-    {
-        $string = ' ' . $string;
-        $ini = strpos($string, $start);
-        if ($ini == 0) return '';
-        $ini += strlen($start);
-        $len = strpos($string, $end, $ini) - $ini;
-
-        return (int)substr($string, $ini, $len);
     }
 
     public function getTruckersMPEventData(): Collection
@@ -153,29 +138,6 @@ class ShowEdit extends Component
 
             return collect($response);
         });
-    }
-
-    public function setTruckersMPFormData(): void
-    {
-        $this->tmp_event_data = $this->getTruckersMPEventData();
-
-        $this->name = $this->tmp_event_data['response']['name'];
-        $this->featured_image_url = $this->tmp_event_data['response']['banner'];
-        $this->map_image_url = $this->tmp_event_data['response']['map'];
-        $this->tmp_event_description = Markdown::convertToHtml($this->tmp_event_data['response']['description']);
-        $this->server = $this->tmp_event_data['response']['server']['name'];
-        $this->required_dlcs = implode(',', $this->tmp_event_data['response']['dlcs']);
-        $this->departure_location = $this->tmp_event_data['response']['departure']['location'] . ", " . $this->tmp_event_data['response']['departure']['city'];
-        $this->arrival_location = $this->tmp_event_data['response']['arrive']['location'] . ", " . $this->tmp_event_data['response']['arrive']['city'];
-        $this->start_date = Carbon::parse($this->tmp_event_data['response']['start_at'])->format('Y-m-d\TH:i');
-        if ($this->tmp_event_data['response']['game'] === 'ETS2') {
-            $this->game_id = 1;
-        }
-        if ($this->tmp_event_data['response']['game'] === 'ATS') {
-            $this->game_id = 2;
-        }
-
-        $this->form_data_changed = true;
     }
 
     public function delete()
