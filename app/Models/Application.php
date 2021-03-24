@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 
@@ -32,6 +33,14 @@ class Application extends Model
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'claimed_by');
+    }
+
+    /**
+     * Get the user, if the application is accepted & not deleted.
+     */
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class);
     }
 
     /**
