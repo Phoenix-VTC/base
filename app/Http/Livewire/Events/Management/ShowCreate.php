@@ -166,7 +166,7 @@ class ShowCreate extends Component
         $this->map_image_url = $this->tmp_event_data['response']['map'] ?? '';
         $this->tmp_event_description = Markdown::convertToHtml($this->tmp_event_data['response']['description']);
         $this->server = $this->tmp_event_data['response']['server']['name'];
-        $this->required_dlcs = implode(',', $this->tmp_event_data['response']['dlcs']);
+        $this->required_dlcs = implode(', ', $this->tmp_event_data['response']['dlcs']);
         $this->departure_location = $this->tmp_event_data['response']['departure']['location'] . ", " . $this->tmp_event_data['response']['departure']['city'];
         $this->arrival_location = $this->tmp_event_data['response']['arrive']['location'] . ", " . $this->tmp_event_data['response']['arrive']['city'];
         $this->start_date = Carbon::parse($this->tmp_event_data['response']['start_at'])->format('Y-m-d\TH:i');
