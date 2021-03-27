@@ -1,5 +1,20 @@
 {{-- Nothing in the world is as soft and yielding as water. --}}
 
+@push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+            integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+            crossorigin="anonymous"></script>
+
+    <script>
+        // Get the local start date & time
+        const local = moment.utc('{{ $event->start_date }}').local();
+
+        window.onload = function () {
+            document.getElementById('start_date').innerHTML = local.format('DD MMM HH:mm');
+        }
+    </script>
+@endpush
+
 @php
     if (isset($event->truckersmp_event_data['response']['attendances'])) {
         $tmp_attendees = array_merge($event->truckersmp_event_data['response']['attendances']['confirmed_users'], $event->truckersmp_event_data['response']['attendances']['unsure_users']);
@@ -11,9 +26,7 @@
 @section('hero-title')
     <div class="space-y-2">
         <span class="flex">{{ $event->name }}</span>
-        <span class="flex text-4xl">
-            {{ $event->start_date->format('d M H:i') }}
-        </span>
+        <span class="text-4xl" id="start_date"></span>
         <span class="flex text-2xl">
             Hosted by&nbsp;
             <span class="text-orange-600">
