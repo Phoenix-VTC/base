@@ -52,7 +52,7 @@ class ShowCreate extends Component
             'name' => ['required', 'string'],
             'featured_image_url' => ['required', 'url', 'starts_with:https://'],
             'map_image_url' => ['sometimes', 'url', 'starts_with:https://'],
-            'description' => ['required', 'string'],
+            'description' => ['required_without:tmp_event_id', 'string'],
             'server' => ['sometimes', 'string'],
             'required_dlcs' => ['sometimes', 'string'],
             'departure_location' => ['sometimes', 'string'],

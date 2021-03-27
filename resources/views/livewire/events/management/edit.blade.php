@@ -44,6 +44,8 @@
         <div class="space-y-8 divide-y divide-gray-200">
             <div>
                 <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <input wire:model.lazy="tmp_event_id" type="hidden"/>
+
                     <x-input.group label="Event Name" for="name" :error="$errors->first('name')">
                         <x-input.text wire:model.lazy="name" type="text" id="name"
                                       :error="$errors->first('name')" placeholder="Kenji's Weekly Drive"/>
