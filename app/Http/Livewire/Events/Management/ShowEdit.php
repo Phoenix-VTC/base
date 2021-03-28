@@ -18,6 +18,8 @@ class ShowEdit extends Component
 
     public EloquentCollection $manage_event_users;
 
+    public ?int $tmp_event_id = null;
+
     public string $name = '';
     public string $featured_image_url = '';
     public string $map_image_url = '';
@@ -42,7 +44,7 @@ class ShowEdit extends Component
             'name' => ['required', 'string'],
             'featured_image_url' => ['required', 'url', 'starts_with:https://'],
             'map_image_url' => ['sometimes', 'url', 'starts_with:https://'],
-            'description' => ['required', 'string'],
+            'description' => ['required_without:tmp_event_id', 'string'],
             'server' => ['sometimes', 'string'],
             'required_dlcs' => ['sometimes', 'string'],
             'departure_location' => ['sometimes', 'string'],
@@ -104,6 +106,8 @@ class ShowEdit extends Component
 
         $this->manage_event_users = Permission::findByName('manage events')->users;
         $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('super admin')->users);
+
+        $this->tmp_event_id = $this->event->tmp_event_id ?? null;
 
         $this->name = $this->event->name;
         $this->featured_image_url = $this->event->featured_image_url;
