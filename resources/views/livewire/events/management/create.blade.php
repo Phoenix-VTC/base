@@ -132,7 +132,7 @@
                                       :error="$errors->first('arrival_location')" placeholder="EuroAcres, Groningen"/>
                     </x-input.group>
 
-                    <x-input.group label="Start Date and Time" for="start_date" :error="$errors->first('start_date')">
+                    <x-input.group label="Start Date and Time (UTC)" for="start_date" :error="$errors->first('start_date')" helpText="Current UTC date & time: <b>{{ Carbon\Carbon::now('UTC') }}</b>">
                         <x-input.date id="start_date" wire:model.lazy="start_date" :error="$errors->first('start_date')"
                                       trailing-icon="o-calendar"/>
                     </x-input.group>

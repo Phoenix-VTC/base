@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Events\Management;
 
 use App\Models\Event;
+use Carbon\Carbon;
 use Illuminate\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -19,7 +20,16 @@ class ShowIndex extends Component
     public function render(): View
     {
         return view('livewire.events.management.index', [
-            'events' => Event::with('host')->orderBy('start_date')->paginate(10),
+            'upcoming_events' => Event::with('host')
+                ->where('start_date', '>=', Carbon::now()->toDateTimeString())
+                ->orderBy('start_date')
+                ->paginate(10),
+
+            'past_events' => Event::with('host')
+                ->where('start_date', '<=', Carbon::now()->toDateTimeString())
+                ->orderByDesc('start_date')
+                ->limit(20)
+                ->get()
         ])->extends('layouts.app');
     }
 }
