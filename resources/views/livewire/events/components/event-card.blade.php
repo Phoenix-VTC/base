@@ -77,11 +77,11 @@
                 @endif
             @endauth
         </div>
-        @isset($event->truckersmp_event_vtc_data)
+        @isset($event->tmp_event_id)
             <div class="mt-6 flex items-center">
                 <div class="flex-shrink-0">
                     <img class="h-10 w-10 rounded-full"
-                         src="{{ $event->truckersmp_event_vtc_data['response']['logo'] ?? '' }}"
+                         src="{{ $event->truckersmp_event_vtc_data['response']['logo'] ?? asset('svg/unknown_avatar.svg') }}"
                          alt="{{ $event->truckersmp_event_vtc_data['response']['name'] ?? 'Unknown VTC' }}">
                 </div>
                 <div class="ml-3">
@@ -101,7 +101,7 @@
                 <div class="flex-shrink-0">
                     <a href="{{ route('events.show', ['id' => $event->id, 'slug' => $event->slug]) }}">
                         <img class="h-10 w-10 rounded-full"
-                             src="{{ $event->host->profile_picture ?? '' }}"
+                             src="{{ $event->host->profile_picture ?? asset('svg/unknown_avatar.svg') }}"
                              alt="{{ $event->host->username ?? 'Unknown User' }}">
                     </a>
                 </div>
