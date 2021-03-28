@@ -23,7 +23,11 @@
                     {{ $event->name }}
                 </p>
                 <div class="text-base text-gray-500 prose-sm">
-                    {!! Str::words(strip_tags($event->description), 15) !!}
+                    @if($event->description)
+                        {!! Str::words(strip_tags($event->description), 15) !!}
+                    @elseif($event->tmp_description)
+                        {!! Str::words(strip_tags($event->tmp_description), 15) !!}
+                    @endif
                 </div>
             </a>
         </div>
