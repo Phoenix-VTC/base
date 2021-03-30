@@ -13,7 +13,7 @@
                      aria-label="Global">
                     <div class="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
                         <div class="flex items-center justify-between w-full md:w-auto">
-                            <a href="https://phoenixvtc.com">
+                            <a href="{{ route('events.home') }}">
                                 <x-logo class="h-12 w-auto"/>
                             </a>
                             <div class="-mr-2 flex items-center md:hidden">
@@ -74,7 +74,7 @@
                 <div
                     class="rounded-lg shadow-md bg-gray-900 ring-1 ring-black ring-opacity-5 overflow-hidden">
                     <div class="px-5 pt-4 flex items-center justify-between">
-                        <a href="https://phoenixvtc.com">
+                        <a href="{{ route('events.home') }}">
                             <x-logo class="h-8 w-auto"/>
                         </a>
                         <div class="-mr-2">
