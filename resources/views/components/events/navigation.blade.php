@@ -57,7 +57,7 @@
                         @endguest
 
                         @auth
-                            <span class="font-medium text-orange-500">
+                            <span class="font-bold text-orange-500">
                                 Logged in
                             </span>
                         @endauth
@@ -116,7 +116,7 @@
                             @endguest
 
                             @auth
-                                <span class="block px-3 py-2 rounded-md text-base font-medium text-orange-500">
+                                <span class="block px-3 py-2 rounded-md text-base font-bold text-orange-500">
                                     Logged in
                                 </span>
                             @endauth
