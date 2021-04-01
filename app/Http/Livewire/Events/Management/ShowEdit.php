@@ -42,8 +42,8 @@ class ShowEdit extends Component
     {
         return [
             'name' => ['required', 'string'],
-            'featured_image_url' => ['required', 'url', 'starts_with:https://'],
-            'map_image_url' => ['sometimes', 'url', 'starts_with:https://'],
+            'featured_image_url' => ['required', 'url', 'starts_with:https://', 'ends_with:.png,.jpg'],
+            'map_image_url' => ['sometimes', 'url', 'starts_with:https://', 'ends_with:.png,.jpg'],
             'description' => ['required_without:tmp_event_id', 'string'],
             'server' => ['sometimes', 'string'],
             'required_dlcs' => ['sometimes', 'string'],
@@ -104,7 +104,8 @@ class ShowEdit extends Component
     {
         $this->event = $event;
 
-        $this->manage_event_users = Permission::findByName('manage events')->users;
+        $this->manage_event_users = Role::findByName('events')->users;
+        $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('community interactions')->users);
         $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('super admin')->users);
 
         $this->tmp_event_id = $this->event->tmp_event_id ?? null;
