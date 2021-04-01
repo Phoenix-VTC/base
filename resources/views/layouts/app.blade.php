@@ -1,5 +1,17 @@
 @extends('layouts.base')
 
+@push('scripts')
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GTHGG9KZ2L"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-GTHGG9KZ2L');
+    </script>
+@endpush
+
 @section('body')
     <div class="h-screen flex overflow-hidden bg-gray-100" x-data="{ sidebarOpen: false }">
         @include('components.sidebar')
