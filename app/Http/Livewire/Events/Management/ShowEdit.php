@@ -42,8 +42,8 @@ class ShowEdit extends Component
     {
         return [
             'name' => ['required', 'string'],
-            'featured_image_url' => ['required', 'url', 'starts_with:https://', 'ends_with:.png,.jpg'],
-            'map_image_url' => ['sometimes', 'url', 'starts_with:https://', 'ends_with:.png,.jpg'],
+            'featured_image_url' => ['required', 'url', 'starts_with:https://', 'ends_with:.png,.jpg,.jpeg'],
+            'map_image_url' => ['sometimes', 'url', 'starts_with:https://', 'ends_with:.png,.jpg,.jpeg'],
             'description' => ['required_without:tmp_event_id', 'string'],
             'server' => ['sometimes', 'string'],
             'required_dlcs' => ['sometimes', 'string'],
