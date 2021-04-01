@@ -115,7 +115,8 @@ class ShowCreate extends Component
 
     public function mount(): void
     {
-        $this->manage_event_users = Permission::findByName('manage events')->users;
+        $this->manage_event_users = Role::findByName('events')->users;
+        $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('community interactions')->users);
         $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('super admin')->users);
 
         if ($this->tmp_event_id) {
@@ -162,7 +163,7 @@ class ShowCreate extends Component
         $this->tmp_event_data = $this->getTruckersMPEventData();
 
         $this->name = $this->tmp_event_data['response']['name'];
-        $this->featured_image_url = $this->tmp_event_data['response']['banner'];
+        $this->featured_image_url = $this->tmp_event_data['response']['banner'] ?? '';
         $this->map_image_url = $this->tmp_event_data['response']['map'] ?? '';
         $this->tmp_event_description = Markdown::convertToHtml($this->tmp_event_data['response']['description']);
         $this->server = $this->tmp_event_data['response']['server']['name'];

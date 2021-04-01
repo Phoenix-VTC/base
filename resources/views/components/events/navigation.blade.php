@@ -57,10 +57,9 @@
                         @endguest
 
                         @auth
-                            <a class="font-medium text-white">
-                                Logged in as
-                                <span class="font-bold text-orange-500">{{ Auth::user()->username }}</span>
-                            </a>
+                            <span class="font-bold text-orange-500">
+                                Logged in
+                            </span>
                         @endauth
                     </div>
                 </nav>
@@ -117,10 +116,9 @@
                             @endguest
 
                             @auth
-                                <a class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-900 hover:bg-gray-50">
-                                    Logged in as
-                                    <span class="font-bold text-orange-500">{{ Auth::user()->username }}</span>
-                                </a>
+                                <span class="block px-3 py-2 rounded-md text-base font-bold text-orange-500">
+                                    Logged in
+                                </span>
                             @endauth
                         </div>
                     </div>

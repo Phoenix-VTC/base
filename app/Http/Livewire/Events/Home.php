@@ -10,24 +10,23 @@ use Livewire\Component;
 
 class Home extends Component
 {
-    public Collection $events;
     public Collection $featured_events;
     public Collection $upcoming_events;
 
     public function mount(): void
     {
-        $this->events = Event::with('host')
+        $events = Event::with('host')
             ->where('start_date', '>=', Carbon::now()->toDateTimeString())
             ->where('published', true)
             ->get();
 
-        $this->featured_events = $this->events
+        $this->featured_events = $events
             ->where('published', true)
             ->where('featured', true)
             ->sortBy('start_date')
             ->take(6);
 
-        $this->upcoming_events = $this->events
+        $this->upcoming_events = $events
             ->where('published', true)
             ->sortBy('start_date')
             ->take(6);
