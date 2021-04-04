@@ -10,6 +10,18 @@
             crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <script>
+        document.addEventListener("trix-file-accept", function (event) {
+            event.preventDefault();
+        });
+    </script>
+
+    <style>
+        trix-toolbar .trix-button-group--file-tools {
+            display: none;
+        }
+    </style>
 @endpush
 
 @section('title', 'New Event')
