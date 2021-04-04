@@ -1,14 +1,43 @@
 @section('title', "Manage $event->name Attendees")
 
-@section('custom-title')
-    <div class="pb-5 border-b border-gray-200">
-        <h3 class="text-2xl font-semibold text-gray-900">
-            Manage <span class="font-extrabold">{{ $event->name }}</span> Attendees
-        </h3>
-        <p class="mt-2 max-w-4xl text-sm text-gray-500">
-            Add and/or remove attendees, and reward their Event XP after completing the event.
-        </p>
+@section('description')
+    Add and/or remove attendees, and reward their Event XP after completing the event.
+@endsection
+
+@section('meta')
+    <x-header.meta-item icon="s-users">
+        {{ $event->attendees->count() ?? 0 }} {{ \Illuminate\Support\Str::plural('attendee', $event->attendees->count() ?? 0) }}
+    </x-header.meta-item>
+@endsection
+
+@section('actions')
+    <div class="ml-3">
+        <a href="{{ route('event-management.edit', $event) }}"
+           class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <x-heroicon-s-pencil class="-ml-1 mr-2 h-5 w-5 text-gray-500"/>
+            Edit
+        </a>
     </div>
+
+    <div class="ml-3">
+        <a href="{{ route('events.show', ['id' => $event->id, 'slug' => $event->slug]) }}" target="_blank"
+           class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <x-heroicon-s-link class="-ml-1 mr-2 h-5 w-5 text-gray-500"/>
+            View
+        </a>
+    </div>
+
+    <form action="{{ route('event-management.reward-event-xp', $event) }}" method="POST">
+        @csrf
+
+        <div class="ml-3">
+            <button type="submit"
+                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <x-heroicon-s-check class="-ml-1 mr-2 h-5 w-5"/>
+                Reward Event XP
+            </button>
+        </div>
+    </form>
 @endsection
 
 <div>
@@ -127,13 +156,5 @@
             @endif
         </ul>
     </div>
-    @if(!$event->completed && $event->is_past)
-        <div class="mt-4">
-            <button type="button" wire:click="submitRewards"
-                    class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-500 focus:outline-none focus:border-orange-700 focus:shadow-outline-orange active:bg-orange-700">
-                Reward Event XP
-            </button>
-        </div>
-    @endif
 </div>
 

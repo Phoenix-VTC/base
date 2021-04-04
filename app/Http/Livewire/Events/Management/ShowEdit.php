@@ -144,12 +144,4 @@ class ShowEdit extends Component
             return collect($response);
         });
     }
-
-    public function delete()
-    {
-        $this->event->delete();
-
-        session()->flash('alert', ['type' => 'success', 'message' => 'Event deleted successfully!']);
-        return redirect(route('event-management.index'));
-    }
 }

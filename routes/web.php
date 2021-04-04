@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventManagementController;
 use App\Http\Livewire\Auth\ShowWelcomeForm;
 use App\Http\Livewire\Events\Management\ShowEdit as EventsManagementShowEdit;
 use App\Http\Livewire\Events\Management\ShowCreate as EventsManagementShowCreate;
@@ -59,7 +60,9 @@ Route::prefix('event-management')->name('event-management.')->middleware(['auth'
     Route::get('/', EventsManagementShowIndex::class)->name('index');
     Route::get('create', EventsManagementShowCreate::class)->name('create');
     Route::get('{event}/edit', EventsManagementShowEdit::class)->name('edit');
+    Route::post('{event}/delete', [EventManagementController::class, 'delete'])->name('delete');
     Route::get('{id}/manage-attendees', EventsManagementShowAttendeeManagement::class)->name('attendee-management');
+    Route::post('{event}/reward-event-xp', [EventManagementController::class, 'rewardEventXP'])->name('reward-event-xp');
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');

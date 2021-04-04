@@ -1,16 +1,9 @@
 @section('title', 'New Vacation Request')
 
-@section('custom-title')
-    <div class="pb-5 border-b border-gray-200">
-        <h3 class="text-2xl font-semibold text-gray-900">
-            New Vacation Request
-        </h3>
-        <p class="mt-2 max-w-4xl text-sm text-gray-500">
-            Going away for a while, or do you want to leave Phoenix?
-            <br>
-            You can submit a vacation request here.
-        </p>
-    </div>
+@section('description')
+    Going away for a while, or do you want to leave Phoenix?
+    <br>
+    You can submit a vacation request here.
 @endsection
 
 <div>
