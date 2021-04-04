@@ -37,4 +37,13 @@ class EventManagementController extends Controller
 
         return redirect()->route('event-management.index');
     }
+
+    public function delete(Event $event): RedirectResponse
+    {
+        $event->delete();
+
+        session()->flash('alert', ['type' => 'success', 'message' => 'Event deleted successfully!']);
+
+        return redirect()->route('event-management.index');
+    }
 }

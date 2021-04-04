@@ -26,15 +26,36 @@
 
 @section('title', 'Edit Event')
 
-@section('custom-title')
-    <div class="pb-5 border-b border-gray-200">
-        <h3 class="text-2xl font-semibold text-gray-900">
-            Edit Event
-        </h3>
-        <p class="mt-2 max-w-4xl text-sm text-gray-500">
-            {{ $event->name }}
-        </p>
+@section('description', $event->name)
+
+@section('actions')
+    <div class="ml-3">
+        <a href="{{ route('events.show', ['id' => $event->id, 'slug' => $event->slug]) }}" target="_blank"
+           class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <x-heroicon-s-link class="-ml-1 mr-2 h-5 w-5 text-gray-500"/>
+            View
+        </a>
     </div>
+
+    <div class="ml-3">
+        <a href="{{ route('event-management.attendee-management', $event) }}"
+           class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <x-heroicon-s-users class="-ml-1 mr-2 h-5 w-5 text-gray-500"/>
+            Manage Attendees
+        </a>
+    </div>
+
+    <form action="{{ route('event-management.delete', $event) }}" method="POST">
+        @csrf
+
+        <div class="ml-3">
+            <button type="submit"
+                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <x-heroicon-s-trash class="-ml-1 mr-2 h-5 w-5"/>
+                Delete Event
+            </button>
+        </div>
+    </form>
 @endsection
 
 <div>
@@ -177,14 +198,6 @@
                         <x-input.radio id="published" wire:model.lazy="published" value="0"
                                        label="No"/>
                     </x-input.radio-group>
-
-                    <x-input.group label="Delete Event">
-                        <button wire:click="delete" type="button"
-                                class="inline-flex mt-3 bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-500 focus:outline-none focus:border-orange-700 focus:shadow-outline-orange active:bg-orange-700">
-                            <x-heroicon-o-trash class="mr-2 w-5 h-5"/>
-                            Delete
-                        </button>
-                    </x-input.group>
                 </div>
             </div>
         </div>
