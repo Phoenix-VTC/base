@@ -47,6 +47,8 @@ class ShowEvent extends Component
                 ['user_id' => Auth::id(), 'event_id' => $this->event->id],
                 ['attending' => Attending::Yes]
             );
+
+            session()->flash('alert', ['type' => 'success', 'message' => 'Attendance marked as <strong>attending</strong>.']);
         }
     }
 
@@ -64,6 +66,8 @@ class ShowEvent extends Component
                 ['user_id' => Auth::id(), 'event_id' => $this->event->id],
                 ['attending' => Attending::Maybe]
             );
+
+            session()->flash('alert', ['type' => 'success', 'message' => 'Attendance marked as <strong>not sure</strong>.']);
         }
     }
 
@@ -84,6 +88,8 @@ class ShowEvent extends Component
             if ($event_attendee) {
                 $event_attendee->delete();
             }
+
+            session()->flash('alert', ['type' => 'success', 'message' => 'Attendance marked as <strong>not attending</strong>.']);
         }
     }
 
