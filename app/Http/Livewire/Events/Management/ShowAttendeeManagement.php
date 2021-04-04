@@ -68,26 +68,6 @@ class ShowAttendeeManagement extends Component
         session()->flash('alert', ['type' => 'success', 'message' => 'User <b>' . $user->username . '</b> successfully marked as attending.']);
     }
 
-    public function submitRewards()
-    {
-        if ($this->event->completed) {
-           return session()->flash('alert', ['type' => 'danger', 'message' => 'This event is already completed.']);
-        }
-
-        if (!$this->event->is_past) {
-            return session()->flash('alert', ['type' => 'danger', 'message' => 'Please wait until the event is finished before rewarding Event XP.']);
-        }
-
-        ProcessUserRewards::dispatch($this->event);
-
-        $this->event->completed = true;
-        $this->event->save();
-
-        session()->flash('alert', ['type' => 'success', 'message' => 'Successfully submitted rewards for <b>' . $this->event->name . '</b>.']);
-
-        return redirect(route('event-management.index'));
-    }
-
     public function hydrate(): void
     {
         $this->event = $this->event->fresh();
