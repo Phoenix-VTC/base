@@ -14,16 +14,7 @@
 
 @section('title', 'New Event')
 
-@section('custom-title')
-    <div class="pb-5 border-b border-gray-200">
-        <h3 class="text-2xl font-semibold text-gray-900">
-            New Event
-        </h3>
-        <p class="mt-2 max-w-4xl text-sm text-gray-500">
-            Nothing is too crazy!
-        </p>
-    </div>
-@endsection
+@section('description', 'Nothing is too crazy!')
 
 <div>
     <form class="space-y-8 divide-y divide-gray-200" wire:submit.prevent="submit">

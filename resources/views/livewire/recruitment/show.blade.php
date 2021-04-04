@@ -1,6 +1,6 @@
 @section('title', "Viewing $application->username's application")
 
-<main class="py-10">
+<div>
     <x-alert/>
 
     {{-- Page header --}}
@@ -250,4 +250,4 @@
             @include('livewire.recruitment.components.application-actions')
         </div>
     </div>
-</main>
+</div>
