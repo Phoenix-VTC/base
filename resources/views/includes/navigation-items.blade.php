@@ -37,16 +37,7 @@
 </div>
 
 @hasanyrole('super admin|executive committee|human resources|recruitment|community interactions|events|media|modding')
-<div class="relative">
-    <div class="absolute inset-0 flex items-center" aria-hidden="true">
-        <div class="w-full border-t border-gray-300"></div>
-    </div>
-    <div class="relative flex justify-center">
-        <div class="px-2 bg-gray-800 text-sm text-gray-400">
-            Management
-        </div>
-    </div>
-</div>
+<x-sidebar.separator title="Management"/>
 @endhasanyrole
 
 <div class="space-y-1">
