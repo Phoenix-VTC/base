@@ -1,4 +1,4 @@
-<div class="space-y-1">
+<x-sidebar.group>
     <a href="{{ route('dashboard') }}"
        class="@if(Request::routeIs('dashboard')) bg-gray-900 text-white @else text-gray-300 hover:bg-gray-700 hover:text-white @endif group flex items-center px-2 py-2 text-sm font-medium rounded-md">
         {{-- home --}}
@@ -34,13 +34,13 @@
         </svg>
         Vacation Requests
     </a>
-</div>
+</x-sidebar.group>
 
 @hasanyrole('super admin|executive committee|human resources|recruitment|community interactions|events|media|modding')
 <x-sidebar.separator title="Management"/>
 @endhasanyrole
 
-<div class="space-y-1">
+<x-sidebar.group>
     @can('handle driver applications')
         <a href="{{ route('recruitment.index') }}"
            class="@if(Request::routeIs('recruitment.*')) bg-gray-900 text-white @else text-gray-300 hover:bg-gray-700 hover:text-white @endif group flex items-center px-2 py-2 text-sm font-medium rounded-md">
@@ -97,4 +97,4 @@
             Events
         </a>
     @endcan
-</div>
+</x-sidebar.group>
