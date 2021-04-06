@@ -30,4 +30,11 @@
         <x-sidebar.item title="Events" icon="o-calendar" route="event-management.index"
                         activeRoute="event-management.*"/>
     @endcan
+
+    @can('manage game data')
+        <livewire:components.dropdown title="Game Data" icon="o-collection" route="event-management.index"
+                                      activeRoute="game-data.*"
+                                      :items="[['title' => 'Cargos', 'route' => 'game-data.cargos']]">
+        </livewire:components.dropdown>
+    @endcan
 </x-sidebar.group>
