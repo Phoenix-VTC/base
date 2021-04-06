@@ -2,15 +2,6 @@
 
 @section('title', 'Manage Cargos')
 
-@section('actions')
-    <div class="ml-3">
-        <button type="button" wire:click=""
-                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            New Cargo
-        </button>
-    </div>
-@endsection
-
 <div>
     <livewire:game-data.cargos.datatable/>
 
