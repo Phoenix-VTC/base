@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\GameData;
+namespace App\Http\Livewire\GameData\Cargos;
 
 use App\Models\Cargo;
 use Mediconesystems\LivewireDatatables\BooleanColumn;
@@ -9,7 +9,7 @@ use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 use Mediconesystems\LivewireDatatables\NumberColumn;
 
-class CargosDatatable extends LivewireDatatable
+class Datatable extends LivewireDatatable
 {
     public $model = Cargo::class;
 

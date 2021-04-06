@@ -12,7 +12,7 @@
 @endsection
 
 <div>
-    <livewire:game-data.cargos-datatable/>
+    <livewire:game-data.cargos.datatable/>
 
     <x-page-divider title="Create New Cargo"/>
 
