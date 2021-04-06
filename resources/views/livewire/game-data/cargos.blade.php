@@ -5,7 +5,7 @@
 <div>
     <livewire:game-data.cargos.datatable/>
 
-    <x-page-divider title="Create New Cargo"/>
+    <x-page-divider title="Add New Cargo"/>
 
     <x-alert/>
 
