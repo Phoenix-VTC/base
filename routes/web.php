@@ -6,6 +6,7 @@ use App\Http\Livewire\Events\Management\ShowEdit as EventsManagementShowEdit;
 use App\Http\Livewire\Events\Management\ShowCreate as EventsManagementShowCreate;
 use App\Http\Livewire\Events\Management\ShowIndex as EventsManagementShowIndex;
 use App\Http\Livewire\Events\Management\ShowAttendeeManagement as EventsManagementShowAttendeeManagement;
+use App\Http\Livewire\GameData\ShowCargosPage;
 use \App\Http\Livewire\Recruitment\ShowApplication;
 use \App\Http\Livewire\Recruitment\ShowIndex as RecruitmentShowIndex;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -63,6 +64,10 @@ Route::prefix('event-management')->name('event-management.')->middleware(['auth'
     Route::post('{event}/delete', [EventManagementController::class, 'delete'])->name('delete');
     Route::get('{id}/manage-attendees', EventsManagementShowAttendeeManagement::class)->name('attendee-management');
     Route::post('{event}/reward-event-xp', [EventManagementController::class, 'rewardEventXP'])->name('reward-event-xp');
+});
+
+Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage game data'])->group(function () {
+    Route::get('cargos', ShowCargosPage::class)->name('cargos');
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
