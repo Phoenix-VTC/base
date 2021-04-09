@@ -1,11 +1,11 @@
 {{-- The whole world belongs to you --}}
 
-@section('title', 'Manage Cargos')
+@section('title', 'Manage Companies')
 
 <div>
-    <livewire:game-data.cargos.datatable/>
+    <livewire:game-data.companies.datatable/>
 
-    <x-page-divider title="Add New Cargo"/>
+    <x-page-divider title="Add New Company"/>
 
     <x-alert/>
 
@@ -23,6 +23,16 @@
 
                         <br>
 
+                        <x-input.group label="Category" for="category" :error="$errors->first('category')" col-span="3">
+                            <x-input.text wire:model.lazy="category" type="text" id="category"
+                                          :error="$errors->first('category')"/>
+                        </x-input.group>
+
+                        <x-input.group label="Specialization" for="specialization" :error="$errors->first('specialization')" col-span="3">
+                            <x-input.text wire:model.lazy="specialization" type="text" id="specialization"
+                                          :error="$errors->first('specialization')"/>
+                        </x-input.group>
+
                         <x-input.group label="DLC" for="dlc" :error="$errors->first('dlc')" col-span="3">
                             <x-input.text wire:model.lazy="dlc" type="text" id="dlc"
                                           :error="$errors->first('dlc')"/>
@@ -33,28 +43,12 @@
                                           :error="$errors->first('mod')"/>
                         </x-input.group>
 
-                        <x-input.group label="Weight" for="weight" :error="$errors->first('weight')"
-                                       help-text="Tonnes (t) for ETS2, pounds (lb) for ATS." col-span="3">
-                            <x-input.text wire:model.lazy="weight" type="number" id="weight"
-                                          :error="$errors->first('weight')" min="1" autocomplete="off"/>
-                        </x-input.group>
-
-                        <br>
-
-                        <x-input.group label="Game" for="game_id" :error="$errors->first('game_id')" col-span="3">
+                        <x-input.group label="Game" for="game_id" :error="$errors->first('game_id')">
                             <x-input.select wire:model.lazy="game_id" id="game_id">
                                 <option value="1">Euro Truck Simulator 2</option>
                                 <option value="2">American Truck Simulator</option>
                             </x-input.select>
                         </x-input.group>
-
-                        <x-input.radio-group legend="World of Trucks Only" :error="$errors->first('wot')">
-                            <x-input.radio id="wot" wire:model.lazy="wot" value="1"
-                                           label="Yes"/>
-
-                            <x-input.radio id="wot" wire:model.lazy="wot" value="0"
-                                           label="No"/>
-                        </x-input.radio-group>
                     </div>
                 </div>
                 <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
