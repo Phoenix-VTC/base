@@ -13,7 +13,6 @@ class ShowOverviewPage extends Component
     {
         return view('livewire.jobs.overview-page', [
             'jobs' => Job::where('user_id', Auth::id())
-                ->firstOrFail()
                 ->with([
                     'pickupCity',
                     'destinationCity',
