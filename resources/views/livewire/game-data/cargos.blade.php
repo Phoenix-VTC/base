@@ -16,10 +16,12 @@
                     <div class="grid grid-cols-6 gap-6">
                         @csrf
 
-                        <x-input.group label="Name" for="name" :error="$errors->first('name')">
+                        <x-input.group label="Name" for="name" :error="$errors->first('name')" col-span="3">
                             <x-input.text wire:model.lazy="name" type="text" id="name"
                                           :error="$errors->first('name')" autocomplete="off"/>
                         </x-input.group>
+
+                        <br>
 
                         <x-input.group label="DLC" for="dlc" :error="$errors->first('dlc')" col-span="3">
                             <x-input.text wire:model.lazy="dlc" type="text" id="dlc"
@@ -37,7 +39,9 @@
                                           :error="$errors->first('weight')" min="1" autocomplete="off"/>
                         </x-input.group>
 
-                        <x-input.group label="Game" for="game_id" :error="$errors->first('game_id')">
+                        <br>
+
+                        <x-input.group label="Game" for="game_id" :error="$errors->first('game_id')" col-span="3">
                             <x-input.select wire:model.lazy="game_id" id="game_id">
                                 <option value="1">Euro Truck Simulator 2</option>
                                 <option value="2">American Truck Simulator</option>
