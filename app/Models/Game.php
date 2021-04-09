@@ -46,4 +46,30 @@ class Game extends Model
             return null;
         }
     }
+
+    public static function getAbbreviationDistanceMetric(int $gameId): ?string
+    {
+        if ($gameId === 1) {
+            $unit = 'km';
+        }
+
+        if ($gameId === 2) {
+            $unit = 'mi';
+        }
+
+        return $unit ?? null;
+    }
+
+    public static function getQualifiedDistanceMetric(int $gameId): ?string
+    {
+        if ($gameId === 1) {
+            $unit = 'kilometres';
+        }
+
+        if ($gameId === 2) {
+            $unit = 'miles';
+        }
+
+        return $unit ?? null;
+    }
 }

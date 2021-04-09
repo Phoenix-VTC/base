@@ -1,6 +1,14 @@
 <x-sidebar.group>
     <x-sidebar.item title="Dashboard" icon="o-home" route="dashboard"/>
 
+    @can('beta test')
+        <livewire:components.dropdown title="My Jobs" icon="o-briefcase" activeRoute="jobs.*"
+                                      :items="[
+                                        ['title' => 'Overview', 'route' => 'jobs.overview'],
+                                      ]">
+        </livewire:components.dropdown>
+    @endcan
+
     <x-sidebar.item title="Events" icon="o-calendar" route="events.home"/>
 
     <x-sidebar.item title="Vacation Requests" icon="o-clock" route="vacation-requests.index"
