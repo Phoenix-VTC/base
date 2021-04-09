@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Livewire\GameData;
+namespace App\Http\Livewire\GameData\Cargos;
 
 use App\Models\Cargo;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 use Livewire\Component;
 
-class ShowCargosPage extends Component
+class ShowIndexPage extends Component
 {
     public string $name = '';
     public string $dlc = '';
@@ -27,13 +28,13 @@ class ShowCargosPage extends Component
         ];
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.game-data.cargos')
             ->extends('layouts.app');
     }
 
-    public function submit()
+    public function submit(): void
     {
         $this->validate();
 
