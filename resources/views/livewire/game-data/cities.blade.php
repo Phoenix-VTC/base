@@ -1,11 +1,11 @@
 {{-- The whole world belongs to you --}}
 
-@section('title', 'Manage Cargos')
+@section('title', 'Manage Cities')
 
 <div>
-    <livewire:game-data.cargos.datatable/>
+    <livewire:game-data.cities.datatable/>
 
-    <x-page-divider title="Add New Cargo"/>
+    <x-page-divider title="Add New City"/>
 
     <x-alert/>
 
@@ -16,9 +16,21 @@
                     <div class="grid grid-cols-6 gap-6">
                         @csrf
 
-                        <x-input.group label="Name" for="name" :error="$errors->first('name')">
+                        <x-input.group label="Real Name" for="real_name" :error="$errors->first('real_name')"
+                                       help-text="Example: Frankfurt am Main" col-span="3">
+                            <x-input.text wire:model.lazy="real_name" type="text" id="real_name"
+                                          :error="$errors->first('real_name')" autocomplete="off"/>
+                        </x-input.group>
+
+                        <x-input.group label="Name" for="name" :error="$errors->first('name')"
+                                       help-text="Example: frankfurt_am_main" col-span="3">
                             <x-input.text wire:model.lazy="name" type="text" id="name"
                                           :error="$errors->first('name')" autocomplete="off"/>
+                        </x-input.group>
+
+                        <x-input.group label="Country or US State" for="country" :error="$errors->first('country')">
+                            <x-input.text wire:model.lazy="country" type="text" id="country"
+                                          :error="$errors->first('country')"/>
                         </x-input.group>
 
                         <x-input.group label="DLC" for="dlc" :error="$errors->first('dlc')" col-span="3">
@@ -31,12 +43,6 @@
                                           :error="$errors->first('mod')"/>
                         </x-input.group>
 
-                        <x-input.group label="Weight" for="weight" :error="$errors->first('weight')"
-                                       help-text="Tonnes (t) for ETS2, pounds (lb) for ATS." col-span="3">
-                            <x-input.text wire:model.lazy="weight" type="number" id="weight"
-                                          :error="$errors->first('weight')" min="1" autocomplete="off"/>
-                        </x-input.group>
-
                         <x-input.group label="Game" for="game_id" :error="$errors->first('game_id')">
                             <x-input.select wire:model.lazy="game_id" id="game_id">
                                 <option value="1">Euro Truck Simulator 2</option>
@@ -44,13 +50,17 @@
                             </x-input.select>
                         </x-input.group>
 
-                        <x-input.radio-group legend="World of Trucks Only" :error="$errors->first('wot')">
-                            <x-input.radio id="wot" wire:model.lazy="wot" value="1"
-                                           label="Yes"/>
+                        <br>
 
-                            <x-input.radio id="wot" wire:model.lazy="wot" value="0"
-                                           label="No"/>
-                        </x-input.radio-group>
+                        <x-input.group label="X-Coordinate" for="x" :error="$errors->first('x')" col-span="2" help-text="Optional, but please try to specify.">
+                            <x-input.text wire:model.lazy="x" type="number" id="x"
+                                          :error="$errors->first('x')" min="1" autocomplete="off"/>
+                        </x-input.group>
+
+                        <x-input.group label="Z-Coordinate" for="z" :error="$errors->first('z')" col-span="2" help-text="Optional, but please try to specify.">
+                            <x-input.text wire:model.lazy="z" type="number" id="z"
+                                          :error="$errors->first('z')" min="1" autocomplete="off"/>
+                        </x-input.group>
                     </div>
                 </div>
                 <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
