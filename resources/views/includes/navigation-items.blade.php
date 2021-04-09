@@ -34,7 +34,11 @@
     @can('manage game data')
         <livewire:components.dropdown title="Game Data" icon="o-collection" route="event-management.index"
                                       activeRoute="game-data.*"
-                                      :items="[['title' => 'Cargos', 'route' => 'game-data.cargos'], ['title' => 'Cities', 'route' => 'game-data.cities']]">
+                                      :items="[
+                                        ['title' => 'Cargos', 'route' => 'game-data.cargos'],
+                                        ['title' => 'Cities', 'route' => 'game-data.cities'],
+                                        ['title' => 'Companies', 'route' => 'game-data.companies']
+                                      ]">
         </livewire:components.dropdown>
     @endcan
 </x-sidebar.group>

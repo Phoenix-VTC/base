@@ -8,6 +8,7 @@ use App\Http\Livewire\Events\Management\ShowIndex as EventsManagementShowIndex;
 use App\Http\Livewire\Events\Management\ShowAttendeeManagement as EventsManagementShowAttendeeManagement;
 use App\Http\Livewire\GameData\Cargos\ShowIndexPage as CargosShowIndexPage;
 use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
+use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
 use \App\Http\Livewire\Recruitment\ShowApplication;
 use \App\Http\Livewire\Recruitment\ShowIndex as RecruitmentShowIndex;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -70,6 +71,7 @@ Route::prefix('event-management')->name('event-management.')->middleware(['auth'
 Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage game data'])->group(function () {
     Route::get('cargos', CargosShowIndexPage::class)->name('cargos');
     Route::get('cities', CitiesShowIndexPage::class)->name('cities');
+    Route::get('companies', CompaniesShowIndexPage::class)->name('companies');
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
