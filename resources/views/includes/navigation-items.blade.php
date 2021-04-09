@@ -8,7 +8,7 @@
 </x-sidebar.group>
 
 @hasanyrole('super admin|executive committee|human resources|recruitment|community interactions|events|media|modding')
-<x-sidebar.separator title="Management"/>
+    <x-sidebar.separator title="Management"/>
 @endhasanyrole
 
 <x-sidebar.group>
