@@ -87,4 +87,14 @@ class User extends Authenticatable implements Wallet
     {
         return "https://eu.ui-avatars.com/api/?name=$this->username";
     }
+
+    /**
+     * Get all of the jobs of the user.
+     *
+     * @returns HasMany
+     */
+    public function jobs(): HasMany
+    {
+        return $this->hasMany(Job::class);
+    }
 }
