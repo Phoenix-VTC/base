@@ -5,6 +5,7 @@
         <livewire:components.dropdown title="My Jobs" icon="o-briefcase" activeRoute="jobs.*"
                                       :items="[
                                         ['title' => 'Overview', 'route' => 'jobs.overview'],
+                                        ['title' => 'Submit New Job', 'route' => 'jobs.submit'],
                                       ]">
         </livewire:components.dropdown>
     @endcan
