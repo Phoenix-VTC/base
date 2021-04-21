@@ -72,4 +72,30 @@ class Game extends Model
 
         return $unit ?? null;
     }
+
+    public static function getAbbreviationWeightMetric(int $gameId): ?string
+    {
+        if ($gameId === 1) {
+            $unit = 't';
+        }
+
+        if ($gameId === 2) {
+            $unit = 'lb';
+        }
+
+        return $unit ?? null;
+    }
+
+    public static function getQualifiedWeightMetric(int $gameId): ?string
+    {
+        if ($gameId === 1) {
+            $unit = 'tonnes';
+        }
+
+        if ($gameId === 2) {
+            $unit = 'pounds';
+        }
+
+        return $unit ?? null;
+    }
 }
