@@ -121,6 +121,6 @@ class ShowSubmitPage extends Component
 
         session()->flash('alert', ['type' => 'success', 'message' => 'Job successfully submitted!']);
 
-        return redirect()->route('jobs.overview');
+        return redirect()->route('jobs.show', $job);
     }
 }

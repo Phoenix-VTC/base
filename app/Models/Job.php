@@ -20,6 +20,10 @@ class Job extends Model
 
     protected $casts = [
         'status' => JobStatus::class,
+        'started_at' => 'datetime',
+        'finished_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**
@@ -68,5 +72,10 @@ class Job extends Model
     public function cargo(): BelongsTo
     {
         return $this->belongsTo(Cargo::class);
+    }
+
+    public function getPricePerDistanceAttribute(): int
+    {
+        return ($this->estimated_income / $this->distance);
     }
 }

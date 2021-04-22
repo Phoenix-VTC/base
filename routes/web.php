@@ -11,6 +11,7 @@ use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
 use App\Http\Livewire\Jobs\ShowOverviewPage as JobsShowOverviewPage;
 use App\Http\Livewire\Jobs\ShowSubmitPage as JobsShowSubmitPage;
+use App\Http\Livewire\Jobs\ShowShowPage as JobsShowShowPage;
 use \App\Http\Livewire\Recruitment\ShowApplication;
 use \App\Http\Livewire\Recruitment\ShowIndex as RecruitmentShowIndex;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -79,6 +80,7 @@ Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage 
 Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:beta test'])->group(function () {
     Route::get('overview', JobsShowOverviewPage::class)->name('overview');
     Route::get('submit', JobsShowSubmitPage::class)->name('submit');
+    Route::get('{job}', JobsShowShowPage::class)->name('show');
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
