@@ -46,4 +46,69 @@ class Game extends Model
             return null;
         }
     }
+
+    public static function getAbbreviationDistanceMetric(int $gameId): ?string
+    {
+        if ($gameId === 1) {
+            $unit = 'km';
+        }
+
+        if ($gameId === 2) {
+            $unit = 'mi';
+        }
+
+        return $unit ?? null;
+    }
+
+    public static function getQualifiedDistanceMetric(int $gameId): ?string
+    {
+        if ($gameId === 1) {
+            $unit = 'kilometres';
+        }
+
+        if ($gameId === 2) {
+            $unit = 'miles';
+        }
+
+        return $unit ?? null;
+    }
+
+    public static function getAbbreviationWeightMetric(int $gameId): ?string
+    {
+        if ($gameId === 1) {
+            $unit = 't';
+        }
+
+        if ($gameId === 2) {
+            $unit = 'lb';
+        }
+
+        return $unit ?? null;
+    }
+
+    public static function getQualifiedWeightMetric(int $gameId): ?string
+    {
+        if ($gameId === 1) {
+            $unit = 'tonnes';
+        }
+
+        if ($gameId === 2) {
+            $unit = 'pounds';
+        }
+
+        return $unit ?? null;
+    }
+
+    public static function getCurrency(int $gameId): ?string
+    {
+        if ($gameId === 1) {
+            $currency = '€';
+        }
+
+        if ($gameId === 2) {
+            $currency = '$';
+        }
+
+        return $currency ?? null;
+    }
 }

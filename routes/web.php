@@ -6,6 +6,12 @@ use App\Http\Livewire\Events\Management\ShowEdit as EventsManagementShowEdit;
 use App\Http\Livewire\Events\Management\ShowCreate as EventsManagementShowCreate;
 use App\Http\Livewire\Events\Management\ShowIndex as EventsManagementShowIndex;
 use App\Http\Livewire\Events\Management\ShowAttendeeManagement as EventsManagementShowAttendeeManagement;
+use App\Http\Livewire\GameData\Cargos\ShowIndexPage as CargosShowIndexPage;
+use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
+use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
+use App\Http\Livewire\Jobs\ShowOverviewPage as JobsShowOverviewPage;
+use App\Http\Livewire\Jobs\ShowSubmitPage as JobsShowSubmitPage;
+use App\Http\Livewire\Jobs\ShowShowPage as JobsShowShowPage;
 use \App\Http\Livewire\Recruitment\ShowApplication;
 use \App\Http\Livewire\Recruitment\ShowIndex as RecruitmentShowIndex;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -63,6 +69,18 @@ Route::prefix('event-management')->name('event-management.')->middleware(['auth'
     Route::post('{event}/delete', [EventManagementController::class, 'delete'])->name('delete');
     Route::get('{id}/manage-attendees', EventsManagementShowAttendeeManagement::class)->name('attendee-management');
     Route::post('{event}/reward-event-xp', [EventManagementController::class, 'rewardEventXP'])->name('reward-event-xp');
+});
+
+Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage game data'])->group(function () {
+    Route::get('cargos', CargosShowIndexPage::class)->name('cargos');
+    Route::get('cities', CitiesShowIndexPage::class)->name('cities');
+    Route::get('companies', CompaniesShowIndexPage::class)->name('companies');
+});
+
+Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:beta test'])->group(function () {
+    Route::get('overview', JobsShowOverviewPage::class)->name('overview');
+    Route::get('submit', JobsShowSubmitPage::class)->name('submit');
+    Route::get('{job}', JobsShowShowPage::class)->name('show');
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
