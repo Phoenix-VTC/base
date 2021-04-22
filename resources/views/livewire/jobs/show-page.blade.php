@@ -24,7 +24,7 @@
                                     Game
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ App\Models\Game::getQualifiedName($job->game_id) }}
+                                    {{ App\Models\Game::getQualifiedName($job->game_id) ?? 'Unknown Game' }}
                                 </dd>
                             </div>
 
@@ -33,7 +33,8 @@
                                     Pickup City
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ $job->pickupCity->real_name }}, {{ $job->pickupCity->country }}
+                                    {{ $job->pickupCity->real_name ?? 'Unknown City' }},
+                                    {{ $job->pickupCity->country ?? 'Unknown Country' }}
                                 </dd>
                             </div>
 
@@ -42,7 +43,8 @@
                                     Destination City
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ $job->destinationCity->real_name }}, {{ $job->destinationCity->country }}
+                                    {{ $job->destinationCity->real_name ?? 'Unknown City' }},
+                                    {{ $job->destinationCity->country ?? 'Unknown Country' }}
                                 </dd>
                             </div>
 
@@ -51,7 +53,7 @@
                                     Pickup Company
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ $job->pickupCompany->name }}
+                                    {{ $job->pickupCompany->name ?? 'Unknown Pickup Company' }}
                                 </dd>
                             </div>
 
@@ -60,7 +62,7 @@
                                     Destination Company
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ $job->destinationCompany->name }}
+                                    {{ $job->destinationCompany->name ?? 'Unknown Destination Company' }}
                                 </dd>
                             </div>
 
@@ -69,7 +71,7 @@
                                     Distance
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ number_format($job->distance) }} {{ App\Models\Game::getQualifiedDistanceMetric($job->game_id) }}
+                                    {{ number_format($job->distance) }} {{ App\Models\Game::getQualifiedDistanceMetric($job->game_id) ?? '??' }}
                                 </dd>
                             </div>
 
@@ -105,9 +107,9 @@
                                     Cargo
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ $job->cargo->name }}
+                                    {{ $job->cargo->name ?? 'Unknown Cargo' }}
                                     @if($job->cargo->mod)
-                                        ({{ $job->cargo->mod }})
+                                        ({{ $job->cargo->mod ?? 'Unknown Cargo Mod' }})
                                     @endif
                                 </dd>
                             </div>
@@ -117,7 +119,7 @@
                                     Cargo Weight
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ number_format($job->cargo->weight) }} {{ App\Models\Game::getQualifiedWeightMetric($job->game_id) }}
+                                    {{ number_format($job->cargo->weight) }} {{ App\Models\Game::getQualifiedWeightMetric($job->game_id) ?? '??' }}
                                 </dd>
                             </div>
 
@@ -156,7 +158,7 @@
                                 <x-heroicon-s-calculator class="h-5 w-5 text-gray-400"/>
                                 <span class="text-gray-900 text-sm font-medium">Price per distance:</span>
                                 <span class="text-gray-900 text-sm font-bold">
-                                    {{ $job->pricePerDistance }} {{ App\Models\Game::getCurrency($job->game_id) }}
+                                    {{ $job->pricePerDistance }} {{ App\Models\Game::getCurrency($job->game_id) ?? '??' }}
                                 </span>
                             </div>
 
@@ -164,7 +166,7 @@
                                 <x-heroicon-s-switch-horizontal class="h-5 w-5 text-gray-400"/>
                                 <span class="text-gray-900 text-sm font-medium">Estimated / Total income:</span>
                                 <span class="text-gray-900 text-sm font-bold">
-                                    {{ $job->total_income - $job->estimated_income }} {{ App\Models\Game::getCurrency($job->game_id) }}
+                                    {{ $job->total_income - $job->estimated_income }} {{ App\Models\Game::getCurrency($job->game_id) ?? '??' }}
                                 </span>
                             </div>
 
@@ -228,15 +230,15 @@
 
                             <div class="mt-6 flex items-center">
                                 <div class="flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="{{ $job->user->profile_picture }}"
-                                         alt="{{ $job->user->username }}">
+                                    <img class="h-10 w-10 rounded-full" src="{{ $job->user->profile_picture ?? asset('svg/unknown_avatar.svg') }}"
+                                         alt="{{ $job->user->username ?? 'Unknown User' }}">
                                 </div>
                                 <div class="ml-3">
                                     <div class="flex space-x-1 text-sm text-gray-500">
                                         <span>Submitted By</span>
                                     </div>
                                     <p class="text-sm font-medium capitalize text-gray-900">
-                                        {{ $job->user->username }}
+                                        {{ $job->user->username ?? 'Unknown User' }}
                                     </p>
                                 </div>
                             </div>

@@ -86,18 +86,18 @@
                                         @endswitch
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ App\Models\Game::getAbbreviationById($job->game_id) }}
+                                        {{ App\Models\Game::getAbbreviationById($job->game_id) ?? 'Unknown Game' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ ucwords($job->pickupCity->real_name) ?? 'Unknown City' }}
-                                        ({{ ucwords($job->pickupCompany->name) ?? 'Unknown Company' }})
+                                        {{ ucwords($job->pickupCity->real_name ?? 'Unknown City') }}
+                                        ({{ ucwords($job->pickupCompany->name ?? 'Unknown Company') }})
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ ucwords($job->destinationCity->real_name) ?? 'Unknown City' }}
-                                        ({{ ucwords($job->destinationCompany->name) ?? 'Unknown Company' }})
+                                        {{ ucwords($job->destinationCity->real_name ?? 'Unknown City') }}
+                                        ({{ ucwords($job->destinationCompany->name ?? 'Unknown Company') }})
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $job->distance }} {{ App\Models\Game::getAbbreviationDistanceMetric($job->game_id) }}
+                                        {{ $job->distance }} {{ App\Models\Game::getAbbreviationDistanceMetric($job->game_id) ?? '??' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <a href="{{ route('jobs.show', $job) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
