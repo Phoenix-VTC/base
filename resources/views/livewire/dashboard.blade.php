@@ -22,4 +22,20 @@
             <a target="_blank" href="https://truckersmp.com/vtc/30294">https://truckersmp.com/vtc/30294</a>
         </p>
     </div>
+
+{{--    <div>--}}
+{{--        <h3 class="text-lg leading-6 font-medium text-gray-900">--}}
+{{--            Last 30 days--}}
+{{--        </h3>--}}
+
+{{--        <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">--}}
+
+{{--            <livewire:jobs.components.statistic icon="o-clipboard-list" title="Deliveries" content="104" change-number="12"/>--}}
+
+{{--            <livewire:jobs.components.statistic icon="o-currency-euro" title="Income" content="15526" change-number="500" :increased="false"/>--}}
+
+{{--            <livewire:jobs.components.statistic icon="o-truck" title="Distance" content="15526" change-number="500" :increased="false"/>--}}
+
+{{--        </dl>--}}
+{{--    </div>--}}
 @endsection

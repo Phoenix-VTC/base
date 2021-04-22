@@ -35,7 +35,7 @@
             </div>
             <div class="mt-5 flex-1 h-0 overflow-y-auto" @click.away="sidebarOpen = false">
                 <nav class="px-2 space-y-1">
-                    @include('components.navigation-items')
+                    @include('includes.navigation-items')
                 </nav>
             </div>
         </div>
@@ -53,7 +53,7 @@
             </div>
             <div class="flex-1 flex flex-col overflow-y-auto">
                 <nav class="flex-1 px-2 py-4 bg-gray-800 space-y-1">
-                    @include('components.navigation-items')
+                    @include('includes.navigation-items')
                 </nav>
             </div>
         </div>
