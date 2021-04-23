@@ -5,6 +5,7 @@ namespace App\Models;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Traits\HasWallets;
+use Glorand\Model\Settings\Traits\HasSettingsTable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,6 +23,7 @@ class User extends Authenticatable implements Wallet
     use HasRoles;
     use HasWallet;
     use HasWallets;
+    use HasSettingsTable;
 
     /**
      * The attributes that are mass assignable.
@@ -60,6 +62,12 @@ class User extends Authenticatable implements Wallet
         'email_verified_at' => 'datetime',
     ];
 
+    public array $defaultSettings = [
+        'preferences.distance' => 'kilometres',
+        'preferences.currency' => 'euro',
+        'preferences.weight' => 'tonnes',
+    ];
+
     /**
      * Get all of the vacation requests for the user.
      *
@@ -96,5 +104,22 @@ class User extends Authenticatable implements Wallet
     public function jobs(): HasMany
     {
         return $this->hasMany(Job::class);
+    }
+
+    public function getDefaultWalletBalanceAttribute(): int
+    {
+        $balance = $this->getWallet('default')->balance ?? 0;
+
+        // Convert to USD if required
+        if ($this->settings()->get('preferences.currency') === 'dollar') {
+            $balance *= 1.21;
+        }
+
+        return $balance;
+    }
+
+    public function getPreferredCurrencySymbolAttribute(): ?string
+    {
+        return strip_tags('&' . $this->settings()->get('preferences.currency') . ';');
     }
 }
