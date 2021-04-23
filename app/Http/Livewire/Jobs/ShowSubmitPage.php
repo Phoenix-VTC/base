@@ -80,9 +80,9 @@ class ShowSubmitPage extends Component
             'destination_company' => ['required', 'integer', 'exists:App\Models\Company,id'],
             'cargo' => ['required', 'integer', 'exists:App\Models\Cargo,id'],
             'finished_at' => ['required', 'date', 'after_or_equal:' . date('Y-m-d', strtotime('-7 days')), 'before_or_equal:today'],
-            'distance' => ['required', 'integer', 'min:1'],
+            'distance' => ['required', 'integer', 'min:1', 'max:5000'],
             'load_damage' => ['required', 'integer', 'min:0', 'max:100'],
-            'estimated_income' => ['required', 'integer', 'min:1'],
+            'estimated_income' => ['required', 'integer', 'min:1', 'max:400000'],
             'total_income' => ['required', 'integer', 'min:1', 'max:' . $this->estimated_income],
             'comments' => ['sometimes', 'string'],
         ];
