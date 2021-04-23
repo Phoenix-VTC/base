@@ -28,6 +28,7 @@ use App\Http\Livewire\VacationRequests\ShowCreate as VacationRequestsShowCreate;
 use App\Http\Livewire\VacationRequests\ShowIndex as VacationRequestsShowIndex;
 use App\Http\Livewire\VacationRequestsManagement\ShowIndex as VacationRequestsManagementShowIndex;
 use App\Http\Livewire\UserManagement\ShowIndex as UserManagementShowIndex;
+use App\Http\Livewire\Wallet\ShowIndexPage as WalletShowIndexPage;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -87,6 +88,8 @@ Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:beta test'])->gro
 Route::prefix('settings')->name('settings.')->middleware('auth')->group(function () {
     Route::get('preferences', SettingsShowPreferencesPage::class)->name('preferences');
 });
+
+Route::get('my-wallet', WalletShowIndexPage::class)->middleware('auth')->name('my-wallet');
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
 
