@@ -79,7 +79,7 @@ class ShowSubmitPage extends Component
             'pickup_company' => ['required', 'integer', 'exists:App\Models\Company,id'],
             'destination_company' => ['required', 'integer', 'exists:App\Models\Company,id'],
             'cargo' => ['required', 'integer', 'exists:App\Models\Cargo,id'],
-            'finished_at' => ['required', 'date', 'after_or_equal:' . date('Y-m-d', strtotime('-7 days'))],
+            'finished_at' => ['required', 'date', 'after_or_equal:' . date('Y-m-d', strtotime('-7 days')), 'before_or_equal:today'],
             'distance' => ['required', 'integer', 'min:1'],
             'load_damage' => ['required', 'integer', 'min:0', 'max:100'],
             'estimated_income' => ['required', 'integer', 'min:1'],

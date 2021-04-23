@@ -57,7 +57,8 @@
                                       :options="[
                                         'enableTime' => false,
                                         'altFormat' =>  'd/m/Y',
-                                        'minDate' => date('Y-m-d', strtotime('-7 days'))
+                                        'minDate' => date('Y-m-d', strtotime('-7 days')),
+                                        'maxDate' => now()
                                       ]"
                                       trailing-icon="o-calendar"/>
                     </x-input.group>
