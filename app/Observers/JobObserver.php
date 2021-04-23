@@ -16,7 +16,14 @@ class JobObserver
     {
         $user = $job->user;
 
-        $user->deposit($job->total_income, ['description' => 'Submitted job', 'job_id' => $job->id]);
+        // Convert USD to EUR
+        if ((int)$job->game_id === 2) {
+            $income = $job->total_income * 0.83;
+        } else {
+            $income = $job->total_income;
+        }
+
+        $user->deposit($income, ['description' => 'Submitted job', 'job_id' => $job->id]);
     }
 
     /**
