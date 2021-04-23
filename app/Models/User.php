@@ -63,9 +63,9 @@ class User extends Authenticatable implements Wallet
     ];
 
     public array $defaultSettings = [
-        'preferences.distance' => 'miles',
-        'preferences.currency' => 'dollar',
-        'preferences.weight' => 'pounds',
+        'preferences.distance' => 'kilometres',
+        'preferences.currency' => 'euro',
+        'preferences.weight' => 'tonnes',
     ];
 
     /**
