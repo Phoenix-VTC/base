@@ -76,6 +76,6 @@ class Job extends Model
 
     public function getPricePerDistanceAttribute(): int
     {
-        return ($this->estimated_income / $this->distance);
+        return round($this->estimated_income / $this->distance, 2);
     }
 }
