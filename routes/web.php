@@ -22,6 +22,7 @@ use App\Http\Livewire\Auth\Passwords\Email;
 use App\Http\Livewire\Auth\Passwords\Reset;
 use App\Http\Livewire\Auth\Register;
 use App\Http\Livewire\Auth\Verify;
+use App\Http\Livewire\Settings\ShowPreferencesPage as SettingsShowPreferencesPage;
 use App\Http\Livewire\ShowDashboard;
 use App\Http\Livewire\VacationRequests\ShowCreate as VacationRequestsShowCreate;
 use App\Http\Livewire\VacationRequests\ShowIndex as VacationRequestsShowIndex;
@@ -81,6 +82,10 @@ Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:beta test'])->gro
     Route::get('overview', JobsShowOverviewPage::class)->name('overview');
     Route::get('submit', JobsShowSubmitPage::class)->name('submit');
     Route::get('{job}', JobsShowShowPage::class)->name('show');
+});
+
+Route::prefix('settings')->name('settings.')->middleware('auth')->group(function () {
+    Route::get('preferences', SettingsShowPreferencesPage::class)->name('preferences');
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');

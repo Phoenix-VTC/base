@@ -5,6 +5,7 @@ namespace App\Models;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Traits\HasWallets;
+use Glorand\Model\Settings\Traits\HasSettingsTable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,6 +23,7 @@ class User extends Authenticatable implements Wallet
     use HasRoles;
     use HasWallet;
     use HasWallets;
+    use HasSettingsTable;
 
     /**
      * The attributes that are mass assignable.
@@ -58,6 +60,12 @@ class User extends Authenticatable implements Wallet
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+    ];
+
+    public array $defaultSettings = [
+        'preferences.distance' => 'miles',
+        'preferences.currency' => 'dollar',
+        'preferences.weight' => 'pounds',
     ];
 
     /**
