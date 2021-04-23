@@ -19,6 +19,7 @@
         "danharrin/livewire-rate-limiting": "^0.2.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
+        "glorand/laravel-model-settings": "^4.2",
         "graham-campbell/markdown": "13.1",
         "guzzlehttp/guzzle": "^7.2",
         "invisnik/laravel-steam-auth": "^4.3",
