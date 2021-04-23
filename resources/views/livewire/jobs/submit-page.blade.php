@@ -36,7 +36,8 @@
                             placeholder="Select a company"/>
                     </x-input.group>
 
-                    <x-input.group label="Destination Company" :error="$errors->first('destination_company')" col-span="3">
+                    <x-input.group label="Destination Company" :error="$errors->first('destination_company')"
+                                   col-span="3">
                         <x-input.searchable-select
                             :data="$companies" wire:model="destination_company" limit="20"
                             placeholder="Select a company"/>
@@ -67,7 +68,7 @@
 
                     <x-input.group label="Distance" for="distance" :error="$errors->first('distance')" col-span="3"
                                    help-text="Kilometres for ETS, miles for ATS">
-                        <x-input.text wire:model.lazy="distance" type="number" id="distance" min="1"
+                        <x-input.text wire:model.lazy="distance" type="number" id="distance" min="1" max="5000"
                                       leading-icon="o-location-marker"
                                       :error="$errors->first('distance')" placeholder="1200"/>
                     </x-input.group>
@@ -86,7 +87,7 @@
                     <x-input.group label="Estimated Income" for="estimated_income"
                                    :error="$errors->first('estimated_income')"
                                    col-span="3">
-                        <x-input.text wire:model.lazy="estimated_income" type="number" id="estimated_income" min="1"
+                        <x-input.text wire:model.lazy="estimated_income" type="number" id="estimated_income" min="1" max="400000"
                                       leading-icon="o-calculator"
                                       :error="$errors->first('estimated_income')"
                                       placeholder="The original estimate, before any penalties"/>
