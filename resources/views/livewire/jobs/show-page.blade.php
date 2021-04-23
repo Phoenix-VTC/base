@@ -166,7 +166,7 @@
 
                             <div class="flex items-center space-x-2">
                                 <x-heroicon-s-switch-horizontal class="h-5 w-5 text-gray-400"/>
-                                <span class="text-gray-900 text-sm font-medium">Estimated / Total income:</span>
+                                <span class="text-gray-900 text-sm font-medium" title="Difference between the estimated and total income">Income difference:</span>
                                 <span class="text-gray-900 text-sm font-bold">
                                     {{ $job->total_income - $job->estimated_income }} {{ App\Models\Game::getCurrency($job->game_id) ?? '??' }}
                                 </span>
