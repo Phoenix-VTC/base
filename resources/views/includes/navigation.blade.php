@@ -67,13 +67,17 @@
                     {{--                        Your Profile--}}
                     {{--                    </a>--}}
 
-                    {{--                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">--}}
-                    {{--                        Settings--}}
-                    {{--                    </a>--}}
+                    <a href="{{ route('my-wallet') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                        My Wallet
+                    </a>
+
+                    <a href="{{ route('settings.preferences') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                        Settings
+                    </a>
 
                     <form action="{{ route('logout') }}" method="post">
                         @csrf
-                        <button type="submit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        <button type="submit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                                 role="menuitem">
                             Sign out
                         </button>

@@ -22,11 +22,13 @@ use App\Http\Livewire\Auth\Passwords\Email;
 use App\Http\Livewire\Auth\Passwords\Reset;
 use App\Http\Livewire\Auth\Register;
 use App\Http\Livewire\Auth\Verify;
+use App\Http\Livewire\Settings\ShowPreferencesPage as SettingsShowPreferencesPage;
 use App\Http\Livewire\ShowDashboard;
 use App\Http\Livewire\VacationRequests\ShowCreate as VacationRequestsShowCreate;
 use App\Http\Livewire\VacationRequests\ShowIndex as VacationRequestsShowIndex;
 use App\Http\Livewire\VacationRequestsManagement\ShowIndex as VacationRequestsManagementShowIndex;
 use App\Http\Livewire\UserManagement\ShowIndex as UserManagementShowIndex;
+use App\Http\Livewire\Wallet\ShowIndexPage as WalletShowIndexPage;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,6 +84,12 @@ Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:beta test'])->gro
     Route::get('submit', JobsShowSubmitPage::class)->name('submit');
     Route::get('{job}', JobsShowShowPage::class)->name('show');
 });
+
+Route::prefix('settings')->name('settings.')->middleware('auth')->group(function () {
+    Route::get('preferences', SettingsShowPreferencesPage::class)->name('preferences');
+});
+
+Route::get('my-wallet', WalletShowIndexPage::class)->middleware('auth')->name('my-wallet');
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
 
