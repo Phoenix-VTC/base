@@ -105,4 +105,21 @@ class User extends Authenticatable implements Wallet
     {
         return $this->hasMany(Job::class);
     }
+
+    public function getDefaultWalletBalanceAttribute(): int
+    {
+        $balance = $this->getWallet('default')->balance ?? 0;
+
+        // Convert to USD if required
+        if ($this->settings()->get('preferences.currency') === 'dollar') {
+            $balance *= 1.21;
+        }
+
+        return $balance;
+    }
+
+    public function getPreferredCurrencySymbolAttribute(): ?string
+    {
+        return strip_tags('&' . $this->settings()->get('preferences.currency') . ';');
+    }
 }
