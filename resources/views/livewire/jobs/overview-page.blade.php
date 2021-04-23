@@ -4,7 +4,7 @@
 
 @section('meta')
     <x-header.meta-item icon="s-cash">
-        &euro; {{ number_format(Auth::user()->balance) }}
+        {!! Auth::user()->preferred_currency_symbol !!} {{ number_format(Auth::user()->default_wallet_balance) }}
     </x-header.meta-item>
 @endsection
 
