@@ -8,7 +8,7 @@
 @section('hero-description')
     At Phoenix we love events and aim to attend lots of public events each month, as well as hosting our own monthly public convoy and regular private member convoys.
     <br><br>
-    Feel free to through our upcoming events here.
+    Feel free to browse through our upcoming events here.
 @endsection
 
 @section('hero-image', 'https://phoenixvtc.com/img/fc4b88a6-7864-41d8-a79b-eda11a2b915c/euro-truck-simulator-2-screenshot-20210108-14360243-edit.png')
