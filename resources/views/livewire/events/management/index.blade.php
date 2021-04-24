@@ -91,6 +91,7 @@
                         <livewire:events.components.events-calendar
                             :day-click-enabled="false"
                             :drag-and-drop-enabled="false"
+                            week-starts-at="1"
                             before-calendar-view="livewire/events/components/events-calendar-header"/>
                     </div>
                 </div>

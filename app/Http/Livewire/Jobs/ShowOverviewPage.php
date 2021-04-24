@@ -20,6 +20,7 @@ class ShowOverviewPage extends Component
                     'destinationCompany',
                     'cargo',
                 ])
+                ->orderByDesc('created_at')
                 ->paginate(15)
         ])->extends('layouts.app');
     }
