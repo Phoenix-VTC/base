@@ -1,41 +1,35 @@
-@extends('layouts.app')
-
 @section('title', 'Hi, ' . Auth::user()->username . '!')
 
-@section('content')
-    <div class="py-4 prose">
-        <p>
-            Welcome to PhoenixBase
-        </p>
+<div>
+    <h3 class="text-lg leading-6 font-medium text-gray-900">
+        Last 30 days
+    </h3>
 
-        <p>
-            There's nothing here for now, but new features are in development!
-        </p>
+    <dl class="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
-        <p>
-            To log jobs we're using TrucksBook for now. You can join the Phoenix company here:
-            <a target="_blank" href="https://trucksbook.eu/company/100008">https://trucksbook.eu/company/100008</a>
-        </p>
+        <livewire:jobs.components.statistic
+            icon="o-clipboard-list"
+            title="Deliveries"
+            :content="$stats['delivery_count']['current_month']"
+            :change-number="abs($stats['delivery_count']['previous_month'] - $stats['delivery_count']['current_month'])"
+            :increased="($stats['delivery_count']['current_month'] > $stats['delivery_count']['previous_month'])"
+        />
 
-        <p>
-            You'll also need to apply to join our TruckersMP VTC, which you can do here:
-            <a target="_blank" href="https://truckersmp.com/vtc/30294">https://truckersmp.com/vtc/30294</a>
-        </p>
-    </div>
+        <livewire:jobs.components.statistic
+            icon="o-currency-euro"
+            title="Income"
+            content="{!! Auth::user()->preferred_currency_symbol !!} {{ number_format($stats['income']['current_month']) }}"
+            :change-number="number_format(abs($stats['income']['previous_month'] - $stats['income']['current_month']))"
+            :increased="($stats['income']['current_month'] > $stats['income']['previous_month'])"
+        />
 
-{{--    <div>--}}
-{{--        <h3 class="text-lg leading-6 font-medium text-gray-900">--}}
-{{--            Last 30 days--}}
-{{--        </h3>--}}
+        <livewire:jobs.components.statistic
+            icon="o-truck"
+            title="Distance"
+            content="{{ number_format($stats['distance']['current_month']) }} {{ Auth::user()->preferred_distance_abbreviation }}"
+            :change-number="number_format(abs($stats['distance']['previous_month'] - $stats['distance']['current_month']))"
+            :increased="($stats['distance']['current_month'] > $stats['distance']['previous_month'])"
+        />
 
-{{--        <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">--}}
-
-{{--            <livewire:jobs.components.statistic icon="o-clipboard-list" title="Deliveries" content="104" change-number="12"/>--}}
-
-{{--            <livewire:jobs.components.statistic icon="o-currency-euro" title="Income" content="15526" change-number="500" :increased="false"/>--}}
-
-{{--            <livewire:jobs.components.statistic icon="o-truck" title="Distance" content="15526" change-number="500" :increased="false"/>--}}
-
-{{--        </dl>--}}
-{{--    </div>--}}
-@endsection
+    </dl>
+</div>
