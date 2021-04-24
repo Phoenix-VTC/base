@@ -11,7 +11,7 @@
     </dt>
     <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
         <p class="text-2xl font-semibold text-gray-900">
-            {{ $content }}
+            {!! $content !!}
         </p>
         <div class="ml-2 flex items-baseline text-sm font-semibold">
             <div class="self-center flex-shrink-0 h-4 w-4">
