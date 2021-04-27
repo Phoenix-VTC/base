@@ -30,6 +30,6 @@ class ShowShowPage extends Component
 
         $this->job->delete();
 
-        return redirect()->route('jobs.overview');
+        return redirect()->route('jobs.personal-overview');
     }
 }

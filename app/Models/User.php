@@ -122,4 +122,24 @@ class User extends Authenticatable implements Wallet
     {
         return strip_tags('&' . $this->settings()->get('preferences.currency') . ';');
     }
+
+    public function getQualifiedPreferredDistanceAttribute(): ?string
+    {
+        return $this->settings()->get('preferences.distance');
+    }
+
+    public function getPreferredDistanceAbbreviationAttribute(): string
+    {
+        $preference = $this->settings()->get('preferences.distance');
+
+        if ($preference === 'kilometres') {
+            return 'km';
+        }
+
+        if ($preference === 'miles') {
+            return 'mi';
+        }
+
+        return '';
+    }
 }
