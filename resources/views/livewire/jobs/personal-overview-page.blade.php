@@ -1,6 +1,6 @@
 {{-- Close your eyes. Count to one. That is how long forever feels. --}}
 
-@section('title', 'Job Overview')
+@section('title', 'Personal Job Overview')
 
 @section('meta')
     <x-header.meta-item icon="s-cash">

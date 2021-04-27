@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Settings;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -48,6 +49,8 @@ class ShowPreferencesPage extends Component
             'preferences.currency' => $validatedData['preferred_currency'],
             'preferences.weight' => $validatedData['preferred_weight'],
         ]);
+
+        Cache::forget('user_stats_' . Auth::id());
 
         session()->flash('alert', ['type' => 'success', 'message' => 'Settings successfully updated!']);
     }

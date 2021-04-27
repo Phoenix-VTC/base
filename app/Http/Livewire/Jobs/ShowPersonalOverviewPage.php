@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Component;
 
-class ShowOverviewPage extends Component
+class ShowPersonalOverviewPage extends Component
 {
     public function render(): View
     {
-        return view('livewire.jobs.overview-page', [
+        return view('livewire.jobs.personal-overview-page', [
             'jobs' => Job::where('user_id', Auth::id())
                 ->with([
                     'pickupCity',
