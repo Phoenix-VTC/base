@@ -73,7 +73,12 @@
                                     Distance
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ number_format($job->distance) }} {{ App\Models\Game::getQualifiedDistanceMetric($job->game_id) ?? '??' }}
+                                    @if($job->game_id === 2)
+                                        {{ number_format($job->distance / 1.609) }}
+                                    @else
+                                        {{ number_format($job->distance) }}
+                                    @endif
+                                    {{ App\Models\Game::getQualifiedDistanceMetric($job->game_id) ?? '??' }}
                                 </dd>
                             </div>
 
@@ -166,7 +171,8 @@
 
                             <div class="flex items-center space-x-2">
                                 <x-heroicon-s-switch-horizontal class="h-5 w-5 text-gray-400"/>
-                                <span class="text-gray-900 text-sm font-medium" title="Difference between the estimated and total income">Income difference:</span>
+                                <span class="text-gray-900 text-sm font-medium"
+                                      title="Difference between the estimated and total income">Income difference:</span>
                                 <span class="text-gray-900 text-sm font-bold">
                                     {{ $job->total_income - $job->estimated_income }} {{ App\Models\Game::getCurrency($job->game_id) ?? '??' }}
                                 </span>
@@ -232,7 +238,8 @@
 
                             <div class="mt-6 flex items-center">
                                 <div class="flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="{{ $job->user->profile_picture ?? asset('svg/unknown_avatar.svg') }}"
+                                    <img class="h-10 w-10 rounded-full"
+                                         src="{{ $job->user->profile_picture ?? asset('svg/unknown_avatar.svg') }}"
                                          alt="{{ $job->user->username ?? 'Unknown User' }}">
                                 </div>
                                 <div class="ml-3">
