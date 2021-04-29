@@ -35,6 +35,8 @@ class Datatable extends LivewireDatatable
                 ->searchable()
                 ->editable(),
 
+            NumberColumn::name('weight'),
+
             Column::callback(['game_id'], function (int $game_id) {
                 if ($game_id === 1) {
                     return 'ETS';
