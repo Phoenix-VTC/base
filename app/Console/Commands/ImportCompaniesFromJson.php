@@ -6,6 +6,7 @@ use App\Models\Company;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use JsonException;
 
 class ImportCompaniesFromJson extends Command
@@ -64,7 +65,7 @@ class ImportCompaniesFromJson extends Command
                     'name' => $key
                 ],
                 [
-                    'category' => $company['Category'],
+                    'category' => Str::limit($company['Category'], 250),
                     'specialization' => $company['Specialization'],
                     'dlc' => str_replace(' / ', ', ', $company['Required Expansion']),
                     'game_id' => $this->argument('game_id'),
