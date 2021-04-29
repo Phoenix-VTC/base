@@ -62,13 +62,13 @@ class ImportCompaniesFromJson extends Command
             // Find the company by name or create it
             $companyModel = Company::firstOrCreate(
                 [
-                    'name' => $key
+                    'name' => $key,
+                    'game_id' => $this->argument('game_id'),
                 ],
                 [
                     'category' => Str::limit($company['Category'], 250),
                     'specialization' => $company['Specialization'],
                     'dlc' => str_replace(' / ', ', ', $company['Required Expansion']),
-                    'game_id' => $this->argument('game_id'),
                 ]
             );
 
