@@ -11,6 +11,7 @@ class Statistic extends Component
     public string $content;
     public string $changeNumber;
     public bool $increased = true;
+    public string $route;
 
     public function render()
     {

@@ -1,6 +1,6 @@
 {{-- The Master doesn't talk, he acts. --}}
 
-<div class="relative bg-white pt-5 px-4 pb-12 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden">
+<div class="relative bg-white pt-5 px-4 @if($route) pb-12 @endif sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden">
     <dt>
         <div class="absolute bg-orange-500 rounded-md p-3">
             @svg('heroicon-' . $icon, ['class' => 'h-6 w-6 text-white'])
@@ -9,9 +9,9 @@
             {{ $title }}
         </p>
     </dt>
-    <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
+    <dd class="ml-16 pb-3 sm:pb-6 @if($route) sm:pb-7 @endif flex items-baseline">
         <p class="text-2xl font-semibold text-gray-900">
-            {{ $content }}
+            {!! $content !!}
         </p>
         <div class="ml-2 flex items-baseline text-sm font-semibold">
             <div class="self-center flex-shrink-0 h-4 w-4">
@@ -29,12 +29,14 @@
                 {{ $changeNumber }}
             </span>
         </div>
-        <div class="absolute bottom-0 inset-x-0 bg-gray-50 px-4 py-4 sm:px-6">
-            <div class="text-sm">
-                <a href="#" class="font-medium text-orange-600 hover:text-orange-500">
-                    View all
-                </a>
+        @if($route)
+            <div class="absolute bottom-0 inset-x-0 bg-gray-50 px-4 py-4 sm:px-6">
+                <div class="text-sm">
+                    <a href="{{ $route }}" class="font-medium text-orange-600 hover:text-orange-500">
+                        View all
+                    </a>
+                </div>
             </div>
-        </div>
+        @endif
     </dd>
 </div>
