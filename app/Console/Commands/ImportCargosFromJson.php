@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
 use JsonException;
 
-class ImportCargoFromJson extends Command
+class ImportCargosFromJson extends Command
 {
     /**
      * The name and signature of the console command.
