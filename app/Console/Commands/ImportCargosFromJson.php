@@ -61,12 +61,12 @@ class ImportCargosFromJson extends Command
             // Find the cargo by name or create it
             $cargoModel = Cargo::firstOrCreate(
                 [
-                    'name' => $key
+                    'name' => $key,
+                    'game_id' => $this->argument('game_id'),
                 ],
                 [
                     'dlc' => $cargo[0]['DLC'],
                     'weight' => $this->convertWeightToInt($cargo[0]['Weight (t) *'] ?? $cargo[0]['Weight (lb) *']) ?: null,
-                    'game_id' => $this->argument('game_id'),
                 ]
             );
 
