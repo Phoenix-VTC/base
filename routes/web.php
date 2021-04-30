@@ -28,6 +28,7 @@ use App\Http\Livewire\VacationRequests\ShowCreate as VacationRequestsShowCreate;
 use App\Http\Livewire\VacationRequests\ShowIndex as VacationRequestsShowIndex;
 use App\Http\Livewire\VacationRequestsManagement\ShowIndex as VacationRequestsManagementShowIndex;
 use App\Http\Livewire\UserManagement\ShowIndex as UserManagementShowIndex;
+use App\Http\Livewire\UserManagement\Roles\ShowIndexPage as UserManagementRolesShowIndex;
 use App\Http\Livewire\Wallet\ShowIndexPage as WalletShowIndexPage;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +54,7 @@ Route::prefix('recruitment')->name('recruitment.')->middleware(['auth', 'can:han
 
 Route::prefix('user-management')->name('user-management.')->middleware(['auth', 'can:manage users'])->group(function () {
     Route::get('index', UserManagementShowIndex::class)->name('index');
+    Route::get('roles/index', UserManagementRolesShowIndex::class)->name('roles.index');
 });
 
 Route::prefix('vacation-requests')->name('vacation-requests.')->middleware(['auth'])->group(function () {

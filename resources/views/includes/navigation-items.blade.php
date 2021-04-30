@@ -31,8 +31,12 @@
     @endcan
 
     @can('manage users')
-        <x-sidebar.item title="User Management" icon="o-document-search" route="user-management.index"
-                        activeRoute="user-management.*"/>
+            <livewire:components.dropdown title="User Management" icon="o-document-search" activeRoute="user-management.*"
+                                          :items="[
+                                        ['title' => 'Users', 'route' => 'user-management.index'],
+                                        ['title' => 'Roles', 'route' => 'user-management.roles.index'],
+                                      ]">
+            </livewire:components.dropdown>
     @endcan
 
     @can('manage events')
