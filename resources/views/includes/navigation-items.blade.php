@@ -35,6 +35,7 @@
                                           :items="[
                                         ['title' => 'Users', 'route' => 'user-management.index'],
                                         ['title' => 'Roles', 'route' => 'user-management.roles.index'],
+                                        ['title' => 'Permissions', 'route' => 'user-management.permissions.index'],
                                       ]">
             </livewire:components.dropdown>
     @endcan
