@@ -83,7 +83,7 @@ Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage 
     Route::get('companies', CompaniesShowIndexPage::class)->name('companies');
 });
 
-Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:beta test'])->group(function () {
+Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:submit jobs'])->group(function () {
     Route::get('personal-overview', JobsShowPersonalOverviewPage::class)->name('personal-overview');
     Route::get('submit', JobsShowSubmitPage::class)->name('submit');
     Route::get('{job}', JobsShowShowPage::class)->name('show');

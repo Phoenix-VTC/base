@@ -1,7 +1,7 @@
 @section('title', 'Hi, ' . Auth::user()->username . '!')
 
 <div>
-    @can('beta test')
+    @can('submit jobs')
         <div>
             <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">
                 This month
@@ -45,7 +45,7 @@
         {{-- Left col --}}
         <div class="space-y-6 lg:col-start-1 lg:col-span-2">
 
-            @can('beta test')
+            @can('submit jobs')
                 <div class="flex flex-col">
                     <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">
                         Today's overview
@@ -289,7 +289,7 @@
         {{-- Right col --}}
         <div class="lg:col-start-3 lg:col-span-1 space-y-6">
 
-            @can('beta test')
+            @can('submit jobs')
                 <section aria-labelledby="job-activity-feed-title" class="lg:col-start-3 lg:col-span-1">
                     <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
                         <h2 id="job-activity-feed-title" class="text-lg font-medium text-gray-900">Recent Jobs</h2>
@@ -305,8 +305,7 @@
                                                     <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
                                                           aria-hidden="true"></span>
                                                 @endif
-                                                <div class="relative flex space-x-3">
-                                                    <div>
+                                                <div class="relative flex space-x-3"><div>
                                             <span
                                                 class="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white">
                                                 <img class="w-8 h-8 rounded-full"
