@@ -74,13 +74,17 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ App\Models\Game::getAbbreviationById($job->game_id) ?? 'Unknown Game' }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ ucwords($job->pickupCity->real_name ?? 'Unknown City') }}
-                                            ({{ ucwords($job->pickupCompany->name ?? 'Unknown Company') }})
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 prose prose-sm">
+                                            <a href="{{ route('jobs.show', $job->id) }}">
+                                                {{ ucwords($job->pickupCity->real_name ?? 'Unknown City') }}
+                                                ({{ ucwords($job->pickupCompany->name ?? 'Unknown Company') }})
+                                            </a>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ ucwords($job->destinationCity->real_name ?? 'Unknown City') }}
-                                            ({{ ucwords($job->destinationCompany->name ?? 'Unknown Company') }})
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 prose prose-sm">
+                                            <a href="{{ route('jobs.show', $job->id) }}">
+                                                {{ ucwords($job->destinationCity->real_name ?? 'Unknown City') }}
+                                                ({{ ucwords($job->destinationCompany->name ?? 'Unknown Company') }})
+                                            </a>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $job->created_at->format('M d, Y') }}
