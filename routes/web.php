@@ -24,6 +24,7 @@ use App\Http\Livewire\Auth\Register;
 use App\Http\Livewire\Auth\Verify;
 use App\Http\Livewire\Settings\ShowPreferencesPage as SettingsShowPreferencesPage;
 use App\Http\Livewire\ShowDashboard;
+use App\Http\Livewire\Users\ShowProfilePage;
 use App\Http\Livewire\VacationRequests\ShowCreate as VacationRequestsShowCreate;
 use App\Http\Livewire\VacationRequests\ShowIndex as VacationRequestsShowIndex;
 use App\Http\Livewire\VacationRequestsManagement\ShowIndex as VacationRequestsManagementShowIndex;
@@ -94,6 +95,14 @@ Route::prefix('settings')->name('settings.')->middleware('auth')->group(function
 });
 
 Route::get('my-wallet', WalletShowIndexPage::class)->middleware('auth')->name('my-wallet');
+
+Route::get('profile', function () {
+    return redirect()->route('users.profile', Auth::user());
+})->middleware('auth')->name('profile');
+
+Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
+    Route::get('{id}', ShowProfilePage::class)->name('profile');
+});
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
 
