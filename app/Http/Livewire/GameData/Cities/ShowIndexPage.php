@@ -55,6 +55,6 @@ class ShowIndexPage extends Component
 
         $this->reset();
 
-        session()->flash('alert', ['type' => 'success', 'message' => "City <b>$city->real_name</b> successfully added."]);
+        session()->now('alert', ['type' => 'success', 'message' => "City <b>$city->real_name</b> successfully added."]);
     }
 }

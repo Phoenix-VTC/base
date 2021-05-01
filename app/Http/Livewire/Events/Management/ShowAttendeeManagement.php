@@ -42,14 +42,14 @@ class ShowAttendeeManagement extends Component
 
         $attendee->save();
 
-        session()->flash('alert', ['type' => 'success', 'message' => 'User <b>' . $attendee->user->username . '</b> successfully marked as attending.']);
+        session()->now('alert', ['type' => 'success', 'message' => 'User <b>' . $attendee->user->username . '</b> successfully marked as attending.']);
     }
 
     public function removeAttendance(EventAttendee $attendee): void
     {
         $attendee->delete();
 
-        session()->flash('alert', ['type' => 'success', 'message' => 'User <b>' . $attendee->user->username . '</b> successfully removed from event attendance.']);
+        session()->now('alert', ['type' => 'success', 'message' => 'User <b>' . $attendee->user->username . '</b> successfully removed from event attendance.']);
     }
 
     public function addAttendee(): void
@@ -65,7 +65,7 @@ class ShowAttendeeManagement extends Component
 
         unset($this->username);
 
-        session()->flash('alert', ['type' => 'success', 'message' => 'User <b>' . $user->username . '</b> successfully marked as attending.']);
+        session()->now('alert', ['type' => 'success', 'message' => 'User <b>' . $user->username . '</b> successfully marked as attending.']);
     }
 
     public function hydrate(): void
