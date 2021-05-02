@@ -12,7 +12,7 @@ class ShowIndexPage extends Component
 
     public function mount(): void
     {
-        session()->flash('alert', ['type' => 'info', 'title' => 'Heads-up!', 'message' => 'Permissions cannot be modified via the PhoenixBase.<br>Contact a Developer in order to do this.']);
+        session()->now('alert', ['type' => 'info', 'title' => 'Heads-up!', 'message' => 'Permissions cannot be modified via the PhoenixBase.<br>Contact a Developer in order to do this.']);
 
         $this->permissions = Permission::with('roles', 'users')->get();
     }

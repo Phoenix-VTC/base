@@ -24,6 +24,7 @@ use App\Http\Livewire\Auth\Register;
 use App\Http\Livewire\Auth\Verify;
 use App\Http\Livewire\Settings\ShowPreferencesPage as SettingsShowPreferencesPage;
 use App\Http\Livewire\ShowDashboard;
+use App\Http\Livewire\Users\ShowProfilePage;
 use App\Http\Livewire\VacationRequests\ShowCreate as VacationRequestsShowCreate;
 use App\Http\Livewire\VacationRequests\ShowIndex as VacationRequestsShowIndex;
 use App\Http\Livewire\VacationRequestsManagement\ShowIndex as VacationRequestsManagementShowIndex;
@@ -83,7 +84,7 @@ Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage 
     Route::get('companies', CompaniesShowIndexPage::class)->name('companies');
 });
 
-Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:beta test'])->group(function () {
+Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:submit jobs'])->group(function () {
     Route::get('personal-overview', JobsShowPersonalOverviewPage::class)->name('personal-overview');
     Route::get('submit', JobsShowSubmitPage::class)->name('submit');
     Route::get('{job}', JobsShowShowPage::class)->name('show');
@@ -94,6 +95,14 @@ Route::prefix('settings')->name('settings.')->middleware('auth')->group(function
 });
 
 Route::get('my-wallet', WalletShowIndexPage::class)->middleware('auth')->name('my-wallet');
+
+Route::get('profile', function () {
+    return redirect()->route('users.profile', Auth::user());
+})->middleware('auth')->name('profile');
+
+Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
+    Route::get('{id}', ShowProfilePage::class)->name('profile');
+});
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
 
