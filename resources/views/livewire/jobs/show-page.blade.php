@@ -239,18 +239,19 @@
                             </div>
 
                             <div class="mt-6 flex items-center">
-                                <div class="flex-shrink-0">
+                                <a class="flex-shrink-0" href="{{ route('users.profile', $job->user->id) }}">
                                     <img class="h-10 w-10 rounded-full"
                                          src="{{ $job->user->profile_picture ?? asset('svg/unknown_avatar.svg') }}"
                                          alt="{{ $job->user->username ?? 'Unknown User' }}">
-                                </div>
+                                </a>
                                 <div class="ml-3">
                                     <div class="flex space-x-1 text-sm text-gray-500">
                                         <span>Submitted By</span>
                                     </div>
-                                    <p class="text-sm font-medium capitalize text-gray-900">
+                                    <a class="text-sm font-medium capitalize text-gray-900"
+                                       href="{{ route('users.profile', $job->user->id) }}">
                                         {{ $job->user->username ?? 'Unknown User' }}
-                                    </p>
+                                    </a>
                                 </div>
                             </div>
                         </div>
