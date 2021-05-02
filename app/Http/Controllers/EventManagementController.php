@@ -33,7 +33,7 @@ class EventManagementController extends Controller
         $event->completed = true;
         $event->save();
 
-        session()->flash('alert', ['type' => 'success', 'message' => 'Successfully submitted rewards for <b>' . $event->name . '</b>.']);
+        session()->now('alert', ['type' => 'success', 'message' => 'Successfully submitted rewards for <b>' . $event->name . '</b>.']);
 
         return redirect()->route('event-management.index');
     }
@@ -42,7 +42,7 @@ class EventManagementController extends Controller
     {
         $event->delete();
 
-        session()->flash('alert', ['type' => 'success', 'message' => 'Event deleted successfully!']);
+        session()->now('alert', ['type' => 'success', 'message' => 'Event deleted successfully!']);
 
         return redirect()->route('event-management.index');
     }

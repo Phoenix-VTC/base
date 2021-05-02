@@ -30,7 +30,7 @@ class ShowIndex extends Component
         $vacation_request = $this->vacation_requests->find($id);
 
         if ($vacation_request->handled_by) {
-            session()->flash('alert', ['type' => 'danger', 'message' => 'This vacation request has already been handled.']);
+            session()->now('alert', ['type' => 'danger', 'message' => 'This vacation request has already been handled.']);
         }
 
         if (!$vacation_request->handled_by) {
@@ -38,13 +38,13 @@ class ShowIndex extends Component
             $vacation_request->save();
 
             if (!$vacation_request->leaving) {
-                session()->flash('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? "Unknown User") . '\'s vacation request successfully marked as seen!']);
+                session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? "Unknown User") . '\'s vacation request successfully marked as seen!']);
             }
 
             if ($vacation_request->leaving) {
                 $vacation_request->user->delete();
 
-                session()->flash('alert', ['type' => 'success', 'message' => 'Request to leave successfully processed, and the PhoenixBase account has been deleted.']);
+                session()->now('alert', ['type' => 'success', 'message' => 'Request to leave successfully processed, and the PhoenixBase account has been deleted.']);
             }
         }
     }
@@ -54,13 +54,13 @@ class ShowIndex extends Component
         $vacation_request = $this->vacation_requests->find($id);
 
         if ($vacation_request->deleted_at) {
-            session()->flash('alert', ['type' => 'danger', 'message' => 'This vacation request has already been cancelled.']);
+            session()->now('alert', ['type' => 'danger', 'message' => 'This vacation request has already been cancelled.']);
         }
 
         if (!$vacation_request->deleted_at) {
             $vacation_request->delete();
 
-            session()->flash('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? "Unknown User") . '\'s vacation request successfully cancelled!']);
+            session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? "Unknown User") . '\'s vacation request successfully cancelled!']);
         }
     }
 }

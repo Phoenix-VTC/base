@@ -95,7 +95,7 @@ class ShowEdit extends Component
 
         $event->save();
 
-        session()->flash('alert', ['type' => 'success', 'message' => "Event <b>$event->name</b> successfully updated!"]);
+        session()->now('alert', ['type' => 'success', 'message' => "Event <b>$event->name</b> successfully updated!"]);
 
         return redirect(route('event-management.index'));
     }
@@ -129,7 +129,7 @@ class ShowEdit extends Component
         $this->hosted_by = $this->event->hosted_by;
 
         if ($this->event->is_past) {
-            session()->flash('alert', ['type' => 'info', 'title' => 'Heads-up!', 'message' => "You're editing an event that is in the past."]);
+            session()->now('alert', ['type' => 'info', 'title' => 'Heads-up!', 'message' => "You're editing an event that is in the past."]);
         }
     }
 

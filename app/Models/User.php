@@ -6,13 +6,16 @@ use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Traits\HasWallets;
 use Glorand\Model\Settings\Traits\HasSettingsTable;
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
 use Spatie\Permission\Traits\HasRoles;
+use Syntax\SteamApi\Containers\Player;
 
 class User extends Authenticatable implements Wallet
 {
@@ -141,5 +144,30 @@ class User extends Authenticatable implements Wallet
         }
 
         return '';
+    }
+
+    public function getSteamPlayerSummaryAttribute(): ?Player
+    {
+        // Cached for 15 minutes
+        return Cache::remember($this->id . '_steam', 900, function () {
+            return \Steam::user($this->steam_id ?? 0)->GetPlayerSummaries()[0] ?? null;
+        });
+    }
+
+    public function getTruckersMpDataAttribute(): array
+    {
+        // Cached for 15 minutes
+        return Cache::remember($this->id . '_truckersmp', 900, function () {
+            $client = new Client();
+
+            $response = $client->get('https://api.truckersmp.com/v2/player/' . $this->truckersmp_id)->getBody();
+            $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+
+            if ($response['error']) {
+                return [];
+            }
+
+            return $response['response'];
+        });
     }
 }
