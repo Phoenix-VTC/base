@@ -60,6 +60,7 @@ class ProcessAcceptation implements ShouldQueue
             'password' => Hash::make(Str::random()),
             'welcome_valid_until' => now()->addDays(3),
             'welcome_token' => Str::random(64),
+            'application_id' => $this->application->id,
         ]);
         $user->assignRole('driver');
 
