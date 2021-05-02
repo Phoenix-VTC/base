@@ -43,6 +43,7 @@ class User extends Authenticatable implements Wallet
         'password',
         'welcome_valid_until',
         'welcome_token',
+        'application_id',
     ];
 
     /**
