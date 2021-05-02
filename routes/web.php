@@ -24,6 +24,7 @@ use App\Http\Livewire\Auth\Register;
 use App\Http\Livewire\Auth\Verify;
 use App\Http\Livewire\Settings\ShowPreferencesPage as SettingsShowPreferencesPage;
 use App\Http\Livewire\ShowDashboard;
+use App\Http\Livewire\UserManagement\ShowEditPage as UserManagementShowEditPage;
 use App\Http\Livewire\Users\ShowProfilePage;
 use App\Http\Livewire\VacationRequests\ShowCreate as VacationRequestsShowCreate;
 use App\Http\Livewire\VacationRequests\ShowIndex as VacationRequestsShowIndex;
@@ -102,6 +103,8 @@ Route::get('profile', function () {
 
 Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
     Route::get('{id}', ShowProfilePage::class)->name('profile');
+
+    Route::get('{id}/edit', UserManagementShowEditPage::class)->middleware('can:manage users')->name('edit');
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
