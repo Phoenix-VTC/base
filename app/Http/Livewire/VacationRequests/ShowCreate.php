@@ -67,7 +67,7 @@ class ShowCreate extends Component
 
         $vacation_request->notify(new NewVacationRequest($vacation_request));
 
-        session()->now('alert', ['type' => 'success', 'message' => 'Vacation request successfully submitted!']);
+        session()->flash('alert', ['type' => 'success', 'message' => 'Vacation request successfully submitted!']);
 
         return redirect(route('vacation-requests.index'));
     }

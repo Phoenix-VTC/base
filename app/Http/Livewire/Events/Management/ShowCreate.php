@@ -108,7 +108,7 @@ class ShowCreate extends Component
             $event->notify(new NewEvent($event));
         }
 
-        session()->now('alert', ['type' => 'success', 'message' => 'Event successfully created!']);
+        session()->flash('alert', ['type' => 'success', 'message' => 'Event successfully created!']);
 
         return redirect(route('event-management.index'));
     }

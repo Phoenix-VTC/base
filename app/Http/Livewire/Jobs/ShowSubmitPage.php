@@ -124,7 +124,7 @@ class ShowSubmitPage extends Component
             'status' => JobStatus::Complete,
         ]);
 
-        session()->now('alert', ['type' => 'success', 'message' => 'Job successfully submitted!']);
+        session()->flash('alert', ['type' => 'success', 'message' => 'Job successfully submitted!']);
 
         return redirect()->route('jobs.show', $job);
     }
