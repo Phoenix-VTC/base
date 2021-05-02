@@ -13,6 +13,8 @@ require("laravel-mix-tailwind");
  |
  */
 
+mix.copy('node_modules/@fortawesome/fontawesome-pro/webfonts', 'public/webfonts');
+
 mix.js("resources/js/app.js", "public/js/app.js")
     .sass("resources/sass/app.scss", "public/css/app.css")
     .tailwind("./tailwind.config.js")

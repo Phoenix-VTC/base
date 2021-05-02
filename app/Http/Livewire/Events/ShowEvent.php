@@ -38,7 +38,7 @@ class ShowEvent extends Component
         try {
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
-            session()->flash('alert', ['type' => 'danger', 'message' => "Slow down! Please wait another $exception->secondsUntilAvailable seconds."]);
+            session()->now('alert', ['type' => 'danger', 'message' => "Slow down! Please wait another $exception->secondsUntilAvailable seconds."]);
             return;
         }
 
@@ -48,7 +48,7 @@ class ShowEvent extends Component
                 ['attending' => Attending::Yes]
             );
 
-            session()->flash('alert', ['type' => 'success', 'message' => 'Attendance marked as <strong>attending</strong>.']);
+            session()->now('alert', ['type' => 'success', 'message' => 'Attendance marked as <strong>attending</strong>.']);
         }
     }
 
@@ -57,7 +57,7 @@ class ShowEvent extends Component
         try {
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
-            session()->flash('alert', ['type' => 'danger', 'message' => "Slow down! Please wait another $exception->secondsUntilAvailable seconds."]);
+            session()->now('alert', ['type' => 'danger', 'message' => "Slow down! Please wait another $exception->secondsUntilAvailable seconds."]);
             return;
         }
 
@@ -67,7 +67,7 @@ class ShowEvent extends Component
                 ['attending' => Attending::Maybe]
             );
 
-            session()->flash('alert', ['type' => 'success', 'message' => 'Attendance marked as <strong>not sure</strong>.']);
+            session()->now('alert', ['type' => 'success', 'message' => 'Attendance marked as <strong>not sure</strong>.']);
         }
     }
 
@@ -76,7 +76,7 @@ class ShowEvent extends Component
         try {
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
-            session()->flash('alert', ['type' => 'danger', 'message' => "Slow down! Please wait another $exception->secondsUntilAvailable seconds."]);
+            session()->now('alert', ['type' => 'danger', 'message' => "Slow down! Please wait another $exception->secondsUntilAvailable seconds."]);
             return;
         }
 
@@ -89,7 +89,7 @@ class ShowEvent extends Component
                 $event_attendee->delete();
             }
 
-            session()->flash('alert', ['type' => 'success', 'message' => 'Attendance marked as <strong>not attending</strong>.']);
+            session()->now('alert', ['type' => 'success', 'message' => 'Attendance marked as <strong>not attending</strong>.']);
         }
     }
 
