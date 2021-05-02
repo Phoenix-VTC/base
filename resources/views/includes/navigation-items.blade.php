@@ -1,7 +1,7 @@
 <x-sidebar.group>
     <x-sidebar.item title="Dashboard" icon="o-home" route="dashboard"/>
 
-    @can('beta test')
+    @can('submit jobs')
         <livewire:components.dropdown title="My Jobs" icon="o-briefcase" activeRoute="jobs.*"
                                       :items="[
                                         ['title' => 'Personal Overview', 'route' => 'jobs.personal-overview'],
@@ -31,8 +31,13 @@
     @endcan
 
     @can('manage users')
-        <x-sidebar.item title="User Management" icon="o-document-search" route="user-management.index"
-                        activeRoute="user-management.*"/>
+            <livewire:components.dropdown title="User Management" icon="o-document-search" activeRoute="user-management.*"
+                                          :items="[
+                                        ['title' => 'Users', 'route' => 'user-management.index'],
+                                        ['title' => 'Roles', 'route' => 'user-management.roles.index'],
+                                        ['title' => 'Permissions', 'route' => 'user-management.permissions.index'],
+                                      ]">
+            </livewire:components.dropdown>
     @endcan
 
     @can('manage events')

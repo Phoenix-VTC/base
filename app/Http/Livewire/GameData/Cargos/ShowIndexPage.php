@@ -49,6 +49,6 @@ class ShowIndexPage extends Component
 
         $this->reset();
 
-        session()->flash('alert', ['type' => 'success', 'message' => "Cargo <b>$cargo->name</b> successfully added."]);
+        session()->now('alert', ['type' => 'success', 'message' => "Cargo <b>$cargo->name</b> successfully added."]);
     }
 }

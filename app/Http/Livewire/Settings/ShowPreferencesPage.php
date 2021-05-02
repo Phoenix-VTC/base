@@ -52,7 +52,7 @@ class ShowPreferencesPage extends Component
 
         Cache::forget('user_stats_' . Auth::id());
 
-        session()->flash('alert', ['type' => 'success', 'message' => 'Settings successfully updated!']);
+        session()->now('alert', ['type' => 'success', 'message' => 'Settings successfully updated!']);
     }
 
     public function updated($propertyName): void
