@@ -4,8 +4,8 @@ namespace App\Http\Livewire\UserManagement;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Mediconesystems\LivewireDatatables\BooleanColumn;
 use Mediconesystems\LivewireDatatables\Column;
-use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 use Mediconesystems\LivewireDatatables\NumberColumn;
 
@@ -17,30 +17,25 @@ class IndexDatatable extends LivewireDatatable
 
     public function builder(): Builder
     {
-        return User::withTrashed()
-            ->with('roles');
+        return User::withTrashed();
     }
 
     public function columns(): array
     {
         return [
-            NumberColumn::name('id')->filterable()->searchable(),
+            NumberColumn::name('id')->filterable()->searchable()->linkTo('users'),
 
-            Column::name('username')->filterable()->searchable()->view('livewire.user-management.datatable-components.username-field'),
+            Column::name('username')->filterable()->searchable(),
 
             Column::name('email')->filterable()->searchable(),
 
-            Column::name('roles.name')->label('Roles')->filterable(),
+            BooleanColumn::name('deleted_at')
+                ->label('Deleted')
+                ->filterable(),
 
-            Column::name('steam_id')->searchable()->filterable()->searchable(),
-
-            Column::name('truckersmp_id')->searchable()->filterable()->searchable(),
-
-            DateColumn::name('created_at')->filterable(),
-
-            DateColumn::name('deleted_at'),
-
-            Column::delete(),
+            Column::callback(['id', 'username'], function ($id, $username) {
+                return view('livewire.user-management.datatable-components.actions', ['id' => $id, 'username' => $username]);
+            }),
         ];
     }
 }
