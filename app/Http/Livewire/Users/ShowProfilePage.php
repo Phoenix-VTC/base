@@ -35,7 +35,12 @@ class ShowProfilePage extends Component
         $this->recent_jobs = $this->user->jobs()
             ->orderBy('created_at', 'desc')
             ->where('status', JobStatus::Complete)
-            ->with('pickupCity', 'destinationCity')
+            ->with([
+                'pickupCity',
+                'pickupCompany',
+                'destinationCity',
+                'destinationCompany',
+            ])
             ->take(10)
             ->get();
     }
