@@ -4,20 +4,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 
-@section('title', 'Submit New Job')
+@section('title', 'Submit New ' . App\Models\Game::GAMES[$game_id][0] . ' Job')
 
 <div>
     <form class="space-y-8 divide-y divide-gray-200" wire:submit.prevent="submit">
         <div class="space-y-8 divide-y divide-gray-200">
             <div>
                 <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                    <x-input.radio-group legend="Game" :error="$errors->first('game')">
-                        @foreach($games as $key => $game)
-                            <x-input.radio :id="'game_' . strtolower($game[0])" wire:model.lazy="game" :value="$key"
-                                           :label="$game[1]"/>
-                        @endforeach
-                    </x-input.radio-group>
-
                     <x-input.group label="Pickup City" :error="$errors->first('pickup_city')" col-span="3">
                         <x-input.searchable-select
                             :data="$cities" wire:model="pickup_city" limit="20"
@@ -87,7 +80,8 @@
                     <x-input.group label="Estimated Income" for="estimated_income"
                                    :error="$errors->first('estimated_income')"
                                    col-span="3">
-                        <x-input.text wire:model.lazy="estimated_income" type="number" id="estimated_income" min="1" max="400000"
+                        <x-input.text wire:model.lazy="estimated_income" type="number" id="estimated_income" min="1"
+                                      max="400000"
                                       leading-icon="o-calculator"
                                       :error="$errors->first('estimated_income')"
                                       placeholder="The original estimate, before any penalties"/>

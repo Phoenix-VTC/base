@@ -10,7 +10,8 @@ use App\Http\Livewire\GameData\Cargos\ShowIndexPage as CargosShowIndexPage;
 use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
 use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
-use App\Http\Livewire\Jobs\ShowSubmitPage as JobsShowSubmitPage;
+use App\Http\Livewire\Jobs\Submit\ShowSelectGamePage as JobsShowSelectGamePage;
+use App\Http\Livewire\Jobs\Submit\ShowSubmitPage as JobsShowSubmitPage;
 use App\Http\Livewire\Jobs\ShowShowPage as JobsShowShowPage;
 use \App\Http\Livewire\Recruitment\ShowApplication;
 use \App\Http\Livewire\Recruitment\ShowIndex as RecruitmentShowIndex;
@@ -87,7 +88,10 @@ Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage 
 
 Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:submit jobs'])->group(function () {
     Route::get('personal-overview', JobsShowPersonalOverviewPage::class)->name('personal-overview');
-    Route::get('submit', JobsShowSubmitPage::class)->name('submit');
+    Route::get('choose-game', JobsShowSelectGamePage::class)->name('choose-game');
+    Route::get('submit/{game_id}', JobsShowSubmitPage::class)
+        ->whereNumber('game_id')
+        ->name('submit');
     Route::get('{job}', JobsShowShowPage::class)->name('show');
 });
 
