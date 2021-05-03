@@ -129,7 +129,7 @@ class ShowEdit extends Component
         $this->hosted_by = $this->event->hosted_by;
 
         if ($this->event->is_past) {
-            session()->flash('alert', ['type' => 'info', 'title' => 'Heads-up!', 'message' => "You're editing an event that is in the past."]);
+            session()->now('alert', ['type' => 'info', 'title' => 'Heads-up!', 'message' => "You're editing an event that is in the past."]);
         }
     }
 
