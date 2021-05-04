@@ -21,7 +21,6 @@ use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Auth\Passwords\Confirm;
 use App\Http\Livewire\Auth\Passwords\Email;
 use App\Http\Livewire\Auth\Passwords\Reset;
-use App\Http\Livewire\Auth\Register;
 use App\Http\Livewire\Auth\Verify;
 use App\Http\Livewire\Settings\ShowPreferencesPage as SettingsShowPreferencesPage;
 use App\Http\Livewire\ShowDashboard;
@@ -116,10 +115,6 @@ Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)
         ->name('login');
-
-    Route::get('/dashboard', function () {
-        return redirect('https://apply.phoenixvtc.com');
-    })->name('register');
 });
 
 Route::get('password/reset', Email::class)
