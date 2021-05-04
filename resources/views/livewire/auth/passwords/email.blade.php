@@ -55,7 +55,7 @@
 
                 <div class="flex items-center justify-between">
                     <div class="text-sm">
-                        <a href="{{ route('password.request') }}"
+                        <a href="{{ route('login') }}"
                            class="flex flex-row font-medium text-orange-600 hover:text-orange-500">
                             <x-heroicon-s-chevron-left class="h-5 w-5"/>
                             <span>Back to login</span>
