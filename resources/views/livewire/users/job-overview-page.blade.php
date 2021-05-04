@@ -1,19 +1,13 @@
-{{-- Close your eyes. Count to one. That is how long forever feels. --}}
+{{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day --}}
 
-@section('title', 'Personal Job Overview')
-
-@section('meta')
-    <x-header.meta-item icon="s-cash">
-        {!! Auth::user()->preferred_currency_symbol !!} {{ number_format(Auth::user()->default_wallet_balance) }}
-    </x-header.meta-item>
-@endsection
+@section('title', 'Viewing ' . $user->username . '\'s jobs')
 
 @section('actions')
     <div class="ml-3">
-        <a href="{{ route('jobs.choose-game') }}"
-           class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            <x-heroicon-s-truck class="-ml-1 mr-2 h-5 w-5"/>
-            Submit New Job
+        <a href="{{ route('users.profile', $user) }}"
+           class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <x-heroicon-s-identification class="-ml-1 mr-2 h-5 w-5 text-gray-500"/>
+            View {{ $user->username }}'s profile
         </a>
     </div>
 @endsection
@@ -112,11 +106,9 @@
                             </tbody>
                         </table>
                     @else
-                        <x-empty-state :image="asset('img/illustrations/map_dark.svg')"
-                                       alt="Map illustration">
-                            Hmm, it looks like you don't have any submitted jobs yet.
-                            <br>
-                            Come back here when you've finished some!
+                        <x-empty-state :image="asset('img/illustrations/no_data.svg')"
+                                       alt="No Data illustration">
+                            Hmm, it looks like this user hasn't submitted any jobs yet.
                         </x-empty-state>
                     @endempty
                     {{ $jobs->links() }}

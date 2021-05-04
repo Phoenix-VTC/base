@@ -100,6 +100,14 @@
                                 @endif
                                 </tbody>
                             </table>
+                            @if($recent_jobs->count())
+                                <div>
+                                    <a href="{{ route('users.jobs-overview', $user) }}"
+                                       class="block @if(!($recent_jobs->count() % 2 == 0)) bg-gray-50 @else bg-white @endif text-sm font-medium text-gray-500 text-center px-4 py-4 hover:text-gray-700 sm:rounded-b-lg">
+                                        View all jobs
+                                    </a>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
