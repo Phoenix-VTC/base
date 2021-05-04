@@ -10,6 +10,7 @@ use App\Http\Livewire\GameData\Cargos\ShowIndexPage as CargosShowIndexPage;
 use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
 use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
+use App\Http\Livewire\Users\ShowJobOverviewPage as UsersShowJobOverviewPage;
 use App\Http\Livewire\Jobs\Submit\ShowSelectGamePage as JobsShowSelectGamePage;
 use App\Http\Livewire\Jobs\Submit\ShowSubmitPage as JobsShowSubmitPage;
 use App\Http\Livewire\Jobs\ShowShowPage as JobsShowShowPage;
@@ -106,6 +107,8 @@ Route::get('profile', function () {
 
 Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
     Route::get('{id}', ShowProfilePage::class)->name('profile');
+
+    Route::get('{user}/jobs', UsersShowJobOverviewPage::class)->name('jobs-overview');
 
     Route::get('{id}/edit', UserManagementShowEditPage::class)->middleware('can:manage users')->name('edit');
 });

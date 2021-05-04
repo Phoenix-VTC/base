@@ -110,7 +110,7 @@
                 @endforeach
                 @empty($event->attendees->count())
                     <x-empty-state :image="asset('img/illustrations/no_data.svg')"
-                                   alt="Well Done illustration">
+                                   alt="No data illustration">
                         There are no attendees yet for this event.
                     </x-empty-state>
                 @endempty
