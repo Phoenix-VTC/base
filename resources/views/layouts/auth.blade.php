@@ -9,6 +9,8 @@
                 @isset($slot)
                     {{ $slot }}
                 @endisset
+
+                <x-alert/>
             </div>
         </div>
         <div class="hidden lg:block relative w-0 flex-1">
