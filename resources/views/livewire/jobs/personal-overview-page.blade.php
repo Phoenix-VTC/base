@@ -113,7 +113,7 @@
                         </table>
                     @else
                         <x-empty-state :image="asset('img/illustrations/map_dark.svg')"
-                                       alt="Events illustration">
+                                       alt="Map illustration">
                             Hmm, it looks like you don't have any submitted jobs yet.
                             <br>
                             Come back here when you've finished some!
