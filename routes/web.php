@@ -25,6 +25,7 @@ use App\Http\Livewire\Auth\Passwords\Reset;
 use App\Http\Livewire\Auth\Verify;
 use App\Http\Livewire\Settings\ShowPreferencesPage as SettingsShowPreferencesPage;
 use App\Http\Livewire\Settings\ShowAccountPage as SettingsShowAccountPage;
+use App\Http\Livewire\Settings\ShowSecurityPage as SettingsShowSecurityPage;
 use App\Http\Livewire\ShowDashboard;
 use App\Http\Livewire\UserManagement\ShowEditPage as UserManagementShowEditPage;
 use App\Http\Livewire\Users\ShowProfilePage;
@@ -99,6 +100,7 @@ Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:submit jobs'])->g
 Route::prefix('settings')->name('settings.')->middleware('auth')->group(function () {
     Route::get('preferences', SettingsShowPreferencesPage::class)->name('preferences');
     Route::get('account', SettingsShowAccountPage::class)->middleware('password.confirm')->name('account');
+    Route::get('security', SettingsShowSecurityPage::class)->middleware('password.confirm')->name('security');
 });
 
 Route::get('my-wallet', WalletShowIndexPage::class)->middleware('auth')->name('my-wallet');
