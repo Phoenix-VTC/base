@@ -16,42 +16,63 @@
     </div>
 
     <div class="mt-8">
-{{--        <div>--}}
-{{--            <div>--}}
-{{--                <p class="text-sm font-medium text-gray-700">--}}
-{{--                    Sign in with--}}
-{{--                </p>--}}
+        <div>
+            <div>
+                <p class="text-sm font-medium text-gray-700">
+                    Sign in with
+                </p>
 
-{{--                <div class="mt-1 grid grid-cols-3 gap-3">--}}
-{{--                    <div>--}}
-{{--                        <a href="#"--}}
-{{--                           class="w-full h-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">--}}
-{{--                            <span class="sr-only">Sign in with Steam</span>--}}
-{{--                            <i class="fab fa-steam fa-fw fa-lg m-auto"></i>--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
+                <div class="mt-1 grid grid-cols-3 gap-3">
+                    <div>
+                        <form action="{{ route('auth.steam.redirectToSteam') }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                    class="w-full h-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <span class="sr-only">Sign in with Steam</span>
+                                <i class="fab fa-steam fa-fw fa-lg m-auto"></i>
+                            </button>
+                        </form>
+                    </div>
 
-{{--                    <div>--}}
-{{--                        <a href="#"--}}
-{{--                           class="w-full h-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">--}}
-{{--                            <span class="sr-only">Sign in with Discord</span>--}}
-{{--                            <i class="fab fa-discord fa-fw fa-lg m-auto"></i>--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+                    {{--                    <div>--}}
+                    {{--                        <a href="#"--}}
+                    {{--                           class="w-full h-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">--}}
+                    {{--                            <span class="sr-only">Sign in with Discord</span>--}}
+                    {{--                            <i class="fab fa-discord fa-fw fa-lg m-auto"></i>--}}
+                    {{--                        </a>--}}
+                    {{--                    </div>--}}
+                </div>
 
-{{--            <div class="mt-6 relative">--}}
-{{--                <div class="absolute inset-0 flex items-center" aria-hidden="true">--}}
-{{--                    <div class="w-full border-t border-gray-300"></div>--}}
-{{--                </div>--}}
-{{--                <div class="relative flex justify-center text-sm">--}}
-{{--                    <span class="px-2 bg-white text-gray-500">--}}
-{{--                        Or sign in with--}}
-{{--                    </span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
+                @if($errors->has('socialAuth'))
+                    <div class="rounded-md bg-red-50 p-4 mt-6">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <x-heroicon-s-x-circle class="h-5 w-5 text-red-400"/>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-red-800">
+                                    {{ $errors->get('socialAuth')['title'] }}
+                                </h3>
+                                <div class="mt-2 text-sm text-red-700">
+                                    {!! $errors->get('socialAuth')['message'] !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+
+            <div class="mt-6 relative">
+                <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500">
+                        Or sign in with
+                    </span>
+                </div>
+            </div>
+        </div>
 
         <div class="mt-6">
             <form wire:submit.prevent="authenticate" class="space-y-6">
