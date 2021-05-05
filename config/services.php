@@ -35,6 +35,13 @@ return [
         'recruitment_channel_id' => env('DISCORD_RECRUITMENT_CHANNEL_ID'),
         'hr_channel_id' => env('DISCORD_HR_CHANNEL_ID'),
         'member_events_channel_id' => env('DISCORD_MEMBER_EVENTS_CHANNEL_ID'),
+
+        // Socialite stuff
+        'client_id' => env('DISCORD_CLIENT_ID'),
+        'client_secret' => env('DISCORD_CLIENT_SECRET'),
+        'redirect' => env('DISCORD_REDIRECT_URI'),
+        'allow_gif_avatars' => true,
+        'avatar_default_extension' => 'jpg', // only pick from jpg, png, webp
     ],
 
 ];

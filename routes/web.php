@@ -26,6 +26,7 @@ use App\Http\Livewire\Auth\Verify;
 use App\Http\Livewire\Settings\ShowPreferencesPage as SettingsShowPreferencesPage;
 use App\Http\Livewire\Settings\ShowAccountPage as SettingsShowAccountPage;
 use App\Http\Livewire\Settings\ShowSecurityPage as SettingsShowSecurityPage;
+use App\Http\Livewire\Settings\ShowSocialsPage as SettingsShowSocialsPage;
 use App\Http\Livewire\ShowDashboard;
 use App\Http\Livewire\UserManagement\ShowEditPage as UserManagementShowEditPage;
 use App\Http\Livewire\Users\ShowProfilePage;
@@ -37,6 +38,7 @@ use App\Http\Livewire\UserManagement\Roles\ShowIndexPage as UserManagementRolesS
 use App\Http\Livewire\UserManagement\Permissions\ShowIndexPage as UserManagementPermissionsShowIndex;
 use App\Http\Livewire\Wallet\ShowIndexPage as WalletShowIndexPage;
 use App\Http\Controllers\Auth\SteamController as SteamAuthController;
+use App\Http\Controllers\Auth\DiscordController as DiscordAuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -102,6 +104,7 @@ Route::prefix('settings')->name('settings.')->middleware('auth')->group(function
     Route::get('preferences', SettingsShowPreferencesPage::class)->name('preferences');
     Route::get('account', SettingsShowAccountPage::class)->middleware('password.confirm')->name('account');
     Route::get('security', SettingsShowSecurityPage::class)->middleware('password.confirm')->name('security');
+    Route::get('socials', SettingsShowSocialsPage::class)->middleware('password.confirm')->name('socials');
 });
 
 Route::get('my-wallet', WalletShowIndexPage::class)->middleware('auth')->name('my-wallet');
@@ -129,6 +132,12 @@ Route::middleware('guest')->group(function () {
         Route::post('/', [SteamAuthController::class, 'redirectToSteam'])->name('redirectToSteam');
         Route::get('handle', [SteamAuthController::class, 'handle'])->name('handle');
     });
+});
+
+// Discord Auth
+Route::prefix('auth/discord')->name('auth.discord.')->group(function () {
+    Route::post('/', [DiscordAuthController::class, 'redirectToDiscord'])->name('redirectToDiscord');
+    Route::get('handle', [DiscordAuthController::class, 'handle'])->name('handle');
 });
 
 Route::get('password/reset', Email::class)
