@@ -171,6 +171,7 @@ return [
          */
         App\Providers\HorizonServiceProvider::class,
         NotificationChannels\Discord\DiscordServiceProvider::class,
+        \SocialiteProviders\Manager\ServiceProvider::class,
 
         /*
          * Application Service Providers...

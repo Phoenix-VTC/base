@@ -27,20 +27,23 @@
                         <form action="{{ route('auth.steam.redirectToSteam') }}" method="POST">
                             @csrf
                             <button type="submit"
-                                    class="w-full h-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    class="w-full h-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-orange-500 hover:bg-gray-50">
                                 <span class="sr-only">Sign in with Steam</span>
                                 <i class="fab fa-steam fa-fw fa-lg m-auto"></i>
                             </button>
                         </form>
                     </div>
 
-                    {{--                    <div>--}}
-                    {{--                        <a href="#"--}}
-                    {{--                           class="w-full h-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">--}}
-                    {{--                            <span class="sr-only">Sign in with Discord</span>--}}
-                    {{--                            <i class="fab fa-discord fa-fw fa-lg m-auto"></i>--}}
-                    {{--                        </a>--}}
-                    {{--                    </div>--}}
+                    <div>
+                        <form action="{{ route('auth.discord.redirectToDiscord') }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                    class="w-full h-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-orange-500 hover:bg-gray-50">
+                                <span class="sr-only">Sign in with Discord</span>
+                                <i class="fab fa-discord fa-fw fa-lg m-auto"></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
                 @if($errors->has('socialAuth'))
