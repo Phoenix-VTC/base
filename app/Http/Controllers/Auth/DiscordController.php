@@ -45,7 +45,7 @@ class DiscordController extends Controller
                     'message' => 'It looks like this Discord account is already connected to another user.<br>Please contact support if this issue persists.'
                 ]);
 
-                return back();
+                return redirect()->route('settings.socials');
             }
 
             $user->discord = $data;
@@ -53,7 +53,7 @@ class DiscordController extends Controller
 
             session()->flash('alert', ['type' => 'success', 'message' => 'Discord data successfully updated!']);
 
-            return back();
+            return redirect()->route('settings.socials');
         }
 
         // User isn't authenticated, try to log in
