@@ -44,6 +44,7 @@ class User extends Authenticatable implements Wallet
         'welcome_valid_until',
         'welcome_token',
         'application_id',
+        'discord',
     ];
 
     /**
@@ -64,6 +65,7 @@ class User extends Authenticatable implements Wallet
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'discord' => 'array',
     ];
 
     public array $defaultSettings = [

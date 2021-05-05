@@ -70,7 +70,7 @@ class SteamController extends Controller
                                 'message' => '
                                     We couldn\'t link any Phoenix accounts to the Steam account that you used.
                                     <br>
-                                    If you\'re trying to apply to Phoenix, please do this <a href="https://phoenixvtc.com/en/apply" class="font-bold">this</a> here.
+                                    If you\'re trying to apply to Phoenix, please do this <a href="https://phoenixvtc.com/en/apply" class="font-bold">here</a>.
                                 '
                             ]]);
                     }
