@@ -36,6 +36,7 @@ use App\Http\Livewire\UserManagement\ShowIndex as UserManagementShowIndex;
 use App\Http\Livewire\UserManagement\Roles\ShowIndexPage as UserManagementRolesShowIndex;
 use App\Http\Livewire\UserManagement\Permissions\ShowIndexPage as UserManagementPermissionsShowIndex;
 use App\Http\Livewire\Wallet\ShowIndexPage as WalletShowIndexPage;
+use App\Http\Controllers\Auth\SteamController as SteamAuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -122,6 +123,12 @@ Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)
         ->name('login');
+
+    // Steam Auth
+    Route::prefix('auth/steam')->name('auth.steam.')->group(function () {
+        Route::post('/', [SteamAuthController::class, 'redirectToSteam'])->name('redirectToSteam');
+        Route::get('handle', [SteamAuthController::class, 'handle'])->name('handle');
+    });
 });
 
 Route::get('password/reset', Email::class)
