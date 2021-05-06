@@ -33,7 +33,7 @@
     </nav>
 @endsection --}}
 
-<form wire:submit.prevent="submit" x-data="{formStep: 1}">
+<form wire:submit.prevent="submit" x-data="{formStep: 1, inDiscord: false}">
     @csrf
     <div x-show.transition.in="formStep === 1" style="">
         <div class="md:grid md:grid-cols-3 md:gap-6">
@@ -44,8 +44,8 @@
                 </p>
             </div>
             <div class="mt-5 md:mt-0 md:col-span-2">
-                <div class="grid grid-cols-6 gap-6">
-                    <div class="col-span-6 sm:col-span-3">
+                <div class="grid grid-cols-6 pb-6 gap-6">
+                    <div class="col-span-6 sm:col-span-3" x-show="inDiscord" x-cloak>
                         <label for="steam_username" class="block text-sm font-medium text-gray-700">
                             {{ __('driver-application.default_questions.steam_username.label') }}
                         </label>
@@ -60,7 +60,7 @@
                         </p>
                     </div>
 
-                    <div class="col-span-6 sm:col-span-3">
+                    <div class="col-span-6 sm:col-span-3" x-show="inDiscord" x-cloak>
                         <label for="truckersmp_username" class="block text-sm font-medium text-gray-700">
                             {{ __('driver-application.default_questions.truckersmp_username.label') }}
                         </label>
@@ -74,6 +74,44 @@
                                target="_blank">
                                 {{ __('driver-application.default_questions.truckersmp_username.description_link') }}
                             </a>
+                        </p>
+                    </div>
+
+                    <div class="col-span-6 sm:col-span-4" >
+                        <div class="flex items-center justify-between">
+                            <span class="flex-grow flex flex-col" id="availability-label">
+                                <span class="text-sm font-medium text-gray-900">Are you currently in our Discord Server?</span>
+                                <span class="text-sm text-gray-500">
+                                    If you haven't done this yet, you can join here:
+                                    <a class="text-orange-600 hover:text-orange-700 font-semibold" href="https://discord.gg/PhoenixVTC" target="_blank">https://discord.gg/PhoenixVTC</a>
+                                </span>
+                            </span>
+                            <button type="button" @click="inDiscord = !inDiscord"
+                                    class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    :class="{ 'bg-orange-600': inDiscord, 'bg-gray-200': !(inDiscord) }"
+                                    role="switch" aria-checked="false" aria-labelledby="availability-label">
+                                <span class="sr-only">Use setting</span>
+                                <span aria-hidden="true"
+                                      :class="{ 'translate-x-5': inDiscord, 'translate-x-0': !(inDiscord) }"
+                                      class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-6 gap-6" x-show="inDiscord" x-cloak>
+                    <div class="col-span-6 sm:col-span-4">
+                        <label for="discord_username" class="block text-sm font-medium text-gray-700">
+                            Discord Username
+                        </label>
+                        <input type="text" name="discord_username" id="discord_username" autocomplete="off"
+                               placeholder="Phoenix#2021" wire:model.lazy="discord_username"
+                               class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('discord_username') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
+                        @error('discord_username')
+                        <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
+                        @enderror
+                        <p class="mt-2 text-sm text-gray-500" id="discord_username-description">
+                            This is required so we can add your Phoenix Member roles.
                         </p>
                     </div>
 
@@ -130,7 +168,8 @@
                         @enderror
                     </div>
                 </div>
-                <div class="flex justify-end mt-5">
+
+                <div class="flex justify-end mt-5" x-show="inDiscord" x-cloak>
                     <button @click="formStep = 2" type="button"
                             class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 cursor-pointer">
                         {{ __('buttons.continue') }}
@@ -361,6 +400,14 @@
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                         {{ session('truckersmp_user.name') }}
+                    </dd>
+                </div>
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
+                    <dt class="text-sm font-medium text-gray-500">
+                        Discord Username
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ $discord_username }}
                     </dd>
                 </div>
                 <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">

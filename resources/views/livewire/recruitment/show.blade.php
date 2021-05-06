@@ -138,6 +138,20 @@
                                     {{ $application->email }}
                                 </dd>
                             </div>
+                            <div class="sm:col-span-2">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Discord Username
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900">
+                                    @if(empty($application->discord_username))
+                                        Unknown Discord Username
+                                    @else
+                                        <p class="mt-2 flex items-center">
+                                            {{ $application->discord_username }}
+                                        </p>
+                                    @endif
+                                </dd>
+                            </div>
                             <div class="sm:col-span-1">
                                 <dt class="text-sm font-medium text-gray-500">
                                     Date of Birth

@@ -1,7 +1,7 @@
 @extends('layouts.base')
 
 @section('body')
-    <div class="flex flex-col justify-center min-h-screen py-12 bg-gray-900 sm:px-6 lg:px-8">
+    <div class="flex flex-col justify-center min-h-screen py-12 sm:px-6 lg:px-8" style="background-image: url('https://phoenix-base.s3.nl-ams.scw.cloud/images/ets2_20210113_201532_00.png'); background-size: cover;">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-gray-50 overflow-hidden shadow rounded-lg divide-y divide-gray-200">
                 @hasSection('steps')
