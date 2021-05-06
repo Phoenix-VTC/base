@@ -265,6 +265,7 @@ class ShowForm extends Component
     ];
 
     public string $username = '';
+    public string $discord_username = '';
     public string $email = '';
     public string $date_of_birth = '';
     public string $country = '';
@@ -279,6 +280,7 @@ class ShowForm extends Component
     public function rules(): array
     {
         return [
+            'discord_username' => ['required', 'min:3', 'regex:/^.{3,32}#[0-9]{4}$/i'],
             'username' => ['required', 'min:3', 'unique:users', new UsernameNotReserved],
             'email' => 'required|email|unique:users',
             'date_of_birth' => 'required|date',
@@ -305,6 +307,7 @@ class ShowForm extends Component
         $application = new Application;
         $application->username = $applicationData['username'];
         $application->email = $applicationData['email'];
+        $application->discord_username = $applicationData['discord_username'];
         $application->date_of_birth = $applicationData['date_of_birth'];
         $application->country = $applicationData['country'];
         $application->steam_data = json_encode(session('steam_user'));
