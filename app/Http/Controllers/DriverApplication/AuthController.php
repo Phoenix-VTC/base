@@ -60,9 +60,7 @@ class AuthController extends Controller
 
             if (!is_null($info)) {
                 $validator = Validator::make($info->toArray(), [
-                    // Temporarily disabled the validation for testing purposes
                     'steamID64' => ['bail', new HasGame, new MinHours, new AccountExists, new BanHistoryPublic, new NoRecentBans, new NotInVTC],
-//                    'steamID64' => ['bail', new HasGame, new MinHours, new AccountExists, new BanHistoryPublic],
                 ]);
 
                 if ($validator->fails()) {
@@ -82,7 +80,8 @@ class AuthController extends Controller
         return $this->redirectToSteam();
     }
 
-    public function storeTruckersMPAccount($steamId): void {
+    public function storeTruckersMPAccount($steamId): void
+    {
         $client = new Client();
 
         $response = $client->request('GET', 'https://api.truckersmp.com/v2/player/' . $steamId)->getBody();
