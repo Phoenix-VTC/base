@@ -9,6 +9,8 @@ use App\Rules\TMP\AccountExists;
 use App\Rules\TMP\BanHistoryPublic;
 use App\Rules\TMP\NoRecentBans;
 use App\Rules\TMP\NotInVTC;
+use App\Rules\TMP\UniqueInApplications;
+use App\Rules\TMP\UniqueInUsers;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\RedirectResponse;
@@ -60,7 +62,20 @@ class AuthController extends Controller
 
             if (!is_null($info)) {
                 $validator = Validator::make($info->toArray(), [
-                    'steamID64' => ['bail', new HasGame, new MinHours, new AccountExists, new BanHistoryPublic, new NoRecentBans, new NotInVTC],
+                    'steamID64' => [
+                        'bail',
+                        new HasGame,
+                        new MinHours,
+                        new AccountExists,
+                        new BanHistoryPublic,
+                        new NoRecentBans,
+                        new NotInVTC,
+                        new UniqueInUsers,
+                        new UniqueInApplications
+//                        Rule::unique('users', 'steam_id')->where(function ($query) {
+//                            $query->where('deleted_at', null);
+//                        }),
+                    ],
                 ]);
 
                 if ($validator->fails()) {
