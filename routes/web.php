@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EventManagementController;
 use App\Http\Livewire\Auth\ShowWelcomeForm;
+use App\Http\Livewire\DownloadsManagement\ShowIndexPage as DownloadsManagementShowIndexPage;
 use App\Http\Livewire\Events\Management\ShowEdit as EventsManagementShowEdit;
 use App\Http\Livewire\Events\Management\ShowCreate as EventsManagementShowCreate;
 use App\Http\Livewire\Events\Management\ShowIndex as EventsManagementShowIndex;
@@ -119,6 +120,14 @@ Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
     Route::get('{user}/jobs', UsersShowJobOverviewPage::class)->name('jobs-overview');
 
     Route::get('{id}/edit', UserManagementShowEditPage::class)->middleware('can:manage users')->name('edit');
+});
+
+Route::prefix('downloads')->name('downloads.')->middleware('auth')->group(function () {
+    // Driver download routes here
+
+    Route::prefix('management')->name('management.')->middleware(['auth', 'can:manage downloads'])->group(function () {
+        Route::get('index', DownloadsManagementShowIndexPage::class)->name('index');
+    });
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');

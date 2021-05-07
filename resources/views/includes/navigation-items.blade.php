@@ -45,6 +45,11 @@
                         activeRoute="event-management.*"/>
     @endcan
 
+    @can('manage downloads')
+        <x-sidebar.item title="Downloads" icon="o-folder-download" route="downloads.management.index"
+                        activeRoute="downloads.management.*"/>
+    @endcan
+
     @can('manage game data')
         <livewire:components.dropdown title="Game Data" icon="o-collection" activeRoute="game-data.*"
                                       :items="[
