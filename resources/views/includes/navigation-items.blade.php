@@ -16,7 +16,7 @@
                     activeRoute="vacation-requests.*"/>
 </x-sidebar.group>
 
-@hasanyrole('super admin|executive committee|human resources|recruitment|community interactions|events|media|modding')
+@hasanyrole('super admin|management|human resources|recruitment|community interactions|events|media|modding')
     <x-sidebar.separator title="Management"/>
 @endhasanyrole
 
