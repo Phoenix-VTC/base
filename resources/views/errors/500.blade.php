@@ -2,12 +2,14 @@
 
 @section('title', __('Server Error'))
 @section('code', '500')
-@section('message', __('Server Error'))
-
-@section('image')
-    <div style="background-image: url({{ asset('svg/500.svg') }});"
-         class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center">
-    </div>
+@section('message')
+    <strong>
+        Sorry, there were some technical issues while processing your request.
+    </strong>
+    <br>
+    We are currently trying to fix the problem.
+    <br><br>
+    In the meantime, you can try refreshing the page.
 @endsection
 
 @section('head')
