@@ -7,8 +7,7 @@
         <title>@yield('title')</title>
 
         <!-- Fonts -->
-        <link rel="dns-prefetch" href="//fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
         <!-- Styles -->
         <style>
@@ -456,24 +455,26 @@
             }
         </style>
 
+        <link rel="stylesheet" href="{{ url(mix('css/app.css')) }}">
+
         @yield('head')
     </head>
     <body class="antialiased font-sans">
         <div class="md:flex min-h-screen">
-            <div class="w-full md:w-1/2 bg-white flex items-center justify-center">
-                <div class="max-w-sm m-8">
-                    <div class="text-black text-5xl md:text-15xl font-black">
+            <div class="w-full md:w-1/2 flex items-center justify-center" style="background-image: linear-gradient(135deg, #E85D04 35%, #DC2F02 100%);">
+                <div class="max-w-lg m-8">
+                    <div class="text-white text-6xl font-black">
                         @yield('code', __('Oh no'))
                     </div>
 
-                    <div class="w-16 h-1 bg-purple-light my-3 md:my-6"></div>
+                    <div class="w-16 h-1 bg-white my-3 md:my-6"></div>
 
-                    <p class="text-grey-darker text-2xl md:text-3xl font-light mb-8 leading-normal">
+                    <p class="text-white text-2xl md:text-3xl font-light mb-8 leading-normal">
                         @yield('message')
                     </p>
 
                     <a href="{{ app('router')->has('home') ? route('home') : url('/') }}">
-                        <button class="bg-transparent text-grey-darkest font-bold uppercase tracking-wide py-3 px-6 border-2 border-grey-light hover:border-grey rounded-lg mb-8">
+                        <button class="bg-transparent text-white font-bold uppercase tracking-wide py-3 px-6 border-2 border-grey-light hover:border-grey rounded-lg mb-8">
                             {{ __('Go Home') }}
                         </button>
                     </a>
@@ -483,7 +484,14 @@
             </div>
 
             <div class="relative pb-full md:flex md:pb-0 md:min-h-screen w-full md:w-1/2">
-                @yield('image')
+                @hasSection('image')
+                    @yield('image')
+                @else
+                    <div
+                        style="background-image: url('https://phoenix-base.s3.nl-ams.scw.cloud/images/error_image.jpg'); background-position: right;"
+                        class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center">
+                    </div>
+                @endif
             </div>
         </div>
     </body>
