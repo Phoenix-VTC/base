@@ -462,7 +462,7 @@
     <body class="antialiased font-sans">
         <div class="md:flex min-h-screen">
             <div class="w-full md:w-1/2 flex items-center justify-center" style="background-image: linear-gradient(135deg, #E85D04 35%, #DC2F02 100%);">
-                <div class="max-w-sm m-8">
+                <div class="max-w-lg m-8">
                     <div class="text-white text-6xl font-black">
                         @yield('code', __('Oh no'))
                     </div>
