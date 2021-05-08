@@ -32,7 +32,7 @@ class Download extends Model
 
     public function getFileNameAttribute(): string
     {
-        return Str::snake($this->name) . '.' . File::extension($this->file_path);
+        return str_replace(' ', '_', $this->name) . '.' . File::extension($this->file_path);
     }
 
     public function getFileSizeAttribute(): float
