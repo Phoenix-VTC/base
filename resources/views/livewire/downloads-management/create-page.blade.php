@@ -14,17 +14,17 @@
                                       :error="$errors->first('name')" placeholder="Kenji Tuning Mod"/>
                     </x-input.group>
 
-                    <x-input.group label="Thumbnail Image (Max 1MB)" for="image" :error="$errors->first('image')">
+                    <x-input.group label="Thumbnail Image (max 1MB)" for="image" :error="$errors->first('image')">
                         <x-input.text wire:model.lazy="image" type="file" id="image" accept=".jpg,.jpeg,.png,.bmp,.gif,.svg,.webp"
                                       :error="$errors->first('image')"/>
                     </x-input.group>
 
-                    <x-input.group label="File (Max 10MB)" for="file" :error="$errors->first('file')" help-text="Allowed file types: <strong>PDF, ZIP, RAR, SCS</strong><br>SCS will be automatically converted to ZIP">
+                    <x-input.group label="File (max 10MB)" for="file" :error="$errors->first('file')" help-text="Allowed file types: <strong>PDF, ZIP, RAR, SCS</strong><br>SCS will be automatically converted to ZIP">
                         <x-input.text wire:model.lazy="file" type="file" id="file" accept=".pdf,.zip,.rar,.scs"
                                       :error="$errors->first('file')"/>
                     </x-input.group>
 
-                    <x-input.group label="Description" for="description" :error="$errors->first('description')">
+                    <x-input.group label="Description (optional)" for="description" :error="$errors->first('description')">
                         <x-input.textarea wire:model.lazy="description" type="text" id="name" rows="3" :error="$errors->first('description')"/>
                     </x-input.group>
                 </div>

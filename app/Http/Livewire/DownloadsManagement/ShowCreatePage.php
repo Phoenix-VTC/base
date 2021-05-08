@@ -22,7 +22,7 @@ class ShowCreatePage extends Component
     {
         return [
             'name' => ['required'],
-            'description' => ['required'],
+            'description' => ['present'],
             'image' => ['required', 'image', 'max:1024'],
             'file' => ['required', 'file', 'mimes:pdf,zip,rar', 'max:10240'],
         ];
@@ -39,7 +39,7 @@ class ShowCreatePage extends Component
 
         $download = Download::create([
             'name' => $this->name,
-            'description' => $this->description,
+            'description' => $this->description ?: null,
             'image_path' => '',
             'file_path' => '',
             'updated_by' => Auth::id(),
