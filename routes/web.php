@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EventManagementController;
 use App\Http\Livewire\Auth\ShowWelcomeForm;
+use App\Http\Livewire\Downloads\ShowIndexPage as DownloadsShowIndexPage;
 use App\Http\Livewire\DownloadsManagement\ShowCreatePage as DownloadsManagementShowCreatePage;
 use App\Http\Livewire\DownloadsManagement\ShowIndexPage as DownloadsManagementShowIndexPage;
 use App\Http\Livewire\Events\Management\ShowEdit as EventsManagementShowEdit;
@@ -124,7 +125,7 @@ Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
 });
 
 Route::prefix('downloads')->name('downloads.')->middleware('auth')->group(function () {
-    // Driver download routes here
+    Route::get('index', DownloadsShowIndexPage::class)->name('index');
 
     Route::prefix('management')->name('management.')->middleware(['auth', 'can:manage downloads'])->group(function () {
         Route::get('index', DownloadsManagementShowIndexPage::class)->name('index');
