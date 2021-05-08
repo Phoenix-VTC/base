@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use Aws\S3\S3Client;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
+use League\Flysystem\Filesystem;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,5 +36,21 @@ class AppServiceProvider extends ServiceProvider
         $paths = array_merge([$mainPath], $directories);
 
         $this->loadMigrationsFrom($paths);
+
+        Storage::extend('scaleway', function ($app, $config) {
+            $client = new S3Client([
+                'credentials' => [
+                    'key'    => $config['key'],
+                    'secret' => $config['secret'],
+                ],
+                'region' => $config['region'],
+                'version' => 'latest',
+                'endpoint' => $config['endpoint'],
+            ]);
+
+            $adapter = new AwsS3Adapter($client, $config['bucket']);
+
+            return new Filesystem($adapter);
+        });
     }
 }
