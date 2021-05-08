@@ -17,8 +17,8 @@ class CreateDownloadsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->string('image_url');
-            $table->string('file_url');
+            $table->string('image_path');
+            $table->string('file_path');
             $table->unsignedInteger('download_count')->default(0);
             $table->foreignId('updated_by')
                 ->constrained('users');
