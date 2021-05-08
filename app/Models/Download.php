@@ -25,9 +25,13 @@ class Download extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
-    public function getImageUrlAttribute(): string
+    public function getImageUrlAttribute(): ?string
     {
-        return Storage::disk('scaleway')->url($this->image_path);
+        try {
+            return Storage::disk('scaleway')->url($this->image_path);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     public function getFileNameAttribute(): string
@@ -35,8 +39,12 @@ class Download extends Model
         return str_replace(' ', '_', $this->name) . '.' . File::extension($this->file_path);
     }
 
-    public function getFileSizeAttribute(): float
+    public function getFileSizeAttribute(): ?float
     {
-        return number_format(Storage::disk('scaleway')->size($this->file_path) / 1048576, 2);
+        try {
+            return number_format(Storage::disk('scaleway')->size($this->file_path) / 1048576, 2);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }
