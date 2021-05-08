@@ -22,8 +22,14 @@ class ShowIndexPage extends Component
         return view('livewire.downloads-management.index-page')->extends('layouts.app');
     }
 
-    public function downloadFile(Download $download): StreamedResponse
+    public function downloadFile(Download $download): ?StreamedResponse
     {
-        return Storage::disk('scaleway')->download($download->file_path, $download->file_name);
+        try {
+            return Storage::disk('scaleway')->download($download->file_path, $download->file_name);
+        } catch (\Exception $e) {
+            session()->now('alert', ['type' => 'danger', 'title' => 'Well, this is awkward.', 'message' => 'Something went wrong while trying to download this file. Please try again later.']);
+        }
+
+        return null;
     }
 }
