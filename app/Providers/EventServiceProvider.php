@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Download as DownloadModel;
+use App\Observers\DownloadObserver;
 use App\Models\Job as JobModel;
 use App\Observers\JobObserver;
 use Illuminate\Auth\Events\Registered;
@@ -34,5 +36,6 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         JobModel::observe(JobObserver::class);
+        DownloadModel::observe(DownloadObserver::class);
     }
 }
