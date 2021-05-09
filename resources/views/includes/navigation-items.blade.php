@@ -14,9 +14,12 @@
 
     <x-sidebar.item title="Vacation Requests" icon="o-clock" route="vacation-requests.index"
                     activeRoute="vacation-requests.*"/>
+
+    <x-sidebar.item title="Downloads" icon="o-download" route="downloads.index"
+                    activeRoute="downloads.*"/>
 </x-sidebar.group>
 
-@hasanyrole('super admin|executive committee|human resources|recruitment|community interactions|events|media|modding')
+@hasanyrole('super admin|management|human resources|recruitment|community interactions|events|media|modding')
     <x-sidebar.separator title="Management"/>
 @endhasanyrole
 
@@ -43,6 +46,11 @@
     @can('manage events')
         <x-sidebar.item title="Events" icon="o-calendar" route="event-management.index"
                         activeRoute="event-management.*"/>
+    @endcan
+
+    @can('manage downloads')
+        <x-sidebar.item title="Downloads" icon="o-folder-download" route="downloads.management.index"
+                        activeRoute="downloads.management.*"/>
     @endcan
 
     @can('manage game data')
