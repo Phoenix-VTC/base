@@ -5,7 +5,7 @@
 <div>
     <x-alert/>
 
-    <div class="rounded-md bg-blue-200 p-4 m-4 w-full" wire:loading.delay wire:target="image, file, submit">
+    <div class="rounded-md bg-blue-200 p-4 m-4 w-full" wire:loading wire:target="image, file, submit">
         <div class="flex">
             <div class="flex-shrink-0">
                 {{-- information-circle --}}
