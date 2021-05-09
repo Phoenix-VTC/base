@@ -129,7 +129,7 @@
                     @endforeach
                 @else
                     <x-empty-state :image="asset('img/illustrations/wallet.svg')"
-                                   alt="Events illustration">
+                                   alt="Wallet illustration">
                         Hmm, it looks like you don't have any wallets yet.
                         <br>
                         Go submit some jobs and/or attend some events, and your income will show up here!

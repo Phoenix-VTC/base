@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\EventManagementController;
 use App\Http\Livewire\Auth\ShowWelcomeForm;
+use App\Http\Livewire\Downloads\ShowIndexPage as DownloadsShowIndexPage;
+use App\Http\Livewire\DownloadsManagement\ShowEditPage as DownloadsManagementShowEditPage;
+use App\Http\Livewire\DownloadsManagement\ShowCreatePage as DownloadsManagementShowCreatePage;
+use App\Http\Livewire\DownloadsManagement\ShowIndexPage as DownloadsManagementShowIndexPage;
 use App\Http\Livewire\Events\Management\ShowEdit as EventsManagementShowEdit;
 use App\Http\Livewire\Events\Management\ShowCreate as EventsManagementShowCreate;
 use App\Http\Livewire\Events\Management\ShowIndex as EventsManagementShowIndex;
@@ -10,7 +14,9 @@ use App\Http\Livewire\GameData\Cargos\ShowIndexPage as CargosShowIndexPage;
 use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
 use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
-use App\Http\Livewire\Jobs\ShowSubmitPage as JobsShowSubmitPage;
+use App\Http\Livewire\Users\ShowJobOverviewPage as UsersShowJobOverviewPage;
+use App\Http\Livewire\Jobs\Submit\ShowSelectGamePage as JobsShowSelectGamePage;
+use App\Http\Livewire\Jobs\Submit\ShowSubmitPage as JobsShowSubmitPage;
 use App\Http\Livewire\Jobs\ShowShowPage as JobsShowShowPage;
 use \App\Http\Livewire\Recruitment\ShowApplication;
 use \App\Http\Livewire\Recruitment\ShowIndex as RecruitmentShowIndex;
@@ -20,9 +26,11 @@ use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Auth\Passwords\Confirm;
 use App\Http\Livewire\Auth\Passwords\Email;
 use App\Http\Livewire\Auth\Passwords\Reset;
-use App\Http\Livewire\Auth\Register;
 use App\Http\Livewire\Auth\Verify;
 use App\Http\Livewire\Settings\ShowPreferencesPage as SettingsShowPreferencesPage;
+use App\Http\Livewire\Settings\ShowAccountPage as SettingsShowAccountPage;
+use App\Http\Livewire\Settings\ShowSecurityPage as SettingsShowSecurityPage;
+use App\Http\Livewire\Settings\ShowSocialsPage as SettingsShowSocialsPage;
 use App\Http\Livewire\ShowDashboard;
 use App\Http\Livewire\UserManagement\ShowEditPage as UserManagementShowEditPage;
 use App\Http\Livewire\Users\ShowProfilePage;
@@ -33,6 +41,8 @@ use App\Http\Livewire\UserManagement\ShowIndex as UserManagementShowIndex;
 use App\Http\Livewire\UserManagement\Roles\ShowIndexPage as UserManagementRolesShowIndex;
 use App\Http\Livewire\UserManagement\Permissions\ShowIndexPage as UserManagementPermissionsShowIndex;
 use App\Http\Livewire\Wallet\ShowIndexPage as WalletShowIndexPage;
+use App\Http\Controllers\Auth\SteamController as SteamAuthController;
+use App\Http\Controllers\Auth\DiscordController as DiscordAuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -87,12 +97,18 @@ Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage 
 
 Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:submit jobs'])->group(function () {
     Route::get('personal-overview', JobsShowPersonalOverviewPage::class)->name('personal-overview');
-    Route::get('submit', JobsShowSubmitPage::class)->name('submit');
+    Route::get('choose-game', JobsShowSelectGamePage::class)->name('choose-game');
+    Route::get('submit/{game_id}', JobsShowSubmitPage::class)
+        ->whereNumber('game_id')
+        ->name('submit');
     Route::get('{job}', JobsShowShowPage::class)->name('show');
 });
 
 Route::prefix('settings')->name('settings.')->middleware('auth')->group(function () {
     Route::get('preferences', SettingsShowPreferencesPage::class)->name('preferences');
+    Route::get('account', SettingsShowAccountPage::class)->middleware('password.confirm')->name('account');
+    Route::get('security', SettingsShowSecurityPage::class)->middleware('password.confirm')->name('security');
+    Route::get('socials', SettingsShowSocialsPage::class)->middleware('password.confirm')->name('socials');
 });
 
 Route::get('my-wallet', WalletShowIndexPage::class)->middleware('auth')->name('my-wallet');
@@ -104,7 +120,19 @@ Route::get('profile', function () {
 Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
     Route::get('{id}', ShowProfilePage::class)->name('profile');
 
+    Route::get('{user}/jobs', UsersShowJobOverviewPage::class)->name('jobs-overview');
+
     Route::get('{id}/edit', UserManagementShowEditPage::class)->middleware('can:manage users')->name('edit');
+});
+
+Route::prefix('downloads')->name('downloads.')->middleware('auth')->group(function () {
+    Route::get('index', DownloadsShowIndexPage::class)->name('index');
+
+    Route::prefix('management')->name('management.')->middleware(['auth', 'can:manage downloads'])->group(function () {
+        Route::get('index', DownloadsManagementShowIndexPage::class)->name('index');
+        Route::get('create', DownloadsManagementShowCreatePage::class)->name('create');
+        Route::get('{download}/edit', DownloadsManagementShowEditPage::class)->name('edit');
+    });
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
@@ -113,9 +141,17 @@ Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)
         ->name('login');
 
-    Route::get('/dashboard', function () {
-        return redirect('https://apply.phoenixvtc.com');
-    })->name('register');
+    // Steam Auth
+    Route::prefix('auth/steam')->name('auth.steam.')->group(function () {
+        Route::post('/', [SteamAuthController::class, 'redirectToSteam'])->name('redirectToSteam');
+        Route::get('handle', [SteamAuthController::class, 'handle'])->name('handle');
+    });
+});
+
+// Discord Auth
+Route::prefix('auth/discord')->name('auth.discord.')->group(function () {
+    Route::post('/', [DiscordAuthController::class, 'redirectToDiscord'])->name('redirectToDiscord');
+    Route::get('handle', [DiscordAuthController::class, 'handle'])->name('handle');
 });
 
 Route::get('password/reset', Email::class)

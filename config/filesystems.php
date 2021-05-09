@@ -52,6 +52,15 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'scaleway' => [
+            'driver' => 's3',
+            'key' => env('SCW_KEY'),
+            'secret' => env('SCW_SECRET'),
+            'region' => env('SCW_REGION'),
+            'endpoint' => env('SCW_ENDPOINT'),
+            'bucket' => env('SCW_BUCKET'),
+        ],
+
     ],
 
     /*

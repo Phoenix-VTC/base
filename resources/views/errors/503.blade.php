@@ -1,11 +1,7 @@
 @extends('errors::illustrated-layout')
 
 @section('title', __('Service Unavailable'))
-@section('code', '503')
-@section('message', __($exception->getMessage() ?: 'Service unavailable, we are currently performing some maintenance.'))
-
-@section('image')
-    <div style="background-image: url({{ asset('svg/503.svg') }});"
-         class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center">
-    </div>
+@section('code', 'We\'ll be back soon!')
+@section('message')
+    Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. We&rsquo;ll be back online shortly!
 @endsection
