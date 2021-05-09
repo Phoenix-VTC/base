@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Jobs;
+namespace App\Http\Livewire\Jobs\Submit;
 
 use App\Enums\JobStatus;
 use App\Models\Cargo;
@@ -14,13 +14,12 @@ use Livewire\Component;
 
 class ShowSubmitPage extends Component
 {
+    public int $game_id;
     // Game data
     public array $cities;
-    public array $games;
     public array $companies;
     public array $cargos;
     // Form fields
-    public string $game = '';
     public string $pickup_city = '';
     public string $destination_city = '';
     public string $pickup_company = '';
@@ -33,12 +32,12 @@ class ShowSubmitPage extends Component
     public string $total_income = '';
     public string $comments = '';
 
-    public function mount(): void
+    public function mount(int $game_id): void
     {
-        $this->games = Game::GAMES;
+        $this->game_id = $game_id;
 
         $cities = collect();
-        $query = City::all();
+        $query = City::where('game_id', $game_id)->get();
         foreach ($query as $city) {
             $cities->put(
                 $city->id,
@@ -48,7 +47,7 @@ class ShowSubmitPage extends Component
         $this->cities = $cities->toArray();
 
         $companies = collect();
-        $query = Company::all();
+        $query = Company::where('game_id', $game_id)->get();
         foreach ($query as $company) {
             $companies->put(
                 $company->id,
@@ -58,7 +57,7 @@ class ShowSubmitPage extends Component
         $this->companies = $companies->toArray();
 
         $cargos = collect();
-        $query = Cargo::all();
+        $query = Cargo::where('game_id', $game_id)->get();
         foreach ($query as $cargo) {
             $cargos->put(
                 $cargo->id,
@@ -73,7 +72,6 @@ class ShowSubmitPage extends Component
     public function rules(): array
     {
         return [
-            'game' => ['required', 'integer'],
             'pickup_city' => ['required', 'integer', 'exists:App\Models\City,id'],
             'destination_city' => ['required', 'integer', 'exists:App\Models\City,id'],
             'pickup_company' => ['required', 'integer', 'exists:App\Models\Company,id'],
@@ -95,7 +93,7 @@ class ShowSubmitPage extends Component
 
     public function render()
     {
-        return view('livewire.jobs.submit-page')->extends('layouts.app');
+        return view('livewire.jobs.submit.submit-page')->extends('layouts.app');
     }
 
     public function submit()
@@ -103,13 +101,13 @@ class ShowSubmitPage extends Component
         $validatedData = $this->validate();
 
         // Convert miles to kilometres
-        if ((int)$validatedData['game'] === 2) {
+        if ($this->game_id === 2) {
             $validatedData['distance'] *= 1.609;
         }
 
         $job = Job::create([
             'user_id' => Auth::id(),
-            'game_id' => $validatedData['game'],
+            'game_id' => $this->game_id,
             'pickup_city_id' => $validatedData['pickup_city'],
             'destination_city_id' => $validatedData['destination_city'],
             'pickup_company_id' => $validatedData['pickup_company'],
