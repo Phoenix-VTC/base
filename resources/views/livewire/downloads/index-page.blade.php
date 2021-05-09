@@ -6,8 +6,7 @@
     <x-alert/>
 
     @if($downloads->count())
-        <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-
+        <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8" wire:loading.remove wire:target="downloadFile">
             @foreach($downloads as $download)
                 <li class="relative cursor-pointer" wire:click="downloadFile({{ $download }})">
                     <div
@@ -36,4 +35,11 @@
             Hmm, it looks like there are no downloads available yet.
         </x-empty-state>
     @endif
+
+    <div wire:loading wire:target="downloadFile">
+        <x-empty-state :image="asset('img/illustrations/folder_files.svg')"
+                       alt="Folder with files illustration">
+            We are preparing your download, hold on for just a second!
+        </x-empty-state>
+    </div>
 </div>
