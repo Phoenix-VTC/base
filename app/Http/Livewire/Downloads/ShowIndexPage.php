@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Downloads;
 
 use App\Models\Download;
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -10,6 +12,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ShowIndexPage extends Component
 {
+    use WithRateLimiting;
+
     public Collection $downloads;
 
     public function mount(): void
@@ -26,6 +30,14 @@ class ShowIndexPage extends Component
 
     public function downloadFile(Download $download): ?StreamedResponse
     {
+        try {
+            $this->rateLimit(5);
+        } catch (TooManyRequestsException $exception) {
+            session()->now('alert', ['type' => 'danger', 'title' => 'Hey, slow down!', 'message' => "Please wait another $exception->secondsUntilAvailable seconds before starting a new download."]);
+
+            return null;
+        }
+
         $download->update(['download_count' => ++$download->download_count]);
 
         try {
