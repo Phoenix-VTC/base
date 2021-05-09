@@ -7,6 +7,27 @@
 <div>
     <x-alert/>
 
+    <div class="rounded-md bg-blue-200 p-4 m-4 w-full" wire:loading wire:target="image, file, submit">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                {{-- information-circle --}}
+                <svg class="h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <div class="ml-3 text-blue-800">
+                <h3 class="mb-2 text-sm font-bold">
+                    Please wait
+                </h3>
+                <p class="text-sm font-medium">
+                    Your files are being uploaded.
+                </p>
+            </div>
+        </div>
+    </div>
+
     <form class="space-y-8 divide-y divide-gray-200" wire:submit.prevent="submit">
         <div class="space-y-8 divide-y divide-gray-200">
             <div>
