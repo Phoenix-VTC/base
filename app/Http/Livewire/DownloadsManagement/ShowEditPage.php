@@ -25,7 +25,7 @@ class ShowEditPage extends Component
             'name' => ['required'],
             'description' => ['present'],
             'image' => ['nullable', 'image', 'max:1024'],
-            'file' => ['nullable', 'file', 'mimes:pdf,zip,rar', 'max:10240'],
+            'file' => ['nullable', 'file', 'mimes:pdf,zip,rar', 'max:102400'],
         ];
     }
 

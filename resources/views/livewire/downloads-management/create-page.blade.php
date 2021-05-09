@@ -20,7 +20,7 @@
                                       :error="$errors->first('image')"/>
                     </x-input.group>
 
-                    <x-input.group label="File (max 10MB)" for="file" :error="$errors->first('file')"
+                    <x-input.group label="File (max 100MB)" for="file" :error="$errors->first('file')"
                                    help-text="Allowed file types: <strong>PDF, ZIP, RAR, SCS</strong><br>SCS will be automatically converted to ZIP">
                         <x-input.text wire:model.lazy="file" type="file" id="file" accept=".pdf,.zip,.rar,.scs" required
                                       :error="$errors->first('file')"/>
