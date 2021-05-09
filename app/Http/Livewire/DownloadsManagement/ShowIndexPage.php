@@ -32,4 +32,13 @@ class ShowIndexPage extends Component
 
         return null;
     }
+
+    public function delete(Download $download)
+    {
+        $download->delete();
+
+        $this->downloads = Download::all();
+
+        session()->flash('alert', ['type' => 'success', 'message' => 'Download successfully deleted!']);
+    }
 }
