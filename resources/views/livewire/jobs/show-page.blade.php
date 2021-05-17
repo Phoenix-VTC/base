@@ -217,7 +217,7 @@
                                 <x-heroicon-s-calendar class="h-5 w-5 text-gray-400"/>
                                 <span class="text-gray-900 text-sm font-medium">Submitted on</span>
                                 <span class="text-gray-900 text-sm font-bold">
-                                    {{ $job->created_at->format('M d, Y') }}
+                                    {{ $job->created_at->toDayDateTimeString() }}
                                 </span>
                             </div>
 
