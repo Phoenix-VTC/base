@@ -74,6 +74,56 @@ class Job extends Model
         return $this->belongsTo(Cargo::class);
     }
 
+    /**
+     * Convert the estimated income to euros if game is ATS
+     *
+     * @param int $value
+     * @return void
+     */
+    public function setEstimatedIncomeAttribute(int $value): void
+    {
+        if ($this->attributes['game_id'] === 2) {
+            $value *= 0.83;
+        }
+
+        $this->attributes['estimated_income'] = round($value);
+    }
+
+    /**
+     * Convert the total income to euros if game is ATS
+     *
+     * @param int $value
+     * @return void
+     */
+    public function setTotalIncomeAttribute(int $value): void
+    {
+        if ($this->attributes['game_id'] === 2) {
+            $value *= 0.83;
+        }
+
+        $this->attributes['total_income'] = round($value);
+    }
+
+    /**
+     * Convert the distance to kilometres if game is ATS
+     *
+     * @param int $value
+     * @return void
+     */
+    public function setDistanceAttribute(int $value): void
+    {
+        if ($this->attributes['game_id'] === 2) {
+            $value *= 1.609;
+        }
+
+        $this->attributes['distance'] = round($value);
+    }
+
+    /**
+     * Calculate the price per distance
+     *
+     * @return int
+     */
     public function getPricePerDistanceAttribute(): int
     {
         return round($this->estimated_income / $this->distance, 2);
