@@ -100,11 +100,6 @@ class ShowSubmitPage extends Component
     {
         $validatedData = $this->validate();
 
-        // Convert miles to kilometres
-        if ($this->game_id === 2) {
-            $validatedData['distance'] *= 1.609;
-        }
-
         $job = Job::create([
             'user_id' => Auth::id(),
             'game_id' => $this->game_id,
