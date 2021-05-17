@@ -73,6 +73,7 @@
                                     Distance
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
+                                    {{-- Distance is stored in km, convert it back to mi for ATS --}}
                                     @if($job->game_id === 2)
                                         {{ number_format($job->distance / 1.609) }}
                                     @else
@@ -96,7 +97,13 @@
                                     Estimated Income
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ number_format($job->estimated_income) }}
+                                    {{-- Currency is stored in EUR, convert it back to USD for ATS --}}
+                                    @if($job->game_id === 2)
+                                        {{ number_format($job->estimated_income / 0.83) }}
+                                    @else
+                                        {{ number_format($job->estimated_income) }}
+                                    @endif
+                                    {{ App\Models\Game::getCurrencySymbol($job->game_id) ?? '??' }}
                                 </dd>
                             </div>
 
@@ -105,7 +112,13 @@
                                     Total Income
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ number_format($job->total_income) }}
+                                    {{-- Currency is stored in EUR, convert it back to USD for ATS --}}
+                                    @if($job->game_id === 2)
+                                        {{ number_format($job->total_income / 0.83) }}
+                                    @else
+                                        {{ number_format($job->total_income) }}
+                                    @endif
+                                    {{ App\Models\Game::getCurrencySymbol($job->game_id) ?? '??' }}
                                 </dd>
                             </div>
 
