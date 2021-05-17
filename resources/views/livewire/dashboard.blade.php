@@ -73,8 +73,11 @@
                                     <tbody>
                                     @foreach($today_overview as $user)
                                         <tr class="@if($loop->odd) bg-white @else bg-gray-50 @endif">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                {{ $user->username ?? 'Unknown User' }}
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                <a href="{{ route('users.profile', $user) }}"
+                                                   class="font-medium hover:font-semibold">
+                                                    {{ $user->username ?? 'Unknown User' }}
+                                                </a>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 {{ $user->jobs->sum('distance') }} km
