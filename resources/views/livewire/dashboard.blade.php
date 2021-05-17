@@ -318,14 +318,14 @@
                                                         </a>
                                                     </div>
                                                     <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                                                        <div>
+                                                        <a href="{{ route('jobs.show', $job) }}">
                                                             <p class="text-sm text-gray-500">
                                                                 Submitted a job to
                                                                 <span class="font-medium text-gray-900">
-                                                                {{ $job->destinationCity->real_name }}
-                                                            </span>
+                                                                    {{ $job->destinationCity->real_name }}
+                                                                </span>
                                                             </p>
-                                                        </div>
+                                                        </a>
                                                         <div class="text-right text-sm whitespace-nowrap text-gray-500">
                                                         <span title="{{ $job->created_at->toDateTimeString() }}">
                                                             {{ $job->created_at->format('H:m') }}
