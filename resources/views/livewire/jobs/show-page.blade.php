@@ -73,6 +73,7 @@
                                     Distance
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
+                                    {{-- Distance is stored in km, convert it back to mi for ATS --}}
                                     @if($job->game_id === 2)
                                         {{ number_format($job->distance / 1.609) }}
                                     @else
@@ -96,7 +97,13 @@
                                     Estimated Income
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ number_format($job->estimated_income) }}
+                                    {{ App\Models\Game::getCurrencySymbol($job->game_id) ?? '??' }}
+                                    {{-- Currency is stored in EUR, convert it back to USD for ATS --}}
+                                    @if($job->game_id === 2)
+                                        {{ number_format($job->estimated_income / 0.83) }}
+                                    @else
+                                        {{ number_format($job->estimated_income) }}
+                                    @endif
                                 </dd>
                             </div>
 
@@ -105,7 +112,13 @@
                                     Total Income
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    {{ number_format($job->total_income) }}
+                                    {{ App\Models\Game::getCurrencySymbol($job->game_id) ?? '??' }}
+                                    {{-- Currency is stored in EUR, convert it back to USD for ATS --}}
+                                    @if($job->game_id === 2)
+                                        {{ number_format($job->total_income / 0.83) }}
+                                    @else
+                                        {{ number_format($job->total_income) }}
+                                    @endif
                                 </dd>
                             </div>
 
@@ -167,7 +180,7 @@
                                 <x-heroicon-s-calculator class="h-5 w-5 text-gray-400"/>
                                 <span class="text-gray-900 text-sm font-medium">Price per distance:</span>
                                 <span class="text-gray-900 text-sm font-bold">
-                                    {{ $job->pricePerDistance }} {{ App\Models\Game::getCurrency($job->game_id) ?? '??' }}
+                                    {{ App\Models\Game::getCurrencySymbol($job->game_id) ?? '??' }} {{ $job->pricePerDistance }}
                                 </span>
                             </div>
 
@@ -176,7 +189,7 @@
                                 <span class="text-gray-900 text-sm font-medium"
                                       title="Difference between the estimated and total income">Income difference:</span>
                                 <span class="text-gray-900 text-sm font-bold">
-                                    {{ $job->total_income - $job->estimated_income }} {{ App\Models\Game::getCurrency($job->game_id) ?? '??' }}
+                                    {{ App\Models\Game::getCurrencySymbol($job->game_id) ?? '??' }} {{ $job->total_income - $job->estimated_income }}
                                 </span>
                             </div>
 
@@ -204,7 +217,7 @@
                                 <x-heroicon-s-calendar class="h-5 w-5 text-gray-400"/>
                                 <span class="text-gray-900 text-sm font-medium">Submitted on</span>
                                 <span class="text-gray-900 text-sm font-bold">
-                                    {{ $job->created_at->format('M d, Y') }}
+                                    {{ $job->created_at->toDayDateTimeString() }}
                                 </span>
                             </div>
 

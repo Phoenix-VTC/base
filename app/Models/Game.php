@@ -99,7 +99,7 @@ class Game extends Model
         return $unit ?? null;
     }
 
-    public static function getCurrency(int $gameId): ?string
+    public static function getCurrencySymbol(int $gameId): ?string
     {
         if ($gameId === 1) {
             $currency = '€';
