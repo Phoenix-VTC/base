@@ -311,7 +311,7 @@
                                                 <div class="relative flex space-x-3">
                                                     <div>
                                                         <a class="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white"
-                                                           href="{{ route('users.profile', $user) }}">
+                                                           href="{{ route('users.profile', $job->user) }}">
                                                             <img class="w-8 h-8 rounded-full"
                                                                  src="{{ $job->user->profile_picture ?? '' }}"
                                                                  alt="{{ $job->user->username ?? 'Unknown Username' }}"/>
