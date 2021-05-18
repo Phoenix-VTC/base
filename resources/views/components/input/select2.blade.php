@@ -10,7 +10,7 @@
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
 
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.full.min.js"></script>
 
         <style>
             .select2-selection__rendered {
@@ -44,10 +44,17 @@
                 },
                 placeholder: '{{ $placeholder }}',
             });
+
             $('.select2-{{ $attributes['id'] }}').on('change', function (e) {
                 let elementName = $(this).attr('id');
                 var data = $(this).select2("val");
                 @this.set(elementName, data);
+            });
+
+            $(document).on('select2:open', () => {
+                setTimeout(function () {
+                    document.querySelector('.select2-search__field').focus();
+                }, 10);
             });
         });
     </script>
