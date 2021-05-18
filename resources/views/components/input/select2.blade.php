@@ -44,7 +44,7 @@
                 },
                 placeholder: '{{ $placeholder }}',
             });
-            $('.select2').on('change', function (e) {
+            $('.select2-{{ $attributes['id'] }}').on('change', function (e) {
                 let elementName = $(this).attr('id');
                 var data = $(this).select2("val");
                 @this.set(elementName, data);
