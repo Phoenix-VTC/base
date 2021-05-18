@@ -36,7 +36,8 @@ class ShowDashboard extends Component
         })->with(['jobs' => function ($q) {
             // Then include today's jobs of those users
             $q->whereDate('finished_at', Carbon::today());
-        }])->get();
+        }])->take(10)
+            ->get();
 
         $this->recent_news = $this->getRecentNewsPosts();
     }
