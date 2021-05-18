@@ -96,6 +96,13 @@
                                     @endif
                                     </tbody>
                                 </table>
+                                @if($today_overview->count())
+                                    <div class="px-6 py-2 text-center">
+                                        <span class="text-sm text-gray-700">
+                                            Showing a maximum of 10 users
+                                        </span>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
