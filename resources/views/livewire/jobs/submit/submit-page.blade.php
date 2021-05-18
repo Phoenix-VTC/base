@@ -12,33 +12,42 @@
             <div>
                 <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                     <x-input.group label="Pickup City" :error="$errors->first('pickup_city')" col-span="3">
-                        <x-input.searchable-select
-                            :data="$cities" wire:model="pickup_city" limit="20"
+                        <x-input.select2
+                            :url="route('api.game-data.cities', $game_id)"
+                            id="pickup_city"
+                            wire:model="pickup_city"
                             placeholder="Select a city"/>
                     </x-input.group>
 
                     <x-input.group label="Destination City" :error="$errors->first('destination_city')" col-span="3">
-                        <x-input.searchable-select
-                            :data="$cities" wire:model="destination_city" limit="20"
+                        <x-input.select2
+                            :url="route('api.game-data.cities', $game_id)"
+                            id="destination_city"
+                            wire:model="destination_city"
                             placeholder="Select a city"/>
                     </x-input.group>
 
                     <x-input.group label="Pickup Company" :error="$errors->first('pickup_company')" col-span="3">
-                        <x-input.searchable-select
-                            :data="$companies" wire:model="pickup_company" limit="20"
+                        <x-input.select2
+                            :url="route('api.game-data.companies', $game_id)"
+                            id="pickup_company"
+                            wire:model="pickup_company"
                             placeholder="Select a company"/>
                     </x-input.group>
 
-                    <x-input.group label="Destination Company" :error="$errors->first('destination_company')"
-                                   col-span="3">
-                        <x-input.searchable-select
-                            :data="$companies" wire:model="destination_company" limit="20"
+                    <x-input.group label="Destination Company" :error="$errors->first('destination_company')" col-span="3">
+                        <x-input.select2
+                            :url="route('api.game-data.companies', $game_id)"
+                            id="destination_company"
+                            wire:model="destination_company"
                             placeholder="Select a company"/>
                     </x-input.group>
 
                     <x-input.group label="Cargo" :error="$errors->first('cargo')" col-span="3">
-                        <x-input.searchable-select
-                            :data="$cargos" wire:model="cargo" limit="20"
+                        <x-input.select2
+                            :url="route('api.game-data.cargos', $game_id)"
+                            id="cargo"
+                            wire:model="cargo"
                             placeholder="Select a cargo"/>
                     </x-input.group>
 
