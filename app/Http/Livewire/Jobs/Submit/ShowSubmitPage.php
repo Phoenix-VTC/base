@@ -3,10 +3,6 @@
 namespace App\Http\Livewire\Jobs\Submit;
 
 use App\Enums\JobStatus;
-use App\Models\Cargo;
-use App\Models\City;
-use App\Models\Company;
-use App\Models\Game;
 use App\Models\Job;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -15,10 +11,6 @@ use Livewire\Component;
 class ShowSubmitPage extends Component
 {
     public int $game_id;
-    // Game data
-    public array $cities;
-    public array $companies;
-    public array $cargos;
     // Form fields
     public string $pickup_city = '';
     public string $destination_city = '';
@@ -32,40 +24,8 @@ class ShowSubmitPage extends Component
     public string $total_income = '';
     public string $comments = '';
 
-    public function mount(int $game_id): void
+    public function mount(): void
     {
-        $this->game_id = $game_id;
-
-        $cities = collect();
-        $query = City::where('game_id', $game_id)->get();
-        foreach ($query as $city) {
-            $cities->put(
-                $city->id,
-                (ucwords($city->real_name) . ($city->mod ? " ($city->mod)" : ''))
-            );
-        }
-        $this->cities = $cities->toArray();
-
-        $companies = collect();
-        $query = Company::where('game_id', $game_id)->get();
-        foreach ($query as $company) {
-            $companies->put(
-                $company->id,
-                (ucwords($company->name) . ($company->mod ? " ($company->mod)" : ''))
-            );
-        }
-        $this->companies = $companies->toArray();
-
-        $cargos = collect();
-        $query = Cargo::where('game_id', $game_id)->get();
-        foreach ($query as $cargo) {
-            $cargos->put(
-                $cargo->id,
-                (ucwords($cargo->name) . ($cargo->mod ? " ($cargo->mod)" : ''))
-            );
-        }
-        $this->cargos = $cargos->toArray();
-
         $this->finished_at = Carbon::now()->format('Y-m-d');
     }
 
