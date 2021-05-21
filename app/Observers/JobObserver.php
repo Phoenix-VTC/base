@@ -54,7 +54,7 @@ class JobObserver
      */
     public function deleted(Job $job): void
     {
-        //
+        $job->user->withdraw($job->total_income, ['description' => 'Deleted job', 'job_id' => $job->id]);
     }
 
     /**
