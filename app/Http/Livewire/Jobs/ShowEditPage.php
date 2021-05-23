@@ -25,6 +25,10 @@ class ShowEditPage extends Component
 
     public function mount(): void
     {
+        if ($this->job->user_id !== Auth::id() || (Auth::user()->cannot('manage users') && $this->job->user_id === Auth::id() && $this->job->created_at->addHour()->isPast())) {
+            abort(403, 'You don\'t have permission to edit this job.');
+        }
+
         $this->fill([
             'finished_at' => $this->job->finished_at,
             'distance' => $this->job->distance,
