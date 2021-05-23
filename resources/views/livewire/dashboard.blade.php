@@ -335,7 +335,7 @@
                                                         </a>
                                                         <div class="text-right text-sm whitespace-nowrap text-gray-500">
                                                         <span title="{{ $job->created_at->toDateTimeString() }}">
-                                                            {{ $job->created_at->format('H:m') }}
+                                                            {{ $job->created_at->isoFormat('HH:m') }}
                                                         </span>
                                                         </div>
                                                     </div>
