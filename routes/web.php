@@ -13,6 +13,7 @@ use App\Http\Livewire\Events\Management\ShowAttendeeManagement as EventsManageme
 use App\Http\Livewire\GameData\Cargos\ShowIndexPage as CargosShowIndexPage;
 use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
+use App\Http\Livewire\ShowLeaderboardPage;
 use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
 use App\Http\Livewire\Users\ShowJobOverviewPage as UsersShowJobOverviewPage;
 use App\Http\Livewire\Jobs\Submit\ShowSelectGamePage as JobsShowSelectGamePage;
@@ -108,6 +109,8 @@ Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:submit jobs'])->g
         Route::get('edit', JobsShowEditPage::class)->name('edit');
     });
 });
+
+Route::get('leaderboard', ShowLeaderboardPage::class)->name('leaderboard');
 
 Route::prefix('settings')->name('settings.')->middleware('auth')->group(function () {
     Route::get('preferences', SettingsShowPreferencesPage::class)->name('preferences');

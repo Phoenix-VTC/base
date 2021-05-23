@@ -17,6 +17,9 @@
 
     <x-sidebar.item title="Downloads" icon="o-download" route="downloads.index"
                     activeRoute="downloads.*"/>
+
+    <x-sidebar.item title="Leaderboard" icon="o-trending-up" route="leaderboard"
+                    activeRoute="leaderboard"/>
 </x-sidebar.group>
 
 @hasanyrole('super admin|management|human resources|recruitment|community interactions|events|media|modding')
