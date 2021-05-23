@@ -55,7 +55,7 @@
                         <dd class="text-gray-500">{{ number_format($user->jobs_distance_sum) }} km</dd>
                         <dt class="sr-only">Position</dt>
                         <dd class="mt-3">
-                            <span class="text-gray-500">@th($loop->iteration)</span>
+                            <span class="text-gray-500">@th($loop->iteration + 3)</span>
                         </dd>
                     </dl>
                 </div>
