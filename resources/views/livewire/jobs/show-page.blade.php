@@ -272,10 +272,10 @@
                 </div>
             </section>
 
-            @if($job->user_id === Auth::id() || Auth::user()->can('manage users'))
+            @if(Auth::user()->can('manage users') || ($job->user_id === Auth::id() && $job->created_at->addHour()->isFuture()))
                 <section aria-labelledby="actions-title" class="lg:col-start-3 lg:col-span-1">
                     <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
-                        @if($job->user_id === Auth::id())
+                        @if($job->user_id === Auth::id() && Auth::user()->cannot('manage users'))
                             <h2 id="actions-title" class="text-lg font-medium text-gray-900">Actions</h2>
                         @else
                             <h2 id="actions-title" class="text-lg font-medium text-red-700">Staff Actions</h2>
@@ -283,22 +283,24 @@
 
                         <div class="mt-6 flex flex-col justify-stretch space-y-3">
                             <a class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                               href="#">
+                               href="{{ route('jobs.edit', $job) }}">
                                 <x-heroicon-s-pencil-alt class="-ml-1 mr-3 h-5 w-5"/>
                                 Edit
                             </a>
 
-                            @if(Auth::user()->can('manage users'))
-                                <button
-                                    class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                                    onclick="confirm('Are you sure you want to delete this job? This action is irreversible.') || event.stopImmediatePropagation()"
-                                    wire:click="delete">
-                                    <x-heroicon-s-trash class="-ml-1 mr-3 h-5 w-5"/>
-                                    Delete
-                                </button>
-                            @else
-                                <p class="text-center text-xs text-gray-500">
-                                    Please contact a Human Resources member in order to delete this job.
+                            <button
+                                class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                onclick="confirm('Are you sure you want to delete this job? This action is irreversible.') || event.stopImmediatePropagation()"
+                                wire:click="delete">
+                                <x-heroicon-s-trash class="-ml-1 mr-3 h-5 w-5"/>
+                                Delete
+                            </button>
+
+                            @if(Auth::user()->cannot('manage users'))
+                                <p class="text-center text-sm text-gray-500">
+                                    You have
+                                    <strong>{{ Carbon\Carbon::now()->diffInMinutes($job->created_at->addHour(), false) . ' minute(s)' }}</strong>
+                                    remaining to edit or delete this job.
                                 </p>
                             @endif
                         </div>
