@@ -96,6 +96,13 @@
                                     @endif
                                     </tbody>
                                 </table>
+                                @if($today_overview->count())
+                                    <div class="px-6 py-2 text-center">
+                                        <span class="text-sm text-gray-700">
+                                            Showing a maximum of 10 users
+                                        </span>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -328,7 +335,7 @@
                                                         </a>
                                                         <div class="text-right text-sm whitespace-nowrap text-gray-500">
                                                         <span title="{{ $job->created_at->toDateTimeString() }}">
-                                                            {{ $job->created_at->format('H:m') }}
+                                                            {{ $job->created_at->isoFormat('HH:m') }}
                                                         </span>
                                                         </div>
                                                     </div>

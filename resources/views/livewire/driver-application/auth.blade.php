@@ -7,7 +7,8 @@
         <h2 class="text-3xl leading-6 font-semibold text-gray-900 pb-5">
             Awesome to hear that you want to join us!
         </h2>
-        <hr>
+        {{-- Added pride-gradient-horizontal and border-b for the Pride theme --}}
+        <hr class="pride-gradient-horizontal border-b-2">
         <div class="inline-flex flex-col items-center prose prose-sm pt-2 pb-5 text-center">
             <h3>Applicant Requirements:</h3>
             <p>

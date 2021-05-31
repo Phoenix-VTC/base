@@ -18,6 +18,7 @@ use App\Http\Livewire\Users\ShowJobOverviewPage as UsersShowJobOverviewPage;
 use App\Http\Livewire\Jobs\Submit\ShowSelectGamePage as JobsShowSelectGamePage;
 use App\Http\Livewire\Jobs\Submit\ShowSubmitPage as JobsShowSubmitPage;
 use App\Http\Livewire\Jobs\ShowShowPage as JobsShowShowPage;
+use App\Http\Livewire\Jobs\ShowEditPage as JobsShowEditPage;
 use \App\Http\Livewire\Recruitment\ShowApplication;
 use \App\Http\Livewire\Recruitment\ShowIndex as RecruitmentShowIndex;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -101,7 +102,11 @@ Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:submit jobs'])->g
     Route::get('submit/{game_id}', JobsShowSubmitPage::class)
         ->whereNumber('game_id')
         ->name('submit');
-    Route::get('{job}', JobsShowShowPage::class)->name('show');
+
+    Route::prefix('{job}')->group(function () {
+        Route::get('/', JobsShowShowPage::class)->name('show');
+        Route::get('edit', JobsShowEditPage::class)->name('edit');
+    });
 });
 
 Route::prefix('settings')->name('settings.')->middleware('auth')->group(function () {
