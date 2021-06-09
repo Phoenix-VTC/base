@@ -37,6 +37,7 @@
             <livewire:components.dropdown title="User Management" icon="o-document-search" activeRoute="user-management.*"
                                           :items="[
                                         ['title' => 'Users', 'route' => 'user-management.index'],
+                                        ['title' => 'Driver Inactivity', 'route' => 'user-management.driver-inactivity.index'],
                                         ['title' => 'Roles', 'route' => 'user-management.roles.index'],
                                         ['title' => 'Permissions', 'route' => 'user-management.permissions.index'],
                                       ]">

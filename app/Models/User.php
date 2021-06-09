@@ -5,8 +5,10 @@ namespace App\Models;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Traits\HasWallets;
+use Carbon\Carbon;
 use Glorand\Model\Settings\Traits\HasSettingsTable;
 use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -82,6 +84,16 @@ class User extends Authenticatable implements Wallet
     public function vacation_requests(): HasMany
     {
         return $this->hasMany(VacationRequest::class);
+    }
+
+    public function getActiveVacationRequestsAttribute(): Collection
+    {
+        $today = Carbon::today()->toDateString();
+
+        return $this->vacation_requests()
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
+            ->get();
     }
 
     /**
