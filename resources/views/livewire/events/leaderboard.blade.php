@@ -1,6 +1,6 @@
 {{-- Success is as dangerous as failure. --}}
 
-@section('title', 'Events Overview')
+@section('title', 'Event Leaderboard')
 
 @section('hero-title')
     <span>Event</span>

@@ -4,8 +4,74 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c0d8da6edea5bf8c65875060fb6efc18",
+    "content-hash": "9b574a12f707eca6fdaa0427b8b4952c",
     "packages": [
+        {
+            "name": "alexmg86/laravel-sub-query",
+            "version": "v1.9.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Alexmg86/laravel-sub-query.git",
+                "reference": "59550513ec13b635b85def15ddf431609f4689e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Alexmg86/laravel-sub-query/zipball/59550513ec13b635b85def15ddf431609f4689e3",
+                "reference": "59550513ec13b635b85def15ddf431609f4689e3",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=5.4",
+                "laravel/framework": ">5.0",
+                "php": ">=5.6.4"
+            },
+            "require-dev": {
+                "orchestra/testbench": ">=3.1",
+                "phpunit/phpunit": ">=5.7"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Alexmg86\\LaravelSubQuery\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Alexmg86\\LaravelSubQuery\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aleksei Morozov",
+                    "email": "alexmg86@mail.ru"
+                }
+            ],
+            "description": "Laravel subquery",
+            "homepage": "https://github.com/alexmg86/laravelsubquery",
+            "keywords": [
+                "laravel",
+                "limit relation",
+                "orderByRelation",
+                "php",
+                "query",
+                "sub",
+                "withAvg",
+                "withMax",
+                "withMin",
+                "withSum"
+            ],
+            "support": {
+                "issues": "https://github.com/Alexmg86/laravel-sub-query/issues",
+                "source": "https://github.com/Alexmg86/laravel-sub-query/tree/v1.9.9"
+            },
+            "time": "2021-04-23T10:02:10+00:00"
+        },
         {
             "name": "anhskohbo/no-captcha",
             "version": "3.3.0",
@@ -2995,6 +3061,70 @@
                 "source": "https://github.com/laravel/horizon/tree/v5.7.5"
             },
             "time": "2021-04-06T14:17:52+00:00"
+        },
+        {
+            "name": "laravel/sanctum",
+            "version": "v2.11.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/sanctum.git",
+                "reference": "5de9d0ced8ae50dacb00c16077115f32e94d13f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/sanctum/zipball/5de9d0ced8ae50dacb00c16077115f32e94d13f2",
+                "reference": "5de9d0ced8ae50dacb00c16077115f32e94d13f2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/contracts": "^6.9|^7.0|^8.0",
+                "illuminate/database": "^6.9|^7.0|^8.0",
+                "illuminate/support": "^6.9|^7.0|^8.0",
+                "php": "^7.2|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "^4.0|^5.0|^6.0",
+                "phpunit/phpunit": "^8.0|^9.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Sanctum\\SanctumServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Sanctum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel Sanctum provides a featherweight authentication system for SPAs and simple APIs.",
+            "keywords": [
+                "auth",
+                "laravel",
+                "sanctum"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/sanctum/issues",
+                "source": "https://github.com/laravel/sanctum"
+            },
+            "time": "2021-05-25T16:43:06+00:00"
         },
         {
             "name": "laravel/socialite",

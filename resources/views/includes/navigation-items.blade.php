@@ -15,6 +15,9 @@
     <x-sidebar.item title="Vacation Requests" icon="o-clock" route="vacation-requests.index"
                     activeRoute="vacation-requests.*"/>
 
+    <x-sidebar.item title="Leaderboard" icon="o-trending-up" route="leaderboard"
+                    activeRoute="leaderboard"/>
+
     <x-sidebar.item title="Downloads" icon="o-download" route="downloads.index"
                     activeRoute="downloads.*"/>
 </x-sidebar.group>
@@ -33,10 +36,11 @@
                         activeRoute="vacation-requests.manage.*"/>
     @endcan
 
-    @can('manage users')
+    @canany(['manage users', 'manage driver inactivity'])
             <livewire:components.dropdown title="User Management" icon="o-document-search" activeRoute="user-management.*"
                                           :items="[
                                         ['title' => 'Users', 'route' => 'user-management.index'],
+                                        ['title' => 'Driver Inactivity', 'route' => 'user-management.driver-inactivity.index'],
                                         ['title' => 'Roles', 'route' => 'user-management.roles.index'],
                                         ['title' => 'Permissions', 'route' => 'user-management.permissions.index'],
                                       ]">
