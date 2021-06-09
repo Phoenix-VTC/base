@@ -88,16 +88,6 @@ class User extends Authenticatable implements Wallet
         return $this->hasMany(VacationRequest::class);
     }
 
-    public function getActiveVacationRequestsAttribute(): Collection
-    {
-        $today = Carbon::today()->toDateString();
-
-        return $this->vacation_requests()
-            ->whereDate('start_date', '<=', $today)
-            ->whereDate('end_date', '>=', $today)
-            ->get();
-    }
-
     /**
      * Get the driver application of the user.
      */
