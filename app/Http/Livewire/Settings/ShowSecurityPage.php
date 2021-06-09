@@ -70,4 +70,18 @@ class ShowSecurityPage extends Component
 
         session()->flash('alert', ['type' => 'success', 'message' => 'API Token successfully revoked!']);
     }
+
+    public function revokeApiToken($id): void
+    {
+        Auth::user()->tokens()->where('id', $id)->delete();
+
+        session()->flash('alert', ['type' => 'success', 'message' => 'API Token successfully revoked!']);
+    }
+
+    public function revokeAllApiTokens(): void
+    {
+        Auth::user()->tokens()->delete();
+
+        session()->flash('alert', ['type' => 'success', 'message' => 'All API Tokens successfully revoked!']);
+    }
 }
