@@ -4,55 +4,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 
-@section('title', 'Submit New ' . App\Models\Game::GAMES[$game_id][0] . ' Job')
+@section('title', 'Editing Job #' . $job->id)
 
 <div>
     <form class="space-y-8 divide-y divide-gray-200" wire:submit.prevent="submit">
         <div class="space-y-8 divide-y divide-gray-200">
             <div>
                 <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                    <x-input.group label="Pickup City" :error="$errors->first('pickup_city')" col-span="3">
-                        <x-input.select2
-                            :url="route('api.game-data.cities', $game_id)"
-                            id="pickup_city"
-                            wire:model="pickup_city"
-                            placeholder="Select a city"/>
-                    </x-input.group>
-
-                    <x-input.group label="Destination City" :error="$errors->first('destination_city')" col-span="3">
-                        <x-input.select2
-                            :url="route('api.game-data.cities', $game_id)"
-                            id="destination_city"
-                            wire:model="destination_city"
-                            placeholder="Select a city"/>
-                    </x-input.group>
-
-                    <x-input.group label="Pickup Company" :error="$errors->first('pickup_company')" col-span="3">
-                        <x-input.select2
-                            :url="route('api.game-data.companies', $game_id)"
-                            id="pickup_company"
-                            wire:model="pickup_company"
-                            placeholder="Select a company"/>
-                    </x-input.group>
-
-                    <x-input.group label="Destination Company" :error="$errors->first('destination_company')" col-span="3">
-                        <x-input.select2
-                            :url="route('api.game-data.companies', $game_id)"
-                            id="destination_company"
-                            wire:model="destination_company"
-                            placeholder="Select a company"/>
-                    </x-input.group>
-
-                    <x-input.group label="Cargo" :error="$errors->first('cargo')" col-span="3">
-                        <x-input.select2
-                            :url="route('api.game-data.cargos', $game_id)"
-                            id="cargo"
-                            wire:model="cargo"
-                            placeholder="Select a cargo"/>
-                    </x-input.group>
-
-                    <br>
-
                     <x-input.group label="Completed At" for="finished_at" :error="$errors->first('finished_at')"
                                    col-span="3">
                         <x-input.date id="finished_at" wire:model.lazy="finished_at"
@@ -116,7 +74,7 @@
 
         <div class="pt-5">
             <div class="flex justify-end">
-                <a href="{{ route('jobs.personal-overview') }}"
+                <a href="{{ route('jobs.show', $job) }}"
                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     Cancel
                 </a>

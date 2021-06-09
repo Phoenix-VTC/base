@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Alexmg86\LaravelSubQuery\Traits\LaravelSubQueryTrait;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Traits\HasWallets;
@@ -29,6 +30,7 @@ class User extends Authenticatable implements Wallet
     use HasWallet;
     use HasWallets;
     use HasSettingsTable;
+    use LaravelSubQueryTrait;
 
     /**
      * The attributes that are mass assignable.

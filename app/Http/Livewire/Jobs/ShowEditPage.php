@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Livewire\Jobs\Submit;
+namespace App\Http\Livewire\Jobs;
 
 use App\Enums\JobStatus;
 use App\Models\Job;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class ShowSubmitPage extends Component
+class ShowEditPage extends Component
 {
-    public int $game_id;
+    public Job $job;
     // Form fields
     public string $pickup_city = '';
     public string $destination_city = '';
@@ -26,17 +25,23 @@ class ShowSubmitPage extends Component
 
     public function mount(): void
     {
-        $this->finished_at = Carbon::now()->format('Y-m-d');
+        if ($this->job->user_id !== Auth::id() || (Auth::user()->cannot('manage users') && $this->job->user_id === Auth::id() && $this->job->created_at->addHour()->isPast())) {
+            abort(403, 'You don\'t have permission to edit this job.');
+        }
+
+        $this->fill([
+            'finished_at' => $this->job->finished_at,
+            'distance' => $this->job->distance,
+            'load_damage' => $this->job->load_damage,
+            'estimated_income' => $this->job->estimated_income,
+            'total_income' => $this->job->total_income,
+            'comments' => $this->job->comments,
+        ]);
     }
 
     public function rules(): array
     {
         return [
-            'pickup_city' => ['required', 'integer', 'exists:App\Models\City,id'],
-            'destination_city' => ['required', 'integer', 'exists:App\Models\City,id'],
-            'pickup_company' => ['required', 'integer', 'exists:App\Models\Company,id'],
-            'destination_company' => ['required', 'integer', 'exists:App\Models\Company,id'],
-            'cargo' => ['required', 'integer', 'exists:App\Models\Cargo,id'],
             'finished_at' => ['required', 'date', 'after_or_equal:' . date('Y-m-d', strtotime('-7 days')), 'before_or_equal:today'],
             'distance' => ['required', 'integer', 'min:1', 'max:5000'],
             'load_damage' => ['required', 'integer', 'min:0', 'max:100'],
@@ -53,21 +58,14 @@ class ShowSubmitPage extends Component
 
     public function render()
     {
-        return view('livewire.jobs.submit.submit-page')->extends('layouts.app');
+        return view('livewire.jobs.edit-page')->extends('layouts.app');
     }
 
     public function submit()
     {
         $validatedData = $this->validate();
 
-        $job = Job::create([
-            'user_id' => Auth::id(),
-            'game_id' => $this->game_id,
-            'pickup_city_id' => $validatedData['pickup_city'],
-            'destination_city_id' => $validatedData['destination_city'],
-            'pickup_company_id' => $validatedData['pickup_company'],
-            'destination_company_id' => $validatedData['destination_company'],
-            'cargo_id' => $validatedData['cargo'],
+        $this->job->update([
             'finished_at' => $validatedData['finished_at'],
             'distance' => $validatedData['distance'],
             'load_damage' => $validatedData['load_damage'],
@@ -77,8 +75,8 @@ class ShowSubmitPage extends Component
             'status' => JobStatus::Complete,
         ]);
 
-        session()->flash('alert', ['type' => 'success', 'message' => 'Job successfully submitted!']);
+        session()->flash('alert', ['type' => 'success', 'message' => 'Job successfully edited!']);
 
-        return redirect()->route('jobs.show', $job);
+        return redirect()->route('jobs.show', $this->job);
     }
 }

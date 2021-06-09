@@ -73,8 +73,11 @@
                                     <tbody>
                                     @foreach($today_overview as $user)
                                         <tr class="@if($loop->odd) bg-white @else bg-gray-50 @endif">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                {{ $user->username ?? 'Unknown User' }}
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                <a href="{{ route('users.profile', $user) }}"
+                                                   class="font-medium hover:font-semibold">
+                                                    {{ $user->username ?? 'Unknown User' }}
+                                                </a>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 {{ $user->jobs->sum('distance') }} km
@@ -93,6 +96,13 @@
                                     @endif
                                     </tbody>
                                 </table>
+                                @if($today_overview->count())
+                                    <div class="px-6 py-2 text-center">
+                                        <span class="text-sm text-gray-700">
+                                            Showing a maximum of 10 users
+                                        </span>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -305,26 +315,27 @@
                                                     <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
                                                           aria-hidden="true"></span>
                                                 @endif
-                                                <div class="relative flex space-x-3"><div>
-                                            <span
-                                                class="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white">
-                                                <img class="w-8 h-8 rounded-full"
-                                                     src="{{ $job->user->profile_picture ?? '' }}"
-                                                     alt="{{ $job->user->username ?? 'Unknown Username' }}"/>
-                                            </span>
+                                                <div class="relative flex space-x-3">
+                                                    <div>
+                                                        <a class="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white"
+                                                           href="{{ route('users.profile', $job->user) }}">
+                                                            <img class="w-8 h-8 rounded-full"
+                                                                 src="{{ $job->user->profile_picture ?? '' }}"
+                                                                 alt="{{ $job->user->username ?? 'Unknown Username' }}"/>
+                                                        </a>
                                                     </div>
                                                     <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                                                        <div>
+                                                        <a href="{{ route('jobs.show', $job) }}">
                                                             <p class="text-sm text-gray-500">
                                                                 Submitted a job to
                                                                 <span class="font-medium text-gray-900">
-                                                                {{ $job->destinationCity->real_name }}
-                                                            </span>
+                                                                    {{ $job->destinationCity->real_name }}
+                                                                </span>
                                                             </p>
-                                                        </div>
+                                                        </a>
                                                         <div class="text-right text-sm whitespace-nowrap text-gray-500">
                                                         <span title="{{ $job->created_at->toDateTimeString() }}">
-                                                            {{ $job->created_at->format('H:m') }}
+                                                            {{ $job->created_at->isoFormat('HH:m') }}
                                                         </span>
                                                         </div>
                                                     </div>

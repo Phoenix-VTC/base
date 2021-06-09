@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.4",
         "ext-json": "*",
+        "alexmg86/laravel-sub-query": "^1.9",
         "anhskohbo/no-captcha": "^3.3",
         "asantibanez/livewire-calendar": "^2.1",
         "bavix/laravel-wallet": "^6.0",
