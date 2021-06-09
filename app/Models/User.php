@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Syntax\SteamApi\Containers\Player;
 
@@ -31,6 +32,7 @@ class User extends Authenticatable implements Wallet
     use HasWallets;
     use HasSettingsTable;
     use LaravelSubQueryTrait;
+    use HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
