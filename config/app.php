@@ -127,6 +127,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'discord-bot-api-token' => env('DISCORD_BOT_API_TOKEN'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
