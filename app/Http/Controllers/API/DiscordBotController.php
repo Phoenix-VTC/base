@@ -24,14 +24,14 @@ class DiscordBotController extends ApiController
      *
      * @Get("/users/{discordId}")
      * @Versions({"v1"})
-     * @Response(200, body={"id": 1, "username": "foo", "steam_id": 12345678912345678, "discord_nickname": "Wumpus", "created_at": "2021-05-17T18:13:07.000000Z", "wallet_balance": 5000000, "event_xp": 5000, "profile_picture": "https://eu.ui-avatars.com/api/?name=Wumpus", "profile_link": "https://base.phoenixvtc.com"})
+     * @Response(200, body={"id": 1, "username": "foo", "truckersmp_id": 1234567, "steam_id": 12345678912345678, "discord_nickname": "Wumpus", "created_at": "2021-05-17T18:13:07.000000Z", "wallet_balance": 5000000, "event_xp": 5000, "profile_picture": "https://eu.ui-avatars.com/api/?name=Wumpus", "profile_link": "https://base.phoenixvtc.com"})
      * @Parameters({
      *     @Parameter("discordId", type="integer", required=true, description="The Discord ID of the user.")
      * })
      */
     public function findUserByDiscordId($discordId): Response
     {
-        $user = User::select(['id', 'username', 'steam_id', 'discord->nickname as discord_nickname', 'created_at'])
+        $user = User::select(['id', 'username', 'steam_id', 'truckersmp_id', 'discord->nickname as discord_nickname', 'created_at'])
             ->whereJsonContains('discord->id', $discordId)
             ->firstOrFail();
 
