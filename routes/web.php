@@ -15,6 +15,7 @@ use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
 use App\Http\Livewire\ShowLeaderboardPage;
 use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
+use App\Http\Livewire\UserManagement\DriverInactivity\ShowIndexPage as DriverInactivityShowIndexPage;
 use App\Http\Livewire\Users\ShowJobOverviewPage as UsersShowJobOverviewPage;
 use App\Http\Livewire\Jobs\Submit\ShowSelectGamePage as JobsShowSelectGamePage;
 use App\Http\Livewire\Jobs\Submit\ShowSubmitPage as JobsShowSubmitPage;
@@ -71,6 +72,7 @@ Route::prefix('user-management')->name('user-management.')->middleware(['auth', 
     Route::get('index', UserManagementShowIndex::class)->name('index');
     Route::get('roles/index', UserManagementRolesShowIndex::class)->name('roles.index');
     Route::get('permissions/index', UserManagementPermissionsShowIndex::class)->name('permissions.index');
+    Route::get('driver-inactivity/index', DriverInactivityShowIndexPage::class)->middleware('can:manage driver inactivity')->name('driver-inactivity.index');
 });
 
 Route::prefix('vacation-requests')->name('vacation-requests.')->middleware(['auth'])->group(function () {
