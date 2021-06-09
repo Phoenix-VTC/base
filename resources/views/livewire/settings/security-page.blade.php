@@ -25,7 +25,8 @@
                         <x-input.group label="Old Password" for="old_password" :error="$errors->first('old_password')"
                                        col-span="3">
                             <x-input.text wire:model.lazy="old_password" type="password" id="old_password"
-                                          :error="$errors->first('old_password')" autocomplete="current-password" required/>
+                                          :error="$errors->first('old_password')" autocomplete="current-password"
+                                          required/>
                         </x-input.group>
 
                         <br>
@@ -37,11 +38,73 @@
                         </x-input.group>
 
                         <x-input.group label="Confirm New Password" for="new_password_confirmation" col-span="3">
-                            <x-input.text wire:model.lazy="new_password_confirmation" type="password" id="new_password_confirmation"
+                            <x-input.text wire:model.lazy="new_password_confirmation" type="password"
+                                          id="new_password_confirmation"
                                           autocomplete="new-password" required/>
                         </x-input.group>
                     </div>
                 </div>
+
+                <div class="py-6 px-4 sm:p-6 lg:pb-8">
+                    <div>
+                        <h2 class="text-lg leading-6 font-medium text-gray-900">Tracker Token</h2>
+                        <p class="mt-1 text-sm text-gray-500">
+                            This token is required in order to communicate with our Tracker API.
+                            <br>
+                            <span>
+                                Make sure to keep this token safe, and <b>never</b> share it with anyone.
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        @if(Auth::user()->tokens()->where('name', 'tracker-token')->count())
+                            <x-input.group label="Token"
+                                           help-text="Tokens can only be viewed once. Need it again? Please regenerate it."
+                                           for="tracker_token" col-span="5">
+                                <div class="mt-1 flex rounded-md shadow-sm">
+                                    <div class="relative flex items-stretch flex-grow focus-within:z-10">
+                                        <div
+                                            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <x-heroicon-s-finger-print class="h-5 w-5 text-gray-400"/>
+                                        </div>
+                                        <input
+                                            class="focus:ring-indigo-500 border focus:border-indigo-500 block w-full rounded-none rounded-l-md pl-10 sm:text-sm border-gray-300"
+                                            id="tracker_token" type="text" onClick="this.select();"
+                                            wire:model.lazy="tracker_token" readonly>
+                                    </div>
+                                    <button
+                                        class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                                        type="button" wire:click="generateTrackerToken"
+                                        onclick="confirm('Are you sure you that you want to regenerate your tracker token?') || event.stopImmediatePropagation()">
+                                        <x-heroicon-s-refresh class="h-5 w-5 text-gray-400"/>
+                                        <span>
+                                            Regenerate
+                                        </span>
+                                    </button>
+                                </div>
+                            </x-input.group>
+
+                            <x-input.group label="" col-span="5">
+                                <button
+                                    class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-600 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto sm:text-sm"
+                                    type="button" wire:click="revokeTrackerToken"
+                                    onclick="confirm('Are you sure you that you want to revoke your tracker token?') || event.stopImmediatePropagation()">
+                                    Revoke token
+                                </button>
+                            </x-input.group>
+                        @else
+                            <x-input.group label="" col-span="5">
+                                <button
+                                    class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-600 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:w-auto sm:text-sm"
+                                    type="button" wire:click="generateTrackerToken">
+                                    Generate token
+                                </button>
+                            </x-input.group>
+                        @endif
+                    </div>
+                </div>
+
                 <div class="mt-4 py-4 px-4 flex justify-end sm:px-6">
                     <button type="submit"
                             class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-600 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 sm:w-auto sm:text-sm">
