@@ -12,4 +12,8 @@ $api->version('v1', function ($api) {
         $api->get('companies', [GameDataController::class, 'indexCompanies'])->name('companies');
         $api->get('cargos', [GameDataController::class, 'indexCargos'])->name('cargos');
     });
+
+    $api->group(['middleware' => 'auth.discordBot', 'prefix' => 'discord-bot'], function ($api) {
+        $api->get('users/{id}', [DiscordBotController::class, 'findUserByDiscordId']);
+    });
 });
