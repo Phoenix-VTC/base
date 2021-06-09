@@ -72,7 +72,7 @@ Route::prefix('user-management')->name('user-management.')->middleware(['auth', 
     Route::get('index', UserManagementShowIndex::class)->name('index');
     Route::get('roles/index', UserManagementRolesShowIndex::class)->name('roles.index');
     Route::get('permissions/index', UserManagementPermissionsShowIndex::class)->name('permissions.index');
-    Route::get('driver-inactivity/index', DriverInactivityShowIndexPage::class)->name('driver-inactivity.index');
+    Route::get('driver-inactivity/index', DriverInactivityShowIndexPage::class)->middleware('can:manage driver inactivity')->name('driver-inactivity.index');
 });
 
 Route::prefix('vacation-requests')->name('vacation-requests.')->middleware(['auth'])->group(function () {
