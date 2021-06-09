@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Alexmg86\LaravelSubQuery\Traits\LaravelSubQueryTrait;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Traits\HasWallets;
+use Carbon\Carbon;
 use Glorand\Model\Settings\Traits\HasSettingsTable;
 use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Syntax\SteamApi\Containers\Player;
 
@@ -27,6 +31,8 @@ class User extends Authenticatable implements Wallet
     use HasWallet;
     use HasWallets;
     use HasSettingsTable;
+    use LaravelSubQueryTrait;
+    use HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
