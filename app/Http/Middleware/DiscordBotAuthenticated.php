@@ -17,7 +17,7 @@ class DiscordBotAuthenticated
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = config('app.discord-bot-api-token');
+        $token = config('app.discord-bot-api-token', '');
 
         if ($request->header('token') !== $token) {
             throw new AccessDeniedHttpException();
