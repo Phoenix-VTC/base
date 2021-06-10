@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EventManagementController;
+use App\Http\Controllers\UserManagement\UserController as UserManagementUserController;
 use App\Http\Livewire\Auth\ShowWelcomeForm;
 use App\Http\Livewire\Downloads\ShowIndexPage as DownloadsShowIndexPage;
 use App\Http\Livewire\DownloadsManagement\ShowEditPage as DownloadsManagementShowEditPage;
@@ -132,7 +133,12 @@ Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
 
     Route::get('{user}/jobs', UsersShowJobOverviewPage::class)->name('jobs-overview');
 
-    Route::get('{id}/edit', UserManagementShowEditPage::class)->middleware('can:manage users')->name('edit');
+    Route::prefix('{id}')->middleware('can:manage users')->group(function () {
+        Route::get('edit', UserManagementShowEditPage::class)->name('edit');
+
+        Route::get('remove-profile-picture', [UserManagementUserController::class, 'removeProfilePicture'])->name('removeProfilePicture');
+        Route::get('remove-profile-banner', [UserManagementUserController::class, 'removeProfileBanner'])->name('removeProfileBanner');
+    });
 });
 
 Route::prefix('downloads')->name('downloads.')->middleware('auth')->group(function () {

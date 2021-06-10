@@ -10,6 +10,44 @@
             View Profile
         </a>
     </div>
+
+    <div class="ml-3">
+        <div class="relative inline-block text-left" x-data="{ open: false }">
+            <div>
+                <button type="button"
+                        class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-gray-600 text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+                        id="menu-button" aria-expanded="true" aria-haspopup="true" @click="open = !open">
+                    Profile Actions
+                    <x-heroicon-s-chevron-down class="-mr-1 ml-2 h-5 w-5"/>
+                </button>
+            </div>
+
+            <div x-show="open" x-cloak
+                 @click.away="open = false"
+                 x-transition:enter="transition ease-out duration-100"
+                 x-transition:enter-start="transform opacity-0 scale-95"
+                 x-transition:enter-end="transform opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-75"
+                 x-transition:leave-start="transform opacity-100 scale-100"
+                 x-transition:leave-end="transform opacity-0 scale-95"
+                 class="origin-top-right absolute right-0 z-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                 role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                <div class="py-1" role="none">
+                    <a href="{{ route('users.removeProfilePicture', $user) }}"
+                       class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
+                       role="menuitem" tabindex="-1">
+                        Remove Profile Picture
+                    </a>
+
+                    <a href="{{ route('users.removeProfileBanner', $user) }}"
+                       class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
+                       role="menuitem" tabindex="-1">
+                        Remove Profile Banner
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 <div>
@@ -51,7 +89,8 @@
 
                     <br>
 
-                    <x-input.group label="Roles" for="user_roles" :error="$errors->first('user_roles')" help-text="<b>Note:</b> Hold down the ctrl/cmd key to select multiple roles.">
+                    <x-input.group label="Roles" for="user_roles" :error="$errors->first('user_roles')"
+                                   help-text="<b>Note:</b> Hold down the ctrl/cmd key to select multiple roles.">
                         <x-input.select wire:model.lazy="user_roles" id="user_roles" size="10" multiple required>
                             @foreach($available_roles as $key => $role)
                                 <option value="{{ $key }}">{{ ucwords($role) }}</option>
