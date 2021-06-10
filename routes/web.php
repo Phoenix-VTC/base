@@ -112,7 +112,7 @@ Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:submit jobs'])->g
     });
 });
 
-Route::get('leaderboard', ShowLeaderboardPage::class)->name('leaderboard');
+Route::get('leaderboard', ShowLeaderboardPage::class)->middleware('auth')->name('leaderboard');
 
 Route::prefix('settings')->name('settings.')->middleware('auth')->group(function () {
     Route::get('preferences', SettingsShowPreferencesPage::class)->name('preferences');
