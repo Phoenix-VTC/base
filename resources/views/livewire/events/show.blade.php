@@ -204,12 +204,12 @@
                                     <div class="flex items-center space-x-4">
                                         <div class="flex-shrink-0">
                                             <img class="h-8 w-8 rounded-full"
-                                                 src="{{ $attendee->user->profile_picture }}"
-                                                 alt="{{ $attendee->user->username }}">
+                                                 src="{{ $attendee->user->profile_picture ?? 'https://i.imgur.com/9xhto77.png' }}"
+                                                 alt="{{ $attendee->user->username ?? 'Unknown User' }}">
                                         </div>
                                         <div class="flex-1 min-w-0">
                                             <p class="text-sm font-medium text-gray-900 truncate">
-                                                {{ $attendee->user->username }}
+                                                {{ $attendee->user->username ?? 'Unknown User' }}
                                             </p>
                                             <p class="text-sm text-gray-500 truncate">
                                                 {{ $attendee->updated_at->diffForHumans() }}
