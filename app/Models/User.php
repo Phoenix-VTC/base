@@ -112,6 +112,20 @@ class User extends Authenticatable implements Wallet
     }
 
     /**
+     * Get the user's profile banner.
+     *
+     * @return string
+     */
+    public function getProfileBannerAttribute(): ?string
+    {
+        try {
+            return Storage::disk('scaleway')->url($this->profile_banner_path);
+        } catch (\Exception $e) {
+            return "https://phoenix-base.s3.nl-ams.scw.cloud/images/227300_20210216162827_1.png";
+        }
+    }
+
+    /**
      * Get all of the jobs of the user.
      *
      * @returns HasMany
