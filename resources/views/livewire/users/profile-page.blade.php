@@ -120,8 +120,8 @@
                     class="bg-white mt-8 pb-6 w-full justify-center items-center overflow-hidden md:max-w-sm rounded-lg shadow-sm mx-auto">
                     <div class="relative h-40">
                         <img class="absolute h-full w-full object-cover"
-                             src="https://phoenixvtc.com/img/dd9f153d-a7b5-477d-be78-9cc4014aeeab/227300-20210216162827-11.png"
-                             alt="Background Image">
+                             src="{{ $user->profile_banner }}"
+                             alt="{{ $user->username }}'s Profile Banner">
                     </div>
 
                     <div

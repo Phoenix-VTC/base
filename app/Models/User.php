@@ -6,10 +6,8 @@ use Alexmg86\LaravelSubQuery\Traits\LaravelSubQueryTrait;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Traits\HasWallets;
-use Carbon\Carbon;
 use Glorand\Model\Settings\Traits\HasSettingsTable;
 use GuzzleHttp\Client;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Syntax\SteamApi\Containers\Player;
@@ -51,6 +50,8 @@ class User extends Authenticatable implements Wallet
         'welcome_token',
         'application_id',
         'discord',
+        'profile_picture_path',
+        'profile_banner_path',
     ];
 
     /**
@@ -103,9 +104,27 @@ class User extends Authenticatable implements Wallet
      *
      * @return string
      */
-    public function getProfilePictureAttribute(): string
+    public function getProfilePictureAttribute(): ?string
     {
-        return "https://eu.ui-avatars.com/api/?name=$this->username";
+        try {
+            return Storage::disk('scaleway')->url($this->profile_picture_path);
+        } catch (\Exception $e) {
+            return "https://eu.ui-avatars.com/api/?background=DC2F02&color=FFFFFF&format=svg&name=$this->username";
+        }
+    }
+
+    /**
+     * Get the user's profile banner.
+     *
+     * @return string
+     */
+    public function getProfileBannerAttribute(): ?string
+    {
+        try {
+            return Storage::disk('scaleway')->url($this->profile_banner_path);
+        } catch (\Exception $e) {
+            return "https://phoenix-base.s3.nl-ams.scw.cloud/images/227300_20210216162827_1.png";
+        }
     }
 
     /**
