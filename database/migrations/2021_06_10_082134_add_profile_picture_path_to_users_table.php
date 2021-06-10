@@ -14,7 +14,7 @@ class AddProfilePicturePathToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('profile_picture_path')->nullable();
+            $table->string('profile_picture_path')->after('application_id')->nullable();
         });
     }
 
