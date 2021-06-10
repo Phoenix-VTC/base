@@ -1,6 +1,6 @@
 {{-- The Master doesn't talk, he acts. --}}
 
-@section('title', 'Social Connections')
+@section('title', 'Settings')
 
 <div>
     <x-alert/>
