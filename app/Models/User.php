@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Syntax\SteamApi\Containers\Player;
@@ -101,9 +102,13 @@ class User extends Authenticatable implements Wallet
      *
      * @return string
      */
-    public function getProfilePictureAttribute(): string
+    public function getProfilePictureAttribute(): ?string
     {
-        return "https://eu.ui-avatars.com/api/?name=$this->username";
+        try {
+            return Storage::disk('scaleway')->url($this->profile_picture_path);
+        } catch (\Exception $e) {
+            return "https://eu.ui-avatars.com/api/?background=DC2F02&color=FFFFFF&format=svg&name=$this->username";
+        }
     }
 
     /**
