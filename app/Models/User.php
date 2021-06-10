@@ -50,6 +50,8 @@ class User extends Authenticatable implements Wallet
         'welcome_token',
         'application_id',
         'discord',
+        'profile_picture_path',
+        'profile_banner_path',
     ];
 
     /**
