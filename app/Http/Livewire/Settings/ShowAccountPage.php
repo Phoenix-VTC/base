@@ -29,7 +29,7 @@ class ShowAccountPage extends Component
             'username' => ['required', 'min:3', 'unique:users,username,' . $this->user->id, new UsernameNotReserved],
             'email' => ['required', 'min:3', 'email', 'unique:users,email,' . $this->user->id],
             'profile_picture' => ['nullable', 'image', 'max:2048'],
-            'profile_banner' => ['required', 'image', 'max:2048'],
+            'profile_banner' => ['nullable', 'image', 'max:2048'],
         ];
     }
 
