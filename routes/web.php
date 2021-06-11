@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EventManagementController;
+use App\Http\Controllers\UserManagement\UserController as UserManagementUserController;
 use App\Http\Livewire\Auth\ShowWelcomeForm;
 use App\Http\Livewire\Downloads\ShowIndexPage as DownloadsShowIndexPage;
 use App\Http\Livewire\DownloadsManagement\ShowEditPage as DownloadsManagementShowEditPage;
@@ -13,7 +14,9 @@ use App\Http\Livewire\Events\Management\ShowAttendeeManagement as EventsManageme
 use App\Http\Livewire\GameData\Cargos\ShowIndexPage as CargosShowIndexPage;
 use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
+use App\Http\Livewire\ShowLeaderboardPage;
 use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
+use App\Http\Livewire\UserManagement\DriverInactivity\ShowIndexPage as DriverInactivityShowIndexPage;
 use App\Http\Livewire\Users\ShowJobOverviewPage as UsersShowJobOverviewPage;
 use App\Http\Livewire\Jobs\Submit\ShowSelectGamePage as JobsShowSelectGamePage;
 use App\Http\Livewire\Jobs\Submit\ShowSubmitPage as JobsShowSubmitPage;
@@ -70,6 +73,7 @@ Route::prefix('user-management')->name('user-management.')->middleware(['auth', 
     Route::get('index', UserManagementShowIndex::class)->name('index');
     Route::get('roles/index', UserManagementRolesShowIndex::class)->name('roles.index');
     Route::get('permissions/index', UserManagementPermissionsShowIndex::class)->name('permissions.index');
+    Route::get('driver-inactivity/index', DriverInactivityShowIndexPage::class)->middleware('can:manage driver inactivity')->name('driver-inactivity.index');
 });
 
 Route::prefix('vacation-requests')->name('vacation-requests.')->middleware(['auth'])->group(function () {
@@ -109,6 +113,8 @@ Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:submit jobs'])->g
     });
 });
 
+Route::get('leaderboard', ShowLeaderboardPage::class)->middleware('auth')->name('leaderboard');
+
 Route::prefix('settings')->name('settings.')->middleware('auth')->group(function () {
     Route::get('preferences', SettingsShowPreferencesPage::class)->name('preferences');
     Route::get('account', SettingsShowAccountPage::class)->middleware('password.confirm')->name('account');
@@ -127,7 +133,12 @@ Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
 
     Route::get('{user}/jobs', UsersShowJobOverviewPage::class)->name('jobs-overview');
 
-    Route::get('{id}/edit', UserManagementShowEditPage::class)->middleware('can:manage users')->name('edit');
+    Route::prefix('{id}')->middleware('can:manage users')->group(function () {
+        Route::get('edit', UserManagementShowEditPage::class)->name('edit');
+
+        Route::get('remove-profile-picture', [UserManagementUserController::class, 'removeProfilePicture'])->name('removeProfilePicture');
+        Route::get('remove-profile-banner', [UserManagementUserController::class, 'removeProfileBanner'])->name('removeProfileBanner');
+    });
 });
 
 Route::prefix('downloads')->name('downloads.')->middleware('auth')->group(function () {
