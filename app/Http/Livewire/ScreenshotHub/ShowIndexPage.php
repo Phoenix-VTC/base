@@ -12,7 +12,7 @@ class ShowIndexPage extends Component
 
     public function mount(): void
     {
-        $this->screenshots = Screenshot::all(); // PAGINATE THIS BOIIII
+        $this->screenshots = Screenshot::with(['user', 'votes'])->get(); // PAGINATE THIS BOIIII
     }
 
     public function render()

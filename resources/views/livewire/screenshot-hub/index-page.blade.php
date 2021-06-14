@@ -50,12 +50,16 @@
                                 </p>
                             </div>
                             <ul class="flex flex-row space-x-2 text-sm">
-                                <span class="text-red-500">
-                                    <span class="sr-only">Likes</span>
-                                    <x-heroicon-s-heart class="w-5 h-5"/>
-                                </span>
+                                <a class="text-red-500" href="{{ route('screenshot-hub.toggleVote', $screenshot) }}">
+                                    <span class="sr-only">Votes</span>
+                                    @if($screenshot->votes()->where('user_id', Auth::id())->exists())
+                                        <x-heroicon-s-heart class="w-5 h-5"/>
+                                    @else
+                                        <x-heroicon-o-heart class="w-5 h-5"/>
+                                    @endif
+                                </a>
                                 <span>
-                                    123 likes
+                                    {{ $screenshot->votes->count() }} {{ Str::plural('vote', $screenshot->votes->count()) }}
                                 </span>
                             </ul>
                         </div>

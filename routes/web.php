@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EventManagementController;
+use App\Http\Controllers\ScreenshotController;
 use App\Http\Controllers\UserManagement\UserController as UserManagementUserController;
 use App\Http\Livewire\Auth\ShowWelcomeForm;
 use App\Http\Livewire\Downloads\ShowIndexPage as DownloadsShowIndexPage;
@@ -157,7 +158,10 @@ Route::prefix('downloads')->name('downloads.')->middleware('auth')->group(functi
 Route::prefix('screenshot-hub')->name('screenshot-hub.')->middleware('auth')->group(function () {
     Route::get('/', ScreenshotHubShowIndexPage::class)->name('index');
     Route::get('create', ScreenshotHubShowCreatePage::class)->name('create');
-    Route::get('{screenshot}', ScreenshotHubShowShowPage::class)->name('show');
+    Route::prefix('{screenshot}')->group(function () {
+        Route::get('/', ScreenshotHubShowShowPage::class)->name('show');
+        Route::get('toggle-vote', [ScreenshotController::class, 'toggleVote'])->name('toggleVote');
+    });
 //    Route::get('{screenshot}/edit', ScreenshotHubShowIndexPage::class)->name('edit');
 });
 
