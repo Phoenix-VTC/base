@@ -28,8 +28,7 @@
                             <dt class="text-gray-500">Uploaded by</dt>
                             <dd class="text-gray-900 prose prose-sm prose-red">
                                 @if($screenshot->user)
-                                    <a class=""
-                                       href="{{ route('users.profile', $screenshot->user) }}">
+                                    <a href="{{ route('users.profile', $screenshot->user) }}">
                                         {{ $screenshot->user->username }}
                                     </a>
                                 @else
