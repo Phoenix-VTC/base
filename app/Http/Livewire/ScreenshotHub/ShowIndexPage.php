@@ -42,8 +42,6 @@ class ShowIndexPage extends Component
             ->whereDate('created_at', '>', Carbon::parse("-1 $this->range"))
             ->orderByRaw("$this->orderBy " . ($this->desc ? 'DESC' : ''))
             ->get(); // PAGINATE THIS BOIIII
-
-        ray($this->screenshots->toArray());
     }
 
     public function render()
