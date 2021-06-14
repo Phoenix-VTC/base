@@ -115,6 +115,10 @@
                 </li>
             @endforeach
         </ul>
+
+        <div class="mt-8">
+            {{ $screenshots->appends(request()->all())->links() }}
+        </div>
     @else
         <x-empty-state :image="asset('img/illustrations/empty.svg')"
                        alt="Empty illustration">

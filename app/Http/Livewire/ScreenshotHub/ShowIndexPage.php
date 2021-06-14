@@ -4,8 +4,8 @@ namespace App\Http\Livewire\ScreenshotHub;
 
 use App\Models\Screenshot;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
 class ShowIndexPage extends Component
@@ -15,7 +15,7 @@ class ShowIndexPage extends Component
     public string $orderBy;
     public bool $desc;
 
-    public Collection $screenshots;
+    private LengthAwarePaginator $screenshots;
 
     public function mount(Request $request): void
     {
@@ -41,11 +41,11 @@ class ShowIndexPage extends Component
             ->withCount('votes')
             ->whereDate('created_at', '>', Carbon::parse("-1 $this->range"))
             ->orderByRaw("$this->orderBy " . ($this->desc ? 'DESC' : ''))
-            ->get(); // PAGINATE THIS BOIIII
+            ->paginate(9);
     }
 
     public function render()
     {
-        return view('livewire.screenshot-hub.index-page')->extends('layouts.app');
+        return view('livewire.screenshot-hub.index-page', ['screenshots' => $this->screenshots])->extends('layouts.app');
     }
 }
