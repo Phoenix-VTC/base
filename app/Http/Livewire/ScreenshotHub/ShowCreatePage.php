@@ -4,7 +4,6 @@ namespace App\Http\Livewire\ScreenshotHub;
 
 use App\Models\Screenshot;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
