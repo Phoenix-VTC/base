@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\ScreenshotHub;
 
 use App\Models\Screenshot;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -27,9 +28,29 @@ class ShowCreatePage extends Component
         ];
     }
 
-    public function mount(): void
+    public function mount()
     {
-        session()->now('alert', ['type' => 'info', 'title' => 'Please read this before submitting a screenshot!', 'message' => 'Insert some text, guidelines and rules here. Or just a random shiba fact.']);
+        if (Screenshot::where('user_id', Auth::id())->where('created_at', '>', Carbon::parse('-24 hours'))->count()) {
+            $screenshot = Screenshot::where('user_id', Auth::id())->where('created_at', '>', Carbon::parse('-24 hours'))->first();
+
+            session()->flash('alert', [
+                'type' => 'danger',
+                'title' => 'You have already submitted a screenshot in the past 24 hours!',
+                'message' => 'A new screenshot can be submitted after <b>' . $screenshot->created_at->add('1 day')->toDayDateTimeString() . ' GMT</b>'
+            ]);
+
+            return redirect()->route('screenshot-hub.index');
+        }
+
+        session()->now('alert', [
+            'type' => 'info',
+            'title' => 'Please read this before submitting a screenshot!',
+            'message' => '
+                - You can submit a maximum of <b>one</b> screenshot every 24 hours.<br>
+                - Submissions needs to be yours. You cannot submit someone else\'s creation.<br>
+                - The screenshot must be taken in either Euro Truck Simulator 2 or American Truck Simulator.
+            '
+        ]);
     }
 
     public function render()
