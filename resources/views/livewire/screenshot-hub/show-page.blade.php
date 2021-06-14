@@ -58,17 +58,19 @@
 
                     </dl>
                 </div>
-                <div class="mt-6 flex flex-col justify-stretch space-y-2">
-                    <button type="button" wire:click="delete" wire:loading.attr="disabled"
-                            wire:loading.class="opacity-50 cursor-wait"
-                            onclick="confirm('Are you sure you want to delete this screenshot? This action is irreversible.') || event.stopImmediatePropagation()"
-                            class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                        Delete screenshot
-                    </button>
-                    <p class="text-center text-xs text-gray-500">
-                        This action is irreversible.
-                    </p>
-                </div>
+                @if(Auth::id() === $screenshot->user_id || Auth::user()->can('manage users'))
+                    <div class="mt-6 flex flex-col justify-stretch space-y-2">
+                        <button type="button" wire:click="delete" wire:loading.attr="disabled"
+                                wire:loading.class="opacity-50 cursor-wait"
+                                onclick="confirm('Are you sure you want to delete this screenshot? This action is irreversible.') || event.stopImmediatePropagation()"
+                                class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            Delete screenshot
+                        </button>
+                        <p class="text-center text-xs text-gray-500">
+                            This action is irreversible.
+                        </p>
+                    </div>
+                @endif
             </section>
         </div>
     </div>
