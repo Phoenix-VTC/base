@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Alexmg86\LaravelSubQuery\Traits\LaravelSubQueryTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 
 class Screenshot extends Model
 {
+    use LaravelSubQueryTrait;
+
     /**
      * The attributes that aren't mass assignable.
      *

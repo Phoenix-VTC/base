@@ -6,6 +6,54 @@
 
 @section('actions')
     <div class="ml-3">
+        <x-dropdown :title="'One ' . ucfirst($range)">
+            <x-dropdown-item
+                href="{{ route('screenshot-hub.index', ['desc' => $desc, 'orderBy' => $orderBy, 'range' => 'week']) }}"
+                :active="($range === 'week')">
+                One Week
+            </x-dropdown-item>
+            <x-dropdown-item
+                href="{{ route('screenshot-hub.index', ['desc' => $desc, 'orderBy' => $orderBy, 'range' => 'month']) }}"
+                :active="($range === 'month')">
+                One Month
+            </x-dropdown-item>
+            <x-dropdown-item
+                href="{{ route('screenshot-hub.index', ['desc' => $desc, 'orderBy' => $orderBy, 'range' => 'year']) }}"
+                :active="($range === 'year')">
+                One Year
+            </x-dropdown-item>
+        </x-dropdown>
+    </div>
+
+    <div class="ml-3">
+        <x-dropdown title="Order By">
+            <x-dropdown-item
+                href="{{ route('screenshot-hub.index', ['range' => $range, 'desc' => $desc, 'orderBy' => 'created_at']) }}"
+                :active="($orderBy === 'created_at')">
+                Submitted At
+            </x-dropdown-item>
+            <x-dropdown-item
+                href="{{ route('screenshot-hub.index', ['range' => $range, 'desc' => $desc, 'orderBy' => 'votes_count']) }}"
+                :active="($orderBy === 'votes_count')">
+                Votes
+            </x-dropdown-item>
+        </x-dropdown>
+    </div>
+
+    <div class="ml-3">
+        <a class="relative inline-flex items-center px-2 py-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+           href="{{ route('screenshot-hub.index', ['range' => $range, 'orderBy' => $orderBy, 'desc' => !$desc]) }}">
+            @if(!$desc)
+                <span class="sr-only">Descending</span>
+                <x-heroicon-o-sort-descending class="h-5 w-5"/>
+            @else
+                <span class="sr-only">Ascending</span>
+                <x-heroicon-o-sort-ascending class="h-5 w-5"/>
+            @endif
+        </a>
+    </div>
+
+    <div class="ml-3">
         <a href="{{ route('screenshot-hub.create') }}"
            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5"/>
@@ -59,7 +107,7 @@
                                     @endif
                                 </a>
                                 <span>
-                                    {{ $screenshot->votes->count() }} {{ Str::plural('vote', $screenshot->votes->count()) }}
+                                    {{ $screenshot->votes_count }} {{ Str::plural('vote', $screenshot->votes_count) }}
                                 </span>
                             </ul>
                         </div>

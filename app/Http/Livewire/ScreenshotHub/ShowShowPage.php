@@ -10,6 +10,11 @@ class ShowShowPage extends Component
 {
     public Screenshot $screenshot;
 
+    public function mount(): void
+    {
+        $this->screenshot->has('user')->findOrFail($this->screenshot->id);
+    }
+
     public function render()
     {
         return view('livewire.screenshot-hub.show-page')->extends('layouts.app');
