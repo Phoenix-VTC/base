@@ -1,6 +1,6 @@
 {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
 
-@section('title', 'Submit new screenshot')
+@section('title', 'Submit a new screenshot')
 
 <div>
     <x-alert/>
