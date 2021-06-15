@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class Download extends Model
 {
     use HasFactory;
+    use RevisionableTrait;
 
     /**
      * The attributes that aren't mass assignable.
@@ -19,6 +21,8 @@ class Download extends Model
      * @var array
      */
     protected $guarded = [];
+
+    protected array $dontKeepRevisionOf = ['download_count'];
 
     public function updatedBy(): BelongsTo
     {
@@ -46,5 +50,10 @@ class Download extends Model
         } catch (\Exception $e) {
             return null;
         }
+    }
+
+    public function revisionHistoryWithUser(): MorphMany
+    {
+        return $this->morphMany(Revision::class, 'revisionable')->with('user');
     }
 }

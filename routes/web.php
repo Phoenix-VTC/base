@@ -7,6 +7,7 @@ use App\Http\Livewire\Downloads\ShowIndexPage as DownloadsShowIndexPage;
 use App\Http\Livewire\DownloadsManagement\ShowEditPage as DownloadsManagementShowEditPage;
 use App\Http\Livewire\DownloadsManagement\ShowCreatePage as DownloadsManagementShowCreatePage;
 use App\Http\Livewire\DownloadsManagement\ShowIndexPage as DownloadsManagementShowIndexPage;
+use App\Http\Livewire\DownloadsManagement\ShowRevisionsPage as DownloadsManagementShowRevisionsPage;
 use App\Http\Livewire\Events\Management\ShowEdit as EventsManagementShowEdit;
 use App\Http\Livewire\Events\Management\ShowCreate as EventsManagementShowCreate;
 use App\Http\Livewire\Events\Management\ShowIndex as EventsManagementShowIndex;
@@ -148,6 +149,7 @@ Route::prefix('downloads')->name('downloads.')->middleware('auth')->group(functi
         Route::get('index', DownloadsManagementShowIndexPage::class)->name('index');
         Route::get('create', DownloadsManagementShowCreatePage::class)->name('create');
         Route::get('{download}/edit', DownloadsManagementShowEditPage::class)->name('edit');
+        Route::get('{download}/revisions', DownloadsManagementShowRevisionsPage::class)->name('revisions');
     });
 });
 
