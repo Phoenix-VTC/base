@@ -17,6 +17,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Lab404\Impersonate\Models\Impersonate;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Syntax\SteamApi\Containers\Player;
@@ -35,6 +36,7 @@ class User extends Authenticatable implements Wallet
     use LaravelSubQueryTrait;
     use HasApiTokens;
     use RevisionableTrait;
+    use Impersonate;
 
     /**
      * The attributes that are mass assignable.
@@ -207,5 +209,15 @@ class User extends Authenticatable implements Wallet
 
             return $response['response'];
         });
+    }
+
+    public function canImpersonate(): bool
+    {
+        return $this->can('impersonate users');
+    }
+
+    public function canBeImpersonated(): bool
+    {
+        return !$this->hasRole('phoenix staff');
     }
 }

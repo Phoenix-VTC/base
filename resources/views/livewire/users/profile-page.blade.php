@@ -301,6 +301,15 @@
                                 Edit User
                             </a>
 
+                            @canBeImpersonated($user, $guard = null)
+                                <a
+                                    class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                                    href="{{ route('impersonate', $user->id) }}">
+                                    <x-heroicon-s-identification class="-ml-1 mr-3 h-5 w-5"/>
+                                    Impersonate User
+                                </a>
+                            @endCanBeImpersonated
+
                             @if($user->id !== Auth::id() && !$user->trashed())
                                 <button
                                     class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
