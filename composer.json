@@ -24,6 +24,7 @@
         "graham-campbell/markdown": "13.1",
         "guzzlehttp/guzzle": "^7.2",
         "invisnik/laravel-steam-auth": "^4.3",
+        "lab404/laravel-impersonate": "^1.7",
         "laravel-frontend-presets/tall": "^2.1",
         "laravel-notification-channels/discord": "^1.3",
         "laravel/framework": "^8.12",
