@@ -20,6 +20,30 @@
     <div class="h-screen flex overflow-hidden bg-gray-100" x-data="{ sidebarOpen: false }">
         @include('includes.sidebar')
         <div class="flex flex-col w-0 flex-1 overflow-hidden">
+            @impersonating($guard = null)
+                <div class="bg-purple-50 border-l-4 border-purple-400 p-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <x-heroicon-s-identification class="h-5 w-5 text-purple-400"/>
+                        </div>
+                        <div class="ml-3 flex-1 md:flex md:justify-between">
+                            <p class="text-sm text-purple-700">
+                                You are currently impersonating
+                                <a class="font-semibold" href="{{ route('users.profile', Auth::id()) }}">
+                                    {{ Auth::user()->username }}
+                                </a>
+                            </p>
+                            <p class="mt-3 text-sm md:mt-0 md:ml-6">
+                                <a href="{{ route('impersonate.leave') }}" class="whitespace-nowrap font-medium text-purple-700 hover:text-purple-600">
+                                    Stop Impersonating
+                                    <span aria-hidden="true">&rarr;</span>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @endImpersonating
+
             @include('includes.navigation')
 
             <main class="flex-1 relative overflow-y-auto focus:outline-none" tabindex="0">
