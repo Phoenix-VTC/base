@@ -171,7 +171,7 @@
                                     @empty
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                There is no revision history available yet for this job.
+                                                There is no revision history available yet for this user.
                                             </td>
                                         </tr>
                                     @endforelse
