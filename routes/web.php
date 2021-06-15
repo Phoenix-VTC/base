@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EventManagementController;
+use App\Http\Controllers\ScreenshotController;
 use App\Http\Controllers\UserManagement\UserController as UserManagementUserController;
 use App\Http\Livewire\Auth\ShowWelcomeForm;
 use App\Http\Livewire\Downloads\ShowIndexPage as DownloadsShowIndexPage;
@@ -16,6 +17,9 @@ use App\Http\Livewire\Events\Management\ShowRevisionsPage as EventsManagementSho
 use App\Http\Livewire\GameData\Cargos\ShowIndexPage as CargosShowIndexPage;
 use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
+use App\Http\Livewire\ScreenshotHub\ShowShowPage as ScreenshotHubShowShowPage;
+use App\Http\Livewire\ScreenshotHub\ShowCreatePage as ScreenshotHubShowCreatePage;
+use App\Http\Livewire\ScreenshotHub\ShowIndexPage as ScreenshotHubShowIndexPage;
 use App\Http\Livewire\ShowLeaderboardPage;
 use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
 use App\Http\Livewire\UserManagement\DriverInactivity\ShowIndexPage as DriverInactivityShowIndexPage;
@@ -153,6 +157,16 @@ Route::prefix('downloads')->name('downloads.')->middleware('auth')->group(functi
         Route::get('{download}/edit', DownloadsManagementShowEditPage::class)->name('edit');
         Route::get('{download}/revisions', DownloadsManagementShowRevisionsPage::class)->name('revisions');
     });
+});
+
+Route::prefix('screenshot-hub')->name('screenshot-hub.')->middleware('auth')->group(function () {
+    Route::get('/', ScreenshotHubShowIndexPage::class)->name('index');
+    Route::get('create', ScreenshotHubShowCreatePage::class)->name('create');
+    Route::prefix('{screenshot}')->group(function () {
+        Route::get('/', ScreenshotHubShowShowPage::class)->name('show');
+        Route::get('toggle-vote', [ScreenshotController::class, 'toggleVote'])->name('toggleVote');
+    });
+//    Route::get('{screenshot}/edit', ScreenshotHubShowIndexPage::class)->name('edit');
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');

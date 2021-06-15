@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Download as DownloadModel;
+use App\Models\Screenshot as ScreenshotModel;
 use App\Observers\DownloadObserver;
 use App\Models\Job as JobModel;
 use App\Observers\JobObserver;
+use App\Observers\ScreenshotObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -37,5 +39,6 @@ class EventServiceProvider extends ServiceProvider
     {
         JobModel::observe(JobObserver::class);
         DownloadModel::observe(DownloadObserver::class);
+        ScreenshotModel::observe(ScreenshotObserver::class);
     }
 }
