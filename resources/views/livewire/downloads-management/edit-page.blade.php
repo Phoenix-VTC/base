@@ -4,6 +4,16 @@
 
 @section('description', 'Keep the file inputs empty if you don\'t want to change the files.')
 
+@section('actions')
+    <div class="ml-3">
+        <a href="{{ route('downloads.management.revisions', $download) }}"
+           class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <x-heroicon-s-search class="-ml-1 mr-2 h-5 w-5 text-gray-500"/>
+            Revision History
+        </a>
+    </div>
+@endsection
+
 <div>
     <x-alert/>
 
@@ -38,17 +48,21 @@
                     </x-input.group>
 
                     <x-input.group label="Thumbnail Image (max 1MB)" for="image" :error="$errors->first('image')">
-                        <x-input.text wire:model.lazy="image" type="file" id="image" accept=".jpg,.jpeg,.png,.bmp,.gif,.svg,.webp"
+                        <x-input.text wire:model.lazy="image" type="file" id="image"
+                                      accept=".jpg,.jpeg,.png,.bmp,.gif,.svg,.webp"
                                       :error="$errors->first('image')"/>
                     </x-input.group>
 
-                    <x-input.group label="File (max 100MB)" for="file" :error="$errors->first('file')" help-text="Allowed file types: <strong>PDF, ZIP, RAR, SCS</strong><br>SCS will be automatically converted to ZIP">
+                    <x-input.group label="File (max 100MB)" for="file" :error="$errors->first('file')"
+                                   help-text="Allowed file types: <strong>PDF, ZIP, RAR, SCS</strong><br>SCS will be automatically converted to ZIP">
                         <x-input.text wire:model.lazy="file" type="file" id="file" accept=".pdf,.zip,.rar,.scs"
                                       :error="$errors->first('file')"/>
                     </x-input.group>
 
-                    <x-input.group label="Description (optional)" for="description" :error="$errors->first('description')">
-                        <x-input.textarea wire:model.lazy="description" type="text" id="name" rows="3" :error="$errors->first('description')"/>
+                    <x-input.group label="Description (optional)" for="description"
+                                   :error="$errors->first('description')">
+                        <x-input.textarea wire:model.lazy="description" type="text" id="name" rows="3"
+                                          :error="$errors->first('description')"/>
                     </x-input.group>
                 </div>
             </div>

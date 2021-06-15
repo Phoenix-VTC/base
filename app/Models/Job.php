@@ -6,10 +6,13 @@ use App\Enums\JobStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class Job extends Model
 {
     use HasFactory;
+    use RevisionableTrait;
 
     /**
      * The attributes that aren't mass assignable.
@@ -72,6 +75,11 @@ class Job extends Model
     public function cargo(): BelongsTo
     {
         return $this->belongsTo(Cargo::class);
+    }
+
+    public function revisionHistoryWithUser(): MorphMany
+    {
+        return $this->morphMany(Revision::class, 'revisionable')->with('user');
     }
 
     /**
