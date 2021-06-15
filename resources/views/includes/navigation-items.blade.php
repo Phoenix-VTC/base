@@ -20,6 +20,9 @@
 
     <x-sidebar.item title="Downloads" icon="o-download" route="downloads.index"
                     activeRoute="downloads.*"/>
+
+    <x-sidebar.item title="Screenshot Hub" icon="o-photograph" route="screenshot-hub.index"
+                    activeRoute="screenshot-hub.*"/>
 </x-sidebar.group>
 
 @hasanyrole('super admin|management|human resources|recruitment|community interactions|events|media|modding|developer')
