@@ -120,9 +120,9 @@ Route::get('leaderboard', ShowLeaderboardPage::class)->middleware('auth')->name(
 
 Route::prefix('settings')->name('settings.')->middleware('auth')->group(function () {
     Route::get('preferences', SettingsShowPreferencesPage::class)->name('preferences');
-    Route::get('account', SettingsShowAccountPage::class)->middleware('password.confirm')->name('account');
-    Route::get('security', SettingsShowSecurityPage::class)->middleware('password.confirm')->name('security');
-    Route::get('socials', SettingsShowSocialsPage::class)->middleware('password.confirm')->name('socials');
+    Route::get('account', SettingsShowAccountPage::class)->middleware(['impersonate.protect', 'password.confirm'])->name('account');
+    Route::get('security', SettingsShowSecurityPage::class)->middleware(['impersonate.protect', 'password.confirm'])->name('security');
+    Route::get('socials', SettingsShowSocialsPage::class)->middleware(['impersonate.protect', 'password.confirm'])->name('socials');
 });
 
 Route::get('my-wallet', WalletShowIndexPage::class)->middleware('auth')->name('my-wallet');
@@ -197,3 +197,5 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', LogoutController::class)
         ->name('logout');
 });
+
+Route::impersonate();
