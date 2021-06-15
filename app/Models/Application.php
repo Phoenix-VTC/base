@@ -7,13 +7,14 @@ use App\Concerns\HasUuid;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Venturecraft\Revisionable\Revisionable;
 
-class Application extends Model
+class Application extends Revisionable
 {
     use HasFactory;
     use HasUuid;
@@ -41,6 +42,11 @@ class Application extends Model
     public function user(): HasOne
     {
         return $this->hasOne(User::class);
+    }
+
+    public function revisionHistoryWithUser(): MorphMany
+    {
+        return $this->morphMany(Revision::class, 'revisionable')->with('user');
     }
 
     /**

@@ -6,14 +6,17 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class VacationRequest extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use Notifiable;
+    use RevisionableTrait;
 
     protected $guarded = [];
 
@@ -35,6 +38,11 @@ class VacationRequest extends Model
     public function staff(): BelongsTo
     {
         return $this->belongsTo(User::class, 'handled_by');
+    }
+
+    public function revisionHistoryWithUser(): MorphMany
+    {
+        return $this->morphMany(Revision::class, 'revisionable')->with('user');
     }
 
     public function getIsExpiredAttribute(): bool

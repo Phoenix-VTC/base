@@ -1,19 +1,25 @@
 <?php
 
 use App\Http\Controllers\EventManagementController;
+use App\Http\Controllers\ScreenshotController;
 use App\Http\Controllers\UserManagement\UserController as UserManagementUserController;
 use App\Http\Livewire\Auth\ShowWelcomeForm;
 use App\Http\Livewire\Downloads\ShowIndexPage as DownloadsShowIndexPage;
 use App\Http\Livewire\DownloadsManagement\ShowEditPage as DownloadsManagementShowEditPage;
 use App\Http\Livewire\DownloadsManagement\ShowCreatePage as DownloadsManagementShowCreatePage;
 use App\Http\Livewire\DownloadsManagement\ShowIndexPage as DownloadsManagementShowIndexPage;
+use App\Http\Livewire\DownloadsManagement\ShowRevisionsPage as DownloadsManagementShowRevisionsPage;
 use App\Http\Livewire\Events\Management\ShowEdit as EventsManagementShowEdit;
 use App\Http\Livewire\Events\Management\ShowCreate as EventsManagementShowCreate;
 use App\Http\Livewire\Events\Management\ShowIndex as EventsManagementShowIndex;
 use App\Http\Livewire\Events\Management\ShowAttendeeManagement as EventsManagementShowAttendeeManagement;
+use App\Http\Livewire\Events\Management\ShowRevisionsPage as EventsManagementShowRevisionsPage;
 use App\Http\Livewire\GameData\Cargos\ShowIndexPage as CargosShowIndexPage;
 use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
+use App\Http\Livewire\ScreenshotHub\ShowShowPage as ScreenshotHubShowShowPage;
+use App\Http\Livewire\ScreenshotHub\ShowCreatePage as ScreenshotHubShowCreatePage;
+use App\Http\Livewire\ScreenshotHub\ShowIndexPage as ScreenshotHubShowIndexPage;
 use App\Http\Livewire\ShowLeaderboardPage;
 use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
 use App\Http\Livewire\UserManagement\DriverInactivity\ShowIndexPage as DriverInactivityShowIndexPage;
@@ -92,6 +98,7 @@ Route::prefix('event-management')->name('event-management.')->middleware(['auth'
     Route::post('{event}/delete', [EventManagementController::class, 'delete'])->name('delete');
     Route::get('{id}/manage-attendees', EventsManagementShowAttendeeManagement::class)->name('attendee-management');
     Route::post('{event}/reward-event-xp', [EventManagementController::class, 'rewardEventXP'])->name('reward-event-xp');
+    Route::get('{event}/revisions', EventsManagementShowRevisionsPage::class)->name('revisions');
 });
 
 Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage game data'])->group(function () {
@@ -117,9 +124,9 @@ Route::get('leaderboard', ShowLeaderboardPage::class)->middleware('auth')->name(
 
 Route::prefix('settings')->name('settings.')->middleware('auth')->group(function () {
     Route::get('preferences', SettingsShowPreferencesPage::class)->name('preferences');
-    Route::get('account', SettingsShowAccountPage::class)->middleware('password.confirm')->name('account');
-    Route::get('security', SettingsShowSecurityPage::class)->middleware('password.confirm')->name('security');
-    Route::get('socials', SettingsShowSocialsPage::class)->middleware('password.confirm')->name('socials');
+    Route::get('account', SettingsShowAccountPage::class)->middleware(['impersonate.protect', 'password.confirm'])->name('account');
+    Route::get('security', SettingsShowSecurityPage::class)->middleware(['impersonate.protect', 'password.confirm'])->name('security');
+    Route::get('socials', SettingsShowSocialsPage::class)->middleware(['impersonate.protect', 'password.confirm'])->name('socials');
 });
 
 Route::get('my-wallet', WalletShowIndexPage::class)->middleware('auth')->name('my-wallet');
@@ -148,7 +155,18 @@ Route::prefix('downloads')->name('downloads.')->middleware('auth')->group(functi
         Route::get('index', DownloadsManagementShowIndexPage::class)->name('index');
         Route::get('create', DownloadsManagementShowCreatePage::class)->name('create');
         Route::get('{download}/edit', DownloadsManagementShowEditPage::class)->name('edit');
+        Route::get('{download}/revisions', DownloadsManagementShowRevisionsPage::class)->name('revisions');
     });
+});
+
+Route::prefix('screenshot-hub')->name('screenshot-hub.')->middleware('auth')->group(function () {
+    Route::get('/', ScreenshotHubShowIndexPage::class)->name('index');
+    Route::get('create', ScreenshotHubShowCreatePage::class)->name('create');
+    Route::prefix('{screenshot}')->group(function () {
+        Route::get('/', ScreenshotHubShowShowPage::class)->name('show');
+        Route::get('toggle-vote', [ScreenshotController::class, 'toggleVote'])->name('toggleVote');
+    });
+//    Route::get('{screenshot}/edit', ScreenshotHubShowIndexPage::class)->name('edit');
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
@@ -193,3 +211,5 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', LogoutController::class)
         ->name('logout');
 });
+
+Route::impersonate();

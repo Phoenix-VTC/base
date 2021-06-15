@@ -172,6 +172,7 @@ return [
         App\Providers\HorizonServiceProvider::class,
         NotificationChannels\Discord\DiscordServiceProvider::class,
         \SocialiteProviders\Manager\ServiceProvider::class,
+        Lab404\Impersonate\ImpersonateServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -182,6 +183,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
+        Venturecraft\Revisionable\RevisionableServiceProvider::class,
 
     ],
 
