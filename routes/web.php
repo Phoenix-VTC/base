@@ -12,6 +12,7 @@ use App\Http\Livewire\Events\Management\ShowEdit as EventsManagementShowEdit;
 use App\Http\Livewire\Events\Management\ShowCreate as EventsManagementShowCreate;
 use App\Http\Livewire\Events\Management\ShowIndex as EventsManagementShowIndex;
 use App\Http\Livewire\Events\Management\ShowAttendeeManagement as EventsManagementShowAttendeeManagement;
+use App\Http\Livewire\Events\Management\ShowRevisionsPage as EventsManagementShowRevisionsPage;
 use App\Http\Livewire\GameData\Cargos\ShowIndexPage as CargosShowIndexPage;
 use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
@@ -93,6 +94,7 @@ Route::prefix('event-management')->name('event-management.')->middleware(['auth'
     Route::post('{event}/delete', [EventManagementController::class, 'delete'])->name('delete');
     Route::get('{id}/manage-attendees', EventsManagementShowAttendeeManagement::class)->name('attendee-management');
     Route::post('{event}/reward-event-xp', [EventManagementController::class, 'rewardEventXP'])->name('reward-event-xp');
+    Route::get('{event}/revisions', EventsManagementShowRevisionsPage::class)->name('revisions');
 });
 
 Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage game data'])->group(function () {
