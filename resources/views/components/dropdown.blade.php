@@ -2,15 +2,21 @@
 
 @props([
     'title',
+    'icon' => null,
 ])
 
 <div class="relative inline-block text-left" x-data="{ open: false }">
     <div>
         <button type="button"
-                class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+                class="@if($icon) bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 @else inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:ring-offset-gray-100 @endif focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 id="menu-button" aria-expanded="true" aria-haspopup="true" @click="open = !open">
-            {{ $title }}
-            <x-heroicon-s-chevron-down class="-mr-1 ml-2 h-5 w-5"/>
+            @if($icon)
+                <span class="sr-only">{{ $title }}</span>
+                @svg('heroicon-' . $icon, ['class' => 'h-6 w-6'])
+            @else
+                {{ $title }}
+                <x-heroicon-s-chevron-down class="-mr-1 ml-2 h-5 w-5"/>
+            @endif
         </button>
     </div>
 
