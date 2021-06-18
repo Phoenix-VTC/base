@@ -23,6 +23,7 @@ use App\Http\Livewire\ScreenshotHub\ShowCreatePage as ScreenshotHubShowCreatePag
 use App\Http\Livewire\ScreenshotHub\ShowIndexPage as ScreenshotHubShowIndexPage;
 use App\Http\Livewire\ShowLeaderboardPage;
 use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
+use App\Http\Livewire\ShowNotificationsPage;
 use App\Http\Livewire\UserManagement\DriverInactivity\ShowIndexPage as DriverInactivityShowIndexPage;
 use App\Http\Livewire\Users\ShowJobOverviewPage as UsersShowJobOverviewPage;
 use App\Http\Livewire\Jobs\Submit\ShowSelectGamePage as JobsShowSelectGamePage;
@@ -170,7 +171,10 @@ Route::prefix('screenshot-hub')->name('screenshot-hub.')->middleware('auth')->gr
 //    Route::get('{screenshot}/edit', ScreenshotHubShowIndexPage::class)->name('edit');
 });
 
-Route::post('notifications/{notification}/markAsRead', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+Route::prefix('notifications')->name('notifications.')->middleware('auth')->group(function () {
+    Route::get('/', ShowNotificationsPage::class)->name('index');
+    Route::post('{notification}/markAsRead', [NotificationController::class, 'markAsRead'])->name('markAsRead');
+});
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
 
