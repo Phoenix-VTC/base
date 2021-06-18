@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EventManagementController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ScreenshotController;
 use App\Http\Controllers\UserManagement\UserController as UserManagementUserController;
 use App\Http\Livewire\Auth\ShowWelcomeForm;
@@ -168,6 +169,8 @@ Route::prefix('screenshot-hub')->name('screenshot-hub.')->middleware('auth')->gr
     });
 //    Route::get('{screenshot}/edit', ScreenshotHubShowIndexPage::class)->name('edit');
 });
+
+Route::post('notifications/{notification}/markAsRead', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
 

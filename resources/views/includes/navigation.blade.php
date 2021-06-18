@@ -13,16 +13,46 @@
     <div class="flex-1 px-4 flex justify-between">
         <div class="flex-1 flex"></div>
         <div class="ml-4 flex items-center md:ml-6">
-            {{--            <button--}}
-            {{--                class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">--}}
-            {{--                <span class="sr-only">View notifications</span>--}}
-            {{--                --}}{{-- bell --}}
-            {{--                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"--}}
-            {{--                     stroke="currentColor" aria-hidden="true">--}}
-            {{--                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"--}}
-            {{--                          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>--}}
-            {{--                </svg>--}}
-            {{--            </button>--}}
+            <x-dropdown icon="o-bell" title="View notifications" width="80" :notification-dot-color="Auth::user()->unreadNotifications->count() ? 'red' : ''">
+                <ul class="divide-y divide-gray-200">
+                    @forelse(Auth::user()->unreadNotifications as $notification)
+                        <li class="relative bg-white py-5 px-4 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+                            <form class="flex justify-between" method="POST"
+                                  action="{{ route('notifications.markAsRead', $notification->id) }}">
+                                @csrf
+                                <div class="min-w-0 flex-1">
+                                    <button type="submit"
+                                            class="text-sm font-semibold text-gray-800 hover:underline focus:outline-none">
+                                        <span class="absolute inset-0" aria-hidden="true"></span>
+                                        {{ Str::limit($notification->data['title'], 20) }}
+                                    </button>
+                                </div>
+                                <time datetime="2021-01-27T16:35"
+                                      class="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $notification->created_at->diffForHumans(['short' => true]) }}
+                                </time>
+                            </form>
+                            <div class="mt-1">
+                                <p class="mt-1 text-sm text-gray-600 line-clamp-2">
+                                    {{ $notification->data['content'] }}
+                                </p>
+                            </div>
+                        </li>
+                    @empty
+                        <li class="relative bg-white py-5 px-4 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+                            <p class="line-clamp-2 text-sm text-gray-600">
+                                You don't have any unread notifications!
+                            </p>
+                        </li>
+                    @endforelse
+                </ul>
+                <div class="mt-6 mb-3 px-4">
+                    <a href="#"
+                       class="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 px-2">
+                        View all notifications
+                    </a>
+                </div>
+            </x-dropdown>
 
             {{-- Profile Dropdown --}}
             <div class="ml-3 relative" x-data="{ profileOpen: false }">
@@ -46,21 +76,25 @@
                     x-transition:leave="transition ease-in duration-75"
                     x-transition:leave-start="transform opacity-100 scale-100"
                     x-transition:leave-end="transform opacity-0 scale-95">
-                    <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                    <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                       role="menuitem">
                         Profile
                     </a>
 
-                    <a href="{{ route('my-wallet') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                    <a href="{{ route('my-wallet') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                       role="menuitem">
                         Wallet
                     </a>
 
-                    <a href="{{ route('settings.preferences') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                    <a href="{{ route('settings.preferences') }}"
+                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
                         Settings
                     </a>
 
                     <form action="{{ route('logout') }}" method="post">
                         @csrf
-                        <button type="submit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                        <button type="submit"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                                 role="menuitem">
                             Sign out
                         </button>
