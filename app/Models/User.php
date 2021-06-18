@@ -30,7 +30,6 @@ class User extends Authenticatable implements Wallet
     use Notifiable;
     use HasRoles;
     use SoftDeletes;
-    use HasRoles;
     use HasWallet;
     use HasWallets;
     use HasSettingsTable;
