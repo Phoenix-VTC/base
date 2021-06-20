@@ -174,6 +174,7 @@ Route::prefix('screenshot-hub')->name('screenshot-hub.')->middleware('auth')->gr
 Route::prefix('notifications')->name('notifications.')->middleware('auth')->group(function () {
     Route::get('/', ShowNotificationsPage::class)->name('index');
     Route::post('{notification}/markAsRead', [NotificationController::class, 'markAsRead'])->name('markAsRead');
+    Route::get('markAllAsRead', [NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
 });
 
 Route::get('welcome/{token}', ShowWelcomeForm::class)->name('welcome');
