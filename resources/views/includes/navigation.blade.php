@@ -24,7 +24,7 @@
                                     <button type="submit"
                                             class="text-sm font-semibold text-gray-800 hover:underline focus:outline-none">
                                         <span class="absolute inset-0" aria-hidden="true"></span>
-                                        {{ Str::limit($notification->data['title'], 20) }}
+                                        {{ Str::limit($notification->data['title'], 30) }}
                                     </button>
                                 </div>
                                 <time datetime="2021-01-27T16:35"
