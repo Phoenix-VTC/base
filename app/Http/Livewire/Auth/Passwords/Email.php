@@ -2,11 +2,15 @@
 
 namespace App\Http\Livewire\Auth\Passwords;
 
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Livewire\Component;
 use Illuminate\Support\Facades\Password;
 
 class Email extends Component
 {
+    use WithRateLimiting;
+
     /** @var string */
     public $email;
 
@@ -15,6 +19,14 @@ class Email extends Component
 
     public function sendResetPasswordLink()
     {
+        try {
+            $this->rateLimit(10);
+        } catch (TooManyRequestsException $exception) {
+            $this->addError('email', "Slow down! Please wait another $exception->secondsUntilAvailable seconds to reset your password.");
+
+            return;
+        }
+
         $this->validate([
             'email' => ['required', 'email'],
         ]);
