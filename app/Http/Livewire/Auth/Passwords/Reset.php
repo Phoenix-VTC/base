@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Auth\Passwords;
 
 use App\Providers\RouteServiceProvider;
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +14,8 @@ use Illuminate\Auth\Events\PasswordReset;
 
 class Reset extends Component
 {
+    use ThrottlesLogins;
+
     /** @var string */
     public $token;
 
@@ -32,6 +36,14 @@ class Reset extends Component
 
     public function resetPassword()
     {
+        try {
+            $this->rateLimit(10);
+        } catch (TooManyRequestsException $exception) {
+            $this->addError('password', "Slow down! Please wait another $exception->secondsUntilAvailable seconds to reset your password.");
+
+            return;
+        }
+
         $this->validate([
             'token' => 'required',
             'email' => 'required|email',
