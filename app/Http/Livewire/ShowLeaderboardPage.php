@@ -47,7 +47,7 @@ class ShowLeaderboardPage extends Component
                 $this->users = User::whereHas('jobs', function ($q) {
                     $q->whereMonth('finished_at', $this->month);
                 })->withCount(['jobs' => function ($query) {
-                    $query->whereMonth('finished_at', 05);
+                    $query->whereMonth('finished_at', $this->month);
                 }])->orderBy('jobs_count', 'desc')
                     ->get();
                 break;
