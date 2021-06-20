@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Achievements\JobChain;
 use App\Models\Job;
 use Bavix\Wallet\Models\Transaction;
 
@@ -18,6 +19,8 @@ class JobObserver
         $user = $job->user;
 
         $user->deposit($job->total_income, ['description' => 'Submitted job', 'job_id' => $job->id]);
+
+        $user->addProgress(new JobChain(), 1);
     }
 
     /**
