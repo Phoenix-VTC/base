@@ -20,7 +20,7 @@
                                 <button type="submit"
                                         class="text-sm font-semibold text-gray-800 hover:underline focus:outline-none">
                                     <span class="absolute inset-0" aria-hidden="true"></span>
-                                    {{ Str::limit($notification->data['title'], 20) }}
+                                    {{ Str::limit($notification->data['title'] ?? '', 20) }}
                                 </button>
                             </div>
                             <time datetime="2021-01-27T16:35"
@@ -30,7 +30,7 @@
                         </form>
                         <div class="mt-1">
                             <p class="mt-1 text-sm text-gray-600 line-clamp-2">
-                                {{ $notification->data['content'] }}
+                                {{ $notification->data['content'] ?? '' }}
                             </p>
                         </div>
                     </li>
@@ -62,7 +62,7 @@
                                 <button type="submit"
                                         class="text-sm font-semibold text-gray-800 hover:underline focus:outline-none">
                                     <span class="absolute inset-0" aria-hidden="true"></span>
-                                    {{ Str::limit($notification->data['title'], 20) }}
+                                    {{ Str::limit($notification->data['title'] ?? '', 20) }}
                                 </button>
                             </div>
                             <time datetime="2021-01-27T16:35"
@@ -72,7 +72,7 @@
                         </form>
                         <div class="mt-1">
                             <p class="mt-1 text-sm text-gray-600 line-clamp-2">
-                                {{ $notification->data['content'] }}
+                                {{ $notification->data['content'] ?? '' }}
                             </p>
                         </div>
                     </li>
