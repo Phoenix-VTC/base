@@ -34,7 +34,7 @@
                             </form>
                             <div class="mt-1">
                                 <p class="mt-1 text-sm text-gray-600 line-clamp-2">
-                                    {{ $notification->data['content'] }}
+                                    {!! $notification->data['content'] !!}
                                 </p>
                             </div>
                         </li>
