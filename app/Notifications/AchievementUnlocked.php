@@ -42,7 +42,7 @@ class AchievementUnlocked extends Notification implements ShouldQueue
     {
         return [
             'title' => 'Achievement unlocked!',
-            'content' => 'You have unlocked the <b>' . $this->achievement->name . '</b> achievement!<br>Check your profile now.',
+            'content' => 'You have unlocked the <b>' . $this->achievement->name . '</b> achievement!',
             'link' => route('profile'),
         ];
     }
