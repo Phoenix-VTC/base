@@ -2,15 +2,27 @@
 
 namespace App\Http\Livewire\Auth\Passwords;
 
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Livewire\Component;
 
 class Confirm extends Component
 {
+    use WithRateLimiting;
+
     /** @var string */
     public $password = '';
 
     public function confirm()
     {
+        try {
+            $this->rateLimit(10);
+        } catch (TooManyRequestsException $exception) {
+            $this->addError('password', "Slow down! Please wait another $exception->secondsUntilAvailable seconds to confirm your password.");
+
+            return;
+        }
+
         $this->validate([
             'password' => 'required|password',
         ]);

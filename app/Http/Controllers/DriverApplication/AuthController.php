@@ -17,6 +17,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Invisnik\LaravelSteamAuth\SteamAuth;
+use JsonException;
 
 class AuthController extends Controller
 {
@@ -52,49 +53,64 @@ class AuthController extends Controller
      *
      * @param Request $request
      * @return RedirectResponse
-     * @throws GuzzleException
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function handle(Request $request): RedirectResponse
     {
-        if ($this->steam->validate()) {
-            $info = $this->steam->getUserInfo();
+        try {
+            if ($this->steam->validate()) {
+                $info = $this->steam->getUserInfo();
 
-            if (!is_null($info)) {
-                $validator = Validator::make($info->toArray(), [
-                    'steamID64' => [
-                        'bail',
-                        new HasGame,
-                        new MinHours,
-                        new AccountExists,
-                        new BanHistoryPublic,
-                        new NoRecentBans,
-                        new NotInVTC,
-                        new UniqueInUsers,
-                        new UniqueInApplications
-//                        Rule::unique('users', 'steam_id')->where(function ($query) {
-//                            $query->where('deleted_at', null);
-//                        }),
-                    ],
-                ]);
+                if (!is_null($info)) {
+                    $validator = Validator::make($info->toArray(), [
+                        'steamID64' => [
+                            'bail',
+                            new HasGame,
+                            new MinHours,
+                            new AccountExists,
+                            new BanHistoryPublic,
+                            new NoRecentBans,
+                            new NotInVTC,
+                            new UniqueInUsers,
+                            new UniqueInApplications
+                        ],
+                    ]);
 
-                if ($validator->fails()) {
-                    return redirect(route('driver-application.authenticate'))
-                        ->withErrors($validator)
-                        ->withInput();
+                    if ($validator->fails()) {
+                        return redirect(route('driver-application.authenticate'))
+                            ->withErrors($validator)
+                            ->withInput();
+                    }
+
+                    try {
+                        $this->storeTruckersMPAccount($info->toArray()['steamID64']);
+                    } catch (GuzzleException $e) {
+                        return redirect(route('driver-application.authenticate'))
+                            ->withErrors([
+                                'TruckersMP API Error' => 'We couldn\'t contact the TruckersMP API, please try again. If this keeps happening, visit <a class="font-semibold" href="https://truckersmpstatus.com/">TruckersMPStatus.com</a>.'
+                            ])
+                            ->withInput();
+                    }
+
+                    $request->session()->put('steam_user', $info);
+
+                    return redirect(route('driver-application.apply'));
                 }
-
-                $this->storeTruckersMPAccount($info->toArray()['steamID64']);
-
-                $request->session()->put('steam_user', $info);
-
-                return redirect(route('driver-application.apply'));
             }
+        } catch (GuzzleException $e) {
+            return redirect(route('driver-application.authenticate'))
+                ->withErrors([
+                    'TruckersMP API Error' => 'We couldn\'t contact the Steam or TruckersMP API, please try again. If this keeps happening, visit <a class="font-semibold" href="https://truckersmpstatus.com/">TruckersMPStatus.com</a>.'
+                ])
+                ->withInput();
         }
 
         return $this->redirectToSteam();
     }
 
+    /**
+     * @throws GuzzleException|JsonException
+     */
     public function storeTruckersMPAccount($steamId): void
     {
         $client = new Client();
