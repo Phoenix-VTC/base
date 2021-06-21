@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Auth;
 
 use App\Models\User;
 use Carbon\Carbon;
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
@@ -11,6 +13,8 @@ use Livewire\Component;
 
 class ShowWelcomeForm extends Component
 {
+    use WithRateLimiting;
+
     public string $token;
     public User $user;
 
@@ -40,6 +44,14 @@ class ShowWelcomeForm extends Component
 
     public function submit()
     {
+        try {
+            $this->rateLimit(10);
+        } catch (TooManyRequestsException $exception) {
+            $this->addError('password', "Slow down! Please wait another $exception->secondsUntilAvailable seconds to choose your password.");
+
+            return;
+        }
+
         $validatedData = $this->validate();
         $this->validateToken();
 
