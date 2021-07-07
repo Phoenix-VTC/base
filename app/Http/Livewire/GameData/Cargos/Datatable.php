@@ -88,4 +88,9 @@ class Datatable extends DataTableComponent
                 ]),
         ];
     }
+
+    public function getTableRowUrl($row): string
+    {
+        return route('game-data.cargos.edit', $row);
+    }
 }

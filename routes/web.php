@@ -16,6 +16,7 @@ use App\Http\Livewire\Events\Management\ShowIndex as EventsManagementShowIndex;
 use App\Http\Livewire\Events\Management\ShowAttendeeManagement as EventsManagementShowAttendeeManagement;
 use App\Http\Livewire\Events\Management\ShowRevisionsPage as EventsManagementShowRevisionsPage;
 use App\Http\Livewire\GameData\Cargos\ShowIndexPage as CargosShowIndexPage;
+use App\Http\Livewire\GameData\Cargos\ShowEditPage as CargosShowEditPage;
 use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
 use App\Http\Livewire\ScreenshotHub\ShowShowPage as ScreenshotHubShowShowPage;
@@ -105,7 +106,10 @@ Route::prefix('event-management')->name('event-management.')->middleware(['auth'
 
 Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage game data'])->group(function () {
     Route::get('cargos', CargosShowIndexPage::class)->name('cargos');
+    Route::get('cargos/{cargo}/edit', CargosShowEditPage::class)->name('cargos.edit');
+
     Route::get('cities', CitiesShowIndexPage::class)->name('cities');
+
     Route::get('companies', CompaniesShowIndexPage::class)->name('companies');
 });
 
