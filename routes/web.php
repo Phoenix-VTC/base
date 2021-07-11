@@ -18,6 +18,7 @@ use App\Http\Livewire\Events\Management\ShowRevisionsPage as EventsManagementSho
 use App\Http\Livewire\GameData\Cargos\ShowIndexPage as CargosShowIndexPage;
 use App\Http\Livewire\GameData\Cargos\ShowEditPage as CargosShowEditPage;
 use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
+use App\Http\Livewire\GameData\Cities\ShowEditPage as CitiesShowEditPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
 use App\Http\Livewire\ScreenshotHub\ShowShowPage as ScreenshotHubShowShowPage;
 use App\Http\Livewire\ScreenshotHub\ShowCreatePage as ScreenshotHubShowCreatePage;
@@ -109,6 +110,7 @@ Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage 
     Route::get('cargos/{cargo}/edit', CargosShowEditPage::class)->name('cargos.edit');
 
     Route::get('cities', CitiesShowIndexPage::class)->name('cities');
+    Route::get('cities/{city}/edit', CitiesShowEditPage::class)->name('cities.edit');
 
     Route::get('companies', CompaniesShowIndexPage::class)->name('companies');
 });
