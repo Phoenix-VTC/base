@@ -266,7 +266,7 @@
                     class="rounded-bl-lg rounded-br-lg sm:rounded-bl-none relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                     <div>
                         <span class="rounded-lg inline-flex p-3 bg-purple-50 text-purple-700 ring-4 ring-white">
-                            <img src="{{ asset('icons/discord.svg') }}" class="h-6 w-6"/>
+                            <img src="{{ asset('icons/discord.svg') }}" alt="Discord" class="h-6 w-6"/>
                         </span>
                     </div>
                     <div class="mt-8">
