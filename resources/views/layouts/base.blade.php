@@ -43,7 +43,8 @@
           content="{{ asset('img/meta-image.png') }}">
 
     <!-- Fonts -->
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="preload" href="https://rsms.me/inter/inter.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://rsms.me/inter/inter.css"></noscript>
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ url(mix('css/app.css')) }}">
