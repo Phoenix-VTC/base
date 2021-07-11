@@ -11,14 +11,17 @@ use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Lab404\Impersonate\Models\Impersonate;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Syntax\SteamApi\Containers\Player;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class User extends Authenticatable implements Wallet
 {
@@ -32,6 +35,8 @@ class User extends Authenticatable implements Wallet
     use HasSettingsTable;
     use LaravelSubQueryTrait;
     use HasApiTokens;
+    use RevisionableTrait;
+    use Impersonate;
 
     /**
      * The attributes that are mass assignable.
@@ -81,6 +86,8 @@ class User extends Authenticatable implements Wallet
         'preferences.weight' => 'tonnes',
     ];
 
+    protected array $dontKeepRevisionOf = ['password', 'remember_token'];
+
     /**
      * Get all of the vacation requests for the user.
      *
@@ -97,6 +104,11 @@ class User extends Authenticatable implements Wallet
     public function application(): BelongsTo
     {
         return $this->belongsTo(Application::class);
+    }
+
+    public function revisionHistoryWithUser(): MorphMany
+    {
+        return $this->morphMany(Revision::class, 'revisionable')->with('user');
     }
 
     /**
@@ -197,5 +209,15 @@ class User extends Authenticatable implements Wallet
 
             return $response['response'];
         });
+    }
+
+    public function canImpersonate(): bool
+    {
+        return $this->can('impersonate users');
+    }
+
+    public function canBeImpersonated(): bool
+    {
+        return !$this->hasRole('phoenix staff');
     }
 }
