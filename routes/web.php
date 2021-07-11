@@ -20,6 +20,7 @@ use App\Http\Livewire\GameData\Cargos\ShowEditPage as CargosShowEditPage;
 use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Cities\ShowEditPage as CitiesShowEditPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
+use App\Http\Livewire\GameData\Companies\ShowEditPage as CompaniesShowEditPage;
 use App\Http\Livewire\ScreenshotHub\ShowShowPage as ScreenshotHubShowShowPage;
 use App\Http\Livewire\ScreenshotHub\ShowCreatePage as ScreenshotHubShowCreatePage;
 use App\Http\Livewire\ScreenshotHub\ShowIndexPage as ScreenshotHubShowIndexPage;
@@ -113,6 +114,7 @@ Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage 
     Route::get('cities/{city}/edit', CitiesShowEditPage::class)->name('cities.edit');
 
     Route::get('companies', CompaniesShowIndexPage::class)->name('companies');
+    Route::get('companies/{company}/edit', CompaniesShowEditPage::class)->name('companies.edit');
 });
 
 Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:submit jobs'])->group(function () {
