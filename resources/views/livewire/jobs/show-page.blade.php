@@ -326,7 +326,7 @@
                                 <a class="flex-shrink-0" href="{{ route('users.profile', $job->user_id) }}">
                                     <img class="h-10 w-10 rounded-full"
                                          src="{{ $job->user->profile_picture ?? asset('svg/unknown_avatar.svg') }}"
-                                         alt="{{ $job->user->username ?? 'Deleted User' }}">
+                                         alt="{{ $job->user->username ?? 'Deleted User' }}" height="40" width="40">
                                 </a>
                                 <div class="ml-3">
                                     <div class="flex space-x-1 text-sm text-gray-500">

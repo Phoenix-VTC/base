@@ -266,7 +266,7 @@
                     class="rounded-bl-lg rounded-br-lg sm:rounded-bl-none relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                     <div>
                         <span class="rounded-lg inline-flex p-3 bg-purple-50 text-purple-700 ring-4 ring-white">
-                            <img src="{{ asset('icons/discord.svg') }}" alt="Discord" class="h-6 w-6"/>
+                            <img src="{{ asset('icons/discord.svg') }}" alt="Discord" class="h-6 w-6" height="24" width="24"/>
                         </span>
                     </div>
                     <div class="mt-8">
@@ -321,7 +321,7 @@
                                                            href="{{ route('users.profile', $job->user) }}">
                                                             <img class="w-8 h-8 rounded-full"
                                                                  src="{{ $job->user->profile_picture ?? '' }}"
-                                                                 alt="{{ $job->user->username ?? 'Unknown Username' }}"/>
+                                                                 alt="{{ $job->user->username ?? 'Unknown Username' }}" height="32" width="32"/>
                                                         </a>
                                                     </div>
                                                     <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
