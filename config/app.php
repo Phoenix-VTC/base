@@ -174,6 +174,7 @@ return [
         \SocialiteProviders\Manager\ServiceProvider::class,
         Lab404\Impersonate\ImpersonateServiceProvider::class,
         Cornford\Googlmapper\MapperServiceProvider::class,
+        GoogleMaps\ServiceProvider\GoogleMapsServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -238,6 +239,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Mapper' => Cornford\Googlmapper\Facades\MapperFacade::class,
+        'GoogleMaps' => GoogleMaps\Facade\GoogleMapsFacade::class,
 
     ],
 

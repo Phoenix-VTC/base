@@ -168,7 +168,15 @@
                 </div>
             </section>
 
-            @can('manage users')
+            <div wire:ignore>
+                <x-info-card title="Route Map">
+                    <div style="width: 100%; height: 500px;">
+                        {!! Mapper::render() !!}
+                    </div>
+                </x-info-card>
+            </div>
+
+        @can('manage users')
                 <!-- Revision History -->
                 <x-info-card title="Revision History">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
