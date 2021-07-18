@@ -1,9 +1,5 @@
 {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
 
-@push('scripts')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-@endpush
-
 @section('title', 'Submit New ' . App\Models\Game::GAMES[$game_id][0] . ' Job')
 
 <div>
