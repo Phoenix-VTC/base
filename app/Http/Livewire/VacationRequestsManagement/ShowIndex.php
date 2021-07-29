@@ -4,6 +4,7 @@ namespace App\Http\Livewire\VacationRequestsManagement;
 
 use App\Mail\LeaveRequestApproved;
 use App\Models\VacationRequest;
+use App\Notifications\VacationRequestMarkedAsSeen;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
@@ -44,6 +45,8 @@ class ShowIndex extends Component
             $vacation_request->save();
 
             if (!$vacation_request->leaving) {
+                $vacation_request->user->notify(new VacationRequestMarkedAsSeen);
+
                 session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? "Unknown User") . '\'s vacation request successfully marked as seen!']);
             }
 
