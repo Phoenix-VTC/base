@@ -16,8 +16,12 @@ use App\Http\Livewire\Events\Management\ShowIndex as EventsManagementShowIndex;
 use App\Http\Livewire\Events\Management\ShowAttendeeManagement as EventsManagementShowAttendeeManagement;
 use App\Http\Livewire\Events\Management\ShowRevisionsPage as EventsManagementShowRevisionsPage;
 use App\Http\Livewire\GameData\Cargos\ShowIndexPage as CargosShowIndexPage;
+use App\Http\Livewire\GameData\Cargos\ShowEditPage as CargosShowEditPage;
 use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
+use App\Http\Livewire\GameData\Cities\ShowEditPage as CitiesShowEditPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
+use App\Http\Livewire\GameData\Companies\ShowEditPage as CompaniesShowEditPage;
+use App\Http\Livewire\Jobs\ShowRequestGameDataPage;
 use App\Http\Livewire\ScreenshotHub\ShowShowPage as ScreenshotHubShowShowPage;
 use App\Http\Livewire\ScreenshotHub\ShowCreatePage as ScreenshotHubShowCreatePage;
 use App\Http\Livewire\ScreenshotHub\ShowIndexPage as ScreenshotHubShowIndexPage;
@@ -105,16 +109,23 @@ Route::prefix('event-management')->name('event-management.')->middleware(['auth'
 
 Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage game data'])->group(function () {
     Route::get('cargos', CargosShowIndexPage::class)->name('cargos');
+    Route::get('cargos/{cargo}/edit', CargosShowEditPage::class)->name('cargos.edit');
+
     Route::get('cities', CitiesShowIndexPage::class)->name('cities');
+    Route::get('cities/{city}/edit', CitiesShowEditPage::class)->name('cities.edit');
+
     Route::get('companies', CompaniesShowIndexPage::class)->name('companies');
+    Route::get('companies/{company}/edit', CompaniesShowEditPage::class)->name('companies.edit');
 });
 
-Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:submit jobs'])->group(function () {
+Route::prefix('jobs')->name('jobs.')->middleware(['auth'])->group(function () {
     Route::get('personal-overview', JobsShowPersonalOverviewPage::class)->name('personal-overview');
     Route::get('choose-game', JobsShowSelectGamePage::class)->name('choose-game');
     Route::get('submit/{game_id}', JobsShowSubmitPage::class)
         ->whereNumber('game_id')
         ->name('submit');
+
+    Route::get('request-game-data', ShowRequestGameDataPage::class)->name('request-game-data');
 
     Route::prefix('{job}')->group(function () {
         Route::get('/', JobsShowShowPage::class)->name('show');

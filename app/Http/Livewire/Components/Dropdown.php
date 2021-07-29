@@ -12,6 +12,7 @@ class Dropdown extends Component
     public string $icon;
     public array $items;
     public bool $showDropdown = false;
+    public int $unreadCount = 0;
 
     public function mount(): void
     {
