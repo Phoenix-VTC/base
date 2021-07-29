@@ -92,7 +92,7 @@
                             :day-click-enabled="false"
                             :drag-and-drop-enabled="false"
                             week-starts-at="1"
-                            before-calendar-view="livewire/events/components/events-calendar-header"/>
+                            before-calendar-view="livewire/components/calendar-header"/>
                     </div>
                 </div>
             </div>
