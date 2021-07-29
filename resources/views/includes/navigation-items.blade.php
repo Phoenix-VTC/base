@@ -1,11 +1,13 @@
 @php
-    $unapprovedGameDataCount = Cache::remember('unapproved_game_data_count', 300, function () {
-        $unapprovedCargosCount = App\Models\Cargo::where('approved', false)->count();
-        $unapprovedCitiesCount = App\Models\City::where('approved', false)->count();
-        $unapprovedCompaniesCount = App\Models\Company::where('approved', false)->count();
+    if (Auth::user()->can('manage game data')) {
+         $unapprovedGameDataCount = Cache::remember('unapproved_game_data_count', 300, function () {
+            $unapprovedCargosCount = App\Models\Cargo::where('approved', false)->count();
+            $unapprovedCitiesCount = App\Models\City::where('approved', false)->count();
+            $unapprovedCompaniesCount = App\Models\Company::where('approved', false)->count();
 
-        return $unapprovedCargosCount + $unapprovedCitiesCount + $unapprovedCompaniesCount;
-    });
+            return $unapprovedCargosCount + $unapprovedCitiesCount + $unapprovedCompaniesCount;
+        });
+    }
 @endphp
 
 <x-sidebar.group>
@@ -72,7 +74,7 @@
 
     @can('manage game data')
         <livewire:components.dropdown title="Game Data" icon="o-collection" activeRoute="game-data.*"
-                                      :unread-count="$unapprovedGameDataCount"
+                                      :unread-count="$unapprovedGameDataCount ?? 0"
                                       :items="[
                                         ['title' => 'Cargos', 'route' => 'game-data.cargos'],
                                         ['title' => 'Cities', 'route' => 'game-data.cities'],
