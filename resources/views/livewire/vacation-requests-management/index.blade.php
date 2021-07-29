@@ -188,6 +188,16 @@
                         @endempty
                         {{ $vacation_requests->links() }}
                     </div>
+
+                    <x-page-divider title="Vacation Calendar"/>
+
+                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <livewire:vacation-requests-management.calendar
+                            :day-click-enabled="false"
+                            :drag-and-drop-enabled="false"
+                            week-starts-at="1"
+                            before-calendar-view="livewire/components/calendar-header"/>
+                    </div>
                 </div>
             </div>
         </div>
