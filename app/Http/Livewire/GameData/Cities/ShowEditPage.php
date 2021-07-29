@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\GameData\Cities;
 
 use App\Models\City;
+use App\Notifications\GameDataRequestApproved;
+use App\Notifications\GameDataRequestDenied;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -59,6 +61,17 @@ class ShowEditPage extends Component
     {
         $this->validate();
 
+        if (!$this->city->approved) {
+            session()->flash('alert', ['type' => 'success', 'message' => 'City request <b>' . $this->city->real_name . '</b> successfully approved.']);
+
+            // Only notify the user if the user still exists
+            if ($this->city->requester()->exists()) {
+                $this->city->requester->notify(new GameDataRequestApproved($this->city));
+            }
+        } else {
+            session()->flash('alert', ['type' => 'success', 'message' => 'City <b>' . $this->city->name . '</b> successfully updated.']);
+        }
+
         $this->city->update([
             'real_name' => $this->real_name,
             'name' => $this->name,
@@ -68,25 +81,32 @@ class ShowEditPage extends Component
             'game_id' => (int)$this->game_id,
             'x' => $this->x ?: null,
             'z' => $this->z ?: null,
+            'approved' => true,
         ]);
-
-        session()->flash('alert', ['type' => 'success', 'message' => "City <b>" . $this->city->name . "</b> successfully updated."]);
 
         return redirect()->route('game-data.cities');
     }
 
     public function delete()
     {
+        if (!$this->city->approved) {
+            // Only notify the user if the user still exists
+            if ($this->city->requester()->exists()) {
+                $this->city->requester->notify(new GameDataRequestDenied($this->city));
+            }
+
+            session()->flash('alert', ['type' => 'success', 'message' => 'City request <b>' . $this->city->name . '</b> successfully denied.']);
+        } else {
+            session()->flash('alert', ['type' => 'success', 'message' => 'City successfully deleted!']);
+        }
+
         try {
             $this->city->delete();
-
         } catch (QueryException $e) {
             session()->now('alert', ['type' => 'danger', 'message' => 'You can\'t delete this city, it\'s used in a job somewhere!']);
 
             return;
         }
-
-        session()->flash('alert', ['type' => 'success', 'message' => 'City successfully deleted!']);
 
         return redirect()->route('game-data.cities');
     }

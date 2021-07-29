@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\GameData\Cargos;
 
 use App\Models\Cargo;
+use App\Notifications\GameDataRequestApproved;
+use App\Notifications\GameDataRequestDenied;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -53,6 +55,17 @@ class ShowEditPage extends Component
     {
         $this->validate();
 
+        if (!$this->cargo->approved) {
+            session()->flash('alert', ['type' => 'success', 'message' => 'Cargo request <b>' . $this->cargo->name . '</b> successfully approved.']);
+
+            // Only notify the user if the user still exists
+            if ($this->cargo->requester()->exists()) {
+                $this->cargo->requester->notify(new GameDataRequestApproved($this->cargo));
+            }
+        } else {
+            session()->flash('alert', ['type' => 'success', 'message' => 'Cargo <b>' . $this->cargo->name . '</b> successfully updated.']);
+        }
+
         $this->cargo->update([
             'name' => $this->name,
             'dlc' => $this->dlc,
@@ -60,25 +73,32 @@ class ShowEditPage extends Component
             'weight' => (int)$this->weight,
             'game_id' => (int)$this->game_id,
             'world_of_trucks' => (bool)$this->wot,
+            'approved' => true,
         ]);
-
-        session()->flash('alert', ['type' => 'success', 'message' => "Cargo <b>" . $this->cargo->name . "</b> successfully updated."]);
 
         return redirect()->route('game-data.cargos');
     }
 
     public function delete()
     {
+        if (!$this->cargo->approved) {
+            // Only notify the user if the user still exists
+            if ($this->cargo->requester()->exists()) {
+                $this->cargo->requester->notify(new GameDataRequestDenied($this->cargo));
+            }
+
+            session()->flash('alert', ['type' => 'success', 'message' => 'Cargo request <b>' . $this->cargo->name . '</b> successfully denied.']);
+        } else {
+            session()->flash('alert', ['type' => 'success', 'message' => 'Cargo successfully deleted!']);
+        }
+
         try {
             $this->cargo->delete();
-
         } catch (QueryException $e) {
             session()->now('alert', ['type' => 'danger', 'message' => 'You can\'t delete this cargo, it\'s used in a job somewhere!']);
 
             return;
         }
-
-        session()->flash('alert', ['type' => 'success', 'message' => 'Cargo successfully deleted!']);
 
         return redirect()->route('game-data.cargos');
     }

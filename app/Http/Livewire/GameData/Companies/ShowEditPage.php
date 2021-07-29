@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\GameData\Companies;
 
 use App\Models\Company;
+use App\Notifications\GameDataRequestApproved;
+use App\Notifications\GameDataRequestDenied;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -53,6 +55,17 @@ class ShowEditPage extends Component
     {
         $this->validate();
 
+        if (!$this->company->approved) {
+            session()->flash('alert', ['type' => 'success', 'message' => 'Company request <b>' . $this->company->name . '</b> successfully approved.']);
+
+            // Only notify the user if the user still exists
+            if ($this->company->requester()->exists()) {
+                $this->company->requester->notify(new GameDataRequestApproved($this->company));
+            }
+        } else {
+            session()->flash('alert', ['type' => 'success', 'message' => 'Company <b>' . $this->company->name . '</b> successfully updated.']);
+        }
+
         $this->company->update([
             'name' => $this->name,
             'category' => $this->category,
@@ -60,25 +73,32 @@ class ShowEditPage extends Component
             'dlc' => $this->dlc,
             'mod' => $this->mod,
             'game_id' => (int)$this->game_id,
+            'approved' => true,
         ]);
-
-        session()->flash('alert', ['type' => 'success', 'message' => "Company <b>" . $this->company->name . "</b> successfully updated."]);
 
         return redirect()->route('game-data.companies');
     }
 
     public function delete()
     {
+        if (!$this->company->approved) {
+            // Only notify the user if the user still exists
+            if ($this->company->requester()->exists()) {
+                $this->company->requester->notify(new GameDataRequestDenied($this->company));
+            }
+
+            session()->flash('alert', ['type' => 'success', 'message' => 'Company request <b>' . $this->company->name . '</b> successfully denied.']);
+        } else {
+            session()->flash('alert', ['type' => 'success', 'message' => 'Company successfully deleted!']);
+        }
+
         try {
             $this->company->delete();
-
         } catch (QueryException $e) {
             session()->now('alert', ['type' => 'danger', 'message' => 'You can\'t delete this company, it\'s used in a job somewhere!']);
 
             return;
         }
-
-        session()->flash('alert', ['type' => 'success', 'message' => 'Company successfully deleted!']);
 
         return redirect()->route('game-data.companies');
     }
