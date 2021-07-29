@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\VacationRequestsManagement;
 
+use App\Mail\LeaveRequestApproved;
 use App\Models\VacationRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -46,6 +48,11 @@ class ShowIndex extends Component
             }
 
             if ($vacation_request->leaving) {
+                Mail::to([[
+                    'email' => $vacation_request->user->email,
+                    'name' => $vacation_request->user->username
+                ]])->queue(new LeaveRequestApproved($vacation_request->user));
+
                 $vacation_request->user->delete();
 
                 session()->now('alert', ['type' => 'success', 'message' => 'Request to leave successfully processed, and the PhoenixBase account has been deleted.']);
