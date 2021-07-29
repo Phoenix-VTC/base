@@ -1,5 +1,4 @@
-{{-- Added pride-gradient-horizontal and border-b-4 for the Pride theme --}}
-<div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow pride-gradient-horizontal border-b-4">
+<div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
     <button
         class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
         @click="sidebarOpen = true">
