@@ -1,10 +1,11 @@
 {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
 
-@push('scripts')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-@endpush
-
 @section('title', 'Submit New ' . App\Models\Game::GAMES[$game_id][0] . ' Job')
+
+@section('description')
+    Missing a city, company or cargo in our database? Request it <a class="font-semibold text-gray-900"
+                                                                    href="{{ route('jobs.request-game-data') }}">here</a>!
+@endsection
 
 <div>
     <form class="space-y-8 divide-y divide-gray-200" wire:submit.prevent="submit">
