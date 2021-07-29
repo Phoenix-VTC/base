@@ -15,6 +15,7 @@ class ShowIndex extends Component
     public function mount(): void
     {
         $this->vacation_requests = VacationRequest::withTrashed()
+            ->with(['user', 'staff'])
             ->get()
             ->sortDesc();
     }
