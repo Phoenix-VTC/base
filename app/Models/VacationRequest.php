@@ -32,12 +32,12 @@ class VacationRequest extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id')->withTrashed();
     }
 
     public function staff(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'handled_by');
+        return $this->belongsTo(User::class, 'handled_by')->withTrashed();
     }
 
     public function revisionHistoryWithUser(): MorphMany
