@@ -36,6 +36,10 @@ return [
         'hr_channel_id' => env('DISCORD_HR_CHANNEL_ID'),
         'member_events_channel_id' => env('DISCORD_MEMBER_EVENTS_CHANNEL_ID'),
 
+        'webhooks' => [
+            'screenshot-hub' => env('DISCORD_SCREENSHOT_HUB_WEBHOOK')
+        ],
+
         // Socialite stuff
         'client_id' => env('DISCORD_CLIENT_ID'),
         'client_secret' => env('DISCORD_CLIENT_SECRET'),
