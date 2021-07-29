@@ -15,6 +15,7 @@ class Datatable extends DataTableComponent
     public function query(): Builder
     {
         return Cargo::query()
+            ->orderByDesc('id')
             ->when($this->getFilter('game_id'), fn ($query, $value) => $query->where('game_id', $value))
             ->when($this->getFilter('wot'), fn ($query, $value) => $value === 1 ? $query->where('world_of_trucks', true) : $query->where('world_of_trucks', false));
     }
@@ -57,6 +58,12 @@ class Datatable extends DataTableComponent
                 }),
 
             Column::make('WoT', 'world_of_trucks')
+                ->sortable()
+                ->format(function ($value) {
+                    return $value ? 'Yes' : 'No';
+                }),
+
+            Column::make('Approved')
                 ->sortable()
                 ->format(function ($value) {
                     return $value ? 'Yes' : 'No';

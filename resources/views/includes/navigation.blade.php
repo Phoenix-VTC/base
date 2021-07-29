@@ -1,5 +1,4 @@
-{{-- Added pride-gradient-horizontal and border-b-4 for the Pride theme --}}
-<div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow pride-gradient-horizontal border-b-4">
+<div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
     <button
         class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
         @click="sidebarOpen = true">
@@ -24,7 +23,7 @@
                                     <button type="submit"
                                             class="text-sm font-semibold text-gray-800 hover:underline focus:outline-none">
                                         <span class="absolute inset-0" aria-hidden="true"></span>
-                                        {{ Str::limit($notification->data['title'] ?? '', 20) }}
+                                        {{ $notification->data['title'] ?? '' }}
                                     </button>
                                 </div>
                                 <time datetime="2021-01-27T16:35"
@@ -34,7 +33,7 @@
                             </form>
                             <div class="mt-1">
                                 <p class="mt-1 text-sm text-gray-600 line-clamp-2">
-                                    {{ $notification->data['content'] ?? '' }}
+                                    {{ Str::words($notification->data['content'] ?? '', 10) }}
                                 </p>
                             </div>
                         </li>

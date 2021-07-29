@@ -2,7 +2,13 @@
 
 @section('title', 'Edit Cargo')
 
-@section('description', $cargo->name)
+@section('description')
+    @if($cargo->approved)
+        {{ $cargo->name }}
+    @else
+        Requested by <b>{{ $cargo->requester->username ?? 'Deleted User' }}</b>
+    @endif
+@endsection
 
 <div>
     <x-alert/>
@@ -56,21 +62,37 @@
                     </div>
                 </div>
                 <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                    <button type="button" wire:click="delete"
-                            onclick="confirm('Are you sure you want to delete this cargo?') || event.stopImmediatePropagation()"
-                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-600 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 mt-3 sm:mt-0 sm:w-auto sm:text-sm">
-                        Delete
-                    </button>
+                    @if($cargo->approved)
+                        <button type="button" wire:click="delete"
+                                onclick="confirm('Are you sure you want to delete this cargo?') || event.stopImmediatePropagation()"
+                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-600 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 mt-3 sm:mt-0 sm:w-auto sm:text-sm">
+                            Delete
+                        </button>
+                    @else
+                        <button type="button" wire:click="delete"
+                                onclick="return confirm('Are you sure you want to deny this cargo request?') || event.stopImmediatePropagation()"
+                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-600 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 mt-3 sm:mt-0 sm:w-auto sm:text-sm">
+                            Deny
+                        </button>
+                    @endif
 
                     <a href="{{ route('game-data.cargos') }}"
                        class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 mt-3 sm:mt-0 sm:w-auto sm:text-sm">
                         Cancel
                     </a>
 
-                    <button type="submit"
-                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-600 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 mt-3 sm:mt-0 sm:w-auto sm:text-sm">
-                        Update
-                    </button>
+                    @if($cargo->approved)
+                        <button type="submit"
+                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-600 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 mt-3 sm:mt-0 sm:w-auto sm:text-sm">
+                            Update
+                        </button>
+                    @else
+                        <button type="submit"
+                                onclick="return confirm('Are you sure you want to approve this cargo request?')"
+                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-600 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 mt-3 sm:mt-0 sm:w-auto sm:text-sm">
+                            Approve
+                        </button>
+                    @endif
                 </div>
             </div>
         </form>

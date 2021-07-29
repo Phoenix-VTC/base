@@ -1,5 +1,4 @@
-{{-- Added pride-gradient-horizontal and border-b-2 for the Pride theme --}}
-<div class="relative bg-gray-900 overflow-hidden pride-gradient-horizontal border-b-2" x-data="{ open: false }">
+<div class="relative bg-gray-900 overflow-hidden" x-data="{ open: false }">
     <div class="max-w-7xl mx-auto">
         <div
             class="relative z-10 pb-8 bg-gray-900 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">

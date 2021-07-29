@@ -2,6 +2,32 @@
 
 @section('title', "Viewing Job #$job->id")
 
+@push('scripts')
+    <script type="text/javascript">
+        function addRoute(map) {
+            const directionsService = new google.maps.DirectionsService();
+            const directionsDisplay = new google.maps.DirectionsRenderer();
+
+            directionsDisplay.setMap(map);
+
+            const request = {
+                origin: '{{ $gmaps_data['origin'] ?? null }}',
+                destination: '{{ $gmaps_data['destination'] ?? null }}',
+                travelMode: google.maps.DirectionsTravelMode.DRIVING
+            };
+
+            directionsService.route(
+                request,
+                function(response, status) {
+                    if (status === google.maps.DirectionsStatus.OK) {
+                        directionsDisplay.setDirections(response);
+                    }
+                }
+            );
+        }
+    </script>
+@endpush
+
 <div>
     <x-alert/>
 
@@ -168,7 +194,17 @@
                 </div>
             </section>
 
-            @can('manage users')
+            @if(isset($gmaps_data['origin']) && isset($gmaps_data['destination']))
+                <div wire:ignore>
+                    <x-info-card title="Route Map">
+                        <div id="map" style="width: 100%; height: 500px;">
+                            {!! Mapper::render() !!}
+                        </div>
+                    </x-info-card>
+                </div>
+            @endif
+
+        @can('manage users')
                 <!-- Revision History -->
                 <x-info-card title="Revision History">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
