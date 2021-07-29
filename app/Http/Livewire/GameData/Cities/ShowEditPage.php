@@ -6,6 +6,7 @@ use App\Models\City;
 use App\Notifications\GameDataRequestApproved;
 use App\Notifications\GameDataRequestDenied;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -62,6 +63,8 @@ class ShowEditPage extends Component
         $this->validate();
 
         if (!$this->city->approved) {
+            $this->forgetUnapprovedGameDataCount();
+
             session()->flash('alert', ['type' => 'success', 'message' => 'City request <b>' . $this->city->real_name . '</b> successfully approved.']);
 
             // Only notify the user if the user still exists
@@ -90,6 +93,8 @@ class ShowEditPage extends Component
     public function delete()
     {
         if (!$this->city->approved) {
+            $this->forgetUnapprovedGameDataCount();
+
             // Only notify the user if the user still exists
             if ($this->city->requester()->exists()) {
                 $this->city->requester->notify(new GameDataRequestDenied($this->city));
@@ -109,5 +114,10 @@ class ShowEditPage extends Component
         }
 
         return redirect()->route('game-data.cities');
+    }
+
+    private function forgetUnapprovedGameDataCount(): void
+    {
+        Cache::forget('unapproved_game_data_count');
     }
 }

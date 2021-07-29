@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Notifications\GameDataRequestApproved;
 use App\Notifications\GameDataRequestDenied;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -56,6 +57,8 @@ class ShowEditPage extends Component
         $this->validate();
 
         if (!$this->company->approved) {
+            $this->forgetUnapprovedGameDataCount();
+
             session()->flash('alert', ['type' => 'success', 'message' => 'Company request <b>' . $this->company->name . '</b> successfully approved.']);
 
             // Only notify the user if the user still exists
@@ -82,6 +85,8 @@ class ShowEditPage extends Component
     public function delete()
     {
         if (!$this->company->approved) {
+            $this->forgetUnapprovedGameDataCount();
+
             // Only notify the user if the user still exists
             if ($this->company->requester()->exists()) {
                 $this->company->requester->notify(new GameDataRequestDenied($this->company));
@@ -101,5 +106,10 @@ class ShowEditPage extends Component
         }
 
         return redirect()->route('game-data.companies');
+    }
+
+    private function forgetUnapprovedGameDataCount(): void
+    {
+        Cache::forget('unapproved_game_data_count');
     }
 }
