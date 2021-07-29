@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\VacationRequestsManagement;
 
 use App\Models\VacationRequest;
-use App\Notifications\VacationRequest\VacationRequestAccepted;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
