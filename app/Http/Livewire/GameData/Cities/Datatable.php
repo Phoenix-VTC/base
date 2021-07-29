@@ -15,6 +15,7 @@ class Datatable extends DataTableComponent
     public function query(): Builder
     {
         return City::query()
+            ->orderByDesc('id')
             ->when($this->getFilter('game_id'), fn ($query, $value) => $query->where('game_id', $value));
     }
 
@@ -67,6 +68,12 @@ class Datatable extends DataTableComponent
             Column::make('Z')
                 ->searchable()
                 ->sortable(),
+
+            Column::make('Approved')
+                ->sortable()
+                ->format(function ($value) {
+                    return $value ? 'Yes' : 'No';
+                }),
 
             Column::make('Created At')
                 ->sortable(),

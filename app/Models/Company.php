@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Company extends Model
 {
@@ -15,4 +16,16 @@ class Company extends Model
      * @var array
      */
     protected $guarded = [];
+
+    protected $casts = [
+        'approved' => 'boolean',
+    ];
+
+    /**
+     * Get the user that requested the cargo.
+     */
+    public function requester(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'requested_by');
+    }
 }

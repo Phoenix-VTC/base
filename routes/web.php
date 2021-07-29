@@ -21,6 +21,7 @@ use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Cities\ShowEditPage as CitiesShowEditPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowEditPage as CompaniesShowEditPage;
+use App\Http\Livewire\Jobs\ShowRequestGameDataPage;
 use App\Http\Livewire\ScreenshotHub\ShowShowPage as ScreenshotHubShowShowPage;
 use App\Http\Livewire\ScreenshotHub\ShowCreatePage as ScreenshotHubShowCreatePage;
 use App\Http\Livewire\ScreenshotHub\ShowIndexPage as ScreenshotHubShowIndexPage;
@@ -123,6 +124,8 @@ Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:submit jobs'])->g
     Route::get('submit/{game_id}', JobsShowSubmitPage::class)
         ->whereNumber('game_id')
         ->name('submit');
+
+    Route::get('request-game-data', ShowRequestGameDataPage::class)->name('request-game-data');
 
     Route::prefix('{job}')->group(function () {
         Route::get('/', JobsShowShowPage::class)->name('show');

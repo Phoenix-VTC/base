@@ -1,3 +1,15 @@
+@php
+    if (Auth::user()->can('manage game data')) {
+         $unapprovedGameDataCount = Cache::remember('unapproved_game_data_count', 300, function () {
+            $unapprovedCargosCount = App\Models\Cargo::where('approved', false)->count();
+            $unapprovedCitiesCount = App\Models\City::where('approved', false)->count();
+            $unapprovedCompaniesCount = App\Models\Company::where('approved', false)->count();
+
+            return $unapprovedCargosCount + $unapprovedCitiesCount + $unapprovedCompaniesCount;
+        });
+    }
+@endphp
+
 <x-sidebar.group>
     <x-sidebar.item title="Dashboard" icon="o-home" route="dashboard"/>
 
@@ -40,14 +52,14 @@
     @endcan
 
     @canany(['manage users', 'manage driver inactivity'])
-            <livewire:components.dropdown title="User Management" icon="o-document-search" activeRoute="user-management.*"
-                                          :items="[
+        <livewire:components.dropdown title="User Management" icon="o-document-search" activeRoute="user-management.*"
+                                      :items="[
                                         ['title' => 'Users', 'route' => 'user-management.index'],
                                         ['title' => 'Driver Inactivity', 'route' => 'user-management.driver-inactivity.index'],
                                         ['title' => 'Roles', 'route' => 'user-management.roles.index'],
                                         ['title' => 'Permissions', 'route' => 'user-management.permissions.index'],
                                       ]">
-            </livewire:components.dropdown>
+        </livewire:components.dropdown>
     @endcan
 
     @can('manage events')
@@ -62,6 +74,7 @@
 
     @can('manage game data')
         <livewire:components.dropdown title="Game Data" icon="o-collection" activeRoute="game-data.*"
+                                      :unread-count="$unapprovedGameDataCount ?? 0"
                                       :items="[
                                         ['title' => 'Cargos', 'route' => 'game-data.cargos'],
                                         ['title' => 'Cities', 'route' => 'game-data.cities'],
