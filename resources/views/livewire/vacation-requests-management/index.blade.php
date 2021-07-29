@@ -186,6 +186,7 @@
                                 This is where you'll see the vacation requests.
                             </x-empty-state>
                         @endempty
+                        {{ $vacation_requests->links() }}
                     </div>
                 </div>
             </div>

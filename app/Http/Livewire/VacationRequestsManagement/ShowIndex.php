@@ -3,31 +3,35 @@
 namespace App\Http\Livewire\VacationRequestsManagement;
 
 use App\Models\VacationRequest;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ShowIndex extends Component
 {
-    public Collection $vacation_requests;
+    use WithPagination;
 
-    public function mount(): void
+    public function paginationView(): string
     {
-        $this->vacation_requests = VacationRequest::withTrashed()
-            ->with(['user', 'staff'])
-            ->get()
-            ->sortDesc();
+        return 'vendor.livewire.pagination-links';
     }
 
     public function render(): View
     {
-        return view('livewire.vacation-requests-management.index')->extends('layouts.app');
+        $vacation_requests = VacationRequest::withTrashed()
+            ->with(['user', 'staff'])
+            ->orderByDesc('id')
+            ->paginate(10);
+
+        return view('livewire.vacation-requests-management.index', [
+            'vacation_requests' => $vacation_requests,
+        ])->extends('layouts.app');
     }
 
     public function markAsSeen(int $id): void
     {
-        $vacation_request = $this->vacation_requests->find($id);
+        $vacation_request = VacationRequest::find($id);
 
         if ($vacation_request->handled_by) {
             session()->now('alert', ['type' => 'danger', 'message' => 'This vacation request has already been handled.']);
@@ -51,7 +55,7 @@ class ShowIndex extends Component
 
     public function cancel(int $id): void
     {
-        $vacation_request = $this->vacation_requests->find($id);
+        $vacation_request = VacationRequest::find($id);
 
         if ($vacation_request->deleted_at) {
             session()->now('alert', ['type' => 'danger', 'message' => 'This vacation request has already been cancelled.']);
