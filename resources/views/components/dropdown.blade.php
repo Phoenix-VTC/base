@@ -3,7 +3,7 @@
 @props([
     'title',
     'icon' => null,
-    'width' => 56,
+    'width' => 'w-56',
     'notificationDotColor' => null,
 ])
 
@@ -21,7 +21,7 @@
             @endif
         </button>
         @if($notificationDotColor)
-            <span class="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white bg-{{ $notificationDotColor }}-400"></span>
+            <span class="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white {{ $notificationDotColor }}"></span>
         @endif
     </div>
 
@@ -33,7 +33,7 @@
          x-transition:leave="transition ease-in duration-75"
          x-transition:leave-start="transform opacity-100 scale-100"
          x-transition:leave-end="transform opacity-0 scale-95"
-         class="origin-top-right absolute z-10 right-0 mt-2 w-{{ $width }} rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+         class="origin-top-right absolute z-10 right-0 mt-2 {{ $width }} rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
          role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
         <div class="py-1" role="none">
             {{ $slot }}
