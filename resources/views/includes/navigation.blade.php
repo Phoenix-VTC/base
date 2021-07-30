@@ -33,7 +33,7 @@
                             </form>
                             <div class="mt-1">
                                 <p class="mt-1 text-sm text-gray-600 line-clamp-2">
-                                    {{ Str::words($notification->data['content'] ?? '', 10) }}
+                                    {!! Str::words($notification->data['content'] ?? '', 10) !!}
                                 </p>
                             </div>
                         </li>
