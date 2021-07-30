@@ -3,72 +3,100 @@
 namespace App\Http\Livewire\GameData\Cities;
 
 use App\Models\City;
-use Mediconesystems\LivewireDatatables\Column;
-use Mediconesystems\LivewireDatatables\DateColumn;
-use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
-use Mediconesystems\LivewireDatatables\NumberColumn;
+use Illuminate\Database\Eloquent\Builder;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Filter;
 
-class Datatable extends LivewireDatatable
+class Datatable extends DataTableComponent
 {
-    public $model = City::class;
+    public bool $columnSelect = true;
+
+    public function query(): Builder
+    {
+        return City::query()
+            ->orderByDesc('id')
+            ->when($this->getFilter('game_id'), fn ($query, $value) => $query->where('game_id', $value));
+    }
 
     public function columns(): array
     {
         return [
-            NumberColumn::name('id')
-                ->filterable()
-                ->searchable(),
-
-            Column::name('real_name')
-                ->filterable()
+            Column::make('Id')
                 ->searchable()
-                ->editable(),
+                ->sortable(),
 
-            Column::name('name')
-                ->filterable()
+            Column::make('Real Name')
                 ->searchable()
-                ->editable(),
+                ->sortable(),
 
-            Column::name('country')
-                ->filterable()
+            Column::make('Name')
                 ->searchable()
-                ->editable(),
+                ->sortable(),
 
-            Column::name('dlc')
-                ->filterable()
+            Column::make('Country')
                 ->searchable()
-                ->editable(),
+                ->sortable(),
 
-            Column::name('mod')
-                ->filterable()
+            Column::make('Dlc')
                 ->searchable()
-                ->editable(),
+                ->sortable(),
 
-            Column::callback(['game_id'], function (int $game_id) {
-                if ($game_id === 1) {
-                    return 'ETS';
-                }
+            Column::make('Mod')
+                ->searchable()
+                ->sortable(),
 
-                if ($game_id === 2) {
-                    return 'ATS';
-                }
+            Column::make('Game', 'game_id')
+                ->searchable()
+                ->sortable()
+                ->format(function ($value) {
+                    if ($value === 1) {
+                        return 'ETS';
+                    }
 
-                return 'Unknown';
-            })->label('Game'),
+                    if ($value === 2) {
+                        return 'ATS';
+                    }
 
-            NumberColumn::name('x')
-                ->editable(),
+                    return 'Unknown';
+                }),
 
-            NumberColumn::name('z')
-                ->editable(),
+            Column::make('X')
+                ->searchable()
+                ->sortable(),
 
-            DateColumn::name('created_at')
-                ->filterable(),
+            Column::make('Z')
+                ->searchable()
+                ->sortable(),
 
-            DateColumn::name('updated_at')
-                ->filterable(),
+            Column::make('Approved')
+                ->sortable()
+                ->format(function ($value) {
+                    return $value ? 'Yes' : 'No';
+                }),
 
-            Column::delete(),
+            Column::make('Created At')
+                ->sortable(),
+
+            Column::make('Updated At')
+                ->sortable(),
         ];
+    }
+
+    public function filters(): array
+    {
+        return [
+            'game_id' => Filter::make('Game')
+                ->select([
+                    '' => 'Any',
+                    1 => 'Euro Truck Simulator',
+                    2 => 'American Truck Simulator',
+                ]),
+        ];
+    }
+
+    public function getTableRowUrl($row): string
+    {
+        return route('game-data.cities.edit', $row);
     }
 }

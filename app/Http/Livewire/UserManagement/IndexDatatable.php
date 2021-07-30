@@ -4,38 +4,73 @@ namespace App\Http\Livewire\UserManagement;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Mediconesystems\LivewireDatatables\BooleanColumn;
-use Mediconesystems\LivewireDatatables\Column;
-use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
-use Mediconesystems\LivewireDatatables\NumberColumn;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Filter;
 
-class IndexDatatable extends LivewireDatatable
+class IndexDatatable extends DataTableComponent
 {
-    public $exportable = true;
+    public bool $columnSelect = true;
 
-    public $model = User::class;
-
-    public function builder(): Builder
+    public function query(): Builder
     {
-        return User::withTrashed();
+        return User::withTrashed()->with('application')
+            ->when($this->getFilter('account_activated'), fn ($query, $value) => $value === 'yes' ? $query->whereNull('welcome_valid_until') : $query->whereNotNull('welcome_valid_until'))
+            ->when($this->getFilter('account_deleted'), fn ($query, $value) => $value === 'yes' ? $query->whereNotNull('deleted_at') : $query->whereNull('deleted_at'));
     }
 
     public function columns(): array
     {
         return [
-            NumberColumn::name('id')->filterable()->searchable()->linkTo('users'),
+            Column::make('Id')
+                ->searchable()
+                ->sortable(),
 
-            Column::name('username')->filterable()->searchable(),
+            Column::make('Username')
+                ->searchable()
+                ->sortable(),
 
-            Column::name('email')->filterable()->searchable(),
+            Column::make('Email')
+                ->searchable()
+                ->sortable(),
 
-            BooleanColumn::name('deleted_at')
-                ->label('Deleted')
-                ->filterable(),
+            Column::make('Application ID', 'application.uuid'),
 
-            Column::callback(['id', 'username'], function ($id, $username) {
-                return view('livewire.user-management.datatable-components.actions', ['id' => $id, 'username' => $username]);
-            }),
+            Column::make('Account Activated', 'welcome_valid_until')
+                ->sortable()
+                ->format(function ($value) {
+                    return $value ? 'No' : 'Yes';
+                }),
+
+            Column::make('Created At')
+                ->sortable(),
+
+            Column::make('Deleted At')
+                ->sortable(),
         ];
+    }
+
+    public function filters(): array
+    {
+        return [
+            'account_activated' => Filter::make('Account Activated')
+                ->select([
+                    '' => 'Any',
+                    'yes' => 'Yes',
+                    'no' => 'No',
+                ]),
+
+            'account_deleted' => Filter::make('Account Deleted')
+                ->select([
+                    '' => 'Any',
+                    'yes' => 'Yes',
+                    'no' => 'No',
+                ]),
+        ];
+    }
+
+    public function getTableRowUrl($row): string
+    {
+        return route('users.profile', $row);
     }
 }

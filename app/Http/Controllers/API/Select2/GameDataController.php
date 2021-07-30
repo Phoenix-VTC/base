@@ -14,6 +14,7 @@ class GameDataController extends Controller
     public function indexCities(Request $request, int $game)
     {
         return City::where('game_id', $game)
+            ->where('approved', true)
             ->where('real_name', 'like', '%' . $request->input('q') . '%')
             ->select([
                 'id',
@@ -26,6 +27,7 @@ class GameDataController extends Controller
     public function indexCompanies(Request $request, int $game)
     {
         return Company::where('game_id', $game)
+            ->where('approved', true)
             ->where('name', 'like', '%' . $request->input('q') . '%')
             ->select([
                 'id',
@@ -38,6 +40,7 @@ class GameDataController extends Controller
     public function indexCargos(Request $request, int $game)
     {
         return Cargo::where('game_id', $game)
+            ->where('approved', true)
             ->where('name', 'like', '%' . $request->input('q') . '%')
             ->select([
                 'id',

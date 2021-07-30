@@ -150,18 +150,14 @@
                     </div>
                     <div class="mt-8">
                         <h3 class="text-lg font-medium">
-                            <a href="#" class="focus:outline-none">
+                            <a href="{{ route('jobs.personal-overview') }}" class="focus:outline-none">
                                 <!-- Extend touch target to entire panel -->
                                 <span class="absolute inset-0" aria-hidden="true"></span>
                                 My Jobs
                             </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">
-                            View your completed jobs, and submit new ones!
-                            <br><br><br>
-                            <span class="font-medium">
-                                Available soon, stay tuned!
-                            </span>
+                            Submit some new jobs to keep up with our monthly requirements!
                         </p>
                     </div>
                     <span class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
@@ -205,23 +201,19 @@
                     class="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                     <div>
                         <span class="rounded-lg inline-flex p-3 bg-blue-50 text-blue-700 ring-4 ring-white">
-                            <span class="font-semibold">TB</span>
+                            <x-heroicon-o-camera class="h-6 w-6"/>
                         </span>
                     </div>
                     <div class="mt-8">
                         <h3 class="text-lg font-medium">
-                            <a href="https://trucksbook.eu/company/100008" target="_blank"
-                               class="focus:outline-none">
+                            <a href="{{ route('screenshot-hub.index') }}" class="focus:outline-none">
                                 <!-- Extend touch target to entire panel -->
                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                TrucksBook
+                                Screenshot Hub
                             </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">
-                            Submit a new job to keep up with our monthly requirements, and see how our company is
-                            doing.
-                            <br>
-                            TrucksBook is the place to be!
+                            Want to show off that sweet screenshot you took? This is the place to be!
                         </p>
                     </div>
                     <span class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
@@ -335,7 +327,7 @@
                                                         </a>
                                                         <div class="text-right text-sm whitespace-nowrap text-gray-500">
                                                         <span title="{{ $job->created_at->toDateTimeString() }}">
-                                                            {{ $job->created_at->isoFormat('HH:m') }}
+                                                            {{ $job->created_at->isoFormat('HH:mm') }}
                                                         </span>
                                                         </div>
                                                     </div>

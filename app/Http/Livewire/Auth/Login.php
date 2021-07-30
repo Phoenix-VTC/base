@@ -3,11 +3,15 @@
 namespace App\Http\Livewire\Auth;
 
 use App\Providers\RouteServiceProvider;
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Login extends Component
 {
+    use WithRateLimiting;
+
     /** @var string */
     public $email = '';
 
@@ -24,6 +28,14 @@ class Login extends Component
 
     public function authenticate()
     {
+        try {
+            $this->rateLimit(10);
+        } catch (TooManyRequestsException $exception) {
+            $this->addError('email', "Slow down! Please wait another $exception->secondsUntilAvailable seconds to log in.");
+
+            return;
+        }
+
         $this->validate();
 
         if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {

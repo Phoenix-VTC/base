@@ -1,5 +1,4 @@
-{{-- Added pride-gradient-horizontal and border-b-4 for the Pride theme --}}
-<div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow pride-gradient-horizontal border-b-4">
+<div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
     <button
         class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
         @click="sidebarOpen = true">
@@ -13,7 +12,7 @@
     <div class="flex-1 px-4 flex justify-between">
         <div class="flex-1 flex"></div>
         <div class="ml-4 flex items-center md:ml-6">
-            <x-dropdown icon="o-bell" title="View notifications" width="80" :notification-dot-color="Auth::user()->unreadNotifications->count() ? 'red' : ''">
+            <x-dropdown icon="o-bell" title="View notifications" width="w-80" :notification-dot-color="Auth::user()->unreadNotifications->count() ? 'bg-red-400' : ''">
                 <ul class="divide-y divide-gray-200">
                     @forelse(Auth::user()->unreadNotifications as $notification)
                         <li class="relative bg-white py-5 px-4 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
@@ -24,7 +23,7 @@
                                     <button type="submit"
                                             class="text-sm font-semibold text-gray-800 hover:underline focus:outline-none">
                                         <span class="absolute inset-0" aria-hidden="true"></span>
-                                        {{ Str::limit($notification->data['title'], 30) }}
+                                        {{ $notification->data['title'] ?? '' }}
                                     </button>
                                 </div>
                                 <time datetime="2021-01-27T16:35"
@@ -34,7 +33,7 @@
                             </form>
                             <div class="mt-1">
                                 <p class="mt-1 text-sm text-gray-600 line-clamp-2">
-                                    {!! $notification->data['content'] !!}
+                                    {{ Str::words($notification->data['content'] ?? '', 10) }}
                                 </p>
                             </div>
                         </li>

@@ -2,32 +2,39 @@
 
 namespace App\Http\Livewire\VacationRequestsManagement;
 
+use App\Mail\LeaveRequestApproved;
 use App\Models\VacationRequest;
-use App\Notifications\VacationRequest\VacationRequestAccepted;
-use Illuminate\Database\Eloquent\Collection;
+use App\Notifications\VacationRequestMarkedAsSeen;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ShowIndex extends Component
 {
-    public Collection $vacation_requests;
+    use WithPagination;
 
-    public function mount(): void
+    public function paginationView(): string
     {
-        $this->vacation_requests = VacationRequest::withTrashed()
-            ->get()
-            ->sortDesc();
+        return 'vendor.livewire.pagination-links';
     }
 
     public function render(): View
     {
-        return view('livewire.vacation-requests-management.index')->extends('layouts.app');
+        $vacation_requests = VacationRequest::withTrashed()
+            ->with(['user', 'staff'])
+            ->orderByDesc('id')
+            ->paginate(10);
+
+        return view('livewire.vacation-requests-management.index', [
+            'vacation_requests' => $vacation_requests,
+        ])->extends('layouts.app');
     }
 
     public function markAsSeen(int $id): void
     {
-        $vacation_request = $this->vacation_requests->find($id);
+        $vacation_request = VacationRequest::find($id);
 
         if ($vacation_request->handled_by) {
             session()->now('alert', ['type' => 'danger', 'message' => 'This vacation request has already been handled.']);
@@ -38,10 +45,17 @@ class ShowIndex extends Component
             $vacation_request->save();
 
             if (!$vacation_request->leaving) {
+                $vacation_request->user->notify(new VacationRequestMarkedAsSeen);
+
                 session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? "Unknown User") . '\'s vacation request successfully marked as seen!']);
             }
 
             if ($vacation_request->leaving) {
+                Mail::to([[
+                    'email' => $vacation_request->user->email,
+                    'name' => $vacation_request->user->username
+                ]])->queue(new LeaveRequestApproved($vacation_request->user));
+
                 $vacation_request->user->delete();
 
                 session()->now('alert', ['type' => 'success', 'message' => 'Request to leave successfully processed, and the PhoenixBase account has been deleted.']);
@@ -51,7 +65,7 @@ class ShowIndex extends Component
 
     public function cancel(int $id): void
     {
-        $vacation_request = $this->vacation_requests->find($id);
+        $vacation_request = VacationRequest::find($id);
 
         if ($vacation_request->deleted_at) {
             session()->now('alert', ['type' => 'danger', 'message' => 'This vacation request has already been cancelled.']);
