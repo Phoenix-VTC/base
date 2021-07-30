@@ -12,7 +12,7 @@
     <div class="flex-1 px-4 flex justify-between">
         <div class="flex-1 flex"></div>
         <div class="ml-4 flex items-center md:ml-6">
-            <x-dropdown icon="o-bell" title="View notifications" width="80" :notification-dot-color="Auth::user()->unreadNotifications->count() ? 'red' : ''">
+            <x-dropdown icon="o-bell" title="View notifications" width="w-80" :notification-dot-color="Auth::user()->unreadNotifications->count() ? 'bg-red-400' : ''">
                 <ul class="divide-y divide-gray-200">
                     @forelse(Auth::user()->unreadNotifications as $notification)
                         <li class="relative bg-white py-5 px-4 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
