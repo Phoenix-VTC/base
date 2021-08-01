@@ -39,13 +39,25 @@
                                 </div>
 
                                 <div class="mt-1">
-                                    <p class="mt-1 text-sm text-gray-600 line-clamp-2">
+                                    <div class="mt-1 text-sm text-gray-600 line-clamp-2">
                                         @if($achievement->unlocked_at)
-                                            {{ $achievement->details->description }}
+                                            <span>{{ $achievement->details->description }}</span>
                                         @else
                                             Not yet unlocked
+                                            @if($achievement->points > 0)
+                                                <div class="bg-white rounded h-6 mt-5" role="progressbar"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="100"
+                                                     aria-valuenow="{{ $achievement->points / $achievement->details->points * 100 }}">
+                                                    <div
+                                                        class="bg-green-400 rounded h-6 text-center text-black text-sm"
+                                                        style="width: {{ $achievement->points / $achievement->details->points * 100 . '%' }}; transition: width 2s;">
+                                                        {{ $achievement->points / $achievement->details->points * 100 . '%' }}
+                                                    </div>
+                                                </div>
+                                            @endif
                                         @endif
-                                    </p>
+                                    </div>
                                 </div>
                             </li>
                         </div>
