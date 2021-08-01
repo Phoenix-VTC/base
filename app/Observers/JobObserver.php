@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Achievements\JobChain;
 use App\Achievements\LongDrive;
+use App\Achievements\MoneyMan;
 use App\Models\Job;
 use Bavix\Wallet\Models\Transaction;
 
@@ -21,10 +22,15 @@ class JobObserver
 
         $user->deposit($job->total_income, ['description' => 'Submitted job', 'job_id' => $job->id]);
 
+        // Handle achievement unlocking
         $user->addProgress(new JobChain(), 1);
 
         if ($job->distance >= 2000) {
             $user->unlock(new LongDrive());
+        }
+
+        if ($job->total_income >= 100000) {
+            $user->unlock(new MoneyMan());
         }
     }
 
