@@ -1,113 +1,109 @@
 @section('title', 'Hi, ' . Auth::user()->username . '!')
 
 <div>
-    @can('submit jobs')
-        <div>
-            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">
-                This month
-            </h3>
+    <div>
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">
+            This month
+        </h3>
 
-            <dl class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <dl class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
-                <livewire:jobs.components.statistic
-                    icon="o-clipboard-list"
-                    title="My Deliveries"
-                    :route="route('jobs.personal-overview')"
-                    :content="$personal_stats['delivery_count']['current_month']"
-                    :change-number="abs($personal_stats['delivery_count']['previous_month'] - $personal_stats['delivery_count']['current_month'])"
-                    :increased="($personal_stats['delivery_count']['current_month'] > $personal_stats['delivery_count']['previous_month'])"
-                />
+            <livewire:jobs.components.statistic
+                icon="o-clipboard-list"
+                title="My Deliveries"
+                :route="route('jobs.personal-overview')"
+                :content="$personal_stats['delivery_count']['current_month']"
+                :change-number="abs($personal_stats['delivery_count']['previous_month'] - $personal_stats['delivery_count']['current_month'])"
+                :increased="($personal_stats['delivery_count']['current_month'] > $personal_stats['delivery_count']['previous_month'])"
+            />
 
-                <livewire:jobs.components.statistic
-                    icon="o-currency-euro"
-                    title="My Income"
-                    :route="route('my-wallet')"
-                    content="{!! Auth::user()->preferred_currency_symbol !!} {{ number_format($personal_stats['income']['current_month']) }}"
-                    :change-number="number_format(abs($personal_stats['income']['previous_month'] - $personal_stats['income']['current_month']))"
-                    :increased="($personal_stats['income']['current_month'] > $personal_stats['income']['previous_month'])"
-                />
+            <livewire:jobs.components.statistic
+                icon="o-currency-euro"
+                title="My Income"
+                :route="route('my-wallet')"
+                content="{!! Auth::user()->preferred_currency_symbol !!} {{ number_format($personal_stats['income']['current_month']) }}"
+                :change-number="number_format(abs($personal_stats['income']['previous_month'] - $personal_stats['income']['current_month']))"
+                :increased="($personal_stats['income']['current_month'] > $personal_stats['income']['previous_month'])"
+            />
 
-                <livewire:jobs.components.statistic
-                    icon="o-truck"
-                    title="My Distance"
-                    :route="route('jobs.personal-overview')"
-                    content="{{ number_format($personal_stats['distance']['current_month']) }} {{ Auth::user()->preferred_distance_abbreviation }}"
-                    :change-number="number_format(abs($personal_stats['distance']['previous_month'] - $personal_stats['distance']['current_month']))"
-                    :increased="($personal_stats['distance']['current_month'] > $personal_stats['distance']['previous_month'])"
-                />
+            <livewire:jobs.components.statistic
+                icon="o-truck"
+                title="My Distance"
+                :route="route('jobs.personal-overview')"
+                content="{{ number_format($personal_stats['distance']['current_month']) }} {{ Auth::user()->preferred_distance_abbreviation }}"
+                :change-number="number_format(abs($personal_stats['distance']['previous_month'] - $personal_stats['distance']['current_month']))"
+                :increased="($personal_stats['distance']['current_month'] > $personal_stats['distance']['previous_month'])"
+            />
 
-            </dl>
-        </div>
-    @endcan
+        </dl>
+    </div>
 
     <div
         class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
         {{-- Left col --}}
         <div class="space-y-6 lg:col-start-1 lg:col-span-2">
 
-            @can('submit jobs')
-                <div class="flex flex-col">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">
-                        Today's overview
-                    </h3>
-                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Driver
-                                        </th>
-                                        <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Distance
-                                        </th>
-                                        <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Delivered Jobs
-                                        </th>
+            <div class="flex flex-col">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">
+                    Today's overview
+                </h3>
+                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Driver
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Distance
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Delivered Jobs
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($today_overview as $user)
+                                    <tr class="@if($loop->odd) bg-white @else bg-gray-50 @endif">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            <a href="{{ route('users.profile', $user) }}"
+                                               class="font-medium hover:font-semibold">
+                                                {{ $user->username ?? 'Unknown User' }}
+                                            </a>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ $user->jobs->sum('distance') }} km
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ $user->jobs->count() }}
+                                        </td>
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($today_overview as $user)
-                                        <tr class="@if($loop->odd) bg-white @else bg-gray-50 @endif">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                <a href="{{ route('users.profile', $user) }}"
-                                                   class="font-medium hover:font-semibold">
-                                                    {{ $user->username ?? 'Unknown User' }}
-                                                </a>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {{ $user->jobs->sum('distance') }} km
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {{ $user->jobs->count() }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    @if(!$today_overview->count())
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                Aww, no one submitted any jobs yet for today..
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    </tbody>
-                                </table>
-                                @if($today_overview->count())
-                                    <div class="px-6 py-2 text-center">
+                                @endforeach
+                                @if(!$today_overview->count())
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            Aww, no one submitted any jobs yet for today..
+                                        </td>
+                                    </tr>
+                                @endif
+                                </tbody>
+                            </table>
+                            @if($today_overview->count())
+                                <div class="px-6 py-2 text-center">
                                         <span class="text-sm text-gray-700">
                                             Showing a maximum of 10 users
                                         </span>
-                                    </div>
-                                @endif
-                            </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
-            @endcan
+            </div>
 
             <div
                 class="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
@@ -290,77 +286,74 @@
 
         {{-- Right col --}}
         <div class="lg:col-start-3 lg:col-span-1 space-y-6">
+            <section aria-labelledby="job-activity-feed-title" class="lg:col-start-3 lg:col-span-1">
+                <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
+                    <h2 id="job-activity-feed-title" class="text-lg font-medium text-gray-900">Recent Jobs</h2>
 
-            @can('submit jobs')
-                <section aria-labelledby="job-activity-feed-title" class="lg:col-start-3 lg:col-span-1">
-                    <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
-                        <h2 id="job-activity-feed-title" class="text-lg font-medium text-gray-900">Recent Jobs</h2>
-
-                        <!-- Job Activity Feed -->
-                        <div class="mt-6 flow-root">
-                            <ul class="-mb-8">
-                                @if($recent_jobs->count())
-                                    @foreach($recent_jobs as $job)
-                                        <li>
-                                            <div class="relative pb-8">
-                                                @if(!$loop->last)
-                                                    <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                                                          aria-hidden="true"></span>
-                                                @endif
-                                                <div class="relative flex space-x-3">
-                                                    <div>
-                                                        <a class="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white"
-                                                           href="{{ route('users.profile', $job->user) }}">
-                                                            <img class="w-8 h-8 rounded-full"
-                                                                 src="{{ $job->user->profile_picture ?? '' }}"
-                                                                 alt="{{ $job->user->username ?? 'Unknown Username' }}"/>
-                                                        </a>
-                                                    </div>
-                                                    <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                                                        <a href="{{ route('jobs.show', $job) }}">
-                                                            <p class="text-sm text-gray-500">
-                                                                Submitted a job to
-                                                                <span class="font-medium text-gray-900">
+                    <!-- Job Activity Feed -->
+                    <div class="mt-6 flow-root">
+                        <ul class="-mb-8">
+                            @if($recent_jobs->count())
+                                @foreach($recent_jobs as $job)
+                                    <li>
+                                        <div class="relative pb-8">
+                                            @if(!$loop->last)
+                                                <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
+                                                      aria-hidden="true"></span>
+                                            @endif
+                                            <div class="relative flex space-x-3">
+                                                <div>
+                                                    <a class="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white"
+                                                       href="{{ route('users.profile', $job->user) }}">
+                                                        <img class="w-8 h-8 rounded-full"
+                                                             src="{{ $job->user->profile_picture ?? '' }}"
+                                                             alt="{{ $job->user->username ?? 'Unknown Username' }}"/>
+                                                    </a>
+                                                </div>
+                                                <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                                    <a href="{{ route('jobs.show', $job) }}">
+                                                        <p class="text-sm text-gray-500">
+                                                            Submitted a job to
+                                                            <span class="font-medium text-gray-900">
                                                                     {{ $job->destinationCity->real_name }}
                                                                 </span>
-                                                            </p>
-                                                        </a>
-                                                        <div class="text-right text-sm whitespace-nowrap text-gray-500">
+                                                        </p>
+                                                    </a>
+                                                    <div class="text-right text-sm whitespace-nowrap text-gray-500">
                                                         <span title="{{ $job->created_at->toDateTimeString() }}">
                                                             {{ $job->created_at->isoFormat('HH:mm') }}
                                                         </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                @else
-                                    <li>
-                                        <div class="relative pb-8">
-                                            <div class="relative flex space-x-3">
-                                                <div>
-                                            <span
-                                                class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white">
-                                                <x-heroicon-o-emoji-sad class="w-8 h-8 text-gray-400"/>
-                                            </span>
-                                                </div>
-                                                <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                                                    <div>
-                                                        <p class="text-sm text-gray-500">
-                                                            Aww, there are no recent jobs!
-                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </li>
-                                @endif
-                            </ul>
-                        </div>
+                                @endforeach
+                            @else
+                                <li>
+                                    <div class="relative pb-8">
+                                        <div class="relative flex space-x-3">
+                                            <div>
+                                            <span
+                                                class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white">
+                                                <x-heroicon-o-emoji-sad class="w-8 h-8 text-gray-400"/>
+                                            </span>
+                                            </div>
+                                            <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                                <div>
+                                                    <p class="text-sm text-gray-500">
+                                                        Aww, there are no recent jobs!
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endif
+                        </ul>
                     </div>
-                </section>
-            @endcan
+                </div>
+            </section>
 
             <section aria-labelledby="news-title">
                 <div class="rounded-lg bg-white overflow-hidden shadow">
