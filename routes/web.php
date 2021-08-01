@@ -29,6 +29,7 @@ use App\Http\Livewire\ShowLeaderboardPage;
 use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
 use App\Http\Livewire\ShowNotificationsPage;
 use App\Http\Livewire\UserManagement\DriverInactivity\ShowIndexPage as DriverInactivityShowIndexPage;
+use App\Http\Livewire\Users\ShowAchievementsPage;
 use App\Http\Livewire\Users\ShowJobOverviewPage as UsersShowJobOverviewPage;
 use App\Http\Livewire\Jobs\Submit\ShowSelectGamePage as JobsShowSelectGamePage;
 use App\Http\Livewire\Jobs\Submit\ShowSubmitPage as JobsShowSubmitPage;
@@ -150,6 +151,8 @@ Route::get('profile', function () {
 
 Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
     Route::get('{id}', ShowProfilePage::class)->name('profile');
+
+    Route::get('{id}/achievements', ShowAchievementsPage::class)->name('achievements');
 
     Route::get('{user}/jobs', UsersShowJobOverviewPage::class)->name('jobs-overview');
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Alexmg86\LaravelSubQuery\Traits\LaravelSubQueryTrait;
+use Assada\Achievements\Achiever;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Traits\HasWallets;
@@ -29,7 +30,6 @@ class User extends Authenticatable implements Wallet
     use Notifiable;
     use HasRoles;
     use SoftDeletes;
-    use HasRoles;
     use HasWallet;
     use HasWallets;
     use HasSettingsTable;
@@ -37,6 +37,7 @@ class User extends Authenticatable implements Wallet
     use HasApiTokens;
     use RevisionableTrait;
     use Impersonate;
+    use Achiever;
 
     /**
      * The attributes that are mass assignable.

@@ -33,14 +33,14 @@
                                     {{ $notification->data['title'] ?? '' }}
                                 </button>
                             </div>
-                            <time datetime="2021-01-27T16:35"
+                            <time datetime="{{ $notification->created_at }}"
                                   class="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
                                 {{ $notification->created_at->diffForHumans(['short' => true]) }}
                             </time>
                         </form>
                         <div class="mt-1">
                             <p class="mt-1 text-sm text-gray-600 line-clamp-2">
-                                {{ $notification->data['content'] ?? '' }}
+                                {!! $notification->data['content'] ?? '' !!}
                             </p>
                         </div>
                     </li>
@@ -75,14 +75,14 @@
                                     {{ $notification->data['title'] ?? '' }}
                                 </button>
                             </div>
-                            <time datetime="2021-01-27T16:35"
+                            <time datetime="{{ $notification->created_at }}"
                                   class="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
                                 {{ $notification->created_at->diffForHumans(['short' => true]) }}
                             </time>
                         </form>
                         <div class="mt-1">
                             <p class="mt-1 text-sm text-gray-600 line-clamp-2">
-                                {{ $notification->data['content'] ?? '' }}
+                                {!! $notification->data['content'] ?? '' !!}
                             </p>
                         </div>
                     </li>
