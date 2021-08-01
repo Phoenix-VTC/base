@@ -58,12 +58,12 @@
 
                         <x-input.group label="X-Coordinate" for="x" :error="$errors->first('x')" col-span="2" help-text="Optional, but please try to specify.">
                             <x-input.text wire:model.lazy="x" type="number" id="x"
-                                          :error="$errors->first('x')" min="1" autocomplete="off"/>
+                                          :error="$errors->first('x')" autocomplete="off"/>
                         </x-input.group>
 
                         <x-input.group label="Z-Coordinate" for="z" :error="$errors->first('z')" col-span="2" help-text="Optional, but please try to specify.">
                             <x-input.text wire:model.lazy="z" type="number" id="z"
-                                          :error="$errors->first('z')" min="1" autocomplete="off"/>
+                                          :error="$errors->first('z')" autocomplete="off"/>
                         </x-input.group>
                     </div>
                 </div>
