@@ -65,6 +65,9 @@ class ScreenshotObserver
     public function deleted(Screenshot $screenshot)
     {
         Storage::disk('scaleway')->delete($screenshot->image_path);
+
+        // Remove one progress point on the screenshot achievement chain
+        $screenshot->user->removeProgress(new ScreenshotChain(), 1);
     }
 
     /**
