@@ -209,54 +209,54 @@
                         </p>
                     </div>
 
-                    <div class="mt-6 pt-3 flex flex-wrap mx-6 border-t">
+                    <div class="mt-3 pt-3 flex flex-wrap mx-6 border-t space-y-2">
                         @if($user->roles->count())
                             @foreach($user->roles as $role)
                                 @switch($role->name)
                                     @case('super admin')
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-purple-100 text-purple-800 mr-2 mb-2">
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-purple-100 text-purple-800 mr-2">
                                     {{ ucwords($role->name) }}
                                 </span>
                                     @break
                                     @case('management')
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2 mb-2"
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2"
                                         style="background-color: #ff0235">
                                     {{ ucwords($role->name) }}
                                 </span>
                                     @break
                                     @case('phoenix staff')
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2 mb-2"
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2"
                                         style="background-color: #a30000">
                                     {{ ucwords($role->name) }}
                                 </span>
                                     @break
                                     @case('driver')
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2 mb-2"
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2"
                                         style="background-color: #f48c06">
                                     {{ ucwords($role->name) }}
                                 </span>
                                     @break
                                     @case('early bird')
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2 mb-2"
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2"
                                         style="background-color: #3498db">
                                     {{ ucwords($role->name) }}
                                 </span>
                                     @break
                                     @case('beta tester')
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-black mr-2 mb-2"
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-black mr-2"
                                         style="background-color: #fbd19b">
                                     {{ ucwords($role->name) }}
                                 </span>
                                     @break
                                     @default
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-gray-800 mr-2 mb-2">
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-gray-800 mr-2">
                                     {{ ucwords($role->name) }}
                                 </span>
                                 @endswitch
@@ -269,20 +269,64 @@
                         @endif
                     </div>
 
-                    <div class="mt-6 pt-3 flex flex-col space-y-2 mx-6 border-t">
-                        <a href="{{ $user->steamPlayerSummary->profileUrl ?? '#' }}" target="_blank"
-                           class="relative group flex items-center space-x-2.5">
+                    <div class="mt-3 pt-3 flex flex-col space-y-2 mx-6 border-t">
+                        <p class="text-sm font-medium text-gray-800">
+                            Achievements unlocked: <span class="font-semibold">1</span>/10
+                        </p>
+                    </div>
+
+                    <div class="mt-3 pt-3 flex flex-col space-y-2 mx-6 border-t">
+                        <span class="relative group flex items-center space-x-2.5">
                             <i class="fab fa-steam w-4 text-gray-700 hover:text-gray-900"></i>
-                            <span class="text-sm text-gray-500 group-hover:text-gray-900 font-medium truncate">
+                            <a href="{{ $user->steamPlayerSummary->profileUrl ?? '#' }}" target="_blank"
+                               class="text-sm text-gray-500 group-hover:text-gray-900 font-medium truncate">
                                 {{ $user->steamPlayerSummary->personaName ?? 'Unknown Steam Name' }}
-                            </span>
-                        </a>
-                        <a href="https://truckersmp.com/user/{{ $user->truckersmp_id }}" target="_blank"
-                           class="relative group flex items-center space-x-2.5">
+                            </a>
+                        </span>
+                        <span class="relative group flex items-center space-x-2.5">
                             <i class="fas fa-truck w-4 text-gray-700 hover:text-gray-900"></i>
-                            <span class="text-sm text-gray-500 group-hover:text-gray-900 font-medium truncate">
+                            <a href="https://truckersmp.com/user/{{ $user->truckersmp_id }}" target="_blank"
+                               class="text-sm text-gray-500 group-hover:text-gray-900 font-medium truncate">
                                 {{ $user->truckersMpData['name'] ?? 'Unknown TruckersMP Name' }}
-                            </span>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <section aria-labelledby="achievements-title" class="lg:col-start-3 lg:col-span-1">
+                <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
+                    <h2 id="achievements-title" class="text-lg font-medium text-gray-900">Unlocked Achievements</h2>
+
+                    <div class="flow-root mt-6">
+                        <ul class="-my-5 divide-y divide-gray-200">
+                            @foreach($user->unlockedAchievements()->take(3) as $achievement)
+                                <li class="py-5">
+                                    <div class="flex justify-between">
+                                        <div class="min-w-0 flex-1">
+                                            <span class="text-sm font-semibold text-gray-800 focus:outline-none">
+                                                {{ $achievement->details->name }}
+                                            </span>
+                                        </div>
+                                        <time datetime="2021-01-27T16:35"
+                                              class="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
+                                            {{ $achievement->unlocked_at->diffForHumans(['short' => true]) }}
+                                        </time>
+                                    </div>
+
+                                    <div class="mt-1">
+                                        <p class="mt-1 text-sm text-gray-600 line-clamp-2">
+                                            {{ $achievement->details->description }}
+                                        </p>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="mt-6">
+                        <a href="{{ route('users.achievements', $user->id) }}"
+                           class="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            View all
                         </a>
                     </div>
                 </div>

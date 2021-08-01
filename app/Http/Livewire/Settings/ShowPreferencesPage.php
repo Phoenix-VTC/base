@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Settings;
 
+use App\Achievements\ImSpecial;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -51,6 +52,8 @@ class ShowPreferencesPage extends Component
         ]);
 
         Cache::forget('user_stats_' . Auth::id());
+
+        Auth::user()->unlock(new ImSpecial());
 
         session()->now('alert', ['type' => 'success', 'message' => 'Settings successfully updated!']);
     }
