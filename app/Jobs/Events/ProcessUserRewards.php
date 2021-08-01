@@ -6,6 +6,7 @@ use App\Achievements\EventAttendedChain;
 use App\Achievements\EventXPStonks;
 use App\Models\Event;
 use App\Models\User;
+use App\Notifications\Events\EventXPRewarded;
 use Bavix\Wallet\Models\Wallet;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -49,16 +50,13 @@ class ProcessUserRewards implements ShouldQueue
 
             $wallet->deposit($this->event->points, ['event_name' => $this->event->name]);
 
-            // Handle achievement unlocking
-            $user->addProgress(new EventAttendedChain(), 1);
+            $this->handleAchievements($user);
 
-            if ($this->event->points === 500) {
-                $user->unlock(new EventXPStonks());
-            }
+            $user->notify(new EventXPRewarded($attendee));
         }
     }
 
-    public function findOrCreateWallet(User $user): Wallet
+    private function findOrCreateWallet(User $user): Wallet
     {
         if (!$user->hasWallet('event-xp')) {
             $user->createWallet([
@@ -68,5 +66,14 @@ class ProcessUserRewards implements ShouldQueue
         }
 
         return $user->getWalletOrFail('event-xp');
+    }
+
+    private function handleAchievements(User $user): void
+    {
+        $user->addProgress(new EventAttendedChain(), 1);
+
+        if ($this->event->points === 500) {
+            $user->unlock(new EventXPStonks());
+        }
     }
 }
