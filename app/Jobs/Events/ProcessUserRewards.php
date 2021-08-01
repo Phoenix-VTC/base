@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Events;
 
+use App\Achievements\EventAttendedChain;
 use App\Models\Event;
 use App\Models\User;
 use Bavix\Wallet\Models\Wallet;
@@ -46,6 +47,8 @@ class ProcessUserRewards implements ShouldQueue
             $wallet = $this->findOrCreateWallet($user);
 
             $wallet->deposit($this->event->points, ['event_name' => $this->event->name]);
+
+            $user->addProgress(new EventAttendedChain(), 1);
         }
     }
 
