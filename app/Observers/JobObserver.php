@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Achievements\ATruckCarryingTrucks;
+use App\Achievements\HouseWarming;
 use App\Achievements\JobChain;
 use App\Achievements\JobStonks;
 use App\Achievements\LongDrive;
@@ -93,21 +94,24 @@ class JobObserver
     private function handleAchievements(Job $job): void
     {
         $user = $job->user;
-
         $user->addProgress(new JobChain(), 1);
 
+        // Long Drive
         if ($job->distance >= 2000) {
             $user->unlock(new LongDrive());
         }
 
+        // Money Man
         if ($job->total_income >= 100000) {
             $user->unlock(new MoneyMan());
         }
 
+        // Stonks
         if ($job->total_income >= 200000 && $job->distance >= 2200) {
             $user->unlock(new JobStonks());
         }
 
+        // A truck carrying trucks
         $truckCargos = [
             'kenworth trucks',
             'volvo trucks',
@@ -116,6 +120,11 @@ class JobObserver
 
         if (in_array(strtolower($job->cargo->name), $truckCargos, true)) {
             $user->unlock(new ATruckCarryingTrucks());
+        }
+
+        // House Warming
+        if ($job->cargo->name === 'Turnkey House Construction') {
+            $user->unlock(new HouseWarming());
         }
     }
 }
