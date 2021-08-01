@@ -303,7 +303,7 @@
 
                     <div class="flow-root mt-6">
                         <ul class="-my-5 divide-y divide-gray-200">
-                            @foreach($user->unlockedAchievements()->take(3) as $achievement)
+                            @forelse($user->unlockedAchievements()->take(3) as $achievement)
                                 <li class="py-5">
                                     <div class="flex justify-between">
                                         <div class="min-w-0 flex-1">
@@ -323,7 +323,19 @@
                                         </p>
                                     </div>
                                 </li>
-                            @endforeach
+                            @empty
+                                <div class="py-5 text-center">
+                                    <x-heroicon-o-emoji-sad class="mx-auto h-12 w-12 text-gray-400"/>
+                                    <h3 class="mt-2 text-sm font-medium text-gray-900">No unlocked achievements</h3>
+                                    <p class="mt-1 text-sm text-gray-500">
+                                        @if($user->id === Auth::id())
+                                            Go explore the PhoenixBase! Don't be shy.
+                                        @else
+                                            This user hasn't unlocked any achievements yet.
+                                        @endif
+                                    </p>
+                                </div>
+                            @endforelse
                         </ul>
                     </div>
                     <div class="mt-6">
@@ -349,12 +361,12 @@
                             </a>
 
                             @canBeImpersonated($user, $guard = null)
-                                <a
-                                    class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-                                    href="{{ route('impersonate', $user->id) }}">
-                                    <x-heroicon-s-identification class="-ml-1 mr-3 h-5 w-5"/>
-                                    Impersonate User
-                                </a>
+                            <a
+                                class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                                href="{{ route('impersonate', $user->id) }}">
+                                <x-heroicon-s-identification class="-ml-1 mr-3 h-5 w-5"/>
+                                Impersonate User
+                            </a>
                             @endCanBeImpersonated
 
                             @if($user->id !== Auth::id() && !$user->trashed())
