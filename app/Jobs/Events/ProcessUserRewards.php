@@ -6,6 +6,7 @@ use App\Achievements\EventAttendedChain;
 use App\Achievements\EventXPStonks;
 use App\Models\Event;
 use App\Models\User;
+use App\Notifications\Events\EventXPRewarded;
 use Bavix\Wallet\Models\Wallet;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -50,6 +51,8 @@ class ProcessUserRewards implements ShouldQueue
             $wallet->deposit($this->event->points, ['event_name' => $this->event->name]);
 
             $this->handleAchievements($user);
+
+            $user->notify(new EventXPRewarded($attendee));
         }
     }
 
