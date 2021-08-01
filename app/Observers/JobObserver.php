@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Achievements\JobChain;
+use App\Achievements\JobStonks;
 use App\Achievements\LongDrive;
 use App\Achievements\MoneyMan;
 use App\Models\Job;
@@ -31,6 +32,10 @@ class JobObserver
 
         if ($job->total_income >= 100000) {
             $user->unlock(new MoneyMan());
+        }
+
+        if ($job->total_income >= 200000 && $job->distance >= 2200) {
+            $user->unlock(new JobStonks());
         }
     }
 
