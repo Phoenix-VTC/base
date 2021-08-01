@@ -53,7 +53,7 @@ class ProcessUserRewards implements ShouldQueue
         }
     }
 
-    public function findOrCreateWallet(User $user): Wallet
+    private function findOrCreateWallet(User $user): Wallet
     {
         if (!$user->hasWallet('event-xp')) {
             $user->createWallet([
