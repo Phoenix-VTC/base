@@ -20,5 +20,5 @@ class OneScreenshot extends Achievement
     /*
      * A small description for the achievement
      */
-    public $description = 'The first of hopefully many.';
+    public $description = 'The first of many!';
 }
