@@ -25,29 +25,7 @@ class JobObserver
         $user->deposit($job->total_income, ['description' => 'Submitted job', 'job_id' => $job->id]);
 
         // Handle achievement unlocking
-        $user->addProgress(new JobChain(), 1);
-
-        if ($job->distance >= 2000) {
-            $user->unlock(new LongDrive());
-        }
-
-        if ($job->total_income >= 100000) {
-            $user->unlock(new MoneyMan());
-        }
-
-        if ($job->total_income >= 200000 && $job->distance >= 2200) {
-            $user->unlock(new JobStonks());
-        }
-
-        $truckCargos = [
-            'kenworth trucks',
-            'volvo trucks',
-            'scania trucks'
-        ];
-
-        if (in_array(strtolower($job->cargo->name), $truckCargos, true)) {
-            $user->unlock(new ATruckCarryingTrucks());
-        }
+        $this->handleAchievements($job);
     }
 
     /**
@@ -110,5 +88,34 @@ class JobObserver
     public function forceDeleted(Job $job): void
     {
         //
+    }
+
+    private function handleAchievements(Job $job): void
+    {
+        $user = $job->user;
+
+        $user->addProgress(new JobChain(), 1);
+
+        if ($job->distance >= 2000) {
+            $user->unlock(new LongDrive());
+        }
+
+        if ($job->total_income >= 100000) {
+            $user->unlock(new MoneyMan());
+        }
+
+        if ($job->total_income >= 200000 && $job->distance >= 2200) {
+            $user->unlock(new JobStonks());
+        }
+
+        $truckCargos = [
+            'kenworth trucks',
+            'volvo trucks',
+            'scania trucks'
+        ];
+
+        if (in_array(strtolower($job->cargo->name), $truckCargos, true)) {
+            $user->unlock(new ATruckCarryingTrucks());
+        }
     }
 }
