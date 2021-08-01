@@ -271,7 +271,10 @@
 
                     <div class="mt-3 pt-3 flex flex-col space-y-2 mx-6 border-t">
                         <p class="text-sm font-medium text-gray-800">
-                            Achievements unlocked: <span class="font-semibold">1</span>/10
+                            Achievements unlocked:
+                            <span class="font-semibold">{{ $user->unlockedAchievements()->count() }}</span>
+                            /
+                            {{ Assada\Achievements\Achievement::all()->count() }}
                         </p>
                     </div>
 
