@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Achievements\ATruckCarryingTrucks;
 use App\Achievements\JobChain;
 use App\Achievements\JobStonks;
 use App\Achievements\LongDrive;
@@ -36,6 +37,16 @@ class JobObserver
 
         if ($job->total_income >= 200000 && $job->distance >= 2200) {
             $user->unlock(new JobStonks());
+        }
+
+        $truckCargos = [
+            'kenworth trucks',
+            'volvo trucks',
+            'scania trucks'
+        ];
+
+        if (in_array(strtolower($job->cargo->name), $truckCargos, true)) {
+            $user->unlock(new ATruckCarryingTrucks());
         }
     }
 
