@@ -26,7 +26,7 @@
                                         {{ $notification->data['title'] ?? '' }}
                                     </button>
                                 </div>
-                                <time datetime="2021-01-27T16:35"
+                                <time datetime="{{ $notification->created_at }}"
                                       class="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
                                     {{ $notification->created_at->diffForHumans(['short' => true]) }}
                                 </time>
