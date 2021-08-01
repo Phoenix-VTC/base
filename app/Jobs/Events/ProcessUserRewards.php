@@ -49,12 +49,7 @@ class ProcessUserRewards implements ShouldQueue
 
             $wallet->deposit($this->event->points, ['event_name' => $this->event->name]);
 
-            // Handle achievement unlocking
-            $user->addProgress(new EventAttendedChain(), 1);
-
-            if ($this->event->points === 500) {
-                $user->unlock(new EventXPStonks());
-            }
+            $this->handleAchievements($user);
         }
     }
 
@@ -68,5 +63,14 @@ class ProcessUserRewards implements ShouldQueue
         }
 
         return $user->getWalletOrFail('event-xp');
+    }
+
+    private function handleAchievements(User $user): void
+    {
+        $user->addProgress(new EventAttendedChain(), 1);
+
+        if ($this->event->points === 500) {
+            $user->unlock(new EventXPStonks());
+        }
     }
 }
