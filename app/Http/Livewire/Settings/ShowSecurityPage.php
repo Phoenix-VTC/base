@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Settings;
 
+use App\Events\PasswordChanged;
 use App\Rules\MatchOldPassword;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -42,6 +43,8 @@ class ShowSecurityPage extends Component
         Auth::user()->update([
             'password' => Hash::make($this->new_password)
         ]);
+
+        event(new PasswordChanged(Auth::user()));
 
         Auth::logout();
 
