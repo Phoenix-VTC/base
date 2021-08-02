@@ -21,6 +21,7 @@
         "blade-ui-kit/blade-ui-kit": "^0.2.0",
         "cornford/googlmapper": "3.*",
         "danharrin/livewire-rate-limiting": "^0.2.0",
+        "dingo/api": "^3.0.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "glorand/laravel-model-settings": "^4.2",
