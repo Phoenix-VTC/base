@@ -31,7 +31,7 @@ class DiscordBotController extends ApiController
      */
     public function findUserByDiscordId($discordId): Response
     {
-        $user = User::select(['id', 'username', 'steam_id', 'truckersmp_id', 'discord->nickname as discord_nickname', 'created_at'])
+        $user = User::select(['id', 'username', 'steam_id', 'truckersmp_id', 'discord->nickname as discord_nickname', 'profile_picture_path', 'created_at'])
             ->whereJsonContains('discord->id', $discordId)
             ->firstOrFail();
 
