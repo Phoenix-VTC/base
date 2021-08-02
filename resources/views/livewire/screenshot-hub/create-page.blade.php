@@ -38,7 +38,7 @@
 
                         @if($screenshot)
                             <div class="mt-3 block w-full h-full rounded-lg overflow-hidden">
-                                <img src="{{ $screenshot->temporaryUrl() }}" alt="Your screenshot" class="object-cover">
+                                <img src="{{ $screenshot->temporaryUrl() }}" alt="Your screenshot" class="object-cover rounded-lg">
                             </div>
                         @endif
                     </x-input.group>

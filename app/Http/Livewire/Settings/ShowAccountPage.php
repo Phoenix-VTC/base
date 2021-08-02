@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Settings;
 
+use App\Achievements\UserSetAProfileBanner;
+use App\Achievements\UserSetAProfilePicture;
 use App\Models\User;
 use App\Rules\UsernameNotReserved;
 use Illuminate\Support\Facades\Auth;
@@ -56,11 +58,15 @@ class ShowAccountPage extends Component
         if ($this->profile_picture) {
             Storage::disk('scaleway')->delete($this->user->profile_picture_path);
             $profile_picture = $this->profile_picture->storePublicly('user/' . $this->user->id, 'scaleway');
+
+            $this->user->unlock(new UserSetAProfilePicture());
         }
 
         if ($this->profile_banner) {
             Storage::disk('scaleway')->delete($this->user->profile_banner_path);
             $profile_banner = $this->profile_banner->storePublicly('user/' . $this->user->id, 'scaleway');
+
+            $this->user->unlock(new UserSetAProfileBanner());
         }
 
         $this->user->update([

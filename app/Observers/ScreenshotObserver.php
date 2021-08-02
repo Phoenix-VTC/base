@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Achievements\ScreenshotChain;
 use App\Models\Screenshot;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -16,6 +17,8 @@ class ScreenshotObserver
      */
     public function created(Screenshot $screenshot): void
     {
+        $screenshot->user->addProgress(new ScreenshotChain(), 1);
+
         Http::post(config('services.discord.webhooks.screenshot-hub'), [
             'embeds' => [
                 [
@@ -62,6 +65,9 @@ class ScreenshotObserver
     public function deleted(Screenshot $screenshot)
     {
         Storage::disk('scaleway')->delete($screenshot->image_path);
+
+        // Remove one progress point on the screenshot achievement chain
+        $screenshot->user->removeProgress(new ScreenshotChain(), 1);
     }
 
     /**

@@ -12,7 +12,7 @@
     <div class="flex-1 px-4 flex justify-between">
         <div class="flex-1 flex"></div>
         <div class="ml-4 flex items-center md:ml-6">
-            <x-dropdown icon="o-bell" title="View notifications" width="80" :notification-dot-color="Auth::user()->unreadNotifications->count() ? 'red' : ''">
+            <x-dropdown icon="o-bell" title="View notifications" width="w-80" :notification-dot-color="Auth::user()->unreadNotifications->count() ? 'bg-red-400' : ''">
                 <ul class="divide-y divide-gray-200">
                     @forelse(Auth::user()->unreadNotifications as $notification)
                         <li class="relative bg-white py-5 px-4 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
@@ -26,14 +26,14 @@
                                         {{ $notification->data['title'] ?? '' }}
                                     </button>
                                 </div>
-                                <time datetime="2021-01-27T16:35"
+                                <time datetime="{{ $notification->created_at }}"
                                       class="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
                                     {{ $notification->created_at->diffForHumans(['short' => true]) }}
                                 </time>
                             </form>
                             <div class="mt-1">
                                 <p class="mt-1 text-sm text-gray-600 line-clamp-2">
-                                    {{ Str::words($notification->data['content'] ?? '', 10) }}
+                                    {!! Str::words($notification->data['content'] ?? '', 10) !!}
                                 </p>
                             </div>
                         </li>
@@ -78,6 +78,11 @@
                     <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                        role="menuitem">
                         Profile
+                    </a>
+
+                    <a href="{{ route('users.achievements', Auth::id()) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                       role="menuitem">
+                        Achievements
                     </a>
 
                     <a href="{{ route('my-wallet') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
