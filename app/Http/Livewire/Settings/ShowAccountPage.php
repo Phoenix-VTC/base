@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Settings;
 
 use App\Achievements\UserSetAProfileBanner;
 use App\Achievements\UserSetAProfilePicture;
+use App\Events\EmailChanged;
 use App\Models\User;
 use App\Rules\UsernameNotReserved;
 use Illuminate\Support\Facades\Auth;
@@ -67,6 +68,10 @@ class ShowAccountPage extends Component
             $profile_banner = $this->profile_banner->storePublicly('user/' . $this->user->id, 'scaleway');
 
             $this->user->unlock(new UserSetAProfileBanner());
+        }
+
+        if ($this->email !== $this->user->email) {
+            event(new EmailChanged($this->user));
         }
 
         $this->user->update([

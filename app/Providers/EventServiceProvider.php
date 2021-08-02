@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\EmailChanged;
 use App\Events\PasswordChanged;
 use App\Listeners\SendAchievementUnlockedNotification;
+use App\Listeners\SendEmailChangedNotification;
 use App\Listeners\SendPasswordChangedNotification;
 use App\Listeners\SendPasswordResetNotification;
 use App\Models\Download as DownloadModel;
@@ -42,6 +44,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         PasswordChanged::class => [
             SendPasswordChangedNotification::class,
+        ],
+        EmailChanged::class => [
+            SendEmailChangedNotification::class,
         ]
     ];
 
