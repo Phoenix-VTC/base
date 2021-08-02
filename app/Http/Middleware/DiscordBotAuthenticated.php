@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class DiscordBotAuthenticated
 {
@@ -20,7 +19,9 @@ class DiscordBotAuthenticated
         $token = config('app.discord-bot-api-token', '');
 
         if ($request->header('token') !== $token) {
-            throw new AccessDeniedHttpException();
+            return response()->json([
+                'message' => 'Incorrect token.'
+            ], 403);
         }
 
         return $next($request);
