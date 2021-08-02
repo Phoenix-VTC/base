@@ -21,6 +21,7 @@ use App\Http\Livewire\GameData\Cities\ShowIndexPage as CitiesShowIndexPage;
 use App\Http\Livewire\GameData\Cities\ShowEditPage as CitiesShowEditPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowEditPage as CompaniesShowEditPage;
+use App\Http\Livewire\Jobs\ShowRequestGameDataPage;
 use App\Http\Livewire\ScreenshotHub\ShowShowPage as ScreenshotHubShowShowPage;
 use App\Http\Livewire\ScreenshotHub\ShowCreatePage as ScreenshotHubShowCreatePage;
 use App\Http\Livewire\ScreenshotHub\ShowIndexPage as ScreenshotHubShowIndexPage;
@@ -28,6 +29,7 @@ use App\Http\Livewire\ShowLeaderboardPage;
 use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
 use App\Http\Livewire\ShowNotificationsPage;
 use App\Http\Livewire\UserManagement\DriverInactivity\ShowIndexPage as DriverInactivityShowIndexPage;
+use App\Http\Livewire\Users\ShowAchievementsPage;
 use App\Http\Livewire\Users\ShowJobOverviewPage as UsersShowJobOverviewPage;
 use App\Http\Livewire\Jobs\Submit\ShowSelectGamePage as JobsShowSelectGamePage;
 use App\Http\Livewire\Jobs\Submit\ShowSubmitPage as JobsShowSubmitPage;
@@ -117,12 +119,14 @@ Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage 
     Route::get('companies/{company}/edit', CompaniesShowEditPage::class)->name('companies.edit');
 });
 
-Route::prefix('jobs')->name('jobs.')->middleware(['auth', 'can:submit jobs'])->group(function () {
+Route::prefix('jobs')->name('jobs.')->middleware(['auth'])->group(function () {
     Route::get('personal-overview', JobsShowPersonalOverviewPage::class)->name('personal-overview');
     Route::get('choose-game', JobsShowSelectGamePage::class)->name('choose-game');
     Route::get('submit/{game_id}', JobsShowSubmitPage::class)
         ->whereNumber('game_id')
         ->name('submit');
+
+    Route::get('request-game-data', ShowRequestGameDataPage::class)->name('request-game-data');
 
     Route::prefix('{job}')->group(function () {
         Route::get('/', JobsShowShowPage::class)->name('show');
@@ -147,6 +151,8 @@ Route::get('profile', function () {
 
 Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
     Route::get('{id}', ShowProfilePage::class)->name('profile');
+
+    Route::get('{id}/achievements', ShowAchievementsPage::class)->name('achievements');
 
     Route::get('{user}/jobs', UsersShowJobOverviewPage::class)->name('jobs-overview');
 
