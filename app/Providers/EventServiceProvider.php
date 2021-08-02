@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Listeners\SendAchievementUnlockedNotification;
 use App\Models\Download as DownloadModel;
 use App\Models\Screenshot as ScreenshotModel;
 use App\Observers\DownloadObserver;
 use App\Models\Job as JobModel;
 use App\Observers\JobObserver;
 use App\Observers\ScreenshotObserver;
+use Assada\Achievements\Event\Unlocked as UnlockedAchievement;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -28,6 +30,9 @@ class EventServiceProvider extends ServiceProvider
         SocialiteWasCalled::class => [
             'SocialiteProviders\\Discord\\DiscordExtendSocialite@handle',
         ],
+        UnlockedAchievement::class => [
+            SendAchievementUnlockedNotification::class,
+        ]
     ];
 
     /**

@@ -173,6 +173,7 @@ return [
         NotificationChannels\Discord\DiscordServiceProvider::class,
         \SocialiteProviders\Manager\ServiceProvider::class,
         Lab404\Impersonate\ImpersonateServiceProvider::class,
+        Assada\Achievements\AchievementsServiceProvider::class,
         Cornford\Googlmapper\MapperServiceProvider::class,
         GoogleMaps\ServiceProvider\GoogleMapsServiceProvider::class,
 
