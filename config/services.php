@@ -37,7 +37,8 @@ return [
         'member_events_channel_id' => env('DISCORD_MEMBER_EVENTS_CHANNEL_ID'),
 
         'webhooks' => [
-            'screenshot-hub' => env('DISCORD_SCREENSHOT_HUB_WEBHOOK')
+            'screenshot-hub' => env('DISCORD_SCREENSHOT_HUB_WEBHOOK'),
+            'human-resources' => env('DISCORD_HUMAN_RESOURCES_WEBHOOK'),
         ],
 
         // Socialite stuff
