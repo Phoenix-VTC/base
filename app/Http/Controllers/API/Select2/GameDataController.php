@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\API\Select2;
 
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Controller;
 use App\Models\Cargo;
 use App\Models\City;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class GameDataController extends ApiController
+class GameDataController extends Controller
 {
     public function indexCities(Request $request, int $game)
     {
