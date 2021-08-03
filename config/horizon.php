@@ -173,6 +173,7 @@ return [
             'memory' => 128,
             'tries' => 1,
             'nice' => 0,
+            'timeout' => 900,
         ],
     ],
 
@@ -182,12 +183,14 @@ return [
                 'maxProcesses' => 10,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
+                'timeout' => 900,
             ],
         ],
 
         'local' => [
             'supervisor-1' => [
                 'maxProcesses' => 3,
+                'timeout' => 900,
             ],
         ],
     ],
