@@ -16,16 +16,6 @@ class CheckDriverBans implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->onQueue('redis-long-running');
-    }
-
-    /**
      * Execute the job.
      *
      * @return void
