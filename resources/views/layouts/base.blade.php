@@ -9,19 +9,7 @@
     @else
         <title>{{ config('app.name') }}</title>
     @endif
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180"
-          href="{{ asset('img/favicons/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32"
-          href="{{ asset('img/favicons/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16"
-          href="{{ asset('img/favicons/favicon-16x16.png') }}">
-    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
-    <link rel="mask-icon" href="{{ asset('img/favicons/safari-pinned-tab.svg') }}" color="#5bbad5">
-    <link rel="shortcut icon" href="{{ asset('img/favicons/favicon.ico') }}">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-config" content="{{ asset('browserconfig.xml') }}">
-    <meta name="theme-color" content="#18181B">
+    @laravelPWA
     <!-- Open Graph / Facebook Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ route('dashboard') }}">
@@ -43,7 +31,8 @@
           content="{{ asset('img/meta-image.png') }}">
 
     <!-- Fonts -->
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="preload" href="https://rsms.me/inter/inter.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://rsms.me/inter/inter.css"></noscript>
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ url(mix('css/app.css')) }}">
@@ -55,11 +44,13 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @auth
-        <!-- Appzi: Capture Insightful Feedback -->
-        <script async src="https://w.appzi.io/w.js?token=tb4V7"></script>
-        <!-- End Appzi -->
-    @endauth
+    @production
+        @auth
+            <!-- Appzi: Capture Insightful Feedback -->
+            <script async src="https://w.appzi.io/w.js?token=tb4V7"></script>
+            <!-- End Appzi -->
+        @endauth
+    @endproduction
 
     @stack('scripts')
 </head>

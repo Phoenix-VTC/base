@@ -191,13 +191,13 @@
                     <div class="relative h-40">
                         <img class="absolute h-full w-full object-cover"
                              src="{{ $user->profile_banner }}"
-                             alt="{{ $user->username }}'s Profile Banner">
+                             alt="{{ $user->username }}'s Profile Banner" height="160" width="370">
                     </div>
 
                     <div
                         class="relative shadow mx-auto h-24 w-24 -my-12 border-white rounded-full overflow-hidden border-4">
                         <img class="object-cover w-full h-full" src="{{ $user->profile_picture }}"
-                             alt="{{ $user->username }}'s Profile Picture">
+                             alt="{{ $user->username }}'s Profile Picture" height="96" width="96">
                     </div>
 
                     <div class="mt-16">

@@ -62,7 +62,7 @@
                         <span class="sr-only">Open user menu</span>
                         <img class="h-8 w-8 rounded-full"
                              src="{{ Auth::user()->profile_picture }}"
-                             alt="{{ Auth::user()->username }}">
+                             alt="{{ Auth::user()->username }}" height="32" width="32">
                     </button>
                 </div>
                 <div
