@@ -6,7 +6,9 @@ use App\Jobs\Recruitment\ProcessAcceptation;
 use App\Mail\DriverApplication\ApplicationDenied;
 use App\Models\Application;
 use App\Models\Comment;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -37,6 +39,8 @@ class ShowApplication extends Component
         $this->application->claimed_by = Auth::id();
         $this->application->save();
 
+        $this->sendDiscordWebhook('Application Claimed', '**' . Auth::user()->username . '** claimed **' . $this->application->username . '\'s** application.', 14429954);
+
         session()->now('alert', ['type' => 'info', 'message' => 'Application claimed']);
     }
 
@@ -44,6 +48,8 @@ class ShowApplication extends Component
     {
         $this->application->claimed_by = null;
         $this->application->save();
+
+        $this->sendDiscordWebhook('Application Unclaimed', '**' . Auth::user()->username . '** unclaimed **' . $this->application->username . '\'s** application.', 14429954);
 
         session()->now('alert', ['type' => 'info', 'message' => 'Application unclaimed']);
     }
@@ -62,11 +68,15 @@ class ShowApplication extends Component
         // Empty the comment textarea
         $this->comment = '';
 
+        $this->sendDiscordWebhook('New Application Comment', $commentData['comment'], 14429954);
+
         session()->now('alert', ['type' => 'success', 'message' => 'Comment submitted!']);
     }
 
     public function deleteComment($uuid): void
     {
+        $this->sendDiscordWebhook('Application Comment Deleted', 'By **' . Auth::user()->username . '**', 14429954);
+
         $comment = Comment::where('uuid', $uuid)->firstOrFail();
 
         $comment->delete();
@@ -95,6 +105,8 @@ class ShowApplication extends Component
         $this->application->status = 'accepted';
         $this->application->save();
 
+        $this->sendDiscordWebhook('Application Accepted', 'By **' . Auth::user()->username . '**', 5763719);
+
         session()->now('alert', ['type' => 'success', 'message' => 'Application successfully <b>accepted</b>!']);
     }
 
@@ -108,6 +120,8 @@ class ShowApplication extends Component
             'name' => $this->application->username
         ]])->send(new ApplicationDenied($this->application));
 
+        $this->sendDiscordWebhook('Application Denied', 'By **' . Auth::user()->username . '**', 15548997);
+
         session()->now('alert', ['type' => 'success', 'message' => 'Application successfully <b>denied</b>!']);
     }
 
@@ -115,6 +129,8 @@ class ShowApplication extends Component
     {
         $this->application->status = $status;
         $this->application->save();
+
+        $this->sendDiscordWebhook('Application Status Changed: **' . ucwords(str_replace("_", " ", $status)) . '**', 'By **' . Auth::user()->username . '**', 5793266);
 
         session()->now('alert', ['type' => 'info', 'message' => 'Application status changed to <b>' . str_replace("_", " ", $status) . '</b>']);
     }
@@ -130,5 +146,24 @@ class ShowApplication extends Component
     public function hydrate(): void
     {
         $this->application = $this->application->fresh();
+    }
+
+    private function sendDiscordWebhook(string $title, string $description, int $color): void
+    {
+        Http::post(config('services.discord.webhooks.recruitment'), [
+            'embeds' => [
+                [
+                    'title' => $title,
+                    'url' => route('recruitment.show', $this->application->uuid),
+                    'description' => $description,
+                    'color' => $color,
+                    'footer' => [
+                        'text' => 'PhoenixBase',
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                    ],
+                    'timestamp' => Carbon::now(),
+                ]
+            ],
+        ]);
     }
 }
