@@ -103,7 +103,7 @@ Route::prefix('event-management')->name('event-management.')->middleware(['auth'
     Route::get('create', EventsManagementShowCreate::class)->name('create');
     Route::get('{event}/edit', EventsManagementShowEdit::class)->name('edit');
     Route::post('{event}/delete', [EventManagementController::class, 'delete'])->name('delete');
-    Route::get('{id}/manage-attendees', EventsManagementShowAttendeeManagement::class)->name('attendee-management');
+    Route::get('{id}/manage-attendees', EventsManagementShowAttendeeManagement::class)->name('attendee-management')->whereNumber('id');
     Route::post('{event}/reward-event-xp', [EventManagementController::class, 'rewardEventXP'])->name('reward-event-xp');
     Route::get('{event}/revisions', EventsManagementShowRevisionsPage::class)->name('revisions');
 });
@@ -150,17 +150,17 @@ Route::get('profile', function () {
 })->middleware('auth')->name('profile');
 
 Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
-    Route::get('{id}', ShowProfilePage::class)->name('profile');
+    Route::get('{id}', ShowProfilePage::class)->name('profile')->whereNumber('id');
 
-    Route::get('{id}/achievements', ShowAchievementsPage::class)->name('achievements');
+    Route::get('{id}/achievements', ShowAchievementsPage::class)->name('achievements')->whereNumber('id');
 
     Route::get('{user}/jobs', UsersShowJobOverviewPage::class)->name('jobs-overview');
 
     Route::prefix('{id}')->middleware('can:manage users')->group(function () {
-        Route::get('edit', UserManagementShowEditPage::class)->name('edit');
+        Route::get('edit', UserManagementShowEditPage::class)->name('edit')->whereNumber('id');
 
-        Route::get('remove-profile-picture', [UserManagementUserController::class, 'removeProfilePicture'])->name('removeProfilePicture');
-        Route::get('remove-profile-banner', [UserManagementUserController::class, 'removeProfileBanner'])->name('removeProfileBanner');
+        Route::get('remove-profile-picture', [UserManagementUserController::class, 'removeProfilePicture'])->name('removeProfilePicture')->whereNumber('id');
+        Route::get('remove-profile-banner', [UserManagementUserController::class, 'removeProfileBanner'])->name('removeProfileBanner')->whereNumber('id');
     });
 });
 
