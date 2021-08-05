@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('cloudflare:reload')->daily();
         $schedule->job(new CheckDriverBans)->daily();
+        $schedule->command('horizon:snapshot')->everyFiveMinutes();
     }
 
     /**

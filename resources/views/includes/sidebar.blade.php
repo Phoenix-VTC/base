@@ -30,8 +30,8 @@
                 </button>
             </div>
             <div class="flex-shrink-0 flex items-center px-4">
-                <img class="h-12 w-auto"
-                     src="{{ asset('img/logo.png') }}" alt="Phoenix">
+                <img class="h-12 w-12 w-auto"
+                     src="{{ asset('img/logo.png') }}" height="48" width="48" alt="Phoenix">
             </div>
             <div class="mt-5 flex-1 h-0 overflow-y-auto" @click.away="sidebarOpen = false">
                 <nav class="px-2 space-y-1">
@@ -48,8 +48,8 @@
     <div class="flex flex-col w-64">
         <div class="flex flex-col h-0 flex-1">
             <div class="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
-                <img class="h-14 w-auto"
-                     src="{{ asset('img/logo.png') }}" alt="Phoenix">
+                <img class="h-14 w-14 w-auto"
+                     src="{{ asset('img/logo.png') }}" height="56" width="56" alt="Phoenix">
             </div>
             <div class="flex-1 flex flex-col overflow-y-auto">
                 <nav class="flex-1 px-2 py-4 bg-gray-800 space-y-1">
