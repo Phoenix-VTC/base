@@ -127,6 +127,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'discord-bot-api-token' => env('DISCORD_BOT_API_TOKEN'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -173,6 +175,9 @@ return [
         NotificationChannels\Discord\DiscordServiceProvider::class,
         \SocialiteProviders\Manager\ServiceProvider::class,
         Lab404\Impersonate\ImpersonateServiceProvider::class,
+        Assada\Achievements\AchievementsServiceProvider::class,
+        Cornford\Googlmapper\MapperServiceProvider::class,
+        GoogleMaps\ServiceProvider\GoogleMapsServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -236,6 +241,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Mapper' => Cornford\Googlmapper\Facades\MapperFacade::class,
+        'GoogleMaps' => GoogleMaps\Facade\GoogleMapsFacade::class,
 
     ],
 
