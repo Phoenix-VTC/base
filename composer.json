@@ -39,6 +39,7 @@
         "monicahq/laravel-cloudflare": "^1.7",
         "rappasoft/laravel-livewire-tables": "^1.10",
         "sentry/sentry-laravel": "^2.3",
+        "silviolleite/laravelpwa": "^2.0",
         "socialiteproviders/discord": "^4.1",
         "spatie/laravel-permission": "^3.18",
         "spatie/laravel-ray": "^1.12",

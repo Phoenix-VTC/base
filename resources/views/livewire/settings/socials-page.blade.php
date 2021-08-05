@@ -30,7 +30,7 @@
                         <div class="py-4 flex">
                             <img class="h-10 w-10 rounded-full"
                                  src="{{ $user->discord['avatar'] }}"
-                                 alt="{{ $user->discord['name'] }}'s profile picture">
+                                 alt="{{ $user->discord['name'] }}'s profile picture" height="40" width="40">
                             <div class="ml-3 flex flex-col">
                                 <span class="text-sm font-medium text-gray-900">{{ $user->discord['nickname'] }}</span>
                                 <span class="text-sm text-gray-500">{{ $user->discord['id'] }}</span>

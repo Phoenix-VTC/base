@@ -47,7 +47,7 @@
                                      @else
                                      src="{{ $user->profile_picture }}"
                                      @endif
-                                     alt="Your profile picture">
+                                     alt="Your profile picture" height="48" width="48">
                                 <div class="ml-4 flex">
                                     <div
                                         class="relative bg-white py-2 px-3 border border-blue-gray-300 rounded-md shadow-sm flex items-center cursor-pointer hover:bg-blue-gray-50 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-blue-gray-50 focus-within:ring-blue-500">
@@ -82,7 +82,7 @@
                                          @else
                                          src="{{ $user->profile_banner }}"
                                          @endif
-                                         alt="Your Profile Banner">
+                                         alt="Your Profile Banner" height="384" width="160">
                                 </div>
                             </div>
 
