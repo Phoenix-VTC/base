@@ -295,39 +295,42 @@
                         <ul class="-mb-8">
                             @if($recent_jobs->count())
                                 @foreach($recent_jobs as $job)
-                                    <li>
-                                        <div class="relative pb-8">
-                                            @if(!$loop->last)
-                                                <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                                                      aria-hidden="true"></span>
-                                            @endif
-                                            <div class="relative flex space-x-3">
-                                                <div>
-                                                    <a class="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white"
-                                                       href="{{ route('users.profile', $job->user) }}">
-                                                        <img class="w-8 h-8 rounded-full"
-                                                             src="{{ $job->user->profile_picture ?? '' }}"
-                                                             alt="{{ $job->user->username ?? 'Unknown Username' }}" height="32" width="32"/>
-                                                    </a>
-                                                </div>
-                                                <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                                                    <a href="{{ route('jobs.show', $job) }}">
-                                                        <p class="text-sm text-gray-500">
-                                                            Submitted a job to
-                                                            <span class="font-medium text-gray-900">
+                                    @if($job->user()->exists())
+                                        <li>
+                                            <div class="relative pb-8">
+                                                @if(!$loop->last)
+                                                    <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
+                                                          aria-hidden="true"></span>
+                                                @endif
+                                                <div class="relative flex space-x-3">
+                                                    <div>
+                                                        <a class="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white"
+                                                           href="{{ route('users.profile', $job->user) }}">
+                                                            <img class="w-8 h-8 rounded-full"
+                                                                 src="{{ $job->user->profile_picture ?? '' }}"
+                                                                 alt="{{ $job->user->username ?? 'Unknown Username' }}"
+                                                                 height="32" width="32"/>
+                                                        </a>
+                                                    </div>
+                                                    <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                                        <a href="{{ route('jobs.show', $job) }}">
+                                                            <p class="text-sm text-gray-500">
+                                                                Submitted a job to
+                                                                <span class="font-medium text-gray-900">
                                                                     {{ $job->destinationCity->real_name }}
                                                                 </span>
-                                                        </p>
-                                                    </a>
-                                                    <div class="text-right text-sm whitespace-nowrap text-gray-500">
+                                                            </p>
+                                                        </a>
+                                                        <div class="text-right text-sm whitespace-nowrap text-gray-500">
                                                         <span title="{{ $job->created_at->toDateTimeString() }}">
                                                             {{ $job->created_at->isoFormat('HH:mm') }}
                                                         </span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </li>
+                                        </li>
+                                    @endif
                                 @endforeach
                             @else
                                 <li>
