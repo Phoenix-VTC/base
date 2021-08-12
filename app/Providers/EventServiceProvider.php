@@ -6,6 +6,7 @@ use App\Events\EmailChanged;
 use App\Events\PasswordChanged;
 use App\Listeners\SendAchievementUnlockedNotification;
 use App\Listeners\SendEmailChangedNotification;
+use App\Listeners\SendFailedJobDiscordNotification;
 use App\Listeners\SendPasswordChangedNotification;
 use App\Listeners\SendPasswordResetNotification;
 use App\Models\Download as DownloadModel;
@@ -20,6 +21,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Laravel\Horizon\Events\JobFailed;
 use SocialiteProviders\Manager\SocialiteWasCalled;
 
 class EventServiceProvider extends ServiceProvider
@@ -47,6 +49,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         EmailChanged::class => [
             SendEmailChangedNotification::class,
+        ],
+        JobFailed::class => [
+            SendFailedJobDiscordNotification::class,
         ]
     ];
 
