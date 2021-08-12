@@ -40,6 +40,7 @@ return [
             'screenshot-hub' => env('DISCORD_SCREENSHOT_HUB_WEBHOOK'),
             'human-resources' => env('DISCORD_HUMAN_RESOURCES_WEBHOOK'),
             'recruitment' => env('DISCORD_RECRUITMENT_WEBHOOK'),
+            'development-updates' => env('DISCORD_DEVELOPMENT_UPDATES_WEBHOOK'),
         ],
 
         // Socialite stuff
