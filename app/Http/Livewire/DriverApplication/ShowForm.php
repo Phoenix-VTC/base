@@ -6,6 +6,7 @@ use App\Mail\DriverApplication\ApplicationReceived;
 use App\Models\Application;
 use App\Notifications\Recruitment\NewDriverApplication;
 use App\Rules\UsernameNotReserved;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Mail;
 
@@ -281,8 +282,8 @@ class ShowForm extends Component
     {
         return [
             'discord_username' => ['required', 'min:3', 'regex:/^.{3,32}#[0-9]{4}$/i'],
-            'username' => ['required', 'min:3', 'unique:users', new UsernameNotReserved],
-            'email' => 'required|email|unique:users',
+            'username' => ['required', 'min:3', Rule::unique('users')->whereNull('deleted_at'), new UsernameNotReserved],
+            'email' => ['required', 'email', Rule::unique('users')->whereNull('deleted_at')],
             'date_of_birth' => 'required|date',
             'country' => 'required',
             'another_vtc' => 'required|boolean',
