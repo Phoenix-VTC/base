@@ -45,7 +45,8 @@
         "spatie/laravel-ray": "^1.12",
         "syntax/steam-api": "^2.2",
         "venturecraft/revisionable": "1.*",
-        "willvincent/feeds": "^2.2"
+        "willvincent/feeds": "^2.2",
+        "restcord/restcord": "dev-guzzle72"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
@@ -59,6 +60,12 @@
         "phpunit/phpunit": "^9.3.3",
         "roave/security-advisories": "dev-master"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:Phoenix-VTC/restcord.git"
+        }
+    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
