@@ -10,6 +10,7 @@ use App\Achievements\LongDrive;
 use App\Achievements\MoneyMan;
 use App\Models\Job;
 use App\Models\User;
+use App\Notifications\DriverLevelUp;
 use Bavix\Wallet\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -119,6 +120,9 @@ class JobObserver
 
             // Handle Discord webhook notification
             $this->sendDriverLevelUpDiscordMessage($user, $job);
+
+            // Send a level up notification
+            $user->notify(new DriverLevelUp($user));
         }
     }
 
