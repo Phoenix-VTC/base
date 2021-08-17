@@ -157,4 +157,13 @@ class Job extends Model
 
         return false;
     }
+
+    public function getHasPendingGameDataAttribute(): bool
+    {
+        if ($this->pickupCompany->approved && $this->destinationCompany->approved && $this->pickupCity->approved && $this->destinationCity->approved && $this->cargo->approved) {
+            return false;
+        }
+
+        return true;
+    }
 }

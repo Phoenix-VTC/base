@@ -67,11 +67,7 @@ class ShowEditPage extends Component
                 $this->company->requester->notify(new GameDataRequestApproved($this->company));
             }
 
-            // If the pending company has jobs attached, change the statuses to incomplete
-            if ($this->company->pickupJobs->count() || $this->company->destinationJobs->count()) {
-                $this->company->pickupJobs()->update(['status' => JobStatus::Incomplete]);
-                $this->company->destinationJobs()->update(['status' => JobStatus::Incomplete]);
-            }
+            $approved = true;
         } else {
             session()->flash('alert', ['type' => 'success', 'message' => 'Company <b>' . $this->company->name . '</b> successfully updated.']);
         }
@@ -85,6 +81,24 @@ class ShowEditPage extends Component
             'game_id' => (int)$this->game_id,
             'approved' => true,
         ]);
+
+        if (($approved ?? false)) {
+            // If the pending company has jobs attached, loop through those jobs
+            // and change the status to incomplete if those jobs don't have any pending game data
+            if ($this->company->pickupJobs->count() || $this->company->destinationJobs->count()) {
+                foreach ($this->company->pickupJobs as $job) {
+                    if (!$job->hasPendingGameData) {
+                        $job->update(['status' => JobStatus::Incomplete]);
+                    }
+                }
+
+                foreach ($this->company->destinationJobs as $job) {
+                    if (!$job->hasPendingGameData) {
+                        $job->update(['status' => JobStatus::Incomplete]);
+                    }
+                }
+            }
+        }
 
         return redirect()->route('game-data.companies');
     }

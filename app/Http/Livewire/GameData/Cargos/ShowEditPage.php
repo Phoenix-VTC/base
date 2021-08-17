@@ -67,10 +67,7 @@ class ShowEditPage extends Component
                 $this->cargo->requester->notify(new GameDataRequestApproved($this->cargo));
             }
 
-            // If the pending cargo has jobs attached, change the statuses to incomplete
-            if ($this->cargo->jobs->count()) {
-                $this->cargo->jobs()->update(['status' => JobStatus::Incomplete]);
-            }
+            $approved = true;
         } else {
             session()->flash('alert', ['type' => 'success', 'message' => 'Cargo <b>' . $this->cargo->name . '</b> successfully updated.']);
         }
@@ -84,6 +81,18 @@ class ShowEditPage extends Component
             'world_of_trucks' => (bool)$this->wot,
             'approved' => true,
         ]);
+
+        if (($approved ?? false)) {
+            // If the pending city has jobs attached, loop through those jobs
+            // and change the status to incomplete if those jobs don't have any pending game data
+            if ($this->cargo->jobs->count()) {
+                foreach ($this->cargo->jobs as $job) {
+                    if (!$job->hasPendingGameData) {
+                        $job->update(['status' => JobStatus::Incomplete]);
+                    }
+                }
+            }
+        }
 
         return redirect()->route('game-data.cargos');
     }
