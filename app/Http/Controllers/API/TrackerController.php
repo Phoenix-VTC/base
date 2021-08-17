@@ -90,7 +90,7 @@ class TrackerController extends Controller
             'load_damage' => $data->JobEvent->CargoDamage,
             'estimated_income' => $data->Job->Income,
             'total_income' => $data->Job->Income,
-            'distance' => ceil($data->JobEvent->Distance / 1000)
+            'distance' => ceil($data->JobEvent->Distance / 1000) // TODO: Test with ATS
         ]);
 
         // Set the job to PendingVerification if a city/company/cargo was recently created
@@ -104,7 +104,7 @@ class TrackerController extends Controller
         if (!$job->wasRecentlyCreated) {
             $job->update([
                 'load_damage' => $data->JobEvent->CargoDamage,
-                'distance' => ceil($data->JobEvent->Distance / 1000)
+                'distance' => ceil($data->JobEvent->Distance / 1000) // TODO: Test with ATS
             ]);
         }
 
@@ -153,6 +153,7 @@ class TrackerController extends Controller
 
     private function findOrCreateCargo(object $cargo, int $gameId): Cargo
     {
+        // TODO: Test with ATS
         if ($gameId === 1) {
             $weight = round($cargo->Mass / 1000);
         } else {
