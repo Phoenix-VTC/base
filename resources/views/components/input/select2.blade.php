@@ -62,6 +62,6 @@
 
 <div class="flex mt-1" wire:ignore>
     <select
-        class="form-select block w-full h-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 select2-{{ $attributes['id'] }}" {{ $attributes }}>
+        class="form-select block w-full h-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:ring-blue focus:border-blue-300 sm:text-sm sm:leading-5 select2-{{ $attributes['id'] }}" {{ $attributes }}>
     </select>
 </div>

@@ -39,7 +39,7 @@
         x-bind:value="value"
         type="text"
         placeholder="Please choose a date @if($options['enableTime'])and time @endif"
-        {{ $attributes->merge(['class' => 'mt-1 w-full shadow-sm sm:text-sm border border-gray-300 placeholder-gray-400 rounded-md' . ($error ? ' border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red' : '') . ($leadingIcon ? ' block pl-10' : '') . ($trailingIcon ? ' block pr-10' : '')]) }}
+        {{ $attributes->merge(['class' => 'mt-1 w-full shadow-sm sm:text-sm border border-gray-300 placeholder-gray-400 rounded-md' . ($error ? ' border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red' : '') . ($leadingIcon ? ' block pl-10' : '') . ($trailingIcon ? ' block pr-10' : '')]) }}
     />
 
     @if($trailingIcon)
