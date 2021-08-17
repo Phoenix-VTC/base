@@ -8,6 +8,7 @@ use App\Achievements\JobChain;
 use App\Achievements\JobStonks;
 use App\Achievements\LongDrive;
 use App\Achievements\MoneyMan;
+use App\Enums\JobStatus;
 use App\Models\Job;
 use Bavix\Wallet\Models\Transaction;
 
@@ -21,6 +22,10 @@ class JobObserver
      */
     public function created(Job $job): void
     {
+        if ($job->status->value !== JobStatus::Complete) {
+            return;
+        }
+
         $user = $job->user;
 
         $user->deposit($job->total_income, ['description' => 'Submitted job', 'job_id' => $job->id]);
@@ -37,6 +42,10 @@ class JobObserver
      */
     public function updated(Job $job): void
     {
+        if ($job->status->value !== JobStatus::Complete) {
+            return;
+        }
+
         $user = $job->user;
 
         // Try to find the previous job transaction(s) and sum them
@@ -63,6 +72,10 @@ class JobObserver
      */
     public function deleted(Job $job): void
     {
+        if ($job->status->value !== JobStatus::Complete) {
+            return;
+        }
+
         $job->user->withdraw($job->total_income, ['description' => 'Deleted job', 'job_id' => $job->id]);
 
         // Remove one progress point on the job achievement chain
