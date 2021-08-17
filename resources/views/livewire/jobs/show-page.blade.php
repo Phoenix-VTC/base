@@ -319,18 +319,20 @@
                                 <div class="relative flex justify-center"></div>
                             </div>
 
-                            <div class="flex items-center space-x-2">
-                                <x-heroicon-s-clipboard-check class="h-5 w-5 text-gray-400"/>
-                                <span class="text-gray-900 text-sm font-medium">Finished on</span>
-                                <span class="text-gray-900 text-sm font-bold">
-                                    {{-- Only show date if time is 00:00:00 --}}
-                                    @if($job->finished_at->isStartOfDay())
-                                        {{ $job->finished_at->format('M d, Y') }}
-                                    @else
-                                        {{ $job->finished_at->toDayDateTimeString() }}
-                                    @endif
-                                </span>
-                            </div>
+                            @if($job->finished_at)
+                                <div class="flex items-center space-x-2">
+                                    <x-heroicon-s-clipboard-check class="h-5 w-5 text-gray-400"/>
+                                    <span class="text-gray-900 text-sm font-medium">Finished on</span>
+                                    <span class="text-gray-900 text-sm font-bold">
+                                        {{-- Only show date if time is 00:00:00 --}}
+                                        @if($job->finished_at->isStartOfDay())
+                                            {{ $job->finished_at->format('M d, Y') }}
+                                        @else
+                                            {{ $job->finished_at->toDayDateTimeString() }}
+                                        @endif
+                                    </span>
+                                </div>
+                            @endif
 
                             <div class="flex items-center space-x-2">
                                 <x-heroicon-s-calendar class="h-5 w-5 text-gray-400"/>
