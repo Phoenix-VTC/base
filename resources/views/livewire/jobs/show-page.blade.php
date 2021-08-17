@@ -391,13 +391,13 @@
                 </div>
             </section>
 
-            @if(Auth::user()->can('manage users') || ($job->user_id === Auth::id() && $job->created_at->addHour()->isFuture()))
+            @if($job->canEdit)
                 <section aria-labelledby="actions-title" class="lg:col-start-3 lg:col-span-1">
                     <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
-                        @if($job->user_id === Auth::id() && Auth::user()->cannot('manage users'))
-                            <h2 id="actions-title" class="text-lg font-medium text-gray-900">Actions</h2>
-                        @else
+                        @if(Auth::user()->can('manage users'))
                             <h2 id="actions-title" class="text-lg font-medium text-red-700">Staff Actions</h2>
+                        @else
+                            <h2 id="actions-title" class="text-lg font-medium text-gray-900">Actions</h2>
                         @endif
 
                         <div class="mt-6 flex flex-col justify-stretch space-y-3">

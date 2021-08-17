@@ -16,16 +16,16 @@ class ShowEditPage extends Component
     public string $pickup_company = '';
     public string $destination_company = '';
     public string $cargo = '';
-    public string $finished_at = '';
+    public ?string $finished_at = '';
     public string $distance = '';
     public string $load_damage = '';
     public string $estimated_income = '';
     public string $total_income = '';
-    public string $comments = '';
+    public ?string $comments = '';
 
     public function mount(): void
     {
-        if ($this->job->user_id !== Auth::id() || (Auth::user()->cannot('manage users') && $this->job->user_id === Auth::id() && $this->job->created_at->addHour()->isPast())) {
+        if (!$this->job->canEdit) {
             abort(403, 'You don\'t have permission to edit this job.');
         }
 

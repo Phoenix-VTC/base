@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Auth;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Job extends Model
@@ -135,5 +136,25 @@ class Job extends Model
     public function getPricePerDistanceAttribute(): int
     {
         return round($this->estimated_income / $this->distance, 2);
+    }
+
+    public function getCanEditAttribute(): bool
+    {
+        // Return true if the user can manage users
+        if (Auth::user()->can('manage users')) {
+            return true;
+        }
+
+        // Return false if the job is pending verification
+        if ($this->status->value === JobStatus::PendingVerification) {
+            return false;
+        }
+
+        // Return true if the user owns the job, and an hour since creation hasn't passed
+        if ($this->user_id === Auth::id() && $this->created_at->addHour()->isFuture()) {
+            return true;
+        }
+
+        return false;
     }
 }
