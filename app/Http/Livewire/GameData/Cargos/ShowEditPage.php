@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\GameData\Cargos;
 
+use App\Enums\JobStatus;
 use App\Models\Cargo;
 use App\Notifications\GameDataRequestApproved;
 use App\Notifications\GameDataRequestDenied;
@@ -64,6 +65,11 @@ class ShowEditPage extends Component
             // Only notify the user if the user still exists
             if ($this->cargo->requester()->exists()) {
                 $this->cargo->requester->notify(new GameDataRequestApproved($this->cargo));
+            }
+
+            // If the pending cargo has jobs attached, change the statuses to incomplete
+            if ($this->cargo->jobs->count()) {
+                $this->cargo->jobs()->update(['status' => JobStatus::Incomplete]);
             }
         } else {
             session()->flash('alert', ['type' => 'success', 'message' => 'Cargo <b>' . $this->cargo->name . '</b> successfully updated.']);

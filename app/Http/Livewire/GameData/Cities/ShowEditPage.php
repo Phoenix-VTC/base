@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\GameData\Cities;
 
+use App\Enums\JobStatus;
 use App\Models\City;
 use App\Notifications\GameDataRequestApproved;
 use App\Notifications\GameDataRequestDenied;
@@ -70,6 +71,12 @@ class ShowEditPage extends Component
             // Only notify the user if the user still exists
             if ($this->city->requester()->exists()) {
                 $this->city->requester->notify(new GameDataRequestApproved($this->city));
+            }
+
+            // If the pending city has jobs attached, change the statuses to incomplete
+            if ($this->city->pickupJobs->count() || $this->city->destinationJobs->count()) {
+                $this->city->pickupJobs()->update(['status' => JobStatus::Incomplete]);
+                $this->city->destinationJobs()->update(['status' => JobStatus::Incomplete]);
             }
         } else {
             session()->flash('alert', ['type' => 'success', 'message' => 'City <b>' . $this->city->name . '</b> successfully updated.']);

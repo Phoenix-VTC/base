@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\GameData\Companies;
 
+use App\Enums\JobStatus;
 use App\Models\Company;
 use App\Notifications\GameDataRequestApproved;
 use App\Notifications\GameDataRequestDenied;
@@ -64,6 +65,12 @@ class ShowEditPage extends Component
             // Only notify the user if the user still exists
             if ($this->company->requester()->exists()) {
                 $this->company->requester->notify(new GameDataRequestApproved($this->company));
+            }
+
+            // If the pending company has jobs attached, change the statuses to incomplete
+            if ($this->company->pickupJobs->count() || $this->company->destinationJobs->count()) {
+                $this->company->pickupJobs()->update(['status' => JobStatus::Incomplete]);
+                $this->company->destinationJobs()->update(['status' => JobStatus::Incomplete]);
             }
         } else {
             session()->flash('alert', ['type' => 'success', 'message' => 'Company <b>' . $this->company->name . '</b> successfully updated.']);
