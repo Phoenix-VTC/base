@@ -31,6 +31,18 @@
 <div>
     <x-alert/>
 
+    @if($job->user_id === Auth::id() && $job->status->value === \App\Enums\JobStatus::PendingVerification)
+        <x-app-ui::alert icon="iconic-information" color="warning">
+            <x-slot name="heading">
+                Pending verification
+            </x-slot>
+
+            A city, company or cargo used in this job doesn't exist in our database yet. That's why this job is on pending verification.
+            <br>
+            Once this new game data entry has been approved, you will be able to submit your job!
+        </x-app-ui::alert>
+    @endif
+
     <div
         class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
         <div class="space-y-6 lg:col-start-1 lg:col-span-2">
@@ -340,7 +352,7 @@
                                     @break
                                     @case('PendingVerification')
                                     <span
-                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
                                         Pending Verification
                                     </span>
                                     @break
