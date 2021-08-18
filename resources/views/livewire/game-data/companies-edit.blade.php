@@ -13,7 +13,7 @@
 <div>
     <x-alert/>
 
-    @if($company->pickupJobs->count() || $company->destinationJobs->count())
+    @if(!$company->approved && ($company->pickupJobs->count() || $company->destinationJobs->count()))
         <x-app-ui::alert icon="iconic-information" class="mb-5">
             <x-slot name="heading">
                 Heads-up!
