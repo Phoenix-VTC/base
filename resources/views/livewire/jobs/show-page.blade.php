@@ -370,6 +370,12 @@
                                         Unknown Status
                                     </span>
                                 @endswitch
+                                @if($job->tracker_job)
+                                    <span
+                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                                        <x-heroicon-o-location-marker class="h-4 w-4"/>
+                                    </span>
+                                @endif
                             </div>
 
                             <div class="mt-6 flex items-center">

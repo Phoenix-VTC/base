@@ -24,6 +24,7 @@ class Job extends Model
 
     protected $casts = [
         'status' => JobStatus::class,
+        'tracker_job' => 'boolean',
         'started_at' => 'datetime',
         'finished_at' => 'datetime',
         'created_at' => 'datetime',
