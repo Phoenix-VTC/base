@@ -91,6 +91,11 @@ class TrackerController extends Controller
             'distance' => ceil($data->JobEvent->Distance / 1000) // TODO: Test with ATS
         ]);
 
+        // Return if the found job is already completed (just to be sure)
+        if ($job->status === JobStatus::Complete) {
+            return;
+        }
+
         // Set the job to PendingVerification if a city/company/cargo was recently created
         if ($pickupCity->wasRecentlyCreated || $destinationCity->wasRecentlyCreated || $pickupCompany->wasRecentlyCreated || $destinationCompany->wasRecentlyCreated || $cargo->wasRecentlyCreated) {
             $job->update([
