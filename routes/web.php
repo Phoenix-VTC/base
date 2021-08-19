@@ -22,6 +22,7 @@ use App\Http\Livewire\GameData\Cities\ShowEditPage as CitiesShowEditPage;
 use App\Http\Livewire\GameData\Companies\ShowIndexPage as CompaniesShowIndexPage;
 use App\Http\Livewire\GameData\Companies\ShowEditPage as CompaniesShowEditPage;
 use App\Http\Livewire\Jobs\ShowRequestGameDataPage;
+use App\Http\Livewire\Jobs\ShowVerifyPage as JobsShowVerifyPage;
 use App\Http\Livewire\ScreenshotHub\ShowShowPage as ScreenshotHubShowShowPage;
 use App\Http\Livewire\ScreenshotHub\ShowCreatePage as ScreenshotHubShowCreatePage;
 use App\Http\Livewire\ScreenshotHub\ShowIndexPage as ScreenshotHubShowIndexPage;
@@ -131,6 +132,7 @@ Route::prefix('jobs')->name('jobs.')->middleware(['auth'])->group(function () {
     Route::prefix('{job}')->group(function () {
         Route::get('/', JobsShowShowPage::class)->name('show');
         Route::get('edit', JobsShowEditPage::class)->name('edit');
+        Route::get('verify', JobsShowVerifyPage::class)->name('verify');
     });
 });
 

@@ -2,6 +2,16 @@
 
 @section('title', "Viewing Job #$job->id")
 
+@section('actions')
+    @if($job->user_id === Auth::id() && $job->status->value === \App\Enums\JobStatus::Incomplete)
+        <div class="ml-3">
+            <x-app-ui::button tag="a" href="{{ route('jobs.verify', $job->id) }}" icon="iconic-check">
+                Verify job
+            </x-app-ui::button>
+        </div>
+    @endif
+@endsection
+
 @push('scripts')
     <script type="text/javascript">
         function addRoute(map) {
