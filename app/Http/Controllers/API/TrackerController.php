@@ -85,6 +85,7 @@ class TrackerController extends Controller
             'cargo_id' => ($cargo = $this->findOrCreateCargo($data->Cargo, $gameId))->id,
             'estimated_income' => $data->Job->Income,
             'total_income' => $data->Job->Income,
+            'tracker_job' => true,
         ], [
             'started_at' => Carbon::now(),
             'load_damage' => $data->JobEvent->CargoDamage,
