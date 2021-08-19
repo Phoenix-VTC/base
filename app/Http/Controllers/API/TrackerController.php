@@ -59,8 +59,6 @@ class TrackerController extends Controller
         // Decode the request content
         $data = json_decode($request->getContent());
 
-//        ray($data);
-
         if ($data->Job->Income !== 0) {
             $this->processJobData($data);
         }
@@ -84,12 +82,12 @@ class TrackerController extends Controller
             'destination_city_id' => ($destinationCity = $this->findOrCreateCity($data->Job->DestinationCity, $gameId))->id,
             'pickup_company_id' => ($pickupCompany = $this->findOrCreateCompany($data->Job->SourceCompany, $gameId))->id,
             'destination_company_id' => ($destinationCompany = $this->findOrCreateCompany($data->Job->DestinationCompany, $gameId))->id,
-            'cargo_id' => ($cargo = $this->findOrCreateCargo($data->Cargo, $gameId))->id
+            'cargo_id' => ($cargo = $this->findOrCreateCargo($data->Cargo, $gameId))->id,
+            'estimated_income' => $data->Job->Income,
+            'total_income' => $data->Job->Income,
         ], [
             'started_at' => Carbon::now(),
             'load_damage' => $data->JobEvent->CargoDamage,
-            'estimated_income' => $data->Job->Income,
-            'total_income' => $data->Job->Income,
             'distance' => ceil($data->JobEvent->Distance / 1000) // TODO: Test with ATS
         ]);
 
@@ -136,10 +134,19 @@ class TrackerController extends Controller
         ]);
     }
 
-    private function findOrCreateCompany(string $sourceCompany, int $gameId): Company
+    private function findOrCreateCompany(string $companyName, int $gameId): Company
     {
+        if (!$companyName) {
+            return Company::firstOrCreate([
+                'name' => 'Special Transport',
+            ], [
+                'dlc' => 'Special Transport',
+                'game_id' => $gameId,
+            ]);
+        }
+
         return Company::firstOrCreate([
-            'name' => $sourceCompany,
+            'name' => $companyName,
         ], [
             'category' => 'Unknown (Automatic Tracker Request)',
             'specialization' => 'Unknown (Automatic Tracker Request)',
