@@ -24,10 +24,11 @@ class UniqueInApplications implements Rule
         $response = $client->request('GET', 'https://api.truckersmp.com/v2/player/' . $value)->getBody();
         $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
-        return !(bool)Application::whereJsonContains('steam_data->steamID64', $response['response']['steamID64'])
-            ->orWhere('truckersmp_id', $response['response']['id'])
-            ->where('status', '!=', 'accepted')
-            ->count();
+        return Application::where(function ($query) use ($response) {
+            $query->whereJsonContains('steam_data->steamID64', $response['response']['steamID64'])
+                ->orWhere('truckersmp_id', $response['response']['id']);
+        })->whereNotIn('status', ['accepted', 'denied'])
+            ->doesntExist();
     }
 
     /**
