@@ -97,8 +97,8 @@ class TrackerController extends Controller
             return;
         }
 
-        // Set the job to PendingVerification if a city/company/cargo was recently created
-        if ($pickupCity->wasRecentlyCreated || $destinationCity->wasRecentlyCreated || $pickupCompany->wasRecentlyCreated || $destinationCompany->wasRecentlyCreated || $cargo->wasRecentlyCreated) {
+        // Set the job to PendingVerification if a city/company/cargo is unapproved
+        if (!$pickupCity->approved || !$destinationCity->approved || !$pickupCompany->approved || !$destinationCompany->approved || !$cargo->approved) {
             $job->update([
                 'status' => JobStatus::PendingVerification
             ]);
