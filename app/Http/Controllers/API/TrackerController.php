@@ -40,7 +40,7 @@ class TrackerController extends Controller
         }
 
         // Decode the token
-        $token = base64_decode($token);
+//        $token = base64_decode($token);
 
         // Find the Personal Access Token
         $token = PersonalAccessToken::findToken($token);
