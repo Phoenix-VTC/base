@@ -136,7 +136,11 @@ class Job extends Model
      */
     public function getPricePerDistanceAttribute(): int
     {
-        return round($this->estimated_income / $this->distance, 2);
+        try {
+            return round($this->estimated_income / $this->distance, 2);
+        } catch (\ErrorException $e) {
+            return 0;
+        }
     }
 
     public function getCanEditAttribute(): bool
