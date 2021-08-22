@@ -99,25 +99,21 @@ class TrackerController extends Controller
 
         // Set the job to PendingVerification if a city/company/cargo is unapproved
         if (!$pickupCity->approved || !$destinationCity->approved || !$pickupCompany->approved || !$destinationCompany->approved || !$cargo->approved) {
-            $job->update([
-                'status' => JobStatus::PendingVerification
-            ]);
+            $job->status = JobStatus::PendingVerification;
         }
 
         // Update the cargo damage & distance if the job wasn't recently created
         if (!$job->wasRecentlyCreated) {
-            $job->update([
-                'load_damage' => $data->JobEvent->CargoDamage,
-                'distance' => ceil($data->JobEvent->Distance / 1000) // TODO: Test with ATS
-            ]);
+            $job->load_damage = round($data->JobEvent->CargoDamage);
+            $job->distance = ceil($data->JobEvent->Distance / 1000); // TODO: Test with ATS
         }
 
         // Add finished_at if job is finished or delivered
         if ($data->JobEvent->JobFinished || $data->JobEvent->JobDelivered) {
-            $job->update([
-                'finished_at' => Carbon::now()
-            ]);
+            $job->finished_at = Carbon::now();
         }
+
+        $job->save();
 
         // Delete job if cancelled
         if ($data->JobEvent->JobCancelled) {
