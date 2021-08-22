@@ -107,10 +107,9 @@ class TrackerController extends Controller
             $job->status = JobStatus::PendingVerification;
         }
 
-        // Update the cargo damage & distance if the job wasn't recently created
+        // Update the cargo damage if the job wasn't recently created
         if (!$job->wasRecentlyCreated) {
             $job->load_damage = round($data->JobEvent->CargoDamage);
-            $job->distance = ceil($data->JobEvent->Distance / 1000); // TODO: Test with ATS
         }
 
         // Add finished_at if job is finished or delivered
