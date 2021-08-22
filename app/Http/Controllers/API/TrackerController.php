@@ -97,6 +97,11 @@ class TrackerController extends Controller
             return;
         }
 
+        // Update the distance if the JobEvent distance is higher than the current saved distance
+        if ($distance = ceil($data->JobEvent->Distance / 1000) > $job->distance) {
+            $job->distance = $distance;
+        }
+
         // Set the job to PendingVerification if a city/company/cargo is unapproved
         if (!$pickupCity->approved || !$destinationCity->approved || !$pickupCompany->approved || !$destinationCompany->approved || !$cargo->approved) {
             $job->status = JobStatus::PendingVerification;
