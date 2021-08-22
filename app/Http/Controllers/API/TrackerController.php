@@ -109,7 +109,7 @@ class TrackerController extends Controller
 
         // Update the cargo damage if the job wasn't recently created
         if (!$job->wasRecentlyCreated) {
-            $job->load_damage = round($data->JobEvent->CargoDamage);
+            $job->load_damage = round($data->JobEvent->CargoDamage * 100);
         }
 
         // Add finished_at if job is finished or delivered
