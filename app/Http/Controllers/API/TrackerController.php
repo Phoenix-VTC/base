@@ -71,6 +71,7 @@ class TrackerController extends Controller
     private function processJobData(object $data): void
     {
         $gameId = $data->game->game->id;
+        $cargoDamage = round($data->job->cargo->damage / 0.01);
 
         // Find or create the job
         $job = Job::firstOrCreate([
@@ -86,7 +87,7 @@ class TrackerController extends Controller
             'tracker_job' => true,
         ], [
             'started_at' => Carbon::now(),
-            'load_damage' => round($data->job->cargo->damage),
+            'load_damage' => $cargoDamage,
             'distance' => ceil($data->job->plannedDistance->km) // TODO: Test with ATS
         ]);
 
@@ -106,7 +107,7 @@ class TrackerController extends Controller
         }
 
         // Update the cargo damage
-        $job->load_damage = $data->job->cargo->damage;
+        $job->load_damage = $cargoDamage;
 
         $job->save();
     }
