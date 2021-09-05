@@ -73,6 +73,16 @@ class TrackerController extends Controller
         $gameId = $data->game->game->id;
         $cargoDamage = round($data->job->cargo->damage / 0.01);
 
+        // Handle distance conversion
+        if ($gameId === 2) {
+            $distance = $data->job->plannedDistance->miles;
+        } else {
+            $distance = $data->job->plannedDistance->km;
+        }
+
+        // Round the distance up
+        $distance = ceil($distance);
+
         // Find or create the job
         $job = Job::firstOrCreate([
             'user_id' => $this->user->id,
@@ -88,7 +98,7 @@ class TrackerController extends Controller
         ], [
             'started_at' => Carbon::now(),
             'load_damage' => $cargoDamage,
-            'distance' => ceil($data->job->plannedDistance->km) // TODO: Test with ATS
+            'distance' => $distance
         ]);
 
         // Return if the found job is already completed (just to be sure)
