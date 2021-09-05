@@ -89,8 +89,8 @@ class TrackerController extends Controller
             'game_id' => $gameId,
             'pickup_city_id' => ($pickupCity = $this->findOrCreateCity($data->job->source->city->name, $gameId))->id,
             'destination_city_id' => ($destinationCity = $this->findOrCreateCity($data->job->destination->city->name, $gameId))->id,
-            'pickup_company_id' => ($pickupCompany = $this->findOrCreateCompany($data->job->source->company->name, $gameId))->id,
-            'destination_company_id' => ($destinationCompany = $this->findOrCreateCompany($data->job->destination->company->name, $gameId))->id,
+            'pickup_company_id' => ($pickupCompany = $this->findOrCreateCompany($data->job->source->company->name, $gameId, $data->job->isSpecial))->id,
+            'destination_company_id' => ($destinationCompany = $this->findOrCreateCompany($data->job->destination->company->name, $gameId, $data->job->isSpecial))->id,
             'cargo_id' => ($cargo = $this->findOrCreateCargo($data->job->cargo, $gameId))->id,
             'estimated_income' => $data->job->income,
             'total_income' => $data->job->income,
@@ -132,9 +132,10 @@ class TrackerController extends Controller
         ]);
     }
 
-    private function findOrCreateCompany(string $companyName, int $gameId): Company
+    private function findOrCreateCompany(string $companyName, int $gameId, bool $isSpecial): Company
     {
-        if (!$companyName) {
+        // Handle special transport job
+        if ($isSpecial) {
             return Company::firstOrCreate([
                 'name' => 'Special Transport',
             ], [
@@ -158,11 +159,13 @@ class TrackerController extends Controller
 
     private function findOrCreateCargo(object $cargo, int $gameId): Cargo
     {
-        // TODO: Test with ATS
-        if ($gameId === 1) {
-            $weight = round($cargo->mass / 1000);
+        // Handle cargo weight conversion
+        if ($gameId === 2) {
+            // Convert kilos to pounds
+            $weight = round($cargo->mass * 2.205);
         } else {
-            $weight = $cargo->mass;
+            // Convert kilos to tonnes
+            $weight = round($cargo->mass / 1000);
         }
 
         return Cargo::firstOrCreate([
