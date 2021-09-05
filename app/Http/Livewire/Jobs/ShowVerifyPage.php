@@ -49,6 +49,16 @@ class ShowVerifyPage extends Component
             'total_income' => $this->job->total_income,
             'comments' => $this->job->comments,
         ]);
+
+        // If job is ATS
+        if ($this->job->game_id === 2) {
+            // Convert distance to miles
+            $this->distance = round($this->job->distance / 1.609);
+
+            // Convert incomes to dollars
+            $this->estimated_income = round($this->job->estimated_income / 0.83);
+            $this->total_income = round($this->job->total_income / 0.83);
+        }
     }
 
     public function rules(): array
