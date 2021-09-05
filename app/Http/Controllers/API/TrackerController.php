@@ -77,8 +77,8 @@ class TrackerController extends Controller
         $job = Job::firstOrCreate([
             'user_id' => $this->user->id,
             'game_id' => $gameId,
-            'pickup_city_id' => ($pickupCity = $this->findOrCreateCity($data->job->source->city->id, $gameId))->id,
-            'destination_city_id' => ($destinationCity = $this->findOrCreateCity($data->job->destination->city->id, $gameId))->id,
+            'pickup_city_id' => ($pickupCity = $this->findOrCreateCity($data->job->source->city->name, $gameId))->id,
+            'destination_city_id' => ($destinationCity = $this->findOrCreateCity($data->job->destination->city->name, $gameId))->id,
             'pickup_company_id' => ($pickupCompany = $this->findOrCreateCompany($data->job->source->company->name, $gameId))->id,
             'destination_company_id' => ($destinationCompany = $this->findOrCreateCompany($data->job->destination->company->name, $gameId))->id,
             'cargo_id' => ($cargo = $this->findOrCreateCargo($data->job->cargo, $gameId))->id,
