@@ -13,11 +13,12 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use JsonException;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class TrackerController extends Controller
 {
-    const UNAUTHORIZED = 'Unauthorized';
+    public const UNAUTHORIZED = 'Unauthorized';
 
     private User $user;
 
@@ -26,10 +27,11 @@ class TrackerController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws JsonException
      */
     public function handleRequest(Request $request): JsonResponse
     {
-        $token = $request->header('x-userpassword');
+        $token = $request->bearerToken();
 
         // Check if the token is provided
         if (!$token) {
@@ -57,9 +59,9 @@ class TrackerController extends Controller
         $this->user = $token->tokenable;
 
         // Decode the request content
-        $data = json_decode($request->getContent());
+        $data = json_decode($request->getContent(), false, 512, JSON_THROW_ON_ERROR);
 
-        if ($data->Job->Income !== 0) {
+        if ($data->job->income !== 0) {
             $this->processJobData($data);
         }
 
@@ -68,28 +70,24 @@ class TrackerController extends Controller
 
     private function processJobData(object $data): void
     {
-        if ($data->Game->GameName === 'ETS2') {
-            $gameId = 1;
-        } else {
-            $gameId = 2;
-        }
+        $gameId = $data->game->game->id;
 
         // Find or create the job
         $job = Job::firstOrCreate([
             'user_id' => $this->user->id,
             'game_id' => $gameId,
-            'pickup_city_id' => ($pickupCity = $this->findOrCreateCity($data->Job->SourceCity, $gameId))->id,
-            'destination_city_id' => ($destinationCity = $this->findOrCreateCity($data->Job->DestinationCity, $gameId))->id,
-            'pickup_company_id' => ($pickupCompany = $this->findOrCreateCompany($data->Job->SourceCompany, $gameId))->id,
-            'destination_company_id' => ($destinationCompany = $this->findOrCreateCompany($data->Job->DestinationCompany, $gameId))->id,
-            'cargo_id' => ($cargo = $this->findOrCreateCargo($data->Cargo, $gameId))->id,
-            'estimated_income' => $data->Job->Income,
-            'total_income' => $data->Job->Income,
+            'pickup_city_id' => ($pickupCity = $this->findOrCreateCity($data->job->source->city->id, $gameId))->id,
+            'destination_city_id' => ($destinationCity = $this->findOrCreateCity($data->job->destination->city->id, $gameId))->id,
+            'pickup_company_id' => ($pickupCompany = $this->findOrCreateCompany($data->job->source->company->name, $gameId))->id,
+            'destination_company_id' => ($destinationCompany = $this->findOrCreateCompany($data->job->destination->company->name, $gameId))->id,
+            'cargo_id' => ($cargo = $this->findOrCreateCargo($data->job->cargo, $gameId))->id,
+            'estimated_income' => $data->job->income,
+            'total_income' => $data->job->income,
             'tracker_job' => true,
         ], [
             'started_at' => Carbon::now(),
-            'load_damage' => $data->JobEvent->CargoDamage,
-            'distance' => ceil($data->JobEvent->Distance / 1000) // TODO: Test with ATS
+            'load_damage' => round($data->job->cargo->damage),
+            'distance' => ceil($data->job->plannedDistance->km) // TODO: Test with ATS
         ]);
 
         // Return if the found job is already completed (just to be sure)
@@ -98,7 +96,7 @@ class TrackerController extends Controller
         }
 
         // Update the distance if the JobEvent distance is higher than the current saved distance
-        if ($distance = ceil($data->JobEvent->Distance / 1000) > $job->distance) {
+        if (($distance = $data->job->plannedDistance->km) > $job->distance) { // TODO: Test with ATS
             $job->distance = $distance;
         }
 
@@ -107,22 +105,10 @@ class TrackerController extends Controller
             $job->status = JobStatus::PendingVerification;
         }
 
-        // Update the cargo damage if the job wasn't recently created
-        if (!$job->wasRecentlyCreated) {
-            $job->load_damage = round($data->JobEvent->CargoDamage * 100);
-        }
-
-        // Add finished_at if job is finished or delivered
-        if ($data->JobEvent->JobFinished || $data->JobEvent->JobDelivered) {
-            $job->finished_at = Carbon::now();
-        }
+        // Update the cargo damage
+        $job->load_damage = $data->job->cargo->damage;
 
         $job->save();
-
-        // Delete job if cancelled
-        if ($data->JobEvent->JobCancelled) {
-            $job->delete();
-        }
     }
 
     private function findOrCreateCity(string $sourceCity, int $gameId): City
@@ -168,13 +154,13 @@ class TrackerController extends Controller
     {
         // TODO: Test with ATS
         if ($gameId === 1) {
-            $weight = round($cargo->Mass / 1000);
+            $weight = round($cargo->mass / 1000);
         } else {
-            $weight = $cargo->Mass;
+            $weight = $cargo->mass;
         }
 
         return Cargo::firstOrCreate([
-            'name' => $cargo->Cargo,
+            'name' => $cargo->name,
         ], [
             'dlc' => 'Unknown (Automatic Tracker Request)',
             'mod' => 'Unknown (Automatic Tracker Request)',

@@ -35,3 +35,17 @@ Route::prefix('discord-bot')->middleware('auth.discordBot')->group(function ($gr
 });
 
 Route::post('tracker', [TrackerController::class, 'handleRequest']);
+
+Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {
+    $user = $request->user();
+
+    return [
+        'id' => $user->id,
+        'username' => $user->username,
+        'truckersmp_id' => $user->truckersmp_id,
+        'wallet_balance' => $user->getWallet('default')->balance ?? 0,
+        'event_xp' => $user->getWallet('event-xp')->balance ?? 0,
+        'profile_picture' => $user->profile_picture,
+        'profile_link' => route('users.profile', $user->id)
+    ];
+});
