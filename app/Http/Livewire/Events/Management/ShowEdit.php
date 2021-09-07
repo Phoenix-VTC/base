@@ -50,7 +50,7 @@ class ShowEdit extends Component
             'departure_location' => ['sometimes', 'string'],
             'arrival_location' => ['sometimes', 'string'],
             'start_date' => ['required', 'date'],
-            'distance' => ['sometimes', 'integer', 'min:1'],
+            'distance' => ['required', 'integer', 'min:0'],
             'points' => ['required', 'integer', 'min:100', 'max:500'],
             'game_id' => ['sometimes', 'integer'],
             'published' => ['required', 'boolean'],
@@ -84,7 +84,7 @@ class ShowEdit extends Component
         $event->departure_location = $validatedData['departure_location'];
         $event->arrival_location = $validatedData['arrival_location'];
         $event->start_date = $validatedData['start_date'];
-        $event->distance = (int)$validatedData['distance'] ?: null;
+        $event->distance = (int)$validatedData['distance'];
         $event->points = (int)$validatedData['points'];
         $event->game_id = (int)$validatedData['game_id'];
         $event->published = (bool)$validatedData['published'];
