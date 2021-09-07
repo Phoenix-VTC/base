@@ -9,6 +9,7 @@ use GrahamCampbell\Markdown\Facades\Markdown;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -102,6 +103,7 @@ class ShowCreate extends Component
             'featured' => (bool)$validatedData['featured'],
             'external_event' => (bool)$validatedData['external_event'],
             'public_event' => (bool)$validatedData['public_event'],
+            'created_by' => Auth::id(),
         ]);
 
         if ($this->announce) {
