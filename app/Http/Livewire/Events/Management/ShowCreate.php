@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Events\Management;
 
+use App\Enums\Attending;
 use App\Models\Event;
 use App\Notifications\Events\NewEvent;
 use Carbon\Carbon;
@@ -9,10 +10,10 @@ use GrahamCampbell\Markdown\Facades\Markdown;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class ShowCreate extends Component
@@ -102,6 +103,13 @@ class ShowCreate extends Component
             'featured' => (bool)$validatedData['featured'],
             'external_event' => (bool)$validatedData['external_event'],
             'public_event' => (bool)$validatedData['public_event'],
+            'created_by' => Auth::id(),
+        ]);
+
+        // Add the event host to the attendance
+        $event->attendees()->create([
+            'user_id' => $event->hosted_by,
+            'attending' => Attending::Yes,
         ]);
 
         if ($this->announce) {
