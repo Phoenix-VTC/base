@@ -141,9 +141,8 @@
                     </x-input.group>
 
                     <x-input.group col-span="3" label="Distance" for="distance"
-                                   :error="$errors->first('distance')"
-                                   help-text="Optional, leave empty if the distance is unknown.">
-                        <x-input.text wire:model.lazy="distance" type="number" id="distance"
+                                   :error="$errors->first('distance')">
+                        <x-input.text wire:model.lazy="distance" type="number" min="0" id="distance"
                                       :error="$errors->first('distance')" placeholder="1200"/>
                     </x-input.group>
 
