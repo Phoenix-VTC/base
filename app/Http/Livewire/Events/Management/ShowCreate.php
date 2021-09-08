@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Events\Management;
 use App\Enums\Attending;
 use App\Models\Event;
 use App\Notifications\Events\NewEvent;
+use App\Rules\Events\UniqueForDay;
 use Carbon\Carbon;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use GuzzleHttp\Client;
@@ -58,7 +59,7 @@ class ShowCreate extends Component
             'required_dlcs' => ['sometimes', 'string'],
             'departure_location' => ['sometimes', 'string'],
             'arrival_location' => ['sometimes', 'string'],
-            'start_date' => ['required', 'date'],
+            'start_date' => ['required', 'date', new UniqueForDay],
             'distance' => ['required', 'integer', 'min:0'],
             'points' => ['required', 'integer', 'min:100', 'max:500'],
             'game_id' => ['sometimes', 'integer'],
