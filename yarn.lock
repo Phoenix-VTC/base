@@ -924,6 +924,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     "fastq" "^1.6.0"
 
+"@ryangjchandler/alpine-clipboard@^2.0.0":
+  "integrity" "sha512-Wzi0gIrQkt0FqUxxolUBfMXzWkhtEmA5exiaV/8fS8a4RLIUjQaB8jjkpCJLV6NDVoJHAl+mxq4wUyxmWt8U2A=="
+  "resolved" "https://registry.npmjs.org/@ryangjchandler/alpine-clipboard/-/alpine-clipboard-2.0.0.tgz"
+  "version" "2.0.0"
+
 "@tailwindcss/aspect-ratio@^0.2.1":
   "integrity" "sha512-aDFi80aHQ3JM3symJ5iKU70lm151ugIGFCI0yRZGpyjgQSDS+Fbe93QwypC1tCEllQE8p0S7TUu20ih1b9IKLA=="
   "resolved" "https://registry.npmjs.org/@tailwindcss/aspect-ratio/-/aspect-ratio-0.2.1.tgz"
@@ -1112,6 +1117,18 @@
   "integrity" "sha512-AZU7vQcy/4WFEuwnwsNsJnFwupIpbllH1++LXScN6uxT1Z4zPzdrWG97w4/I7eFKFTvfy/bHFStWjdBAg2Vjug=="
   "resolved" "https://registry.npmjs.org/@types/svgo/-/svgo-1.3.6.tgz"
   "version" "1.3.6"
+
+"@vue/reactivity@^3.0.2":
+  "integrity" "sha512-99y12RahDwBC75NwX9aFDXKLSvW66gMjl/9CNrufGQTth2fWadGxJedvKXs46ZPyiu7bFMERLY9X9Jz4GWOIDw=="
+  "resolved" "https://registry.npmjs.org/@vue/reactivity/-/reactivity-3.2.10.tgz"
+  "version" "3.2.10"
+  dependencies:
+    "@vue/shared" "3.2.10"
+
+"@vue/shared@3.2.10":
+  "integrity" "sha512-Z5hbCx5jqAK0kscWcsVBpEeS0LfuSjgnkCBewQfsdBRyvHdJWKRUnCAJ7GqJO/iJtjSZHBFJYNoYyP7a/goh2A=="
+  "resolved" "https://registry.npmjs.org/@vue/shared/-/shared-3.2.10.tgz"
+  "version" "3.2.10"
 
 "@webassemblyjs/ast@1.11.1":
   "integrity" "sha512-ukBh14qFLjxTQNTXocdyksN5QdM28S1CxHt2rdskFyL+xFV7VremuBLVbmCePj+URalXBENx/9Lm7lnhihtCSw=="
@@ -1329,10 +1346,12 @@
   "resolved" "https://registry.npmjs.org/alphanum-sort/-/alphanum-sort-1.0.2.tgz"
   "version" "1.0.2"
 
-"alpinejs@^2.8.0":
-  "integrity" "sha512-5yOUtckn4CBp0qsHpo2qgjZyZit84uXvHbB7NJ27sn4FA6UlFl2i9PGUAdTXkcbFvvxDJBM+zpOD8RuNYFvQAw=="
-  "resolved" "https://registry.npmjs.org/alpinejs/-/alpinejs-2.8.2.tgz"
-  "version" "2.8.2"
+"alpinejs@^3.3.2":
+  "integrity" "sha512-JnED6Pp9v/m3M7S9p4+V5ztcfxcGi6PHrXt1Vjz4PGRkLKGsv5FU0dTZRO5A/QYaSwitzfCgnmjgrUeHaIea6Q=="
+  "resolved" "https://registry.npmjs.org/alpinejs/-/alpinejs-3.3.2.tgz"
+  "version" "3.3.2"
+  dependencies:
+    "@vue/reactivity" "^3.0.2"
 
 "ansi-escapes@^4.3.1":
   "integrity" "sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ=="
@@ -2874,6 +2893,11 @@
   "integrity" "sha1-FQStJSMVjKpA20onh8sBQRmU6k8="
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
+
+"fsevents@~2.3.2":
+  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
+  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
+  "version" "2.3.2"
 
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
