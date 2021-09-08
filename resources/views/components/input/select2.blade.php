@@ -52,11 +52,14 @@
                 },
                 placeholder: '{{ $placeholder }}',
             });
+
             $('.select2-{{ $attributes['id'] }}').on('change', function (e) {
                 let elementName = $(this).attr('id');
                 var data = $(this).select2("val");
-            @this.set(elementName, data);
+                @this.set(elementName, data);
             });
+
+            // Auto-focus search field on open
             $(document).on('select2:open', () => {
                 setTimeout(function () {
                     document.querySelector('.select2-search__field').focus();
