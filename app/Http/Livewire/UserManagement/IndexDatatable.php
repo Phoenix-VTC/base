@@ -15,26 +15,45 @@ class IndexDatatable extends DataTableComponent
     public function query(): Builder
     {
         return User::withTrashed()->with('application')
-            ->when($this->getFilter('account_activated'), fn ($query, $value) => $value === 'yes' ? $query->whereNull('welcome_valid_until') : $query->whereNotNull('welcome_valid_until'))
-            ->when($this->getFilter('account_deleted'), fn ($query, $value) => $value === 'yes' ? $query->whereNotNull('deleted_at') : $query->whereNull('deleted_at'));
+            ->when($this->getFilter('account_activated'), fn($query, $value) => $value === 'yes' ? $query->whereNull('welcome_valid_until') : $query->whereNotNull('welcome_valid_until'))
+            ->when($this->getFilter('account_deleted'), fn($query, $value) => $value === 'yes' ? $query->whereNotNull('deleted_at') : $query->whereNull('deleted_at'))
+            ->when(
+                $this->getFilter('search'), fn($query, $term) => $query->where('username', 'like', '%' . $term . '%')
+                ->orWhere('email', 'like', '%' . $term . '%')
+                ->orWhere('truckersmp_id', 'like', '%' . $term . '%')
+                ->orWhere('steam_id', 'like', '%' . $term . '%')
+                ->orWhere('discord->id', 'like', '%' . $term . '%')
+                ->orWhere('discord->name', 'like', '%' . $term . '%')
+                ->orWhere('discord->nickname', 'like', '%' . $term . '%')
+                ->orWhere('date_of_birth', 'like', '%' . $term . '%')
+            );
     }
 
     public function columns(): array
     {
         return [
             Column::make('Id')
-                ->searchable()
                 ->sortable(),
 
             Column::make('Username')
-                ->searchable()
                 ->sortable(),
 
             Column::make('Email')
-                ->searchable()
                 ->sortable(),
 
-            Column::make('Application ID', 'application.uuid'),
+            Column::make('Discord Username', 'discord.nickname')
+                ->sortable(function (Builder $query, $direction) {
+                    return $query->orderBy('discord->nickname', $direction);
+                }),
+
+            Column::make('TruckersMP ID', 'truckersmp_id')
+                ->sortable(),
+
+            Column::make('Steam ID', 'steam_id')
+                ->sortable(),
+
+            Column::make('Date of Birth', 'date_of_birth')
+                ->sortable(),
 
             Column::make('Account Activated', 'welcome_valid_until')
                 ->sortable()
