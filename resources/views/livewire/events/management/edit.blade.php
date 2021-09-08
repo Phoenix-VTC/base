@@ -150,16 +150,15 @@
                                       :error="$errors->first('arrival_location')" placeholder="EuroAcres, Groningen"/>
                     </x-input.group>
 
-                    <x-input.group label="Start Date and Time (UTC)" for="start_date" :error="$errors->first('start_date')" helpText="Current UTC date & time: <b>{{ Carbon\Carbon::now('UTC') }}</b>">
+                    <x-input.group label="Departure Date and Time (UTC)" for="start_date" :error="$errors->first('start_date')" helpText="Current UTC date & time: <b>{{ Carbon\Carbon::now('UTC') }}</b>">
                         <x-input.date id="start_date" wire:model.lazy="start_date" :error="$errors->first('start_date')"
                                       trailing-icon="o-calendar"/>
                     </x-input.group>
 
                     <x-input.group col-span="3" label="Distance" for="distance"
-                                   :error="$errors->first('distance')"
-                                   help-text="Optional, leave empty if the distance is unknown.">
+                                   :error="$errors->first('distance')">
                         <x-input.text wire:model.lazy="distance" type="number" id="distance"
-                                      :error="$errors->first('distance')" placeholder="1200"/>
+                                      :error="$errors->first('distance')" min="0" placeholder="1200"/>
                     </x-input.group>
 
                     <x-input.group col-span="3" label="Event XP" for="points"

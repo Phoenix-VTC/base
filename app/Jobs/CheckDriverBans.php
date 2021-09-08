@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -15,62 +16,51 @@ class CheckDriverBans implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private const VTC_ID = 30294;
+
     /**
      * Execute the job.
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $this->sendDiscordStartedNotification();
 
-        User::chunk(60, function ($users) {
-            foreach ($users as $user) {
-                $response = Http::get("https://api.truckersmp.com/v2/player/$user->truckersmp_id");
+        $response = Http::get('https://api.truckersmp.com/v2/vtc/' . self::VTC_ID . '/members/banned');
 
-                // Continue if the request failed
-                if ($response->failed()) {
-                    continue;
-                }
+        // Return if the request failed
+        if ($response->failed()) {
+            return;
+        }
 
-                $response = $response->collect()->toArray();
+        foreach ($response['response']['members'] as $user) {
+            $userResponse = Http::get("https://api.truckersmp.com/v2/player/{$user['user_id']}");
 
-                // Notify & continue if there are any errors in the response
-                if ($response['error']) {
-                    $this->sendDiscordErrorNotification($user, $response);
+            $userResponse = $userResponse->collect()->toArray();
 
-                    sleep(1);
-                    continue;
-                }
+            $userResponse = $userResponse['response'];
 
-                $response = $response['response'];
-
-                // Continue if the user isn't currently banned
-                if ($response['banned'] === false) {
-                    sleep(1);
-                    continue;
-                }
-
-                // Request the ban information if it's public
-                if ($response['displayBans']) {
-                    $banResponse = Http::get("https://api.truckersmp.com/v2/bans/$user->truckersmp_id")->collect();
-                    $banReason = $banResponse['response'][0]['reason'];
-                }
-
-                $this->sendDiscordNotification($user, $response, $banReason ?? null);
-
-                sleep(1);
+            // Request the ban information if it's public
+            if ($userResponse['displayBans']) {
+                $banResponse = Http::get("https://api.truckersmp.com/v2/bans/{$user['user_id']}")->collect();
+                $banReason = $banResponse['response'][0]['reason'];
             }
 
-            // Wait for 60 seconds after each chunk, otherwise we make the TMP API sad
-            sleep(60);
-        });
+            $this->sendDiscordNotification($user, $userResponse, $banReason ?? null);
+        }
 
         $this->sendDiscordFinishedNotification();
     }
 
-    private function sendDiscordNotification(User $user, array $tmpData, ?string $banReason): void
+    private function sendDiscordNotification(array $userResponse, array $tmpData, ?string $banReason): void
     {
+        try {
+            $user = User::withTrashed()->where('truckersmp_id', $userResponse['user_id'])->firstOrFail();
+        } catch (Exception $e) {
+            return;
+        }
+
         Http::post(config('services.discord.webhooks.human-resources'), [
             'embeds' => [
                 [
@@ -98,36 +88,6 @@ class CheckDriverBans implements ShouldQueue
                             'value' => $tmpData['bansCount'],
                             'inline' => true
                         ],
-                    ],
-                    'footer' => [
-                        'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
-                    ],
-                    'timestamp' => Carbon::now(),
-                ]
-            ],
-        ]);
-    }
-
-    private function sendDiscordErrorNotification(User $user, array $tmpData): void
-    {
-        Http::post(config('services.discord.webhooks.human-resources'), [
-            'embeds' => [
-                [
-                    'title' => 'Failed to resolve TruckersMP data for ' . $user->username,
-                    'description' => 'Error message: `' . $tmpData['response'] . '`',
-                    'color' => 14429954, // #DC2F02
-                    'fields' => [
-                        [
-                            'name' => 'PhoenixBase Profile',
-                            'value' => '[' . $user->username . '](' . route('users.profile', $user->id) . ')',
-                            'inline' => true
-                        ],
-                        [
-                            'name' => 'TruckersMP Profile',
-                            'value' => '[' . $user->truckersmp_id . '](https://truckersmp.com/user/' . $user->truckersmp_id . ')',
-                            'inline' => true
-                        ]
                     ],
                     'footer' => [
                         'text' => 'PhoenixBase',

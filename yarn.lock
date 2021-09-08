@@ -890,10 +890,10 @@
   "resolved" "https://npm.fontawesome.com/@fortawesome/fontawesome-free/-/5.15.3/fontawesome-free-5.15.3.tgz"
   "version" "5.15.3"
 
-"@fortawesome/fontawesome-pro@^5.15.3":
-  "integrity" "sha512-JAf7zDYGVtcJIqnWAzZ8KRqSHQ2+KnJi4K916Zxti4ONfaVw87jaUoxtfxtNsc3kgTmCmbwgPsi2nOA/1fEnzQ=="
-  "resolved" "https://npm.fontawesome.com/@fortawesome/fontawesome-pro/-/5.15.3/fontawesome-pro-5.15.3.tgz"
-  "version" "5.15.3"
+"@fortawesome/fontawesome-pro@^5.15.4":
+  "integrity" "sha512-ApOqpDdKgA79xfLZH3B5PucZxj+TZyQUSrZ4bKkbJCR+zjmveQ4/gp/uXc5bNNhsdtJUy16BYJ/lAVydca2Y5Q=="
+  "resolved" "https://npm.fontawesome.com/@fortawesome/fontawesome-pro/-/5.15.4/fontawesome-pro-5.15.4.tgz"
+  "version" "5.15.4"
 
 "@fullhuman/postcss-purgecss@^2.1.2":
   "integrity" "sha512-qnKm5dIOyPGJ70kPZ5jiz0I9foVOic0j+cOzNDoo8KoCf6HjicIZ99UfO2OmE7vCYSKAAepEwJtNzpiiZAh9xw=="
@@ -923,6 +923,11 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.5"
     "fastq" "^1.6.0"
+
+"@ryangjchandler/alpine-clipboard@^2.0.0":
+  "integrity" "sha512-Wzi0gIrQkt0FqUxxolUBfMXzWkhtEmA5exiaV/8fS8a4RLIUjQaB8jjkpCJLV6NDVoJHAl+mxq4wUyxmWt8U2A=="
+  "resolved" "https://registry.npmjs.org/@ryangjchandler/alpine-clipboard/-/alpine-clipboard-2.0.0.tgz"
+  "version" "2.0.0"
 
 "@tailwindcss/aspect-ratio@^0.2.1":
   "integrity" "sha512-aDFi80aHQ3JM3symJ5iKU70lm151ugIGFCI0yRZGpyjgQSDS+Fbe93QwypC1tCEllQE8p0S7TUu20ih1b9IKLA=="
@@ -1112,6 +1117,18 @@
   "integrity" "sha512-AZU7vQcy/4WFEuwnwsNsJnFwupIpbllH1++LXScN6uxT1Z4zPzdrWG97w4/I7eFKFTvfy/bHFStWjdBAg2Vjug=="
   "resolved" "https://registry.npmjs.org/@types/svgo/-/svgo-1.3.6.tgz"
   "version" "1.3.6"
+
+"@vue/reactivity@^3.0.2":
+  "integrity" "sha512-99y12RahDwBC75NwX9aFDXKLSvW66gMjl/9CNrufGQTth2fWadGxJedvKXs46ZPyiu7bFMERLY9X9Jz4GWOIDw=="
+  "resolved" "https://registry.npmjs.org/@vue/reactivity/-/reactivity-3.2.10.tgz"
+  "version" "3.2.10"
+  dependencies:
+    "@vue/shared" "3.2.10"
+
+"@vue/shared@3.2.10":
+  "integrity" "sha512-Z5hbCx5jqAK0kscWcsVBpEeS0LfuSjgnkCBewQfsdBRyvHdJWKRUnCAJ7GqJO/iJtjSZHBFJYNoYyP7a/goh2A=="
+  "resolved" "https://registry.npmjs.org/@vue/shared/-/shared-3.2.10.tgz"
+  "version" "3.2.10"
 
 "@webassemblyjs/ast@1.11.1":
   "integrity" "sha512-ukBh14qFLjxTQNTXocdyksN5QdM28S1CxHt2rdskFyL+xFV7VremuBLVbmCePj+URalXBENx/9Lm7lnhihtCSw=="
@@ -1329,10 +1346,12 @@
   "resolved" "https://registry.npmjs.org/alphanum-sort/-/alphanum-sort-1.0.2.tgz"
   "version" "1.0.2"
 
-"alpinejs@^2.8.0":
-  "integrity" "sha512-5yOUtckn4CBp0qsHpo2qgjZyZit84uXvHbB7NJ27sn4FA6UlFl2i9PGUAdTXkcbFvvxDJBM+zpOD8RuNYFvQAw=="
-  "resolved" "https://registry.npmjs.org/alpinejs/-/alpinejs-2.8.2.tgz"
-  "version" "2.8.2"
+"alpinejs@^3.3.2":
+  "integrity" "sha512-JnED6Pp9v/m3M7S9p4+V5ztcfxcGi6PHrXt1Vjz4PGRkLKGsv5FU0dTZRO5A/QYaSwitzfCgnmjgrUeHaIea6Q=="
+  "resolved" "https://registry.npmjs.org/alpinejs/-/alpinejs-3.3.2.tgz"
+  "version" "3.3.2"
+  dependencies:
+    "@vue/reactivity" "^3.0.2"
 
 "ansi-escapes@^4.3.1":
   "integrity" "sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ=="
