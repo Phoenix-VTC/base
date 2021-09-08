@@ -1,6 +1,12 @@
-import 'alpinejs';
+import Alpine from 'alpinejs'
+import Clipboard from "@ryangjchandler/alpine-clipboard"
+
+Alpine.plugin(Clipboard)
 
 require('flatpickr');
+
+window.Alpine = Alpine
+window.Alpine.start()
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
