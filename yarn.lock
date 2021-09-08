@@ -890,10 +890,10 @@
   "resolved" "https://npm.fontawesome.com/@fortawesome/fontawesome-free/-/5.15.3/fontawesome-free-5.15.3.tgz"
   "version" "5.15.3"
 
-"@fortawesome/fontawesome-pro@^5.15.3":
-  "integrity" "sha512-JAf7zDYGVtcJIqnWAzZ8KRqSHQ2+KnJi4K916Zxti4ONfaVw87jaUoxtfxtNsc3kgTmCmbwgPsi2nOA/1fEnzQ=="
-  "resolved" "https://npm.fontawesome.com/@fortawesome/fontawesome-pro/-/5.15.3/fontawesome-pro-5.15.3.tgz"
-  "version" "5.15.3"
+"@fortawesome/fontawesome-pro@^5.15.4":
+  "integrity" "sha512-ApOqpDdKgA79xfLZH3B5PucZxj+TZyQUSrZ4bKkbJCR+zjmveQ4/gp/uXc5bNNhsdtJUy16BYJ/lAVydca2Y5Q=="
+  "resolved" "https://npm.fontawesome.com/@fortawesome/fontawesome-pro/-/5.15.4/fontawesome-pro-5.15.4.tgz"
+  "version" "5.15.4"
 
 "@fullhuman/postcss-purgecss@^2.1.2":
   "integrity" "sha512-qnKm5dIOyPGJ70kPZ5jiz0I9foVOic0j+cOzNDoo8KoCf6HjicIZ99UfO2OmE7vCYSKAAepEwJtNzpiiZAh9xw=="
@@ -2893,11 +2893,6 @@
   "integrity" "sha1-FQStJSMVjKpA20onh8sBQRmU6k8="
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
-
-"fsevents@~2.3.2":
-  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
-  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
-  "version" "2.3.2"
 
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
