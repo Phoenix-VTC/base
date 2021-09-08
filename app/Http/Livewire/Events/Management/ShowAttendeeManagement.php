@@ -57,6 +57,13 @@ class ShowAttendeeManagement extends Component
 
         $user = User::findOrFail($this->user_id);
 
+        // Check if the user is already marked as attending
+        if ($this->event->attendees()->where('user_id', $user->id)->exists()) {
+            session()->now('alert', ['type' => 'danger', 'message' => 'User <b>' . $user->username . '</b> is already marked as attending.']);
+
+            return;
+        }
+
         $this->event->attendees()->create([
             'user_id' => $user->id,
             'attending' => Attending::Yes
