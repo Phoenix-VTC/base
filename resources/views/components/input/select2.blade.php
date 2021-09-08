@@ -62,6 +62,14 @@
                     document.querySelector('.select2-search__field').focus();
                 }, 10);
             });
+
+            // Open next dropdown on tab press
+            $(document).on('focus', '.select2.select2-container', function (e) {
+                // only open on original attempt - close focus event should not fire open
+                if (e.originalEvent && $(this).find(".select2-selection--single").length > 0) {
+                    $(this).siblings('select').select2('open');
+                }
+            });
         });
     </script>
 </div>
