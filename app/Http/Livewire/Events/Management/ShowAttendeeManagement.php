@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Events\Management;
 
 use App\Enums\Attending;
-use App\Jobs\Events\ProcessUserRewards;
 use App\Models\Event;
 use App\Models\EventAttendee;
 use App\Models\User;
@@ -13,17 +12,17 @@ use Livewire\Component;
 class ShowAttendeeManagement extends Component
 {
     public Event $event;
-    public string $username = '';
+    public string $user_id = '';
 
     public function rules(): array
     {
         return [
-            'username' => ['required', 'string', 'exists:users']
+            'user_id' => ['required', 'string', 'exists:users,id']
         ];
     }
 
     protected array $messages = [
-        'username.exists' => 'A user with this username does not exist.',
+        'user_id.exists' => 'Could not find a user associated with this ID.',
     ];
 
     public function mount($id): void
@@ -56,16 +55,16 @@ class ShowAttendeeManagement extends Component
     {
         $this->validate();
 
-        $user = User::where('username', $this->username)->firstOrFail();
+        $user = User::findOrFail($this->user_id);
 
         $this->event->attendees()->create([
             'user_id' => $user->id,
             'attending' => Attending::Yes
         ]);
 
-        unset($this->username);
+        unset($this->user_id);
 
-        session()->now('alert', ['type' => 'success', 'message' => 'User <b>' . $user->username . '</b> successfully marked as attending.']);
+        session()->flash('alert', ['type' => 'success', 'message' => 'User <b>' . $user->username . '</b> successfully marked as attending.']);
     }
 
     public function hydrate(): void
