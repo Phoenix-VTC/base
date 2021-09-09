@@ -204,9 +204,11 @@
                         <h1 class="text-lg text-center font-semibold">
                             {{ $user->username }}
                         </h1>
-                        <p class="text-sm text-gray-600 text-center">
-                            Member since <b>{{ $user->created_at->toFormattedDateString() }}</b>
-                        </p>
+                        @if($user->created_at)
+                            <p class="text-sm text-gray-600 text-center">
+                                Member since <b>{{ $user->created_at->toFormattedDateString() }}</b>
+                            </p>
+                        @endif
                     </div>
 
                     <div class="mt-3 pt-3 flex flex-wrap mx-6 border-t space-y-2">
