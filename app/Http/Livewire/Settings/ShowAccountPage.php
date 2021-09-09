@@ -21,9 +21,9 @@ class ShowAccountPage extends Component
     // Form fields
     public string $username = '';
     public string $email = '';
-    public string $steam_id = '';
-    public string $truckersmp_id = '';
-    public string $date_of_birth = '';
+    public ?string $steam_id = '';
+    public ?string $truckersmp_id = '';
+    public ?string $date_of_birth = '';
     public $profile_picture;
     public $profile_banner;
 
