@@ -63,7 +63,7 @@ class TrackerController extends Controller
         } catch (JsonException $e) {
             return response()->json([
                 'error' => true,
-                'descriptor' => 'Invalid request conent'
+                'descriptor' => 'Invalid request content'
             ], 400);
         }
 
