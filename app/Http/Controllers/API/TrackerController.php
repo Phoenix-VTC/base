@@ -27,7 +27,6 @@ class TrackerController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
-     * @throws JsonException
      */
     public function handleRequest(Request $request): JsonResponse
     {
@@ -59,7 +58,14 @@ class TrackerController extends Controller
         $this->user = $token->tokenable;
 
         // Decode the request content
-        $data = json_decode($request->getContent(), false, 512, JSON_THROW_ON_ERROR);
+        try {
+            $data = json_decode($request->getContent(), false, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            return response()->json([
+                'error' => true,
+                'descriptor' => 'Invalid request conent'
+            ], 400);
+        }
 
         if ($data->job->income !== 0) {
             $this->processJobData($data);
