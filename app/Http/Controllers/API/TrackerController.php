@@ -10,6 +10,7 @@ use App\Models\Company;
 use App\Models\Job;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -67,8 +68,15 @@ class TrackerController extends Controller
             ], 400);
         }
 
-        if ($data->job->income !== 0) {
-            $this->processJobData($data);
+        if (isset($data->job->income) && $data->job->income !== 0) {
+            try {
+                $this->processJobData($data);
+            } catch (Exception $e) {
+                return response()->json([
+                    'error' => true,
+                    'descriptor' => 'Invalid request content'
+                ], 400);
+            }
         }
 
         return response()->json(['error' => false]);
