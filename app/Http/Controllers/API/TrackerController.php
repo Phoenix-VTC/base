@@ -19,8 +19,6 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 class TrackerController extends Controller
 {
-    public const UNAUTHORIZED = 'Unauthorized';
-
     private User $user;
 
     /**
@@ -32,28 +30,10 @@ class TrackerController extends Controller
     public function handleRequest(Request $request): JsonResponse
     {
         $token = $request->bearerToken();
-
-        // Check if the token is provided
-        if (!$token) {
-            return response()->json([
-                'error' => true,
-                'descriptor' => self::UNAUTHORIZED
-            ]);
-        }
-
-        // Decode the token
         $token = base64_decode($token);
 
         // Find the Personal Access Token
         $token = PersonalAccessToken::findToken($token);
-
-        // Check if a Personal Access Token was found
-        if (!$token) {
-            return response()->json([
-                'error' => true,
-                'descriptor' => self::UNAUTHORIZED
-            ]);
-        }
 
         // Get the user
         $this->user = $token->tokenable;

@@ -30,11 +30,11 @@ Route::prefix('game-data/{game}')->name('game-data.')->group(function ($group) {
     }
 });
 
-Route::prefix('discord-bot')->middleware('auth.discordBot')->group(function ($group) {
+Route::prefix('discord-bot')->middleware('auth.discordBot')->group(function () {
     Route::get('users/{id}', [DiscordBotController::class, 'findUserByDiscordId']);
 });
 
-Route::post('tracker', [TrackerController::class, 'handleRequest']);
+Route::post('tracker', [TrackerController::class, 'handleRequest'])->middleware('auth.tracker');
 
 Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {
     $user = $request->user();
