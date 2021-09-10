@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\API\DiscordBotController;
 use App\Http\Controllers\API\Select2\GameDataController;
-use App\Http\Controllers\API\TrackerController;
+use App\Http\Controllers\API\Tracker\IncomingDataController;
 use Illuminate\Support\Facades\Route;
 
 //$api = app(Router::class);
@@ -34,7 +34,9 @@ Route::prefix('discord-bot')->middleware('auth.discordBot')->group(function () {
     Route::get('users/{id}', [DiscordBotController::class, 'findUserByDiscordId']);
 });
 
-Route::post('tracker', [TrackerController::class, 'handleRequest'])->middleware('auth.tracker');
+Route::prefix('tracker')->middleware('auth.tracker')->group(function () {
+    Route::post('/', [IncomingDataController::class, 'handleRequest'])->middleware('auth.tracker');
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {
     $user = $request->user();

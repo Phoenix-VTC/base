@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Tracker;
 
 use App\Enums\JobStatus;
 use App\Http\Controllers\Controller;
@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
 use JsonException;
 use Laravel\Sanctum\PersonalAccessToken;
 
-class TrackerController extends Controller
+class IncomingDataController extends Controller
 {
     private User $user;
 
