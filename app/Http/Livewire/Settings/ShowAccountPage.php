@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Rules\UsernameNotReserved;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -20,17 +21,17 @@ class ShowAccountPage extends Component
     // Form fields
     public string $username = '';
     public string $email = '';
-    public string $steam_id = '';
-    public string $truckersmp_id = '';
-    public string $date_of_birth = '';
+    public ?string $steam_id = '';
+    public ?string $truckersmp_id = '';
+    public ?string $date_of_birth = '';
     public $profile_picture;
     public $profile_banner;
 
     public function rules(): array
     {
         return [
-            'username' => ['required', 'min:3', 'unique:users,username,' . $this->user->id, new UsernameNotReserved],
-            'email' => ['required', 'min:3', 'email', 'unique:users,email,' . $this->user->id],
+            'username' => ['required', 'min:3', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id), new UsernameNotReserved],
+            'email' => ['required', 'min:3', 'email', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id)],
             'profile_picture' => ['nullable', 'image', 'max:2048'],
             'profile_banner' => ['nullable', 'image', 'max:2048'],
         ];
