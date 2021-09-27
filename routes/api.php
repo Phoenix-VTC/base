@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\DiscordBotController;
 use App\Http\Controllers\API\Select2\GameDataController;
 use App\Http\Controllers\API\Tracker\IncomingDataController;
+use App\Http\Controllers\API\Tracker\JobController;
 use Illuminate\Support\Facades\Route;
 
 //$api = app(Router::class);
@@ -40,6 +41,10 @@ Route::prefix('tracker')->middleware('auth:sanctum')->group(function () {
     Route::get('user', function () {
         return auth()->user();
     });
+
+    Route::resource('jobs', JobController::class)->only([
+        'index',
+    ]);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {
