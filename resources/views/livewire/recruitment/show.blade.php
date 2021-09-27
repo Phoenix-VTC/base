@@ -245,7 +245,13 @@
                                                 @endif
                                             </div>
                                         @else
-                                            {{ ucfirst($answer) }}
+                                            {{-- First ucword every newline --}}
+                                            {{-- Then escape any code in the var with e: https://laravel.com/docs/8.x/helpers#method-e --}}
+                                            {{-- Then convert newlines to <br>s with nl2br --}}
+                                            {{-- Then display that data unescaped (it's safe because of the 2nd comment) --}}
+                                            <div class="prose prose-sm">
+                                                <blockquote>{!! nl2br(e(ucwords($answer, "\n"))) !!}</blockquote>
+                                            </div>
                                         @endif
                                     </dd>
                                 </div>
