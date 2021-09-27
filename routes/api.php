@@ -34,8 +34,12 @@ Route::prefix('discord-bot')->middleware('auth.discordBot')->group(function () {
     Route::get('users/{id}', [DiscordBotController::class, 'findUserByDiscordId']);
 });
 
-Route::prefix('tracker')->middleware('auth.tracker')->group(function () {
-    Route::post('/', [IncomingDataController::class, 'handleRequest'])->middleware('auth.tracker');
+Route::prefix('tracker')->middleware('auth:sanctum')->group(function () {
+    Route::post('/', [IncomingDataController::class, 'handleRequest']);
+
+    Route::get('user', function () {
+        return auth()->user();
+    });
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {

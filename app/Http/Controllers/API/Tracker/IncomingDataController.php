@@ -29,14 +29,8 @@ class IncomingDataController extends Controller
      */
     public function handleRequest(Request $request): JsonResponse
     {
-        $token = $request->bearerToken();
-        $token = base64_decode($token);
-
-        // Find the Personal Access Token
-        $token = PersonalAccessToken::findToken($token);
-
         // Get the user
-        $this->user = $token->tokenable;
+        $this->user = $request->user();
 
         // Decode the request content
         try {
