@@ -15,11 +15,11 @@ class CreateBlocklistsTable extends Migration
     {
         Schema::create('blocklists', function (Blueprint $table) {
             $table->id();
-            $table->json('usernames');
-            $table->json('emails');
-            $table->json('discord_ids');
-            $table->json('truckersmp_ids');
-            $table->json('steam_ids');
+            $table->json('usernames')->nullable();
+            $table->json('emails')->nullable();
+            $table->json('discord_ids')->nullable();
+            $table->json('truckersmp_ids')->nullable();
+            $table->json('steam_ids')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
