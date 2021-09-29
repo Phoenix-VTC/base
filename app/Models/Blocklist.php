@@ -24,6 +24,9 @@ class Blocklist extends Model
         'truckersmp_ids' => 'array',
         'steam_ids' => 'array',
         'base_ids' => 'array',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     protected $guarded = [];
