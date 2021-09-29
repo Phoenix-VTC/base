@@ -67,6 +67,7 @@ class BlocklistFactory extends Factory
             'discord_ids' => $discord_ids,
             'truckersmp_ids' => $truckersmp_ids,
             'steam_ids' => $steam_ids,
+            'reason' => $this->faker->text(),
         ];
     }
 }

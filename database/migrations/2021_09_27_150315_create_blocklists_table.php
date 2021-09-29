@@ -20,6 +20,7 @@ class CreateBlocklistsTable extends Migration
             $table->json('discord_ids')->nullable();
             $table->json('truckersmp_ids')->nullable();
             $table->json('steam_ids')->nullable();
+            $table->longText('reason');
             $table->timestamps();
             $table->softDeletes();
         });
