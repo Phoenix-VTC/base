@@ -58,12 +58,20 @@ class BlocklistFactory extends Factory
             random_int(10000000000000000, 99999999999999999),
         ];
 
+        $base_ids = [
+            random_int(1, 5000),
+            random_int(1, 5000),
+            random_int(1, 5000),
+            random_int(1, 5000),
+        ];
+
         return [
             'usernames' => $usernames,
             'emails' => $emails,
             'discord_ids' => $discord_ids,
             'truckersmp_ids' => $truckersmp_ids,
             'steam_ids' => $steam_ids,
+            'base_ids' => $base_ids,
             'reason' => $this->faker->text(),
         ];
     }

@@ -20,6 +20,7 @@ class Blocklist extends Model
         'discord_ids' => 'array',
         'truckersmp_ids' => 'array',
         'steam_ids' => 'array',
+        'base_ids' => 'array',
     ];
 
     protected $guarded = [];
