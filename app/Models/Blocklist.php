@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Venturecraft\Revisionable\RevisionableTrait;
@@ -22,4 +23,15 @@ class Blocklist extends Model
     ];
 
     protected $guarded = [];
+
+    public function scopeLikeSearch($query, $term): Builder
+    {
+        return $query->where(
+            fn($query) => $query->where('usernames', 'like', '%' . $term . '%')
+                ->orWhere('emails', 'like', '%' . $term . '%')
+                ->orWhere('discord_ids', 'like', '%' . $term . '%')
+                ->orWhere('truckersmp_ids', 'like', '%' . $term . '%')
+                ->orWhere('steam_ids', 'like', '%' . $term . '%')
+        );
+    }
 }

@@ -16,13 +16,11 @@ class BlocklistTable extends DataTableComponent
             Column::make('Id'),
 
             Column::make('Usernames')
-                ->searchable()
                 ->format(function ($value) {
                     return implode(', ', $value);
                 }),
 
             Column::make('Emails')
-                ->searchable()
                 ->format(function ($value) {
                     return implode(', ', $value);
                 }),
@@ -38,7 +36,8 @@ class BlocklistTable extends DataTableComponent
 
     public function query(): Builder
     {
-        return Blocklist::query();
+        return Blocklist::query()
+            ->when($this->getFilter('search'), fn($query, $term) => $query->likeSearch($term));
     }
 
     public function getTableRowUrl($row): string
