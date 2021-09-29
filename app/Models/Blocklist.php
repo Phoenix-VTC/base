@@ -46,4 +46,15 @@ class Blocklist extends Model
                 ->orWhere('steam_ids', 'like', '%' . $term . '%')
         );
     }
+
+    public function scopeExactSearch($query, $term): Builder
+    {
+        return $query->where(
+            fn($query) => $query->whereJsonContains('usernames', $term)
+                ->orWhereJsonContains('emails', $term)
+                ->orWhereJsonContains('discord_ids', $term)
+                ->orWhereJsonContains('truckersmp_ids', $term)
+                ->orWhereJsonContains('steam_ids', $term)
+        );
+    }
 }
