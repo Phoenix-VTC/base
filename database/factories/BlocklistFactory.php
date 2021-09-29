@@ -37,28 +37,25 @@ class BlocklistFactory extends Factory
             $this->faker->unique()->email(),
         ];
 
-        $random_discord_id = random_int(100000000000000000, 999999999999999999);
         $discord_ids = [
-            $random_discord_id,
-            $random_discord_id,
-            $random_discord_id,
-            $random_discord_id,
+            random_int(100000000000000000, 999999999999999999),
+            random_int(100000000000000000, 999999999999999999),
+            random_int(100000000000000000, 999999999999999999),
+            random_int(100000000000000000, 999999999999999999),
         ];
 
-        $random_truckersmp_id = random_int(1000, 4000000);
         $truckersmp_ids = [
-            $random_truckersmp_id,
-            $random_truckersmp_id,
-            $random_truckersmp_id,
-            $random_truckersmp_id,
+            random_int(1000, 4000000),
+            random_int(1000, 4000000),
+            random_int(1000, 4000000),
+            random_int(1000, 4000000),
         ];
 
-        $random_steam_id = random_int(10000000000000000, 99999999999999999);
         $steam_ids = [
-            $random_steam_id,
-            $random_steam_id,
-            $random_steam_id,
-            $random_steam_id,
+            random_int(10000000000000000, 99999999999999999),
+            random_int(10000000000000000, 99999999999999999),
+            random_int(10000000000000000, 99999999999999999),
+            random_int(10000000000000000, 99999999999999999),
         ];
 
         return [
