@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\DriverApplication;
 
 use App\Http\Controllers\Controller;
+use App\Rules\NotInBlocklist;
 use App\Rules\Steam\HasGame;
 use App\Rules\Steam\MinHours;
 use App\Rules\TMP\AccountExists;
@@ -65,6 +66,7 @@ class AuthController extends Controller
                     $validator = Validator::make($info->toArray(), [
                         'steamID64' => [
                             'bail',
+                            new NotInBlocklist,
                             new HasGame,
                             new MinHours,
                             new AccountExists,
