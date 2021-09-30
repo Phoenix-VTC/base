@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use App\Events\EmailChanged;
 use App\Events\PasswordChanged;
+use App\Events\UserInBlocklistTriedToApply;
 use App\Listeners\SendAchievementUnlockedNotification;
 use App\Listeners\SendEmailChangedNotification;
 use App\Listeners\SendFailedJobDiscordNotification;
 use App\Listeners\SendPasswordChangedNotification;
 use App\Listeners\SendPasswordResetNotification;
+use App\Listeners\UserInBlocklistTriedToApplyNotification;
 use App\Models\Download as DownloadModel;
 use App\Models\Screenshot as ScreenshotModel;
 use App\Observers\DownloadObserver;
@@ -52,6 +54,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         JobFailed::class => [
             SendFailedJobDiscordNotification::class,
+        ],
+        UserInBlocklistTriedToApply::class => [
+            UserInBlocklistTriedToApplyNotification::class,
         ]
     ];
 
