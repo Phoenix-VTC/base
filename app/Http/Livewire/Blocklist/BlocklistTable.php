@@ -39,7 +39,8 @@ class BlocklistTable extends DataTableComponent
     public function query(): Builder
     {
         return Blocklist::query()
-            ->when($this->getFilter('search'), fn($query, $term) => $query->likeSearch($term));
+            ->when($this->getFilter('search'), fn($query, $term) => $query->likeSearch($term))
+            ->latest();
     }
 
     public function getTableRowUrl($row): string
