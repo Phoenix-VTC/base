@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
+use App\Traits\RevisionUserTrait;
 
 class Blocklist extends Model
 {
     use HasFactory;
     use RevisionableTrait;
+    use RevisionUserTrait;
     use SoftDeletes;
 
     protected bool $revisionCreationsEnabled = true;
@@ -30,11 +31,6 @@ class Blocklist extends Model
     ];
 
     protected $guarded = [];
-
-    public function revisionHistoryWithUser(): MorphMany
-    {
-        return $this->morphMany(Revision::class, 'revisionable')->with('user');
-    }
 
     public function scopeLikeSearch($query, $term): Builder
     {
