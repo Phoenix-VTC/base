@@ -13,7 +13,8 @@ class BlocklistTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make('Id'),
+            Column::make('Id')
+                ->sortable(),
 
             Column::make('Usernames')
                 ->format(function ($value) {
@@ -25,7 +26,8 @@ class BlocklistTable extends DataTableComponent
                     return implode(', ', $value);
                 }),
 
-            Column::make('Created At'),
+            Column::make('Created At')
+                ->sortable(),
 
             Column::make('Active', 'deleted_at')
                 ->format(function ($value) {
