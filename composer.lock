@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5aa7404e1cab4d7bd7e16a48bf4b4285",
+    "content-hash": "8e7e85903a519e46462d52df5e0fbfe3",
     "packages": [
         {
             "name": "alexmg86/laravel-sub-query",
@@ -4148,16 +4148,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v2.5.5",
+            "version": "v2.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "de192292d68276d831e5fd9824c80c3b78a21ddf"
+                "reference": "7e8ded3cc496858b0a35c1c9355e5af79985bd0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/de192292d68276d831e5fd9824c80c3b78a21ddf",
-                "reference": "de192292d68276d831e5fd9824c80c3b78a21ddf",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/7e8ded3cc496858b0a35c1c9355e5af79985bd0c",
+                "reference": "7e8ded3cc496858b0a35c1c9355e5af79985bd0c",
                 "shasum": ""
             },
             "require": {
@@ -4208,7 +4208,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v2.5.5"
+                "source": "https://github.com/livewire/livewire/tree/v2.6.7"
             },
             "funding": [
                 {
@@ -4216,7 +4216,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-07-13T05:03:28+00:00"
+            "time": "2021-09-25T22:50:47+00:00"
         },
         {
             "name": "monicahq/laravel-cloudflare",
