@@ -96,7 +96,7 @@ Route::prefix('user-management')->name('user-management.')->middleware('auth')->
     Route::prefix('blocklist')->name('blocklist.')->middleware('auth')->group(function () {
         Route::get('/', BlocklistShowIndexPage::class)->middleware('can:view blocklist')->name('index');
         Route::get('create', BlocklistShowCreatePage::class)->middleware('can:create blocklist')->name('create');
-        Route::get('{blocklist}', BlocklistShowShowPage::class)->middleware('can:view blocklist')->name('show');
+        Route::get('{id}', BlocklistShowShowPage::class)->middleware('can:view blocklist')->name('show');
     });
 });
 
