@@ -10,7 +10,7 @@ use App\Listeners\SendEmailChangedNotification;
 use App\Listeners\SendFailedJobDiscordNotification;
 use App\Listeners\SendPasswordChangedNotification;
 use App\Listeners\SendPasswordResetNotification;
-use App\Listeners\UserInBlocklistTriedToApplyNotification;
+use App\Listeners\SendUserInBlocklistTriedToApplyNotification;
 use App\Models\Download as DownloadModel;
 use App\Models\Screenshot as ScreenshotModel;
 use App\Observers\DownloadObserver;
@@ -56,7 +56,7 @@ class EventServiceProvider extends ServiceProvider
             SendFailedJobDiscordNotification::class,
         ],
         UserInBlocklistTriedToApply::class => [
-            UserInBlocklistTriedToApplyNotification::class,
+            SendUserInBlocklistTriedToApplyNotification::class,
         ]
     ];
 
