@@ -8,6 +8,10 @@
     'tags' => false,
 ])
 
+@php
+    $id = random_int(1,1000000)
+@endphp
+
 @once
     @push('scripts')
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
@@ -31,16 +35,18 @@
 
 <div class="flex mt-1" wire:ignore>
     <select
-        class="form-select block w-full h-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:ring-blue focus:border-blue-300 sm:text-sm sm:leading-5 select2-{{ $attributes['id'] }}"
+        class="form-select block w-full h-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:ring-blue focus:border-blue-300 sm:text-sm sm:leading-5 select2-{{ $id }}"
         @if($multiple) multiple="multiple" @endif {{ $attributes }}>
         @if(!empty($selected))
-            <option value="{{ key($selected) }}" selected="selected">{{ current($selected) }}</option>
+            @foreach($selected as $value)
+                <option value="{{ $value }}" selected="selected">{{ $value }}</option>
+            @endforeach
         @endif
     </select>
 
     <script>
         $(document).ready(function () {
-            $('.select2-{{ $attributes['id'] }}').select2({
+            $('.select2-{{ $id }}').select2({
                 @if($url)
                 ajax: {
                     url: '{{ $url }}',
@@ -68,10 +74,11 @@
                 @endif
             });
 
-            $('.select2-{{ $attributes['id'] }}').on('change', function (e) {
+            $('.select2-{{ $id }}').on('change', function (e) {
                 let elementName = $(this).attr('id');
                 var data = $(this).select2("val");
-                @this.set(elementName, data);
+                @this.
+                set(elementName, data);
             });
 
             // Auto-focus non-multi search field on open. Multi selects already auto-focus for some reason, and this code will break it.
