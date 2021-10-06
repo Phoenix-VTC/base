@@ -81,21 +81,21 @@ class ShowCreatePage extends Component
         if ($this->base_or_recruitment_id && $this->user) {
             $user = $this->user;
 
-            $blocklist->usernames = [$user->username];
-            $blocklist->emails = [$user->email];
+            $blocklist->usernames = [(string)$user->username];
+            $blocklist->emails = [(string)$user->email];
             if ($user->discord) {
-                $blocklist->discord_ids = [$user->discord['id']];
+                $blocklist->discord_ids = [(string)$user->discord['id']];
             }
-            $blocklist->truckersmp_ids = [$user->truckersmp_id];
-            $blocklist->steam_ids = [$user->steam_id];
-            $blocklist->base_ids = [$user->id];
+            $blocklist->truckersmp_ids = [(string)$user->truckersmp_id];
+            $blocklist->steam_ids = [(string)$user->steam_id];
+            $blocklist->base_ids = [(string)$user->id];
         } elseif ($this->base_or_recruitment_id && $this->driverApplication) {
             $driverApplication = $this->driverApplication;
 
-            $blocklist->usernames = [$driverApplication->username];
-            $blocklist->emails = [$driverApplication->email];
-            $blocklist->truckersmp_ids = [$driverApplication->truckersmp_id];
-            $blocklist->steam_ids = [$driverApplication->steam_data['steamID64']];
+            $blocklist->usernames = [(string)$driverApplication->username];
+            $blocklist->emails = [(string)$driverApplication->email];
+            $blocklist->truckersmp_ids = [(string)$driverApplication->truckersmp_id];
+            $blocklist->steam_ids = [(string)$driverApplication->steam_data['steamID64']];
         } else {
             $blocklist->usernames = $validatedData['usernames'];
             $blocklist->emails = $validatedData['emails'];
