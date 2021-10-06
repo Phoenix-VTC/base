@@ -76,6 +76,13 @@ class AuthController extends Controller
                             new UniqueInUsers,
                             new UniqueInApplications
                         ],
+                        'personaname' => [
+                            new NotInBlocklist,
+                        ],
+                        'realname' => [
+                            'nullable',
+                            new NotInBlocklist,
+                        ]
                     ]);
 
                     if ($validator->fails()) {
