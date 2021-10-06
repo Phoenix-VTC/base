@@ -24,7 +24,7 @@ class NotInBlocklist implements Rule
             return true;
         }
 
-//        event(new UserInBlocklistTriedToApply($value));
+        event(new UserInBlocklistTriedToApply($value));
 
         return false;
     }
