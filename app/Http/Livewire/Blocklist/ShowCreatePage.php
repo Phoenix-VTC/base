@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Blocklist;
 
+use App\Events\NewBlocklistEntry;
 use App\Models\Application;
 use App\Models\Blocklist;
 use App\Models\User;
@@ -107,6 +108,8 @@ class ShowCreatePage extends Component
         $blocklist->reason = $validatedData['reason'];
 
         $blocklist->save();
+
+        event(new NewBlocklistEntry($blocklist));
 
         session()->flash('alert', ['type' => 'success', 'message' => 'Blocklist entry added successfully!']);
 

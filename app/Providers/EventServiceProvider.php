@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Events\EmailChanged;
+use App\Events\NewBlocklistEntry;
 use App\Events\PasswordChanged;
 use App\Events\UserInBlocklistTriedToApply;
 use App\Listeners\SendAchievementUnlockedNotification;
 use App\Listeners\SendEmailChangedNotification;
 use App\Listeners\SendFailedJobDiscordNotification;
+use App\Listeners\SendNewBlocklistEntryNotification;
 use App\Listeners\SendPasswordChangedNotification;
 use App\Listeners\SendPasswordResetNotification;
 use App\Listeners\SendUserInBlocklistTriedToApplyNotification;
@@ -57,6 +59,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         UserInBlocklistTriedToApply::class => [
             SendUserInBlocklistTriedToApplyNotification::class,
+        ],
+        NewBlocklistEntry::class => [
+            SendNewBlocklistEntryNotification::class,
         ]
     ];
 
