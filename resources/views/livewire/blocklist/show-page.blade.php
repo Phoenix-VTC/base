@@ -315,7 +315,7 @@
                     <h2 id="actions-title" class="text-lg font-medium text-gray-900">Actions</h2>
 
                     <div class="mt-6 flex flex-col justify-stretch space-y-3">
-                        @if(Auth::user()->can('create blocklist'))
+                        @if(!$blocklist->deleted_at && Auth::user()->can('create blocklist'))
                             <a class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                                href="{{ route('user-management.blocklist.edit', $blocklist->id) }}">
                                 <x-heroicon-s-pencil-alt class="-ml-1 mr-3 h-5 w-5"/>
