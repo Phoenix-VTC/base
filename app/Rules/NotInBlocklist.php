@@ -24,7 +24,7 @@ class NotInBlocklist implements Rule
             return true;
         }
 
-        event(new UserInBlocklistTriedToApply($value));
+//        event(new UserInBlocklistTriedToApply($value));
 
         return false;
     }
@@ -37,7 +37,11 @@ class NotInBlocklist implements Rule
     public function message()
     {
         return '
-            <b>You have been blocked from joining PhoenixVTC.</b>
+            <b>
+                You have been blocked from joining PhoenixVTC.
+                <br>
+                Trigger value: :input (:attribute)
+            </b>
             <br>
             If you think that this is an error, please contact our Human Resources department at <a href="mailto:hr@phoenixvtc.com" class="font-bold">hr@phoenixvtc.com</a>.
             ';
