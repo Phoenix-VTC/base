@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Blocklist;
 
+use App\Events\BlocklistEntryDeleted;
+use App\Events\BlocklistEntryRestored;
 use App\Models\Blocklist;
 use Livewire\Component;
 
@@ -21,6 +23,8 @@ class ShowShowPage extends Component
 
     public function delete(): void
     {
+        event(new BlocklistEntryDeleted($this->blocklist));
+
         $this->blocklist->delete();
 
         session()->flash('alert', ['type' => 'success', 'message' => 'Blocklist entry deleted successfully!']);
@@ -29,6 +33,8 @@ class ShowShowPage extends Component
     public function restore(): void
     {
         $this->blocklist->restore();
+
+        event(new BlocklistEntryRestored($this->blocklist));
 
         session()->flash('alert', ['type' => 'success', 'message' => 'Blocklist entry restored successfully!']);
     }

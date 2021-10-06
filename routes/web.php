@@ -8,6 +8,7 @@ use App\Http\Livewire\Auth\ShowWelcomeForm;
 use App\Http\Livewire\Blocklist\ShowIndexPage as BlocklistShowIndexPage;
 use App\Http\Livewire\Blocklist\ShowCreatePage as BlocklistShowCreatePage;
 use App\Http\Livewire\Blocklist\ShowShowPage as BlocklistShowShowPage;
+use App\Http\Livewire\Blocklist\ShowEditPage as BlocklistShowEditPage;
 use App\Http\Livewire\Downloads\ShowIndexPage as DownloadsShowIndexPage;
 use App\Http\Livewire\DownloadsManagement\ShowEditPage as DownloadsManagementShowEditPage;
 use App\Http\Livewire\DownloadsManagement\ShowCreatePage as DownloadsManagementShowCreatePage;
@@ -97,6 +98,7 @@ Route::prefix('user-management')->name('user-management.')->middleware('auth')->
         Route::get('/', BlocklistShowIndexPage::class)->middleware('can:view blocklist')->name('index');
         Route::get('create', BlocklistShowCreatePage::class)->middleware('can:create blocklist')->name('create');
         Route::get('{id}', BlocklistShowShowPage::class)->middleware('can:view blocklist')->name('show');
+        Route::get('{blocklist}/edit', BlocklistShowEditPage::class)->middleware('can:create blocklist')->name('edit');
     });
 });
 

@@ -2,28 +2,26 @@
 
 namespace App\Listeners;
 
-use App\Events\NewBlocklistEntry;
+use App\Events\BlocklistEntryUpdated;
 use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 
-class SendNewBlocklistEntryNotification implements ShouldQueue
+class SendUpdatedBlocklistEntryNotification implements ShouldQueue
 {
     /**
      * Handle the event.
      *
-     * @param NewBlocklistEntry $event
+     * @param BlocklistEntryUpdated $event
      * @return void
      */
-    public function handle(NewBlocklistEntry $event): void
+    public function handle(BlocklistEntryUpdated $event): void
     {
         Http::post(config('services.discord.webhooks.human-resources'), [
             'embeds' => [
                 [
-                    'title' => 'New blocklist entry created',
+                    'title' => 'Blocklist entry edited',
                     'url' => route('user-management.blocklist.show', $event->blocklist->id),
-                    'description' => "**Reason:** \n" . Str::words($event->blocklist->reason),
                     'color' => 14429954, // #DC2F02
                     'footer' => [
                         'text' => 'PhoenixBase',
