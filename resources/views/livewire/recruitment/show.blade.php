@@ -303,25 +303,25 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($previousApplications as $application)
+                                                @foreach($previousApplications as $previousApplication)
                                                     <tr class="bg-white @if($loop->odd) bg-white @else bg-gray-50 @endif">
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                            {{ $application->username }}
+                                                            {{ $previousApplication->username }}
                                                         </td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                            {{ $application->email }}
+                                                            {{ $previousApplication->email }}
                                                         </td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                             <time
-                                                                datetime="{{ \Carbon\Carbon::parse($application->created_at)->toDateString() }}">
-                                                                {{ \Carbon\Carbon::parse($application->created_at)->toDayDateTimeString() }}
+                                                                datetime="{{ \Carbon\Carbon::parse($previousApplication->created_at)->toDateString() }}">
+                                                                {{ \Carbon\Carbon::parse($previousApplication->created_at)->toDayDateTimeString() }}
                                                             </time>
                                                         </td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                            {{ ucwords(str_replace('_', ' ', $application->status)) }}
+                                                            {{ ucwords(str_replace('_', ' ', $previousApplication->status)) }}
                                                         </td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                            <a href="{{ route('recruitment.show', $application->uuid) }}"
+                                                            <a href="{{ route('recruitment.show', $previousApplication->uuid) }}"
                                                                class="text-indigo-600 hover:text-indigo-900">View</a>
                                                         </td>
                                                     </tr>
