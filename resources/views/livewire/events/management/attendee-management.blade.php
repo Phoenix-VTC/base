@@ -27,17 +27,19 @@
         </a>
     </div>
 
-    <form action="{{ route('event-management.reward-event-xp', $event) }}" method="POST">
-        @csrf
+    @if (!$event->completed && $event->is_past)
+        <form action="{{ route('event-management.reward-event-xp', $event) }}" method="POST">
+            @csrf
 
-        <div class="ml-3">
-            <button type="submit"
-                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                <x-heroicon-s-check class="-ml-1 mr-2 h-5 w-5"/>
-                Reward Event XP
-            </button>
-        </div>
-    </form>
+            <div class="ml-3">
+                <button type="submit"
+                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <x-heroicon-s-check class="-ml-1 mr-2 h-5 w-5"/>
+                    Reward Event XP
+                </button>
+            </div>
+        </form>
+    @endif
 @endsection
 
 <div>
@@ -53,12 +55,12 @@
                                 <div class="flex-shrink-0">
                                     <img class="h-12 w-12 rounded-full"
                                          src="{{ $attendee->user->profile_picture ?? '' }}"
-                                         alt="{{ $attendee->user->username ?? 'Unknown User' }}">
+                                         alt="{{ $attendee->user->username ?? 'Deleted User' }}">
                                 </div>
                                 <div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
                                     <div>
-                                        <p class="text-sm font-medium text-black truncate">{{ $attendee->user->username ?? 'Unknown User' }}</p>
-                                        <div class="mt-2 flex items-center text-sm text-gray-500">
+                                        <p class="text-sm font-medium text-black truncate">{{ $attendee->user->username ?? 'Deleted User' }}</p>
+                                        <div class="mt-2 fle x items-center text-sm text-gray-500">
                                             <div class="sm:flex">
                                                 <p class="flex items-center text-sm text-gray-500">
                                                     @if($attendee->attending->value === App\Enums\Attending::Yes)
@@ -122,15 +124,16 @@
                                 <div class="h-12 w-12 rounded-full"></div>
                             </div>
                             <div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
-                                <div>
-                                    <div class="flex items-center text-sm text-gray-500">
-                                        <x-input.group for="username" :error="$errors->first('username')"
-                                                       label="Add new attendee">
-                                            <x-input.text class="h-8 pl-2" id="username" wire:model.lazy="username"
-                                                          :error="$errors->first('username')" autocomplete="off"
-                                                          placeholder="Username"/>
-                                        </x-input.group>
-                                    </div>
+                                <div class="items-center text-sm text-gray-500" wire:ignore>
+                                    <x-input.group for="user_id" :error="$errors->first('user_id')"
+                                                   label="Add new attendee" col-span="4">
+                                        <x-input.select2
+                                            :url="route('api.users')"
+                                            id="user_id"
+                                            wire:model="user_id"
+                                            placeholder="Username"
+                                            :selected="$user_id ? [$user_id => App\Models\User::find($user_id)->username] : null"/>
+                                    </x-input.group>
                                 </div>
                             </div>
                         </div>

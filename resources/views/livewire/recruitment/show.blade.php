@@ -211,7 +211,7 @@
                             What should this say?
                         </p>
                     </div>
-                    <div class="border-t borfder-gray-200 px-4 py-5 sm:px-6">
+                    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
                         <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                             @foreach($application->application_answers as $question => $answer)
                                 <div class="sm:col-span-2">
@@ -245,12 +245,102 @@
                                                 @endif
                                             </div>
                                         @else
-                                            {{ ucfirst($answer) }}
+                                            {{-- First ucword every newline --}}
+                                            {{-- Then escape any code in the var with e: https://laravel.com/docs/8.x/helpers#method-e --}}
+                                            {{-- Then convert newlines to <br>s with nl2br --}}
+                                            {{-- Then display that data unescaped (it's safe because of the 2nd comment) --}}
+                                            <div class="prose prose-sm">
+                                                <blockquote>{!! nl2br(e(ucwords($answer, "\n"))) !!}</blockquote>
+                                            </div>
                                         @endif
                                     </dd>
                                 </div>
                             @endforeach
                         </dl>
+                    </div>
+                </div>
+            </section>
+
+            <section aria-labelledby="previous-applications-title">
+                <div class="bg-white shadow sm:rounded-lg">
+                    <div class="px-4 py-5 sm:px-6">
+                        <h2 id="previous-applications-title" class="text-lg leading-6 font-medium text-gray-900">
+                            <b>{{ $previousApplications->count() }}</b>
+                            Previous Driver {{ Str::plural('Application', $previousApplications->count()) }}
+                        </h2>
+                        <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                            Searched with the applicant's username, email, Discord username, TruckersMP ID and Steam ID.
+                        </p>
+                    </div>
+                    <div class="border-t border-gray-200">
+                        @if($previousApplications->count() > 0)
+                            <div class="flex flex-col">
+                                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                        <div class="overflow-hidden sm:rounded-lg">
+                                            <table class="min-w-full divide-y divide-gray-200">
+                                                <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col"
+                                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Username
+                                                    </th>
+                                                    <th scope="col"
+                                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Email
+                                                    </th>
+                                                    <th scope="col"
+                                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Date
+                                                    </th>
+                                                    <th scope="col"
+                                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Outcome
+                                                    </th>
+                                                    <th scope="col" class="relative px-6 py-3">
+                                                        <span class="sr-only">View</span>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($previousApplications as $previousApplication)
+                                                    <tr class="bg-white @if($loop->odd) bg-white @else bg-gray-50 @endif">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                            {{ $previousApplication->username }}
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            {{ $previousApplication->email }}
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            <time
+                                                                datetime="{{ \Carbon\Carbon::parse($previousApplication->created_at)->toDateString() }}">
+                                                                {{ \Carbon\Carbon::parse($previousApplication->created_at)->toDayDateTimeString() }}
+                                                            </time>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            {{ ucwords(str_replace('_', ' ', $previousApplication->status)) }}
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                            <a href="{{ route('recruitment.show', $previousApplication->uuid) }}"
+                                                               class="text-indigo-600 hover:text-indigo-900">View</a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            <div class="text-center p-8">
+                                <x-heroicon-o-shield-check class="mx-auto h-12 w-12 text-gray-400"/>
+                                <h3 class="mt-2 text-sm font-medium text-gray-900">No previous applications</h3>
+                                <p class="mt-1 text-sm text-gray-500">
+                                    We couldn't find any related previous applications.
+                                </p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </section>
