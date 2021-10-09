@@ -56,7 +56,8 @@ class JobController extends Controller
                 'cargo:id,name,dlc,mod,weight,game_id,world_of_trucks'
             ])
             ->orderByDesc('created_at')
-            ->get();
+            ->get()
+            ->toArray();
     }
 
     /**
