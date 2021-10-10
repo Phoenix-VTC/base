@@ -182,6 +182,48 @@
                     </li>
                 @endif
 
+                {{-- VTC History Private --}}
+                @if($application->truckersmp_data['displayVTCHistory'] === false)
+                    <li>
+                        <div class="relative pb-8">
+                            <div class="relative flex space-x-3">
+                                <div>
+                                    <span
+                                        class="h-8 w-8 rounded-full bg-orange-500 flex items-center justify-center ring-8 ring-white">
+                                        <x-heroicon-o-truck class="h-5 w-5 text-white"/>
+                                    </span>
+                                </div>
+                                <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500">VTC history private</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                @endif
+
+                {{-- In another VTC --}}
+                @if($application->truckersmp_data['vtc']['id'] !== 0 && $application->truckersmp_data['vtc']['id'] !== 30294)
+                    <li>
+                        <div class="relative pb-8">
+                            <div class="relative flex space-x-3">
+                                <div>
+                                    <span
+                                        class="h-8 w-8 rounded-full bg-red-500 flex items-center justify-center ring-8 ring-white">
+                                        <x-heroicon-o-exclamation class="h-5 w-5 text-white"/>
+                                    </span>
+                                </div>
+                                <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500 font-bold">In another VTC</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                @endif
+
                 {{-- Currently Banned --}}
                 @if($application->truckersmp_data['banned'])
                     <li>
@@ -200,7 +242,7 @@
                                 </div>
                                 <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                                     <div>
-                                        <p class="text-sm text-gray-500">Currently Banned</p>
+                                        <p class="text-sm text-gray-500 font-bold">Currently Banned</p>
                                     </div>
                                 </div>
                             </div>
