@@ -7,12 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Cargo;
 use App\Models\City;
 use App\Models\Company;
+use App\Models\Game;
 use App\Models\Job;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use JsonException;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -20,6 +22,13 @@ use Laravel\Sanctum\PersonalAccessToken;
 class IncomingDataController extends Controller
 {
     private User $user;
+    private City $pickupCity;
+    private City $destinationCity;
+    private Company $pickupCompany;
+    private Company $destinationCompany;
+    private Cargo $cargo;
+    private int $gameId;
+    private int $cargoDamage;
 
     /**
      * Handle the incoming tracker request
@@ -58,11 +67,33 @@ class IncomingDataController extends Controller
 
     private function processJobData(object $data): void
     {
-        $gameId = $data->game->game->id;
-        $cargoDamage = round($data->job->cargo->damage / 0.01);
+        $this->gameId = $data->game->game->id;
 
+        $this->cargoDamage = round($data->job->cargo->damage / 0.01);
+
+        // Find or create the job
+        $job = $this->findOrCreateJob($data);
+
+        // Return if the found job is already completed (just to be sure)
+        if ($job->status === JobStatus::Complete) {
+            return;
+        }
+
+        // Set the job to PendingVerification if a city/company/cargo is unapproved
+        if (!$this->pickupCity->approved || !$this->destinationCity->approved || !$this->pickupCompany->approved || !$this->destinationCompany->approved || !$this->cargo->approved) {
+            $job->status = JobStatus::PendingVerification;
+        }
+
+        // Update the cargo damage
+        $job->load_damage = $this->cargoDamage;
+
+        $job->save();
+    }
+
+    private function findOrCreateJob(object $data): Job
+    {
         // Handle distance conversion
-        if ($gameId === 2) {
+        if ($this->gameId === 2) {
             $distance = $data->job->plannedDistance->miles;
         } else {
             $distance = $data->job->plannedDistance->km;
@@ -71,56 +102,89 @@ class IncomingDataController extends Controller
         // Round the distance up
         $distance = ceil($distance);
 
-        // Find or create the job
-        $job = Job::firstOrCreate([
-            'user_id' => $this->user->id,
-            'game_id' => $gameId,
-            'pickup_city_id' => ($pickupCity = $this->findOrCreateCity($data->job->source->city->name, $gameId))->id,
-            'destination_city_id' => ($destinationCity = $this->findOrCreateCity($data->job->destination->city->name, $gameId))->id,
-            'pickup_company_id' => ($pickupCompany = $this->findOrCreateCompany($data->job->source->company->name, $gameId, $data->job->isSpecial))->id,
-            'destination_company_id' => ($destinationCompany = $this->findOrCreateCompany($data->job->destination->company->name, $gameId, $data->job->isSpecial))->id,
-            'cargo_id' => ($cargo = $this->findOrCreateCargo($data->job->cargo, $gameId))->id,
-            'estimated_income' => $data->job->income,
-            'total_income' => $data->job->income,
-            'tracker_job' => true,
-        ], [
-            'started_at' => Carbon::now(),
-            'load_damage' => $cargoDamage,
-            'distance' => $distance
-        ]);
+        $job = Job::query()
+            ->where('user_id', $this->user->id)
+            ->where('game_id', $this->gameId)
+            ->where('pickup_city_id', ($this->pickupCity = $this->findOrCreateCity($data->job->source->city->id, $data->job->source->city->name))->id)
+            ->where('destination_city_id', ($this->destinationCity = $this->findOrCreateCity($data->job->destination->city->id, $data->job->destination->city->name))->id)
+            ->where('pickup_company_id', ($this->pickupCompany = $this->findOrCreateCompany($data->job->source->company->name, $data->job->isSpecial))->id)
+            ->where('destination_company_id', ($this->destinationCompany = $this->findOrCreateCompany($data->job->destination->company->name, $data->job->isSpecial))->id)
+            ->where('cargo_id', ($this->cargo = $this->findOrCreateCargo($data->job->cargo))->id)
+            ->where('tracker_job', true)
+            ->where('status', '!=', JobStatus::Complete);
 
-        // Return if the found job is already completed (just to be sure)
-        if ($job->status === JobStatus::Complete) {
-            return;
+        // Return the job if it exists
+        if ($job->exists()) {
+            return $job->firstOrFail();
         }
 
-        // Set the job to PendingVerification if a city/company/cargo is unapproved
-        if (!$pickupCity->approved || !$destinationCity->approved || !$pickupCompany->approved || !$destinationCompany->approved || !$cargo->approved) {
-            $job->status = JobStatus::PendingVerification;
-        }
-
-        // Update the cargo damage
-        $job->load_damage = $cargoDamage;
-
-        $job->save();
+        // The job doesn't exist, so create it
+        return Job::query()
+            ->create([
+                'user_id' => $this->user->id,
+                'game_id' => $this->gameId,
+                'pickup_city_id' => ($this->pickupCity = $this->findOrCreateCity($data->job->source->city->id, $data->job->source->city->name))->id,
+                'destination_city_id' => ($this->destinationCity = $this->findOrCreateCity($data->job->destination->city->id, $data->job->destination->city->name))->id,
+                'pickup_company_id' => ($this->pickupCompany = $this->findOrCreateCompany($data->job->source->company->name, $data->job->isSpecial))->id,
+                'destination_company_id' => ($this->destinationCompany = $this->findOrCreateCompany($data->job->destination->company->name, $data->job->isSpecial))->id,
+                'cargo_id' => ($this->cargo = $this->findOrCreateCargo($data->job->cargo))->id,
+                'estimated_income' => $data->job->income,
+                'total_income' => $data->job->income,
+                'tracker_job' => true,
+                'started_at' => Carbon::now(),
+                'load_damage' => $this->cargoDamage,
+                'distance' => $distance
+            ]);
     }
 
-    private function findOrCreateCity(string $sourceCity, int $gameId): City
+    private function findOrCreateCity(string $cityId, string $cityName): City
     {
-        return City::firstOrCreate([
-            'real_name' => $sourceCity,
-        ], [
-            'name' => Str::snake($sourceCity),
+        // Return the city if found
+        if (($city = City::query()->firstWhere('name', $cityId))) {
+            return $city;
+        }
+
+        // Request city data from Trucky
+        $request = Http::get('https://api.truckyapp.com/v2/map/cities/' . Game::getAbbreviationById($this->gameId));
+
+        // If the request returned a 200 & the response key exists
+        if ($request->ok() && $request['response']) {
+            // Collect the response
+            $request = collect($request['response']);
+
+            // Get the first result where the in_game_id matches the $cityId
+            $result = $request->firstWhere('in_game_id', $cityId);
+
+            // If there is a result, create an approved city with the Trucky data
+            if ($result) {
+                return City::query()->create([
+                    'real_name' => $result['realName'],
+                    'name' => $result['in_game_id'],
+                    'country' => $result['country'],
+                    'dlc' => $result['dlc'],
+                    'mod' => $result['mod'],
+                    'x' => $result['x'],
+                    'z' => $result['z'],
+                    'game_id' => $this->gameId,
+                    'requested_by' => $this->user->id,
+                ]);
+            }
+        }
+
+        // Otherwise, request the city
+        return City::query()->create([
+            'real_name' => $cityName,
+            'name' => $cityId,
             'country' => 'Unknown (Automatic Tracker Request)',
             'dlc' => 'Unknown (Automatic Tracker Request)',
             'mod' => 'Unknown (Automatic Tracker Request)',
-            'game_id' => $gameId,
+            'game_id' => $this->gameId,
             'approved' => false,
             'requested_by' => $this->user->id,
         ]);
     }
 
-    private function findOrCreateCompany(string $companyName, int $gameId, bool $isSpecial): Company
+    private function findOrCreateCompany(string $companyName, bool $isSpecial): Company
     {
         // Handle special transport job
         if ($isSpecial) {
@@ -128,7 +192,7 @@ class IncomingDataController extends Controller
                 'name' => 'Special Transport',
             ], [
                 'dlc' => 'Special Transport',
-                'game_id' => $gameId,
+                'game_id' => $this->gameId,
             ]);
         }
 
@@ -139,16 +203,16 @@ class IncomingDataController extends Controller
             'specialization' => 'Unknown (Automatic Tracker Request)',
             'dlc' => 'Unknown (Automatic Tracker Request)',
             'mod' => 'Unknown (Automatic Tracker Request)',
-            'game_id' => $gameId,
+            'game_id' => $this->gameId,
             'approved' => false,
             'requested_by' => $this->user->id,
         ]);
     }
 
-    private function findOrCreateCargo(object $cargo, int $gameId): Cargo
+    private function findOrCreateCargo(object $cargo): Cargo
     {
         // Handle cargo weight conversion
-        if ($gameId === 2) {
+        if ($this->gameId === 2) {
             // Convert kilos to pounds
             $weight = round($cargo->mass * 2.205);
         } else {
@@ -162,7 +226,7 @@ class IncomingDataController extends Controller
             'dlc' => 'Unknown (Automatic Tracker Request)',
             'mod' => 'Unknown (Automatic Tracker Request)',
             'weight' => $weight,
-            'game_id' => $gameId,
+            'game_id' => $this->gameId,
             'approved' => false,
             'requested_by' => $this->user->id,
         ]);
