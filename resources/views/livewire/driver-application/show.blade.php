@@ -41,7 +41,7 @@
                 Thank you for applying!
             </h1>
             <h2 class="text-xl text-gray-900">
-                Our Recruitment team is currently reviewing your application.
+                Our Human Resources team is currently reviewing your application.
                 <br>
                 To view the current status of your application, you can check the progress bar at the top of this page.
             </h2>

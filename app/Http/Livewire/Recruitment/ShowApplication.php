@@ -154,7 +154,7 @@ class ShowApplication extends Component
 
     private function sendDiscordWebhook(string $title, string $description, int $color): void
     {
-        Http::post(config('services.discord.webhooks.recruitment'), [
+        Http::post(config('services.discord.webhooks.human-resources'), [
             'embeds' => [
                 [
                     'title' => $title,
