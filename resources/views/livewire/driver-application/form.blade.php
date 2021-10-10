@@ -106,7 +106,7 @@
                         </label>
                         <input type="text" name="discord_username" id="discord_username" autocomplete="off"
                                placeholder="Phoenix#2021" wire:model.lazy="discord_username"
-                               class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('discord_username') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
+                               class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('discord_username') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror">
                         @error('discord_username')
                         <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
                         @enderror
@@ -121,7 +121,7 @@
                         </label>
                         <input type="text" name="username" id="username" autocomplete="username"
                                placeholder="Early Bird" wire:model.lazy="username"
-                               class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('username') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
+                               class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('username') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror">
                         @error('username')
                         <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
                         @enderror
@@ -135,7 +135,7 @@
                                class="block text-sm font-medium text-gray-700">{{ __('driver-application.default_questions.email') }}</label>
                         <input type="email" name="email" id="email" autocomplete="email" placeholder="e.bird@gmail.com"
                                wire:model.lazy="email"
-                               class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('email') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
+                               class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('email') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror">
                         @error('email')
                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -146,7 +146,7 @@
                                class="block text-sm font-medium text-gray-700">{{ __('driver-application.default_questions.date_of_birth') }}</label>
                         <input type="date" name="date_of_birth" id="date_of_birth" autocomplete="bday"
                                wire:model.lazy="date_of_birth"
-                               class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('date_of_birth') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
+                               class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('date_of_birth') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror">
                         @error('date_of_birth')
                         <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
                         @enderror
@@ -156,7 +156,7 @@
                         <label for="country"
                                class="block text-sm font-medium text-gray-700">{{ __('driver-application.default_questions.country') }}</label>
                         <select id="country" name="country" autocomplete="country" wire:model.lazy="country"
-                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('country') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('country') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror">
                             <option value="" selected
                                     disabled>{{ __('driver-application.default_questions.country_dropdown') }}</option>
                             @foreach($countries as $key => $countryName)
@@ -287,7 +287,7 @@
                         <div class="mt-1">
                             <textarea id="about" name="about" rows="3" x-ref="about"
                                       x-on:keyup="aboutCount = $refs.about.value.length" wire:model.lazy="about"
-                                      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('about') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror"
+                                      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('about') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror"
                                       placeholder="Anything will do! Tell us about your hobbies, work, favorite truck, games.."></textarea>
                             <p class="mt-2 text-sm text-gray-500" x-show.transition.in.out="aboutCount > 0" x-cloak>
                                 <span x-html="aboutCount"></span> {{ __('slugs.characters') }}
@@ -306,7 +306,7 @@
                         <div class="mt-1">
                             <textarea id="why_join" name="why_join" rows="3" x-ref="why_join"
                                       x-on:keyup="whyJoinCount = $refs.why_join.value.length" wire:model.lazy="why_join"
-                                      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('why_join') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror"
+                                      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('why_join') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror"
                                       placeholder="Nothing is too much! We don't mind reading :)"></textarea>
                         </div>
                         <p class="mt-2 text-sm text-gray-500" x-show.transition.in.out="whyJoinCount > 0" x-cloak>
@@ -352,7 +352,7 @@
                         <div class="mt-1">
                             <textarea id="find_us" name="find_us" x-ref="find_us"
                                       x-on:keyup="findUsCount = $refs.find_us.value.length" wire:model.lazy="find_us"
-                                      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('find_us') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror"
+                                      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('find_us') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror"
                                       placeholder="TruckersMP, Discord advertisements, TruckersFM, etc"></textarea>
                         </div>
                         <p class="mt-2 text-sm text-gray-500" x-show.transition.in.out="findUsCount > 0" x-cloak>
