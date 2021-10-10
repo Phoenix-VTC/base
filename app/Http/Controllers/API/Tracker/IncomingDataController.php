@@ -7,12 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Cargo;
 use App\Models\City;
 use App\Models\Company;
+use App\Models\Game;
 use App\Models\Job;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use JsonException;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -25,6 +27,7 @@ class IncomingDataController extends Controller
     private Company $pickupCompany;
     private Company $destinationCompany;
     private Cargo $cargo;
+    private int $gameId;
     private int $cargoDamage;
 
     /**
@@ -64,6 +67,10 @@ class IncomingDataController extends Controller
 
     private function processJobData(object $data): void
     {
+        $this->gameId = $data->game->game->id;
+
+        $this->cargoDamage = round($data->job->cargo->damage / 0.01);
+
         // Find or create the job
         $job = $this->findOrCreateJob($data);
 
@@ -85,10 +92,6 @@ class IncomingDataController extends Controller
 
     private function findOrCreateJob(object $data): Job
     {
-        $this->gameId = $data->game->game->id;
-
-        $this->cargoDamage = round($data->job->cargo->damage / 0.01);
-
         // Handle distance conversion
         if ($this->gameId === 2) {
             $distance = $data->job->plannedDistance->miles;
@@ -136,10 +139,42 @@ class IncomingDataController extends Controller
 
     private function findOrCreateCity(string $cityId, string $cityName): City
     {
-        return City::firstOrCreate([
-            'name' => $cityId,
-        ], [
+        // Return the city if found
+        if (($city = City::query()->firstWhere('name', $cityId))) {
+            return $city;
+        }
+
+        // Request city data from Trucky
+        $request = Http::get('https://api.truckyapp.com/v2/map/cities/' . Game::getAbbreviationById($this->gameId));
+
+        // If the request returned a 200 & the response key exists
+        if ($request->ok() && $request['response']) {
+            // Collect the response
+            $request = collect($request['response']);
+
+            // Get the first result where the in_game_id matches the $cityId
+            $result = $request->firstWhere('in_game_id', $cityId);
+
+            // If there is a result, create an approved city with the Trucky data
+            if ($result) {
+                return City::query()->create([
+                    'real_name' => $result['realName'],
+                    'name' => $result['in_game_id'],
+                    'country' => $result['country'],
+                    'dlc' => $result['dlc'],
+                    'mod' => $result['mod'],
+                    'x' => $result['x'],
+                    'z' => $result['z'],
+                    'game_id' => $this->gameId,
+                    'requested_by' => $this->user->id,
+                ]);
+            }
+        }
+
+        // Otherwise, request the city
+        return City::query()->create([
             'real_name' => $cityName,
+            'name' => $cityId,
             'country' => 'Unknown (Automatic Tracker Request)',
             'dlc' => 'Unknown (Automatic Tracker Request)',
             'mod' => 'Unknown (Automatic Tracker Request)',
