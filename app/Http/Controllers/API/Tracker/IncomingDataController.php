@@ -75,8 +75,8 @@ class IncomingDataController extends Controller
         $job = Job::firstOrCreate([
             'user_id' => $this->user->id,
             'game_id' => $gameId,
-            'pickup_city_id' => ($pickupCity = $this->findOrCreateCity($data->job->source->city->name, $gameId))->id,
-            'destination_city_id' => ($destinationCity = $this->findOrCreateCity($data->job->destination->city->name, $gameId))->id,
+            'pickup_city_id' => ($pickupCity = $this->findOrCreateCity($data->job->source->city->id, $data->job->source->city->name, $gameId))->id,
+            'destination_city_id' => ($destinationCity = $this->findOrCreateCity($data->job->destination->city->id, $data->job->destination->city->name, $gameId))->id,
             'pickup_company_id' => ($pickupCompany = $this->findOrCreateCompany($data->job->source->company->name, $gameId, $data->job->isSpecial))->id,
             'destination_company_id' => ($destinationCompany = $this->findOrCreateCompany($data->job->destination->company->name, $gameId, $data->job->isSpecial))->id,
             'cargo_id' => ($cargo = $this->findOrCreateCargo($data->job->cargo, $gameId))->id,
@@ -105,12 +105,12 @@ class IncomingDataController extends Controller
         $job->save();
     }
 
-    private function findOrCreateCity(string $sourceCity, int $gameId): City
+    private function findOrCreateCity(string $cityId, string $cityName, int $gameId): City
     {
         return City::firstOrCreate([
-            'real_name' => $sourceCity,
+            'name' => $cityId,
         ], [
-            'name' => Str::snake($sourceCity),
+            'real_name' => $cityName,
             'country' => 'Unknown (Automatic Tracker Request)',
             'dlc' => 'Unknown (Automatic Tracker Request)',
             'mod' => 'Unknown (Automatic Tracker Request)',
