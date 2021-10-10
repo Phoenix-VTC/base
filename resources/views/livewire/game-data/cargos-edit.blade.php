@@ -13,9 +13,23 @@
 <div>
     <x-alert/>
 
+    @if(!$cargo->approved && $cargo->jobs->count())
+        <x-app-ui::alert icon="iconic-information" class="mb-5">
+            <x-slot name="heading">
+                Heads-up!
+            </x-slot>
+
+            This cargo was automatically requested by the tracker.
+            <br>
+            Before approving, make sure that all fields marked as "unknown" are either corrected or emptied.
+            If this request needs to be denied, make sure to delete all the related jobs first, and inform the member!
+            Otherwise this will not work.
+        </x-app-ui::alert>
+    @endif
+
     <div class="mt-5 md:mt-0 md:col-span-2">
         <form wire:submit.prevent="submit">
-            <div class="shadow overflow-hidden sm:rounded-md">
+            <div class="shadow overflow-hidden rounded-xl">
                 <div class="px-4 py-5 bg-white sm:p-6">
                     <div class="grid grid-cols-6 gap-6">
                         @csrf
@@ -97,4 +111,60 @@
             </div>
         </form>
     </div>
+
+    @if($cargo->jobs->count())
+        <x-app-ui::card class="mt-5">
+            <x-slot name="header">
+                <x-app-ui::card.heading>
+                    Related Jobs
+                </x-app-ui::card.heading>
+            </x-slot>
+
+            <x-app-ui::table>
+                <x-slot name="columns">
+                    <x-app-ui::table.column>
+                        Job ID
+                    </x-app-ui::table.column>
+
+                    <x-app-ui::table.column>
+                        User
+                    </x-app-ui::table.column>
+
+                    <x-app-ui::table.column>
+                        Created At
+                    </x-app-ui::table.column>
+
+                    <x-app-ui::table.column>
+                        <x-app-ui::sr-only>
+                            View Job
+                        </x-app-ui::sr-only>
+                    </x-app-ui::table.column>
+                </x-slot>
+
+                @foreach($cargo->jobs as $job)
+                    <x-app-ui::table.row>
+                        <x-app-ui::table.cell>
+                            {{ $job->id }}
+                        </x-app-ui::table.cell>
+
+                        <x-app-ui::table.cell>
+                            <x-app-ui::link href="{{ route('users.profile', $job->user->id) }}">
+                                {{ $job->user->username }}
+                            </x-app-ui::link>
+                        </x-app-ui::table.cell>
+
+                        <x-app-ui::table.cell>
+                            {{ $job->created_at }}
+                        </x-app-ui::table.cell>
+
+                        <x-app-ui::table.cell align="right">
+                            <x-app-ui::table.cell.action tag="a" href="{{ route('jobs.show', $job->id) }}">
+                                View Job
+                            </x-app-ui::table.cell.action>
+                        </x-app-ui::table.cell>
+                    </x-app-ui::table.row>
+                @endforeach
+            </x-app-ui::table>
+        </x-app-ui::card>
+    @endif
 </div>
