@@ -24,7 +24,7 @@ Route::prefix('discord-bot')->middleware('auth.discordBot')->group(function () {
 
 Route::get('users', [UserController::class, 'index'])->name('users');
 
-Route::prefix('tracker')->middleware('auth:sanctum')->group(function () {
+Route::prefix('tracker')->middleware(['auth:sanctum', 'sanctum.canSubmitJobs'])->group(function () {
     Route::post('/', [IncomingDataController::class, 'handleRequest']);
 
     Route::resource('jobs', JobController::class)->only([
