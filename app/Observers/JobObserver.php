@@ -8,6 +8,7 @@ use App\Achievements\JobChain;
 use App\Achievements\JobStonks;
 use App\Achievements\LongDrive;
 use App\Achievements\MoneyMan;
+use App\Enums\JobStatus;
 use App\Models\Job;
 use Bavix\Wallet\Models\Transaction;
 
@@ -21,6 +22,10 @@ class JobObserver
      */
     public function created(Job $job): void
     {
+        if ($job->status !== JobStatus::Complete) {
+            return;
+        }
+
         $user = $job->user;
 
         $user->deposit($job->total_income, ['description' => 'Submitted job', 'job_id' => $job->id]);
@@ -37,7 +42,25 @@ class JobObserver
      */
     public function updated(Job $job): void
     {
+        // Return when the job status isn't complete
+        if ($job->status->value !== JobStatus::Complete) {
+            return;
+        }
+
         $user = $job->user;
+
+        /*
+         * If tracker_job is true, the new status is complete and the old value is incomplete
+         * deposit the income as a new submitted job.
+         */
+        if ($job->tracker_job && $job->status->value === JobStatus::Complete && $job->getOriginal('status')->value === JobStatus::Incomplete) {
+            $user->deposit($job->total_income, ['description' => 'Submitted tracker job', 'job_id' => $job->id]);
+
+            // Handle achievement unlocking
+            $this->handleAchievements($job);
+
+            return;
+        }
 
         // Try to find the previous job transaction(s) and sum them
         $old_income = Transaction::whereJsonContains('meta->job_id', $job->id)->sum('amount');
@@ -63,6 +86,10 @@ class JobObserver
      */
     public function deleted(Job $job): void
     {
+        if ($job->status !== JobStatus::Complete) {
+            return;
+        }
+
         $job->user->withdraw($job->total_income, ['description' => 'Deleted job', 'job_id' => $job->id]);
 
         // Remove one progress point on the job achievement chain

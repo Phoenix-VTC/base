@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class DiscordBotAuthenticated
+class CanSubmitJobs
 {
     /**
      * Handle an incoming request.
@@ -16,12 +16,8 @@ class DiscordBotAuthenticated
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = config('app.discord-bot-api-token', '');
-
-        if ($request->header('token') !== $token) {
-            return response()->json([
-                'message' => 'Incorrect token.'
-            ], 401);
+        if (!$request->user()->tokenCan('jobs:submit')) {
+            abort(403, 'This token does not have permission to submit jobs.');
         }
 
         return $next($request);

@@ -2,6 +2,16 @@
 
 @section('title', "Viewing Job #$job->id")
 
+@section('actions')
+    @if($job->user_id === Auth::id() && $job->status->value === \App\Enums\JobStatus::Incomplete)
+        <div class="ml-3">
+            <x-app-ui::button tag="a" href="{{ route('jobs.verify', $job->id) }}" icon="iconic-check">
+                Verify job
+            </x-app-ui::button>
+        </div>
+    @endif
+@endsection
+
 @push('scripts')
     <script type="text/javascript">
         function addRoute(map) {
@@ -30,6 +40,18 @@
 
 <div>
     <x-alert/>
+
+    @if($job->user_id === Auth::id() && $job->status->value === \App\Enums\JobStatus::PendingVerification)
+        <x-app-ui::alert icon="iconic-information" color="warning">
+            <x-slot name="heading">
+                Pending verification
+            </x-slot>
+
+            A city, company or cargo used in this job doesn't exist in our database yet. That's why this job is on pending verification.
+            <br>
+            Once this new game data entry has been approved, you will be able to submit your job!
+        </x-app-ui::alert>
+    @endif
 
     <div
         class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
@@ -307,18 +329,20 @@
                                 <div class="relative flex justify-center"></div>
                             </div>
 
-                            <div class="flex items-center space-x-2">
-                                <x-heroicon-s-clipboard-check class="h-5 w-5 text-gray-400"/>
-                                <span class="text-gray-900 text-sm font-medium">Finished on</span>
-                                <span class="text-gray-900 text-sm font-bold">
-                                    {{-- Only show date if time is 00:00:00 --}}
-                                    @if($job->finished_at->isStartOfDay())
-                                        {{ $job->finished_at->format('M d, Y') }}
-                                    @else
-                                        {{ $job->finished_at->toDayDateTimeString() }}
-                                    @endif
-                                </span>
-                            </div>
+                            @if($job->finished_at)
+                                <div class="flex items-center space-x-2">
+                                    <x-heroicon-s-clipboard-check class="h-5 w-5 text-gray-400"/>
+                                    <span class="text-gray-900 text-sm font-medium">Finished on</span>
+                                    <span class="text-gray-900 text-sm font-bold">
+                                        {{-- Only show date if time is 00:00:00 --}}
+                                        @if($job->finished_at->isStartOfDay())
+                                            {{ $job->finished_at->format('M d, Y') }}
+                                        @else
+                                            {{ $job->finished_at->toDayDateTimeString() }}
+                                        @endif
+                                    </span>
+                                </div>
+                            @endif
 
                             <div class="flex items-center space-x-2">
                                 <x-heroicon-s-calendar class="h-5 w-5 text-gray-400"/>
@@ -340,7 +364,7 @@
                                     @break
                                     @case('PendingVerification')
                                     <span
-                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
                                         Pending Verification
                                     </span>
                                     @break
@@ -356,6 +380,12 @@
                                         Unknown Status
                                     </span>
                                 @endswitch
+                                @if($job->tracker_job)
+                                    <span
+                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                                        <x-heroicon-o-location-marker class="h-4 w-4"/>
+                                    </span>
+                                @endif
                             </div>
 
                             <div class="mt-6 flex items-center">
@@ -379,13 +409,13 @@
                 </div>
             </section>
 
-            @if(Auth::user()->can('manage users') || ($job->user_id === Auth::id() && $job->created_at->addHour()->isFuture()))
+            @if($job->canEdit)
                 <section aria-labelledby="actions-title" class="lg:col-start-3 lg:col-span-1">
                     <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
-                        @if($job->user_id === Auth::id() && Auth::user()->cannot('manage users'))
-                            <h2 id="actions-title" class="text-lg font-medium text-gray-900">Actions</h2>
-                        @else
+                        @if(Auth::user()->can('manage users'))
                             <h2 id="actions-title" class="text-lg font-medium text-red-700">Staff Actions</h2>
+                        @else
+                            <h2 id="actions-title" class="text-lg font-medium text-gray-900">Actions</h2>
                         @endif
 
                         <div class="mt-6 flex flex-col justify-stretch space-y-3">

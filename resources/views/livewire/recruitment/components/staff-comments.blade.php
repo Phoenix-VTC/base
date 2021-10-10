@@ -54,7 +54,7 @@
                         <div>
                             <label for="comment" class="sr-only">Comment</label>
                             <textarea id="comment" name="comment" rows="3" wire:model.lazy="comment"
-                                      class="shadow-sm block w-full focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md @error('comment') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror"
+                                      class="shadow-sm block w-full focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md @error('comment') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror"
                                       placeholder="Add a comment"></textarea>
                         </div>
                         @error('comment')

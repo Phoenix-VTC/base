@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\GameData\Companies;
 
+use App\Enums\JobStatus;
 use App\Models\Company;
 use App\Notifications\GameDataRequestApproved;
 use App\Notifications\GameDataRequestDenied;
@@ -65,6 +66,8 @@ class ShowEditPage extends Component
             if ($this->company->requester()->exists()) {
                 $this->company->requester->notify(new GameDataRequestApproved($this->company));
             }
+
+            $approved = true;
         } else {
             session()->flash('alert', ['type' => 'success', 'message' => 'Company <b>' . $this->company->name . '</b> successfully updated.']);
         }
@@ -78,6 +81,24 @@ class ShowEditPage extends Component
             'game_id' => (int)$this->game_id,
             'approved' => true,
         ]);
+
+        if (($approved ?? false)) {
+            // If the pending company has jobs attached, loop through those jobs
+            // and change the status to incomplete if those jobs don't have any pending game data
+            if ($this->company->pickupJobs->count() || $this->company->destinationJobs->count()) {
+                foreach ($this->company->pickupJobs as $job) {
+                    if (!$job->hasPendingGameData) {
+                        $job->update(['status' => JobStatus::Incomplete]);
+                    }
+                }
+
+                foreach ($this->company->destinationJobs as $job) {
+                    if (!$job->hasPendingGameData) {
+                        $job->update(['status' => JobStatus::Incomplete]);
+                    }
+                }
+            }
+        }
 
         return redirect()->route('game-data.companies');
     }

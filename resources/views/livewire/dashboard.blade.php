@@ -9,7 +9,7 @@
                 </div>
                 <div class="ml-3">
                     <p class="text-sm text-yellow-700">
-                        Hey, you haven't connected your Discord account yet! You will need this for the future.
+                        Hey, you haven't connected your Discord account yet! You will need this in the future.
                         <br>
                         <a href="{{ route('settings.socials') }}"
                            class="font-medium underline text-yellow-700 hover:text-yellow-600">
