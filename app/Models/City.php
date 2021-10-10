@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class City extends Model
 {
@@ -20,6 +21,22 @@ class City extends Model
     protected $casts = [
         'approved' => 'boolean',
     ];
+
+    /**
+     * The jobs with this city as pickup.
+     */
+    public function pickupJobs(): HasMany
+    {
+        return $this->hasMany(Job::class, 'pickup_city_id');
+    }
+
+    /**
+     * The jobs with this city as destination.
+     */
+    public function destinationJobs(): HasMany
+    {
+        return $this->hasMany(Job::class, 'destination_city_id');
+    }
 
     /**
      * Get the user that requested the cargo.

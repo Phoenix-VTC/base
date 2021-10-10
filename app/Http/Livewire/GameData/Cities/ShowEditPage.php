@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\GameData\Cities;
 
+use App\Enums\JobStatus;
 use App\Models\City;
 use App\Notifications\GameDataRequestApproved;
 use App\Notifications\GameDataRequestDenied;
@@ -71,6 +72,8 @@ class ShowEditPage extends Component
             if ($this->city->requester()->exists()) {
                 $this->city->requester->notify(new GameDataRequestApproved($this->city));
             }
+
+            $approved = true;
         } else {
             session()->flash('alert', ['type' => 'success', 'message' => 'City <b>' . $this->city->name . '</b> successfully updated.']);
         }
@@ -86,6 +89,24 @@ class ShowEditPage extends Component
             'z' => $this->z ?: null,
             'approved' => true,
         ]);
+
+        if (($approved ?? false)) {
+            // If the pending city has jobs attached, loop through those jobs
+            // and change the status to incomplete if those jobs don't have any pending game data
+            if ($this->city->pickupJobs->count() || $this->city->destinationJobs->count()) {
+                foreach ($this->city->pickupJobs as $job) {
+                    if (!$job->hasPendingGameData) {
+                        $job->update(['status' => JobStatus::Incomplete]);
+                    }
+                }
+
+                foreach ($this->city->destinationJobs as $job) {
+                    if (!$job->hasPendingGameData) {
+                        $job->update(['status' => JobStatus::Incomplete]);
+                    }
+                }
+            }
+        }
 
         return redirect()->route('game-data.cities');
     }

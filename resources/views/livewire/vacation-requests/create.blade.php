@@ -17,7 +17,7 @@
                         </label>
                         <input type="date" name="start_date" id="start_date"
                                wire:model.lazy="start_date"
-                               class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('start_date') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
+                               class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('start_date') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror">
                         @error('start_date')
                         <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
                         @enderror
@@ -30,7 +30,7 @@
                         </label>
                         <input type="date" name="end_date" id="end_date"
                                wire:model.lazy="end_date" @if($leaving) disabled @endif
-                               class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @if($leaving) bg-gray-200 @endif @error('end_date') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
+                               class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @if($leaving) bg-gray-200 @endif @error('end_date') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror">
                         <p class="mt-2 text-sm text-gray-500">
                             The end date must be at least one week after the start.
                             <br>
@@ -47,7 +47,7 @@
                         </label>
                         <textarea id="reason" name="reason" rows="3" x-ref="reason"
                                   wire:model.lazy="reason"
-                                  class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('reason') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red @enderror">
+                                  class="mt-1 w-full shadow-sm sm:text-sm border border-gray-300 rounded-md @error('reason') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror">
                         </textarea>
                         @error('reason')
                         <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
