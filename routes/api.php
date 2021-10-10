@@ -41,10 +41,6 @@ Route::get('users', [UserController::class, 'index'])->name('users');
 Route::prefix('tracker')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [IncomingDataController::class, 'handleRequest']);
 
-    Route::get('user', function () {
-        return auth()->user();
-    });
-
     Route::resource('jobs', JobController::class)->only([
         'index',
     ]);
