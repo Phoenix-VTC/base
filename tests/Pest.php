@@ -43,3 +43,5 @@ function something()
 {
     // ..
 }
+
+uses()->group('driverApplication')->in('Feature/DriverApplication');
