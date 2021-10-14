@@ -22,7 +22,7 @@ class JobObserver
      */
     public function created(Job $job): void
     {
-        if ($job->status !== JobStatus::Complete) {
+        if ($job->status->value !== JobStatus::Complete) {
             return;
         }
 
@@ -86,7 +86,7 @@ class JobObserver
      */
     public function deleted(Job $job): void
     {
-        if ($job->status !== JobStatus::Complete) {
+        if ($job->status->value !== JobStatus::Complete) {
             return;
         }
 
