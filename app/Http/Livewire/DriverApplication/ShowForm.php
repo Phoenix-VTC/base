@@ -281,7 +281,7 @@ class ShowForm extends Component
     public function rules(): array
     {
         return [
-            'discord_username' => ['required', 'min:3', 'regex:/^.{3,32}#[0-9]{4}$/i'],
+            'discord_username' => ['required', 'regex:/^.{3,32}#[0-9]{4}$/i'],
             'username' => ['required', 'min:3', Rule::unique('users')->whereNull('deleted_at'), new UsernameNotReserved],
             'email' => ['required', 'email', Rule::unique('users')->whereNull('deleted_at')],
             'date_of_birth' => 'required|date',
