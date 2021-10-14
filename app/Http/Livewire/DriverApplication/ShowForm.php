@@ -285,7 +285,7 @@ class ShowForm extends Component
             'username' => ['required', 'min:3', Rule::unique('users')->whereNull('deleted_at'), new UsernameNotReserved],
             'email' => ['required', 'email', Rule::unique('users')->whereNull('deleted_at')],
             'date_of_birth' => 'required|date|before:today',
-            'country' => 'required',
+            'country' => ['required', Rule::in(array_keys($this->countries))],
             'another_vtc' => 'required|boolean',
             'games' => 'required|in:ets2,ats,both',
             'fluent' => 'required|boolean',
