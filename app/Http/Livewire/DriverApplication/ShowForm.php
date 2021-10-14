@@ -284,7 +284,7 @@ class ShowForm extends Component
             'discord_username' => ['required', 'regex:/^.{3,32}#[0-9]{4}$/i'],
             'username' => ['required', 'min:3', Rule::unique('users')->whereNull('deleted_at'), new UsernameNotReserved],
             'email' => ['required', 'email', Rule::unique('users')->whereNull('deleted_at')],
-            'date_of_birth' => 'required|date',
+            'date_of_birth' => 'required|date|before:today',
             'country' => 'required',
             'another_vtc' => 'required|boolean',
             'games' => 'required|in:ets2,ats,both',
