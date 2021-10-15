@@ -137,6 +137,10 @@ class ShowApplication extends Component
             return;
         }
 
+        if ($status === $this->application->status) {
+            return;
+        }
+
         $this->application->status = $status;
         $this->application->save();
 
