@@ -93,7 +93,7 @@ class ShowApplication extends Component
         \Cache::forget($this->application->truckersmp_id . "_truckersmp_data");
         \Cache::forget($this->application->truckersmp_id . "_truckersmp_ban_history");
 
-        session()->now('alert', ['type' => 'success', 'message' => 'TruckersMP successfully refreshed!']);
+        session()->now('alert', ['type' => 'success', 'message' => 'TruckersMP data successfully refreshed!']);
     }
 
     public function accept(): void
