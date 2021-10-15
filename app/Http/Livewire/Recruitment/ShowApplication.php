@@ -98,6 +98,12 @@ class ShowApplication extends Component
 
     public function accept(): void
     {
+        if ($this->application->claimed_by !== Auth::id()) {
+            session()->now('alert', ['type' => 'danger', 'message' => 'You need to claim the application before you can accept it.']);
+
+            return;
+        }
+
         Validator::make($this->application->toArray(), [
             'email' => ['email', Rule::unique('users')->whereNull('deleted_at')],
             'truckersmp_id' => [Rule::unique('users')->whereNull('deleted_at')],
@@ -116,6 +122,12 @@ class ShowApplication extends Component
 
     public function deny(): void
     {
+        if ($this->application->claimed_by !== Auth::id()) {
+            session()->now('alert', ['type' => 'danger', 'message' => 'You need to claim the application before you can deny it.']);
+
+            return;
+        }
+
         $this->application->status = 'denied';
         $this->application->save();
 
@@ -131,6 +143,12 @@ class ShowApplication extends Component
 
     public function setStatus($status): void
     {
+        if ($this->application->claimed_by !== Auth::id()) {
+            session()->now('alert', ['type' => 'danger', 'message' => 'You need to claim the application before you can change its status.']);
+
+            return;
+        }
+
         if (!in_array($status, ['pending', 'incomplete', 'awaiting_response', 'investigation'])) {
             session()->now('alert', ['type' => 'danger', 'message' => 'Chosen status is invalid.']);
 
@@ -151,6 +169,12 @@ class ShowApplication extends Component
 
     public function blacklist(): void
     {
+        if ($this->application->claimed_by !== Auth::id()) {
+            session()->now('alert', ['type' => 'danger', 'message' => 'You need to claim the application before you can blacklist it.']);
+
+            return;
+        }
+
         $this->application->status = 'denied';
         $this->application->save();
 
