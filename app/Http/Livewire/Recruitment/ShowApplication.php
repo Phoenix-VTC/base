@@ -111,7 +111,8 @@ class ShowApplication extends Component
         }
 
         Validator::make($this->application->toArray(), [
-            'email' => ['email', Rule::unique('users')->whereNull('deleted_at')],
+            'username' => ['required', 'string', Rule::unique('users')->whereNull('deleted_at')],
+            'email' => ['required', 'email', Rule::unique('users')->whereNull('deleted_at')],
             'truckersmp_id' => [Rule::unique('users')->whereNull('deleted_at')],
             'steam_data.steamID64' => ['required', Rule::unique('users', 'steam_id')->whereNull('deleted_at')],
         ])->validate();
