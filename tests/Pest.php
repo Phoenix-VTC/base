@@ -45,3 +45,4 @@ function something()
 }
 
 uses()->group('driverApplication')->in('Feature/DriverApplication');
+uses()->group('recruitment')->in('Feature/Recruitment');
