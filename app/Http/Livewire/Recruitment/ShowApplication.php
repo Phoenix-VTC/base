@@ -50,6 +50,12 @@ class ShowApplication extends Component
 
     public function unclaim(): void
     {
+        if ($this->application->claimed_by !== Auth::id()) {
+            session()->now('alert', ['type' => 'danger', 'message' => 'This application does not belong to you.']);
+
+            return;
+        }
+
         $this->application->claimed_by = null;
         $this->application->save();
 
