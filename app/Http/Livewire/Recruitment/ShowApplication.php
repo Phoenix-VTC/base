@@ -131,6 +131,12 @@ class ShowApplication extends Component
 
     public function setStatus($status): void
     {
+        if (!in_array($status, ['pending', 'incomplete', 'awaiting_response', 'investigation'])) {
+            session()->now('alert', ['type' => 'danger', 'message' => 'Chosen status is invalid.']);
+
+            return;
+        }
+
         $this->application->status = $status;
         $this->application->save();
 
