@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\UserManagement\DriverInactivity;
 
 use App\Models\User;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Livewire\Component;
@@ -35,7 +36,7 @@ class ShowIndexPage extends Component
         }
     }
 
-    public function render()
+    public function render(): View
     {
         $inactive_drivers = User::withCount(['jobs' => function (Builder $q) {
             $q->whereMonth('finished_at', $this->month);
