@@ -12,27 +12,18 @@ class ShowIndexPage extends Component
 {
     // Request data
     public string $month;
-    public string $orderBy;
 
     public function mount(Request $request): void
     {
         session()->now('alert', ['type' => 'info', 'title' => 'Heads-up!', 'message' => 'Make sure to check the inactivity on <a href="https://trucksbook.eu/drivers" target="_blank" class="font-bold">TrucksBook</a> as well.']);
 
         $month = $request->get('month');
-        $orderBy = $request->get('orderBy');
 
         // Set month value to current month if request isn't a month number
         if ($month >= 1 && $month <= 12) {
             $this->month = $month;
         } else {
             $this->month = date('m');
-        }
-
-        // Set leaderboardMeasurement value to distance if request isn't 'income', 'deliveries' or 'distance'
-        if (in_array($orderBy, ['income', 'deliveries', 'distance'])) {
-            $this->orderBy = $orderBy;
-        } else {
-            $this->orderBy = 'distance';
         }
     }
 

@@ -47,11 +47,3 @@ test('month defaults to current month if invalid input', function () {
     $this->get(route('user-management.driver-inactivity.index', ['month' => 'InvalidMonth']))
         ->assertSeeText(date('F'));
 });
-
-test('orderBy defaults to distance if invalid input', function () {
-    $user = User::factory()->create()->assignRole('human resources');
-    $this->be($user);
-
-    $this->get(route('user-management.driver-inactivity.index', ['month' => 'InvalidMonth']))
-        ->assertSeeText(date('F'));
-});
