@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use function PHPUnit\Framework\assertEquals;
 
 uses(RefreshDatabase::class);
 
@@ -124,10 +125,16 @@ it('can claim applications', function () {
 
     $application = Application::factory()->create();
 
+    Http::fake();
+
     Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
         ->call('claim')
         ->assertSuccessful()
         ->assertSeeText('Application claimed');
+
+    Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+        return $request->url() === config('services.discord.webhooks.human-resources');
+    });
 });
 
 it('can unclaim applications', function () {
@@ -137,10 +144,16 @@ it('can unclaim applications', function () {
     $application = Application::factory()->create();
     $application->update(['claimed_by' => $user->id]);
 
-    $response = Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
+    Http::fake();
+
+    Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
         ->call('unclaim')
         ->assertSuccessful()
         ->assertSeeText('Application unclaimed');
+
+    Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+        return $request->url() === config('services.discord.webhooks.human-resources');
+    });
 });
 
 it('can change the application status', function () {
@@ -152,21 +165,28 @@ it('can change the application status', function () {
 
     $response = Livewire::test(ShowApplication::class, ['uuid' => $application->uuid]);
 
-    $response->call('setStatus', 'investigation')
-        ->assertSuccessful()
-        ->assertSeeText('Application status changed');
+    $statuses = [
+        'investigation',
+        'awaiting_response',
+        'incomplete',
+        'pending',
+    ];
 
-    $response->call('setStatus', 'awaiting_response')
-        ->assertSuccessful()
-        ->assertSeeText('Application status changed');
+    foreach ($statuses as $status) {
+        Http::fake();
 
-    $response->call('setStatus', 'incomplete')
-        ->assertSuccessful()
-        ->assertSeeText('Application status changed');
+        $response->call('setStatus', $status)
+            ->assertSuccessful()
+            ->assertSeeText('Application status changed');
 
-    $response->call('setStatus', 'pending')
-        ->assertSuccessful()
-        ->assertSeeText('Application status changed');
+        Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+            return $request->url() === config('services.discord.webhooks.human-resources');
+        });
+
+        $application = $application->refresh();
+
+        assertEquals($status, $application->status);
+    }
 });
 
 it('cannot change the application status to an invalid status', function () {
@@ -210,12 +230,18 @@ it('can post a comment', function () {
 
     $application = Application::factory()->create();
 
+    Http::fake();
+
     Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
         ->set('comment', 'A random comment')
         ->call('submitComment')
         ->assertSuccessful()
         ->assertSeeText('Comment submitted!')
         ->assertSeeText('A random comment');
+
+    Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+        return $request->url() === config('services.discord.webhooks.human-resources');
+    });
 });
 
 test('comment field is required', function () {
@@ -237,11 +263,17 @@ it('can delete a comment', function () {
 
     $application = Application::factory()->create();
 
+    Http::fake();
+
     Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
         ->set('comment', 'A random comment')
         ->call('submitComment')
         ->call('deleteComment', $application->comments->first()->uuid)
         ->assertSeeText('Comment deleted!');
+
+    Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+        return $request->url() === config('services.discord.webhooks.human-resources');
+    });
 });
 
 it('can accept an application', function () {
@@ -252,6 +284,7 @@ it('can accept an application', function () {
     $application->update(['claimed_by' => $user->id]);
 
     Queue::fake();
+    Http::fake();
 
     Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
         ->call('accept')
@@ -262,6 +295,9 @@ it('can accept an application', function () {
     $this->assertEquals($application->status, 'accepted');
 
     Queue::assertPushed(ProcessAcceptation::class);
+    Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+        return $request->url() === config('services.discord.webhooks.human-resources');
+    });
 });
 
 it('cannot accept the application if it doesn\'t belong to the user', function () {
@@ -283,6 +319,7 @@ it('can deny an application', function () {
     $application->update(['claimed_by' => $user->id]);
 
     Mail::fake();
+    Http::fake();
 
     Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
         ->call('deny')
@@ -293,6 +330,9 @@ it('can deny an application', function () {
     $this->assertEquals($application->status, 'denied');
 
     Mail::assertQueued(ApplicationDenied::class);
+    Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+        return $request->url() === config('services.discord.webhooks.human-resources');
+    });
 });
 
 it('cannot deny the application if it doesn\'t belong to the user', function () {
