@@ -24,7 +24,7 @@ class Calendar extends LivewireCalendar
             });
     }
 
-    public function onEventClick($eventId): Redirector
+    public function onEventClick($eventId)
     {
         $userId = VacationRequest::findOrFail($eventId)->user_id;
 

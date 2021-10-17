@@ -226,3 +226,17 @@ it('cannot cancel a vacation request if already cancelled', function () {
         ->call('cancel', $vacationRequest->id)
         ->assertSessionHas('alert', ['type' => 'danger', 'message' => 'This vacation request has already been cancelled.']);
 });
+
+it('can click a vacation requests calendar item', function () {
+    $user = User::factory()->create();
+    $vacationRequest = $user->vacation_requests()->create([
+        'start_date' => Carbon::tomorrow(),
+        'end_date' => Carbon::tomorrow()->addWeek(),
+        'reason' => 'Automatic testing',
+        'leaving' => false,
+    ]);
+
+    Livewire::test(Calendar::class)
+        ->call('onEventClick', $vacationRequest->id)
+        ->assertRedirect(route('users.profile', $vacationRequest->user->id));
+});
