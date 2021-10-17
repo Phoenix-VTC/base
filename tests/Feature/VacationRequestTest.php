@@ -127,3 +127,123 @@ test('start date is required', function () {
         ->call('submit')
         ->assertHasErrors(['start_date' => 'required']);
 });
+
+test('start and end date must be after or equal to tomorrow', function () {
+    Livewire::test(ShowCreate::class)
+        ->set('start_date', Carbon::yesterday())
+        ->set('end_date', Carbon::yesterday())
+        ->call('submit')
+        ->assertHasErrors(['start_date' => 'after_or_equal', 'end_date' => 'after_or_equal']);
+});
+
+test('start and end date must be unique to user', function () {
+    $user = User::factory()->create();
+    $this->be($user);
+
+    $user->vacation_requests()->create([
+        'start_date' => Carbon::tomorrow(),
+        'end_date' => Carbon::tomorrow()->addWeek(),
+        'reason' => 'Automatic testing',
+        'leaving' => false,
+    ]);
+
+    Livewire::test(ShowCreate::class)
+        ->set('start_date', Carbon::tomorrow())
+        ->set('end_date', Carbon::tomorrow()->addWeek())
+        ->call('submit')
+        ->assertHasErrors(['start_date' => 'unique', 'end_date' => 'unique']);
+});
+
+test('end date is required when not leaving', function () {
+    Livewire::test(ShowCreate::class)
+        ->set('start_date', Carbon::tomorrow())
+        ->set('leaving', '0')
+        ->call('submit')
+        ->assertHasErrors(['end_date' => 'required_unless']);
+});
+
+test('end date is not required when leaving', function () {
+    Livewire::test(ShowCreate::class)
+        ->set('start_date', Carbon::tomorrow())
+        ->set('leaving', '1')
+        ->call('submit')
+        ->assertHasNoErrors(['end_date']);
+});
+
+test('end date must be after start date', function () {
+    Livewire::test(ShowCreate::class)
+        ->set('start_date', Carbon::tomorrow())
+        ->set('end_date', Carbon::tomorrow())
+        ->call('submit')
+        ->assertHasErrors(['end_date' => 'after']);
+});
+
+test('end date must be at least a week after the start date', function () {
+    Livewire::test(ShowCreate::class)
+        ->set('start_date', Carbon::tomorrow())
+        ->set('end_date', Carbon::tomorrow()->addDays(3))
+        ->call('submit')
+        ->assertHasErrors(['end_date' => 'after_or_equal']);
+});
+
+test('reason is required', function () {
+    Livewire::test(ShowCreate::class)
+        ->call('submit')
+        ->assertHasErrors(['reason' => 'required']);
+});
+
+test('reason must be at least 3 characters', function () {
+    Livewire::test(ShowCreate::class)
+        ->set('reason', 'a')
+        ->call('submit')
+        ->assertHasErrors(['reason' => 'min']);
+});
+
+test('leaving is required', function () {
+    Livewire::test(ShowCreate::class)
+        ->call('submit')
+        ->assertHasErrors(['leaving' => 'required']);
+});
+
+test('leaving must be boolean', function () {
+    Livewire::test(ShowCreate::class)
+        ->set('leaving', 'NotABoolean')
+        ->call('submit')
+        ->assertHasErrors(['leaving' => 'boolean']);
+});
+
+test('a user can only have one unhandled leaving request', function () {
+    $user = User::factory()->create();
+    $this->be($user);
+
+    $user->vacation_requests()->create([
+        'start_date' => Carbon::tomorrow(),
+        'end_date' => Carbon::tomorrow()->addWeek(),
+        'reason' => 'Automatic testing',
+        'leaving' => true,
+    ]);
+
+    Livewire::test(ShowCreate::class)
+        ->set('leaving', '1')
+        ->call('submit')
+        ->assertHasErrors(['leaving' => 'unique']);
+});
+
+test('a user can have multiple leaving requests, if all except current handled', function () {
+    $user = User::factory()->create();
+    $staff = User::factory()->create();
+    $this->be($user);
+
+    $user->vacation_requests()->create([
+        'start_date' => Carbon::tomorrow(),
+        'end_date' => Carbon::tomorrow()->addWeek(),
+        'reason' => 'Automatic testing',
+        'leaving' => true,
+        'handled_by' => $staff->id,
+    ]);
+
+    Livewire::test(ShowCreate::class)
+        ->set('leaving', '1')
+        ->call('submit')
+        ->assertHasNoErrors(['leaving']);
+});
