@@ -148,9 +148,13 @@
                         </x-app-ui::table.cell>
 
                         <x-app-ui::table.cell>
-                            <x-app-ui::link href="{{ route('users.profile', $job->user->id) }}">
-                                {{ $job->user->username }}
-                            </x-app-ui::link>
+                            @if($job->user)
+                                <x-app-ui::link href="{{ route('users.profile', $job->user->id) }}">
+                                    {{ $job->user->username }}
+                                </x-app-ui::link>
+                            @else
+                                Deleted User
+                            @endif
                         </x-app-ui::table.cell>
 
                         <x-app-ui::table.cell>
