@@ -3,6 +3,7 @@
 use App\Mail\DriverApplication\ApplicationReceived;
 use App\Models\Application;
 use App\Models\User;
+use App\Notifications\Recruitment\NewDriverApplication;
 use App\Rules\UsernameNotReserved;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -90,6 +91,7 @@ test('a user can apply', function () use ($steamUser, $truckersmpUser) {
     $this->withSession(['steam_user' => $steamUser, 'truckersmp_user' => collect($truckersmpUser)]);
 
     Mail::fake();
+    Notification::fake();
 
     $response = Livewire::test(ShowForm::class)
         ->set('discord_username', 'Phoenix#0001')
@@ -109,8 +111,12 @@ test('a user can apply', function () use ($steamUser, $truckersmpUser) {
     $this->assertTrue(($application = Application::query()->where('email', 'automatictest@example.com'))->exists());
 
     Mail::assertQueued(ApplicationReceived::class);
+    Notification::assertSentTo(
+        [$application->firstOrFail()], NewDriverApplication::class
+    );
 
-    $response->assertredirect(route('driver-application.status', ['uuid' => $application->firstOrFail()->uuid]));
+    $response->assertredirect(route('driver-application.status', ['uuid' => $application->firstOrFail()->uuid]))
+        ->assertSessionMissing(['steam_user', 'truckersmp_user']);
 });
 
 test('all fields are required', function () {
