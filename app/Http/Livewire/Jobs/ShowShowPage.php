@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Jobs;
 
+use App\Enums\JobStatus;
 use App\Models\Job;
 use Cornford\Googlmapper\Facades\MapperFacade as Mapper;
 use Illuminate\Support\Facades\Auth;
@@ -22,14 +23,13 @@ class ShowShowPage extends Component
 
     public function render(): View
     {
-
         return view('livewire.jobs.show-page')->extends('layouts.app');
     }
 
     public function delete()
     {
-        if (!Auth::user()->can('manage users')) {
-            abort(403, 'You don\'t have permission to delete jobs.');
+        if (!$this->job->canEdit) {
+            abort(403, 'You don\'t have permission to delete this job.');
         }
 
         $job = $this->job;
@@ -37,6 +37,24 @@ class ShowShowPage extends Component
 
         session()->flash('alert', ['type' => 'success', 'message' => 'Job successfully deleted!']);
         return redirect()->route('users.jobs-overview', $job->user_id);
+    }
+
+    public function approve(): void
+    {
+        if (!Auth::user()->can('manage users')) {
+            abort(403, 'You don\'t have permission to approve jobs.');
+        }
+
+        // Check if any of the game data entries are *not* approved
+        if (!$this->job->pickupCity->approved || !$this->job->destinationCity->approved || !$this->job->pickupCompany->approved || !$this->job->destinationCompany->approved || !$this->job->cargo->approved) {
+            session()->now('alert', ['type' => 'danger', 'title' => 'You can\'t approve this job yet!', 'message' => 'First, make sure that none of the used game data entries are pending approval.']);
+
+            return;
+        }
+
+        $this->job->update(['status' => JobStatus::Incomplete]);
+
+        session()->flash('alert', ['type' => 'success', 'message' => 'Job successfully approved!']);
     }
 
     private function addGMapsData()
