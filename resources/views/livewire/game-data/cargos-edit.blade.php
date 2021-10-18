@@ -22,8 +22,10 @@
             This cargo was automatically requested by the tracker.
             <br>
             Before approving, make sure that all fields marked as "unknown" are either corrected or emptied.
-            If this request needs to be denied, make sure to delete all the related jobs first, and inform the member!
-            Otherwise this will not work.
+            <br><br>
+            <b>If</b> this request needs to be denied, make sure to delete all the related jobs first, and inform the member!
+            <br>
+            <b>Otherwise</b>, if this request is a duplicate of an already existing cargo, first edit the job(s) to the other cargo instance, and manually approve the job.
         </x-app-ui::alert>
     @endif
 
@@ -136,7 +138,7 @@
 
                     <x-app-ui::table.column>
                         <x-app-ui::sr-only>
-                            View Job
+                            Job Actions
                         </x-app-ui::sr-only>
                     </x-app-ui::table.column>
                 </x-slot>
@@ -162,9 +164,15 @@
                         </x-app-ui::table.cell>
 
                         <x-app-ui::table.cell align="right">
-                            <x-app-ui::table.cell.action tag="a" href="{{ route('jobs.show', $job->id) }}">
-                                View Job
-                            </x-app-ui::table.cell.action>
+                            <div class="space-x-5">
+                                <x-app-ui::table.cell.action tag="a" href="{{ route('jobs.show', $job->id) }}">
+                                    View Job
+                                </x-app-ui::table.cell.action>
+
+                                <x-app-ui::table.cell.action tag="a" href="{{ route('jobs.edit', $job->id) }}">
+                                    Edit Job
+                                </x-app-ui::table.cell.action>
+                            </div>
                         </x-app-ui::table.cell>
                     </x-app-ui::table.row>
                 @endforeach
