@@ -109,4 +109,12 @@ class ShowVerifyPage extends Component
 
         return redirect()->route('jobs.show', $this->job->id);
     }
+
+    public function delete()
+    {
+        $this->job->delete();
+
+        session()->flash('alert', ['type' => 'success', 'message' => 'Job successfully deleted!']);
+        return redirect()->route('jobs.personal-overview');
+    }
 }
