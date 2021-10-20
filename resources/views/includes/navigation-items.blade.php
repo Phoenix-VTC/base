@@ -20,6 +20,8 @@
                                   ]">
     </livewire:components.dropdown>
 
+    <x-sidebar.item title="Tracker" icon="o-location-marker" route="tracker-information"/>
+
     <x-sidebar.item title="Events" icon="o-calendar" route="events.home"/>
 
     <x-sidebar.item title="Vacation Requests" icon="o-clock" route="vacation-requests.index"
