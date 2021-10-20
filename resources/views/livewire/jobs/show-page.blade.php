@@ -3,7 +3,7 @@
 @section('title', "Viewing Job #$job->id")
 
 @section('actions')
-    @if($job->user_id === Auth::id() && $job->status->value === \App\Enums\JobStatus::Incomplete)
+    @if($job->status->value === \App\Enums\JobStatus::Incomplete && $job->user_id === Auth::id())
         <div class="ml-3">
             <x-app-ui::button tag="a" href="{{ route('jobs.verify', $job->id) }}" icon="iconic-check">
                 Verify job
@@ -28,7 +28,7 @@
 
             directionsService.route(
                 request,
-                function(response, status) {
+                function (response, status) {
                     if (status === google.maps.DirectionsStatus.OK) {
                         directionsDisplay.setDirections(response);
                     }
@@ -47,7 +47,8 @@
                 Pending verification
             </x-slot>
 
-            A city, company or cargo used in this job doesn't exist in our database yet. That's why this job is on pending verification.
+            A city, company or cargo used in this job doesn't exist in our database yet. That's why this job is on
+            pending verification.
             <br>
             Once this new game data entry has been approved, you will be able to submit your job!
         </x-app-ui::alert>
@@ -226,7 +227,7 @@
                 </div>
             @endif
 
-        @can('manage users')
+            @can('manage users')
                 <!-- Revision History -->
                 <x-info-card title="Revision History">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -432,6 +433,16 @@
                                 <x-heroicon-s-trash class="-ml-1 mr-3 h-5 w-5"/>
                                 Delete
                             </button>
+
+                            @if($job->status->value === \App\Enums\JobStatus::PendingVerification && Auth::user()->can('manage users'))
+                                <button
+                                    class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                    onclick="confirm('Are you sure you want to approve this job?') || event.stopImmediatePropagation()"
+                                    wire:click="approve">
+                                    <x-heroicon-s-check class="-ml-1 mr-3 h-5 w-5"/>
+                                    Approve
+                                </button>
+                            @endif
 
                             @if(Auth::user()->cannot('manage users'))
                                 <p class="text-center text-sm text-gray-500">
