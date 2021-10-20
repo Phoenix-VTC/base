@@ -12,17 +12,17 @@ class ShowSubmitPage extends Component
 {
     public int $game_id;
     // Form fields
-    public string $pickup_city = '';
-    public string $destination_city = '';
-    public string $pickup_company = '';
-    public string $destination_company = '';
-    public string $cargo = '';
-    public string $finished_at = '';
-    public string $distance = '';
-    public string $load_damage = '';
-    public string $estimated_income = '';
-    public string $total_income = '';
-    public string $comments = '';
+    public ?string $pickup_city = '';
+    public ?string $destination_city = '';
+    public ?string $pickup_company = '';
+    public ?string $destination_company = '';
+    public ?string $cargo = '';
+    public ?string $finished_at = '';
+    public ?string $distance = '';
+    public ?string $load_damage = '';
+    public ?string $estimated_income = '';
+    public ?string $total_income = '';
+    public ?string $comments = '';
 
     public function mount(): void
     {
