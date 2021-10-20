@@ -64,5 +64,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'auth.discordBot' => \App\Http\Middleware\DiscordBotAuthenticated::class,
+        'sanctum.canSubmitJobs' => \App\Http\Middleware\CanSubmitJobs::class,
     ];
 }

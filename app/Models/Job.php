@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Auth;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Job extends Model
@@ -23,6 +24,7 @@ class Job extends Model
 
     protected $casts = [
         'status' => JobStatus::class,
+        'tracker_job' => 'boolean',
         'started_at' => 'datetime',
         'finished_at' => 'datetime',
         'created_at' => 'datetime',
@@ -134,6 +136,39 @@ class Job extends Model
      */
     public function getPricePerDistanceAttribute(): int
     {
-        return round($this->estimated_income / $this->distance, 2);
+        try {
+            return round($this->estimated_income / $this->distance, 2);
+        } catch (\ErrorException $e) {
+            return 0;
+        }
+    }
+
+    public function getCanEditAttribute(): bool
+    {
+        // Return true if the user can manage users
+        if (Auth::user()->can('manage users')) {
+            return true;
+        }
+
+        // Return false if the job is pending verification
+        if ($this->status->value === JobStatus::PendingVerification) {
+            return false;
+        }
+
+        // Return true if the user owns the job, and an hour since creation hasn't passed
+        if ($this->user_id === Auth::id() && $this->created_at->addHour()->isFuture()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getHasPendingGameDataAttribute(): bool
+    {
+        if ($this->pickupCompany->approved && $this->destinationCompany->approved && $this->pickupCity->approved && $this->destinationCity->approved && $this->cargo->approved) {
+            return false;
+        }
+
+        return true;
     }
 }

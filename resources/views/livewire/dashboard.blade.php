@@ -5,6 +5,26 @@
 @endpush
 
 <div>
+    @if(!Auth::user()->discord)
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <x-heroicon-s-information-circle class="h-5 w-5 text-yellow-400"/>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-yellow-700">
+                        Hey, you haven't connected your Discord account yet! You will need this in the future.
+                        <br>
+                        <a href="{{ route('settings.socials') }}"
+                           class="font-medium underline text-yellow-700 hover:text-yellow-600">
+                            Go to your settings now.
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <div>
         <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">
             This month
@@ -258,7 +278,8 @@
                     class="rounded-bl-lg rounded-br-lg sm:rounded-bl-none relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                     <div>
                         <span class="rounded-lg inline-flex p-3 bg-purple-50 text-purple-700 ring-4 ring-white">
-                            <img src="{{ asset('icons/discord.svg') }}" alt="Discord" class="h-6 w-6" height="24" width="24"/>
+                            <img src="{{ asset('icons/discord.svg') }}" alt="Discord" class="h-6 w-6" height="24"
+                                 width="24"/>
                         </span>
                     </div>
                     <div class="mt-8">

@@ -7,6 +7,7 @@ use App\Mail\DriverApplication\ApplicationDenied;
 use App\Models\Application;
 use App\Models\Comment;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
@@ -18,6 +19,7 @@ use Validator;
 class ShowApplication extends Component
 {
     public Application $application;
+    public Collection $previousApplications;
     public string $comment = '';
 
     protected array $rules = [
@@ -27,6 +29,8 @@ class ShowApplication extends Component
     public function mount($uuid): void
     {
         $this->application = Application::where('uuid', $uuid)->firstOrFail();
+
+        $this->previousApplications = $this->findPreviousApplications();
     }
 
     public function render(): View
@@ -150,7 +154,7 @@ class ShowApplication extends Component
 
     private function sendDiscordWebhook(string $title, string $description, int $color): void
     {
-        Http::post(config('services.discord.webhooks.recruitment'), [
+        Http::post(config('services.discord.webhooks.human-resources'), [
             'embeds' => [
                 [
                     'title' => $title,
@@ -165,5 +169,22 @@ class ShowApplication extends Component
                 ]
             ],
         ]);
+    }
+
+    private function findPreviousApplications(): Collection
+    {
+        return Application::query()
+            ->where('username', $this->application->email)
+            ->orWhere(function ($query) {
+                $query->where('email', $this->application->email)
+                    ->when($this->application->discord_username, function ($q) {
+                        return $q->orWhere('discord_username', $this->application->discord_username);
+                    })
+                    ->orWhere('truckersmp_id', $this->application->truckersmp_id)
+                    ->orWhere('steam_data->steamID64', $this->application->steam_data['steamID64']);
+            })
+            ->whereKeyNot($this->application->id)
+            ->latest()
+            ->get();
     }
 }

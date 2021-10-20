@@ -204,9 +204,11 @@
                         <h1 class="text-lg text-center font-semibold">
                             {{ $user->username }}
                         </h1>
-                        <p class="text-sm text-gray-600 text-center">
-                            Member since <b>{{ $user->created_at->toFormattedDateString() }}</b>
-                        </p>
+                        @if($user->created_at)
+                            <p class="text-sm text-gray-600 text-center">
+                                Member since <b>{{ $user->created_at->toFormattedDateString() }}</b>
+                            </p>
+                        @endif
                     </div>
 
                     <div class="mt-3 pt-3 flex flex-wrap mx-6 border-t space-y-2">
@@ -286,6 +288,7 @@
                                 {{ $user->steamPlayerSummary->personaName ?? 'Unknown Steam Name' }}
                             </a>
                         </span>
+
                         <span class="relative group flex items-center space-x-2.5">
                             <i class="fas fa-truck w-4 text-gray-700 hover:text-gray-900"></i>
                             <a href="https://truckersmp.com/user/{{ $user->truckersmp_id }}" target="_blank"
@@ -293,6 +296,23 @@
                                 {{ $user->truckersMpData['name'] ?? 'Unknown TruckersMP Name' }}
                             </a>
                         </span>
+
+                        @if($user->discord)
+                            <span class="relative group flex items-center space-x-2.5">
+                                <i class="fab fa-discord w-4 text-gray-700 hover:text-gray-900"></i>
+                                <button @click="$clipboard('{{ $user->discord['id'] }}')"
+                                        class="text-sm text-gray-500 group-hover:text-gray-900 font-medium truncate">
+                                    {{ $user->discord['nickname'] }}
+                                </button>
+                            </span>
+                        @elseif(Auth::user()->can('manage users'))
+                            <span class="relative group flex items-center space-x-2.5">
+                                <i class="fab fa-discord w-4 text-gray-700"></i>
+                                <span class="text-sm text-red-500 font-medium truncate">
+                                    No Discord account linked
+                                </span>
+                            </span>
+                        @endif
                     </div>
                 </div>
             </section>

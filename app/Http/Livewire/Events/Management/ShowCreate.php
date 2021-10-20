@@ -2,17 +2,19 @@
 
 namespace App\Http\Livewire\Events\Management;
 
+use App\Enums\Attending;
 use App\Models\Event;
 use App\Notifications\Events\NewEvent;
+use App\Rules\Events\UniqueForDay;
 use Carbon\Carbon;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class ShowCreate extends Component
@@ -57,8 +59,8 @@ class ShowCreate extends Component
             'required_dlcs' => ['sometimes', 'string'],
             'departure_location' => ['sometimes', 'string'],
             'arrival_location' => ['sometimes', 'string'],
-            'start_date' => ['required', 'date'],
-            'distance' => ['sometimes', 'integer', 'min:1'],
+            'start_date' => ['required', 'date', new UniqueForDay],
+            'distance' => ['required', 'integer', 'min:0'],
             'points' => ['required', 'integer', 'min:100', 'max:500'],
             'game_id' => ['sometimes', 'integer'],
             'published' => ['required', 'boolean'],
@@ -94,7 +96,7 @@ class ShowCreate extends Component
             'departure_location' => $validatedData['departure_location'],
             'arrival_location' => $validatedData['arrival_location'],
             'start_date' => $validatedData['start_date'],
-            'distance' => (int)$validatedData['distance'] ?: null,
+            'distance' => (int)$validatedData['distance'],
             'points' => (int)$validatedData['points'],
             'game_id' => (int)$validatedData['game_id'],
             'tmp_event_id' => $this->tmp_event_id ?: null,
@@ -102,6 +104,13 @@ class ShowCreate extends Component
             'featured' => (bool)$validatedData['featured'],
             'external_event' => (bool)$validatedData['external_event'],
             'public_event' => (bool)$validatedData['public_event'],
+            'created_by' => Auth::id(),
+        ]);
+
+        // Add the event host to the attendance
+        $event->attendees()->create([
+            'user_id' => $event->hosted_by,
+            'attending' => Attending::Yes,
         ]);
 
         if ($this->announce) {
@@ -116,7 +125,6 @@ class ShowCreate extends Component
     public function mount(): void
     {
         $this->manage_event_users = Role::findByName('events')->users;
-        $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('community interactions')->users);
         $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('super admin')->users);
 
         if ($this->tmp_event_id) {

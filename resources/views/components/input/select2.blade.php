@@ -3,6 +3,7 @@
 @props([
     'url' => '',
     'placeholder' => null,
+    'selected' => [],
 ])
 
 @once
@@ -51,10 +52,19 @@
                 @this.set(elementName, data);
             });
 
+            // Auto-focus search field on open
             $(document).on('select2:open', () => {
                 setTimeout(function () {
                     document.querySelector('.select2-search__field').focus();
                 }, 10);
+            });
+
+            // Open next dropdown on tab press
+            $(document).on('focus', '.select2.select2-container', function (e) {
+                // only open on original attempt - close focus event should not fire open
+                if (e.originalEvent && $(this).find(".select2-selection--single").length > 0) {
+                    $(this).siblings('select').select2('open');
+                }
             });
         });
     </script>
@@ -62,6 +72,9 @@
 
 <div class="flex mt-1" wire:ignore>
     <select
-        class="form-select block w-full h-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 select2-{{ $attributes['id'] }}" {{ $attributes }}>
+        class="form-select block w-full h-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:ring-blue focus:border-blue-300 sm:text-sm sm:leading-5 select2-{{ $attributes['id'] }}" {{ $attributes }}>
+        @if(!empty($selected))
+            <option value="{{ key($selected) }}" selected="selected">{{ current($selected) }}</option>
+        @endif
     </select>
 </div>

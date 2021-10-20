@@ -35,7 +35,7 @@
                     activeRoute="screenshot-hub.*"/>
 </x-sidebar.group>
 
-@hasanyrole('super admin|management|human resources|recruitment|community interactions|events|media|modding|developer')
+@hasanyrole('super admin|management|human resources|events|media|modding|developer')
     <x-sidebar.separator title="Management"/>
 @endhasanyrole
 

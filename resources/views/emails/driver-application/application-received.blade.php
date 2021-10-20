@@ -7,7 +7,7 @@ Hey {{ $application->username }}!
 
 Thanks for applying to PhoenixVTC.
 <br>
-We have successfully received your application, and you should receive an answer from one of our Recruiters within 12 hours.
+We have successfully received your application, and you should receive an answer from one of our Human Resource team members within 12 hours.
 
 @component('mail::button', ['url' => route('driver-application.status', $application->uuid)])
 View application status

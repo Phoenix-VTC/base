@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Events\Management;
 
 use App\Models\Event;
+use App\Rules\Events\UniqueForDay;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -49,8 +50,8 @@ class ShowEdit extends Component
             'required_dlcs' => ['sometimes', 'string'],
             'departure_location' => ['sometimes', 'string'],
             'arrival_location' => ['sometimes', 'string'],
-            'start_date' => ['required', 'date'],
-            'distance' => ['sometimes', 'integer', 'min:1'],
+            'start_date' => ['required', 'date', new UniqueForDay($this->event->id)],
+            'distance' => ['required', 'integer', 'min:0'],
             'points' => ['required', 'integer', 'min:100', 'max:500'],
             'game_id' => ['sometimes', 'integer'],
             'published' => ['required', 'boolean'],
@@ -84,7 +85,7 @@ class ShowEdit extends Component
         $event->departure_location = $validatedData['departure_location'];
         $event->arrival_location = $validatedData['arrival_location'];
         $event->start_date = $validatedData['start_date'];
-        $event->distance = (int)$validatedData['distance'] ?: null;
+        $event->distance = (int)$validatedData['distance'];
         $event->points = (int)$validatedData['points'];
         $event->game_id = (int)$validatedData['game_id'];
         $event->published = (bool)$validatedData['published'];
@@ -105,7 +106,6 @@ class ShowEdit extends Component
         $this->event = $event;
 
         $this->manage_event_users = Role::findByName('events')->users;
-        $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('community interactions')->users);
         $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('super admin')->users);
 
         $this->tmp_event_id = $this->event->tmp_event_id ?? null;
@@ -132,6 +132,12 @@ class ShowEdit extends Component
             session()->now('alert', ['type' => 'info', 'title' => 'Heads-up!', 'message' => "You're editing an event that is in the past."]);
         }
     }
+
+    public function updated($propertyName): void
+    {
+        $this->validateOnly($propertyName);
+    }
+
 
     public function getTruckersMPEventData(): Collection
     {
