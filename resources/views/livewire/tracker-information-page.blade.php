@@ -188,6 +188,30 @@
                             </p>
                         </x-app-ui::prose>
                     </x-app-ui::collapsible.item>
+
+                    <x-app-ui::collapsible.item :flat="true">
+                        <x-slot name="heading">
+                            My Discord rich presence is not working
+                        </x-slot>
+
+                        <x-app-ui::prose>
+                            <p>
+                                <b>If this issue only occurs while playing on TruckersMP</b>, head over to your in-game
+                                tab
+                                menu settings, and disable the "Discord rich presence" option.
+                                <br>
+                                For more information about this, see <a href="https://truckersmp.com/kb/85"
+                                                                        target="_blank">TruckersMP Commands, Keybinds &
+                                    Settings</a>.
+                            </p>
+
+                            <p>
+                                <b>If this issue also occurs on singleplayer</b>, go to your Discord client settings,
+                                click on "Activity status", and make sure the "Display current
+                                activity as a status message" option is enabled.
+                            </p>
+                        </x-app-ui::prose>
+                    </x-app-ui::collapsible.item>
                 </x-app-ui::collapsible>
 
             </x-app-ui::card>
