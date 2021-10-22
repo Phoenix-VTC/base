@@ -135,7 +135,7 @@ class JobObserver
         //
     }
 
-    private function handleDriverRank(Job $job)
+    private function handleDriverRank(Job $job): void
     {
         $user = $job->user;
 
@@ -161,7 +161,7 @@ class JobObserver
         }
 
         // Init a new Discord Client session
-        $discord = new DiscordClient(['token' => config('app.discord-bot-api-token')]);
+        $discord = new DiscordClient(['token' => config('services.discord.token')]);
 
         // Get and collect the guild roles
         $roles = $discord->guild->getGuildRoles(['guild.id' => (int)config('services.discord.server-id')]);
@@ -169,7 +169,7 @@ class JobObserver
 
         // Find all the Driver Level roles
         $driverRoles = $roles->filter(function ($role) {
-            return false !== stristr($role->name, 'Driver Level');
+            return stripos($role->name, 'Driver Level') !== false;
         });
 
         // Try to find the new Driver Level role
