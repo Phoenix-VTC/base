@@ -45,9 +45,13 @@ class JobController extends Controller
                 'pickup_company_id',
                 'destination_company_id',
                 'cargo_id',
+                'status',
             ])
             ->where('tracker_job', true)
-            ->where('status', JobStatus::Incomplete)
+            ->whereNested(function ($query) {
+                $query->where('status', JobStatus::Incomplete)
+                    ->orWhere('status', JobStatus::PendingVerification);
+            })
             ->with([
                 'pickupCity:id,real_name,name,country,dlc,mod,game_id',
                 'destinationCity:id,real_name,name,country,dlc,mod,game_id',

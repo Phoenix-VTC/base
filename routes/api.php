@@ -5,6 +5,7 @@ use App\Http\Controllers\API\Select2\GameDataController;
 use App\Http\Controllers\API\Select2\UserController;
 use App\Http\Controllers\API\Tracker\IncomingDataController;
 use App\Http\Controllers\API\Tracker\JobController;
+use App\Http\Controllers\API\OnlineUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('game-data/{game}')->name('game-data.')->group(function ($group) {
@@ -25,11 +26,13 @@ Route::prefix('discord-bot')->middleware('auth.discordBot')->group(function () {
 Route::get('users', [UserController::class, 'index'])->name('users');
 
 Route::prefix('tracker')->middleware(['auth:sanctum', 'sanctum.canSubmitJobs'])->group(function () {
-    Route::post('/', [IncomingDataController::class, 'handleRequest']);
+    Route::post('/', [IncomingDataController::class, 'handleRequest'])->middleware('userActivity.tracker');
 
     Route::resource('jobs', JobController::class)->only([
         'index',
     ]);
+
+    Route::get('online-users', [OnlineUserController::class, 'onlineTrackerUsers']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {
