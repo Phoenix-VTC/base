@@ -28,7 +28,7 @@ class JobObserver
     public function creating(Job $job): void
     {
         // Handle the driver ranking
-        $this->handleDriverRank($job);
+        //$this->handleDriverRank($job);
     }
 
     /**
@@ -77,6 +77,9 @@ class JobObserver
 
             // Handle achievement unlocking
             $this->handleAchievements($job);
+
+            // Handle the driver ranking
+            //$this->handleDriverRank($job);
 
             return;
         }
