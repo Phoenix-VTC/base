@@ -39,6 +39,8 @@ class JobObserver
      */
     public function created(Job $job): void
     {
+        $job = $job->refresh();
+
         if ($job->status->value !== JobStatus::Complete) {
             return;
         }
