@@ -235,7 +235,7 @@
                                 <x-heroicon-s-document-text class="h-5 w-5 text-gray-400"/>
                                 <span class="text-gray-900 text-sm font-medium">Most recent version:</span>
                                 <span class="text-gray-900 text-sm font-bold">
-                                {{ $latestYaml['version'] }}
+                                v{{ $latestYaml['version'] }}
                             </span>
                             </div>
                         @endisset
