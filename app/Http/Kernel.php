@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'auth.discordBot' => \App\Http\Middleware\DiscordBotAuthenticated::class,
         'sanctum.canSubmitJobs' => \App\Http\Middleware\CanSubmitJobs::class,
+        'userActivity.tracker' => \App\Http\Middleware\TrackerUserActivity::class,
     ];
 }
