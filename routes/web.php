@@ -29,6 +29,7 @@ use App\Http\Livewire\ScreenshotHub\ShowIndexPage as ScreenshotHubShowIndexPage;
 use App\Http\Livewire\ShowLeaderboardPage;
 use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
 use App\Http\Livewire\ShowNotificationsPage;
+use App\Http\Livewire\ShowTrackerInformationPage;
 use App\Http\Livewire\UserManagement\DriverInactivity\ShowIndexPage as DriverInactivityShowIndexPage;
 use App\Http\Livewire\Users\ShowAchievementsPage;
 use App\Http\Livewire\Users\ShowJobOverviewPage as UsersShowJobOverviewPage;
@@ -135,6 +136,8 @@ Route::prefix('jobs')->name('jobs.')->middleware(['auth'])->group(function () {
         Route::get('verify', JobsShowVerifyPage::class)->name('verify');
     });
 });
+
+Route::get('tracker', ShowTrackerInformationPage::class)->middleware('auth')->name('tracker-information');
 
 Route::get('leaderboard', ShowLeaderboardPage::class)->middleware('auth')->name('leaderboard');
 
