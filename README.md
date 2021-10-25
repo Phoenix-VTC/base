@@ -129,6 +129,18 @@ The below installation instructions expect you to have created a bash alias for 
     127.0.0.1      apply.base.test
     127.0.0.1      events.base.test
     ```   
+   
+8. Install the NPM packages
+
+   ```sh
+   sail npm install
+   ```   
+   
+9. Compile the assets
+
+   ```sh
+   sail npm run development
+   ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
