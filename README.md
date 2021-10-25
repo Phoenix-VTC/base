@@ -1,61 +1,160 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<div id="top"></div>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/Phoenix-VTC/base">
+    <img src="https://base.phoenixvtc.com/img/logo.png" alt="Phoenix Logo" height="100">
+  </a>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<h3 align="center">PhoenixBase</h3>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+  <p align="center">
+    <a href="https://base.phoenixvtc.com"><strong>Production Domain »</strong></a>
+    <br />
+    <br />
+    <a href="https://base-staging.phoenixvtc.com">Staging Domain</a>
+    ·
+    <a href="https://app.shortcut.com/phoenixvtc">Project Management Board</a>
+  </p>
+</div>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#contributing">Contributing</a></li>
+  </ol>
+</details>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-### Premium Partners
+[![PhoenixBase screenshot][product-screenshot]](https://example.com)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+<p align="right">(<a href="#top">back to top</a>)</p>
 
+
+
+### Built With
+
+* [Laravel 8.x](https://laravel.com)
+* [Laravel Livewire 2.x](https://laravel-livewire.com)
+* [Alpine.js 3.x](https://alpinejs.dev)
+* [Tailwind CSS 2.x](https://tailwindcss.com)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+To get a local copy up and running, follow these simple steps.
+
+### Prerequisites
+
+This project locally runs on Docker with Laravel Sail. If you haven't yet, make sure to install Docker first.
+
+The below installation instructions expect you to have created a bash alias for Sail. If you haven't done this yet, [the Sail documentation](https://laravel.com/docs/8.x/sail#configuring-a-bash-alias) explains how.
+
+### Installation
+
+1. Clone the repo
+
+   ```sh
+   git clone git@github.com:Phoenix-VTC/base.git
+   ```
+
+2. CD into the project directory
+
+   ```sh
+   cd base
+   ```
+   
+3. Copy the .env file and enter the required information
+
+    ```sh
+    cp .env.example .env
+
+    nano .env
+    ```
+
+4. Install the composer dependencies by starting a small, temporary Docker container
+
+    ```sh
+    docker run --rm \
+        -u "$(id -u):$(id -g)" \
+        -v $(pwd):/var/www/html \
+        -w /var/www/html \
+        laravelsail/php80-composer:latest \
+        composer install --ignore-platform-reqs
+    ```   
+   
+5. Start the Sail container
+
+   ```sh
+   sail up -d
+   ```  
+   
+6. Generate an application key, and migrate & seed the database
+
+    ```sh
+    sail artisan key:generate
+    sail artisan migrate --seed 
+    ```     
+   
+7. Add the `APP_URL`, `APPLY_URL` and `EVENTS_URL` values from your .env file to your hosts file
+
+    ```sh
+    127.0.0.1      base.test
+    127.0.0.1      apply.base.test
+    127.0.0.1      events.base.test
+    ```   
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+<!-- CONTRIBUTING -->
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**When choosing a branch name, always use the Git Helper generated value from Shortcut.com. E.g. `feature/sc-123-some-cool-features`.**  
+**When writing commit messages, always include the ticket number at the end. E.g. `Add some cool feature [sc-123]`.**
 
-## Code of Conduct
+**Your commit messages should also always use the past tense, since they describe what the change will do.**  
+Valid: "Rename foo to bar"  
+Invalid: "Renamed foo to bar"
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Your pull request names should always use the Git Helper generated commit message value from Shortcut.com. E.g. `Add some cool feature [sc-123]`.**
 
-## Security Vulnerabilities
+1. Clone the Project
+2. Create your branch (`git checkout -b feature/sc-123-some-cool-feature`)
+3. Commit your changes (`git commit -m 'Add some cool feature [sc-123]'`)
+4. Push to the branch (`git push origin feature/sc-123-some-cool-feature`)
+5. Open a pull request, and wait for it to be reviewed by another team member 
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[product-screenshot]: https://i.imgur.com/fL34tdE.png
