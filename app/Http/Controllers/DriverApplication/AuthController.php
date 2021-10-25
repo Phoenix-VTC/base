@@ -78,10 +78,6 @@ class AuthController extends Controller
                         ],
                         'personaname' => [
                             new NotInBlocklist,
-                        ],
-                        'realname' => [
-                            'nullable',
-                            new NotInBlocklist,
                         ]
                     ]);
 
