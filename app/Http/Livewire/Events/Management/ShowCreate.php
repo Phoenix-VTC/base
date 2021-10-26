@@ -15,10 +15,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Spatie\Permission\Models\Role;
+use Storage;
 
 class ShowCreate extends Component
 {
+    use WithFileUploads;
+
     public Collection $tmp_event_data;
 
     public EloquentCollection $manage_event_users;
@@ -30,6 +34,7 @@ class ShowCreate extends Component
     public string $featured_image_url = '';
     public string $map_image_url = '';
     public string $description = '';
+    public array|string $images = [];
     public string $server = '';
     public string $required_dlcs = '';
     public string $departure_location = '';
@@ -187,5 +192,20 @@ class ShowCreate extends Component
         }
 
         $this->form_data_changed = true;
+    }
+
+    public function completeImageUpload(string $uploadedUrl, string $trixUploadCompletedEvent){
+        foreach($this->images as $image){
+            if($image->getFilename() == $uploadedUrl) {
+                $newFilename = $image->storePublicly('event-images', 'scaleway');
+
+                $url = Storage::disk('scaleway')->url($newFilename);
+
+                $this->dispatchBrowserEvent($trixUploadCompletedEvent, [
+                    'url' => $url,
+                    'href' => $url,
+                ]);
+            }
+        }
     }
 }
