@@ -32,7 +32,7 @@ class Blocklist extends Model
 
     protected $guarded = [];
 
-    public function scopeLikeSearch($query, $term): Builder
+    public function scopeLikeSearch($query, string $term): Builder
     {
         return $query->where(
             fn($query) => $query->where('usernames', 'like', '%' . $term . '%')
@@ -43,7 +43,7 @@ class Blocklist extends Model
         );
     }
 
-    public function scopeExactSearch($query, $term): Builder
+    public function scopeExactSearch($query, string $term): Builder
     {
         return $query->where(
             fn($query) => $query->whereJsonContains('usernames', $term)
