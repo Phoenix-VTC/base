@@ -37,12 +37,6 @@
             )
         }
     </script>
-
-    <style>
-        trix-toolbar .trix-button-group--file-tools {
-            display: none;
-        }
-    </style>
 @endpush
 
 @section('title', 'New Event')
