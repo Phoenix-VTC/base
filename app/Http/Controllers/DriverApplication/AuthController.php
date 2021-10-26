@@ -12,7 +12,6 @@ use App\Rules\TMP\NoRecentBans;
 use App\Rules\TMP\NotInVTC;
 use App\Rules\TMP\UniqueInApplications;
 use App\Rules\TMP\UniqueInUsers;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +19,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Invisnik\LaravelSteamAuth\SteamAuth;
-use JsonException;
 
 class AuthController extends Controller
 {
@@ -56,7 +54,6 @@ class AuthController extends Controller
      *
      * @param Request $request
      * @return RedirectResponse
-     * @throws JsonException
      */
     public function handle(Request $request): RedirectResponse
     {
@@ -118,14 +115,14 @@ class AuthController extends Controller
     }
 
     /**
-     * @throws GuzzleException|JsonException
+     * @throws RequestException
      */
     public function storeTruckersMPAccount($steamId): void
     {
-        $client = new Client();
+        $response = Http::get('https://api.truckersmp.com/v2/player/' . $steamId);
 
-        $response = $client->request('GET', 'https://api.truckersmp.com/v2/player/' . $steamId)->getBody();
-        $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+        // Throw an exception if a client or server error occurred
+        $response->throw();
 
         session()->put('truckersmp_user', collect($response['response']));
     }
