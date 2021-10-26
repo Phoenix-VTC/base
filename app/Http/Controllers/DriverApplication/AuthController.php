@@ -87,15 +87,8 @@ class AuthController extends Controller
                             ->withInput();
                     }
 
-                    try {
-                        $this->storeTruckersMPAccount($info->toArray()['steamID64']);
-                    } catch (GuzzleException $e) {
-                        return redirect(route('driver-application.authenticate'))
-                            ->withErrors([
-                                'TruckersMP API Error' => 'We couldn\'t contact the TruckersMP API, please try again. If this keeps happening, visit <a class="font-semibold" href="https://truckersmpstatus.com/">TruckersMPStatus.com</a>.'
-                            ])
-                            ->withInput();
-                    }
+                    // Store the TruckersMP account
+                    $this->storeTruckersMPAccount($info->toArray()['steamID64']);
 
                     $request->session()->put('steam_user', $info);
 
