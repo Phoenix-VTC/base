@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Blocklist;
 
+use App\Events\BlocklistEntryUpdated;
 use App\Models\Blocklist;
 use Livewire\Component;
 
@@ -75,9 +76,9 @@ class ShowEditPage extends Component
 
         $blocklist->save();
 
-//        event(new NewBlocklistEntry($blocklist));
+        event(new BlocklistEntryUpdated($blocklist));
 
-        session()->flash('alert', ['type' => 'success', 'message' => 'Blocklist entry added successfully!']);
+        session()->flash('alert', ['type' => 'success', 'message' => 'Blocklist entry updated successfully!']);
 
         return redirect()->route('user-management.blocklist.show', $blocklist->id);
     }
