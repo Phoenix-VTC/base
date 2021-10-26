@@ -10,11 +10,15 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Storage;
 
 class ShowEdit extends Component
 {
+    use WithFileUploads;
+
     public Event $event;
 
     public EloquentCollection $manage_event_users;
@@ -25,6 +29,7 @@ class ShowEdit extends Component
     public string $featured_image_url = '';
     public string $map_image_url = '';
     public string $description = '';
+    public array|string $images = [];
     public string $server = '';
     public string $required_dlcs = '';
     public string $departure_location = '';
@@ -149,5 +154,20 @@ class ShowEdit extends Component
 
             return collect($response);
         });
+    }
+
+    public function completeImageUpload(string $uploadedUrl, string $trixUploadCompletedEvent){
+        foreach($this->images as $image){
+            if($image->getFilename() == $uploadedUrl) {
+                $newFilename = $image->storePublicly('event-images', 'scaleway');
+
+                $url = Storage::disk('scaleway')->url($newFilename);
+
+                $this->dispatchBrowserEvent($trixUploadCompletedEvent, [
+                    'url' => $url,
+                    'href' => $url,
+                ]);
+            }
+        }
     }
 }
