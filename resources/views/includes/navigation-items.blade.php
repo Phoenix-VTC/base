@@ -20,6 +20,8 @@
                                   ]">
     </livewire:components.dropdown>
 
+    <x-sidebar.item title="Tracker" icon="o-location-marker" route="tracker-information"/>
+
     <x-sidebar.item title="Events" icon="o-calendar" route="events.home"/>
 
     <x-sidebar.item title="Vacation Requests" icon="o-clock" route="vacation-requests.index"
@@ -35,7 +37,7 @@
                     activeRoute="screenshot-hub.*"/>
 </x-sidebar.group>
 
-@hasanyrole('super admin|management|human resources|recruitment|community interactions|events|media|modding|developer')
+@hasanyrole('super admin|management|human resources|events|media|modding|developer')
     <x-sidebar.separator title="Management"/>
 @endhasanyrole
 

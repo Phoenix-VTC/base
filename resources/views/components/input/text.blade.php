@@ -11,7 +11,7 @@
         </div>
     @endif
 
-    <input {{ $attributes->merge(['class' => 'mt-1 w-full shadow-sm sm:text-sm border border-gray-300 placeholder-gray-400 rounded-md' . ($error ? ' border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:shadow-outline-red' : '') . ($leadingIcon ? ' block pl-10' : '') . ($trailingIcon ? ' block pr-10' : '')]) }} />
+    <input {{ $attributes->merge(['class' => 'mt-1 w-full shadow-sm sm:text-sm border border-gray-300 placeholder-gray-400 rounded-md' . ($error ? ' border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red' : '') . ($leadingIcon ? ' block pl-10' : '') . ($trailingIcon ? ' block pr-10' : '')]) }} />
 
     @if($trailingIcon)
         <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">

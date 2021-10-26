@@ -30,7 +30,7 @@
                     Our numbers don't lie, and we aren't afraid to show them.
                 </p>
             </div>
-            <div class="grid gap-10 row-gap-8 lg:grid-cols-3">
+            <div class="grid gap-10 gap-y-8 lg:grid-cols-3">
                 <div>
                     <div class="flex">
                         <h6 class="mr-2 text-4xl font-bold md:text-5xl text-orange-600">

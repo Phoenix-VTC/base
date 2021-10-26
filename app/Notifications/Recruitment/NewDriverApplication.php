@@ -42,7 +42,7 @@ class NewDriverApplication extends Notification implements ShouldQueue
      */
     public function toDiscord(): DiscordMessage
     {
-        $body = "<@&786313989021237309>"; // @Recruitment Team
+        $body = "<@&786313992020819989>"; // @Human Resources Team
 
         $embed = [
             'title' => 'New Driver Application!',

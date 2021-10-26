@@ -21,7 +21,7 @@ class DiscordBotAuthenticated
         if ($request->header('token') !== $token) {
             return response()->json([
                 'message' => 'Incorrect token.'
-            ], 403);
+            ], 401);
         }
 
         return $next($request);

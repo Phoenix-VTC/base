@@ -1,5 +1,9 @@
 @section('title', 'Hi, ' . Auth::user()->username . '!')
 
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+@endpush
+
 <div>
     @if(!Auth::user()->discord)
         <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
@@ -9,7 +13,7 @@
                 </div>
                 <div class="ml-3">
                     <p class="text-sm text-yellow-700">
-                        Hey, you haven't connected your Discord account yet! You will need this for the future.
+                        Hey, you haven't connected your Discord account yet! You will need this in the future.
                         <br>
                         <a href="{{ route('settings.socials') }}"
                            class="font-medium underline text-yellow-700 hover:text-yellow-600">
@@ -307,9 +311,103 @@
 
         {{-- Right col --}}
         <div class="lg:col-start-3 lg:col-span-1 space-y-6">
+
+{{--            <div>--}}
+{{--                <div class="lg:col-start-3 lg:col-span-1">--}}
+{{--                    <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">--}}
+{{--                        <h2 class="text-lg font-medium text-gray-900">My driver level</h2>--}}
+{{--                        <div class="pt-6 relative flex items-center h-full justify-center">--}}
+{{--                            <div class="flex items-center h-full justify-center relative">--}}
+{{--                                <canvas tabindex="0" class="focus:outline-none" aria-label="chart" role="img" id="progress-1" data-percent="15" width="200" height="200"></canvas>--}}
+{{--                                <div class="w-40 h-40 absolute rounded-full flex items-center justify-center">--}}
+{{--                                    <p tabindex="0" class="focus:outline-none text-4xl font-medium leading-10 text-center text-orange-600">--}}
+{{--                                        {{ Auth::user()->driver_level }}--}}
+{{--                                    </p>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="flex pt-6 justify-center text-center">--}}
+{{--                            <p class="focus:outline-none text-sm leading-none text-gray-800">--}}
+{{--                                {{ number_format(Auth::user()->jobs()->sum('distance')) }} / {{ number_format(Auth::user()->nextDriverLevelDistance) }} km--}}
+{{--                            </p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+
+{{--                <script>--}}
+{{--                    const percentValue = {{ Auth::user()->percentageUntilDriverLevelUp }};--}}
+
+{{--                    Chart.pluginService.register({--}}
+{{--                        afterUpdate: function (chart) {--}}
+{{--                            if (chart.config.options.elements.arc.roundedCornersFor !== undefined) {--}}
+{{--                                var arc = chart.getDatasetMeta(0).data[chart.config.options.elements.arc.roundedCornersFor];--}}
+{{--                                arc.round = {--}}
+{{--                                    x: (chart.chartArea.left + chart.chartArea.right) / 2,--}}
+{{--                                    y: (chart.chartArea.top + chart.chartArea.bottom) / 2,--}}
+{{--                                    radius: (chart.outerRadius + chart.innerRadius) / 2,--}}
+{{--                                    thickness: (chart.outerRadius - chart.innerRadius) / 2 - 1,--}}
+{{--                                    backgroundColor: arc._model.backgroundColor,--}}
+{{--                                };--}}
+{{--                            }--}}
+{{--                        },--}}
+
+{{--                        afterDraw: function (chart) {--}}
+{{--                            if (chart.config.options.elements.arc.roundedCornersFor !== undefined) {--}}
+{{--                                const ctx = chart.chart.ctx;--}}
+{{--                                const arc = chart.getDatasetMeta(0).data[chart.config.options.elements.arc.roundedCornersFor];--}}
+{{--                                var startAngle = Math.PI / 2 - arc._view.startAngle;--}}
+{{--                                var endAngle = Math.PI / 2 - arc._view.endAngle;--}}
+
+{{--                                ctx.save();--}}
+{{--                                ctx.translate(arc.round.x, arc.round.y);--}}
+{{--                                console.log(arc.round.startAngle);--}}
+{{--                                ctx.fillStyle = arc.round.backgroundColor;--}}
+{{--                                ctx.beginPath();--}}
+{{--                                ctx.arc(arc.round.radius * Math.sin(startAngle), arc.round.radius * Math.cos(startAngle), arc.round.thickness, 0, 2 * Math.PI);--}}
+{{--                                ctx.arc(arc.round.radius * Math.sin(endAngle), arc.round.radius * Math.cos(endAngle), arc.round.thickness, 0, 2 * Math.PI);--}}
+{{--                                ctx.closePath();--}}
+{{--                                ctx.fill();--}}
+{{--                                ctx.restore();--}}
+{{--                            }--}}
+{{--                        },--}}
+{{--                    });--}}
+{{--                    var config = {--}}
+{{--                        type: "doughnut",--}}
+{{--                        data: {--}}
+{{--                            labels: ["Restless", "Awake"],--}}
+{{--                            datasets: [--}}
+{{--                                {--}}
+{{--                                    data: [percentValue, 100 - percentValue], // Set the value shown in the chart as a percentage (out of 100)--}}
+{{--                                    backgroundColor: ["#ff5a1f", "#fde4ce"],--}}
+{{--                                    borderWidth: 2,--}}
+{{--                                },--}}
+{{--                            ],--}}
+{{--                        },--}}
+{{--                        options: {--}}
+{{--                            hover: { mode: null },--}}
+{{--                            elements: {--}}
+{{--                                arc: {--}}
+{{--                                    roundedCornersFor: 0,--}}
+{{--                                },--}}
+{{--                            },--}}
+{{--                            cutoutPercentage: 80,--}}
+{{--                            maintainAspectRatio: false,--}}
+{{--                            tooltips: {--}}
+{{--                                enabled: false,--}}
+{{--                            },--}}
+{{--                            legend: {--}}
+{{--                                display: false,--}}
+{{--                            },--}}
+{{--                        },--}}
+{{--                    };--}}
+{{--                    var ctx = document.getElementById("progress-1").getContext("2d");--}}
+{{--                    var myChart = new Chart(ctx, config);--}}
+{{--                </script>--}}
+{{--            </div>--}}
+
             <section aria-labelledby="job-activity-feed-title" class="lg:col-start-3 lg:col-span-1">
                 <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
-                    <h2 id="job-activity-feed-title" class="text-lg font-medium text-gray-900">Recent Jobs</h2>
+                    <h2 id="job-activity-feed-title" class="text-lg font-medium text-gray-900">Recent jobs</h2>
 
                     <!-- Job Activity Feed -->
                     <div class="mt-6 flow-root">

@@ -23,7 +23,7 @@ class Cargo extends Model
     ];
 
     /**
-     * The jobs that belong to the cargo.
+     * The jobs with this cargo.
      */
     public function jobs(): HasMany
     {

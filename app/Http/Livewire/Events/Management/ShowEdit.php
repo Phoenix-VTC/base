@@ -106,7 +106,6 @@ class ShowEdit extends Component
         $this->event = $event;
 
         $this->manage_event_users = Role::findByName('events')->users;
-        $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('community interactions')->users);
         $this->manage_event_users = $this->manage_event_users->merge(Role::findByName('super admin')->users);
 
         $this->tmp_event_id = $this->event->tmp_event_id ?? null;
