@@ -211,7 +211,7 @@
                         @endif
                     </div>
 
-                    <div class="mt-3 pt-3 flex flex-wrap mx-6 border-t space-y-2">
+                    <div class="mt-3 pt-3 flex flex-wrap mx-6 border-t gap-y-2">
                         @if($user->roles->count())
                             @foreach($user->roles as $role)
                                 @switch($role->name)
