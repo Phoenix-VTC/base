@@ -14,8 +14,10 @@ use App\Rules\TMP\UniqueInApplications;
 use App\Rules\TMP\UniqueInUsers;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Invisnik\LaravelSteamAuth\SteamAuth;
 use JsonException;
@@ -87,6 +89,15 @@ class AuthController extends Controller
                             ->withInput();
                     }
 
+                    // Perform a blocklist check with the TruckersMP user data
+                    $tmpBlocklistCheck = $this->checkBlocklistWithTruckersmpData($info->toArray());
+
+                    if ($tmpBlocklistCheck->fails()) {
+                        return redirect(route('driver-application.authenticate'))
+                            ->withErrors($tmpBlocklistCheck)
+                            ->withInput();
+                    }
+
                     // Store the TruckersMP account
                     $this->storeTruckersMPAccount($info->toArray()['steamID64']);
 
@@ -95,7 +106,7 @@ class AuthController extends Controller
                     return redirect(route('driver-application.apply'));
                 }
             }
-        } catch (GuzzleException $e) {
+        } catch (GuzzleException | RequestException $e) {
             return redirect(route('driver-application.authenticate'))
                 ->withErrors([
                     'TruckersMP API Error' => 'We couldn\'t contact the Steam or TruckersMP API, please try again. If this keeps happening, visit <a class="font-semibold" href="https://truckersmpstatus.com/">TruckersMPStatus.com</a>.'
@@ -131,5 +142,30 @@ class AuthController extends Controller
         $request->session()->forget('truckersmp_user');
 
         return redirect()->back();
+    }
+
+    /**
+     * @throws RequestException
+     */
+    private function checkBlocklistWithTruckersmpData(array $steamData): \Illuminate\Validation\Validator
+    {
+        $response = Http::get('https://api.truckersmp.com/v2/player/' . $steamData['steamID64']);
+
+        // Throw an exception if a client or server error occurred
+        $response->throw();
+
+        $response = $response->collect();
+
+        return Validator::make($response['response'], [
+            'id' => [
+                new NotInBlocklist,
+            ],
+            'name' => [
+                new NotInBlocklist,
+            ],
+            'discordSnowflake' => [
+                new NotInBlocklist,
+            ],
+        ]);
     }
 }
