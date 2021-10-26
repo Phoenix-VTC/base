@@ -8,6 +8,7 @@ use App\Models\Application;
 use App\Models\Comment;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
@@ -18,6 +19,8 @@ use Validator;
 
 class ShowApplication extends Component
 {
+    use AuthorizesRequests;
+
     public Application $application;
     public Collection $previousApplications;
     public string $comment = '';
@@ -40,6 +43,8 @@ class ShowApplication extends Component
 
     public function claim(): void
     {
+        $this->authorize('claim', $this->application);
+
         $this->application->claimed_by = Auth::id();
         $this->application->save();
 
@@ -50,6 +55,8 @@ class ShowApplication extends Component
 
     public function unclaim(): void
     {
+        $this->authorize('update', $this->application);
+
         $this->application->claimed_by = null;
         $this->application->save();
 
@@ -79,8 +86,6 @@ class ShowApplication extends Component
 
     public function deleteComment($uuid): void
     {
-        $this->sendDiscordWebhook('Application Comment Deleted', 'By **' . Auth::user()->username . '**', 14429954);
-
         $comment = Comment::where('uuid', $uuid)->firstOrFail();
 
         $comment->delete();
@@ -98,6 +103,8 @@ class ShowApplication extends Component
 
     public function accept(): void
     {
+        $this->authorize('update', $this->application);
+
         Validator::make($this->application->toArray(), [
             'email' => ['email', Rule::unique('users')->whereNull('deleted_at')],
             'truckersmp_id' => [Rule::unique('users')->whereNull('deleted_at')],
@@ -116,6 +123,8 @@ class ShowApplication extends Component
 
     public function deny(): void
     {
+        $this->authorize('update', $this->application);
+
         $this->application->status = 'denied';
         $this->application->save();
 
@@ -131,6 +140,8 @@ class ShowApplication extends Component
 
     public function setStatus($status): void
     {
+        $this->authorize('update', $this->application);
+
         $this->application->status = $status;
         $this->application->save();
 
@@ -141,6 +152,8 @@ class ShowApplication extends Component
 
     public function blacklist(): void
     {
+        $this->authorize('update', $this->application);
+
         $this->application->status = 'denied';
         $this->application->save();
 
