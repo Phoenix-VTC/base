@@ -88,7 +88,11 @@ class ShowApplication extends Component
     {
         $comment = Comment::where('uuid', $uuid)->firstOrFail();
 
+        $this->authorize('delete', $comment);
+
         $comment->delete();
+
+        $this->sendDiscordWebhook('Application Comment Deleted', 'By **' . Auth::user()->username . '**', 14429954);
 
         session()->now('alert', ['type' => 'info', 'message' => 'Comment deleted!']);
     }
