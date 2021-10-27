@@ -15,22 +15,11 @@ use App\Notifications\DriverLevelUp;
 use Bavix\Wallet\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use RestCord\DiscordClient;
 
 class JobObserver
 {
-    /**
-     * Handle the Job "creating" event.
-     *
-     * @param \App\Models\Job $job
-     * @return void
-     */
-    public function creating(Job $job): void
-    {
-        // Handle the driver ranking
-        //$this->handleDriverRank($job);
-    }
-
     /**
      * Handle the Job "created" event.
      *
@@ -51,6 +40,9 @@ class JobObserver
 
         // Handle achievement unlocking
         $this->handleAchievements($job);
+
+        // Handle the driver ranking
+        $this->handleDriverRank($job);
     }
 
     /**
@@ -78,11 +70,11 @@ class JobObserver
             // Handle achievement unlocking
             $this->handleAchievements($job);
 
-            // Handle the driver ranking
-            //$this->handleDriverRank($job);
-
             return;
         }
+
+        // Handle the driver ranking
+        $this->handleDriverRank($job);
 
         // Try to find the previous job transaction(s) and sum them
         $old_income = Transaction::whereJsonContains('meta->job_id', $job->id)->sum('amount');
@@ -146,7 +138,7 @@ class JobObserver
 
         // If the job distance is equal to or higher than the required distance until the next driver level
         // AND if the next driver level is divisible by 10.
-        if ($job->distance >= $user->requiredDistanceUntilNextLevel && ($user->driverLevel + 1) % 10 === 0) {
+        if ($job->distance >= $user->requiredDistanceUntilNextLevel && ($user->driverLevel) % 10 === 0) {
             // Handle Discord rank updating
             $this->handleDiscordDriverRankChange($user);
 
@@ -156,6 +148,8 @@ class JobObserver
             // Send a level up notification
             $user->notify(new DriverLevelUp($user));
         }
+
+        $this->checkForMissingDriverRankRole($user);
     }
 
     private function handleDiscordDriverRankChange(User $user): void
@@ -178,7 +172,7 @@ class JobObserver
         });
 
         // Try to find the new Driver Level role
-        $driverRole = $driverRoles->where('name', 'Driver Level ' . ($user->driverLevel + 1))->first();
+        $driverRole = $driverRoles->where('name', 'Driver Level ' . ($user->driverLevel))->first();
 
         // Return if the Driver Level role couldn't be found.
         if (!$driverRole) {
@@ -193,6 +187,50 @@ class JobObserver
                 'role.id' => $role->id
             ]);
         }
+
+        // Add the Driver Level role to the user
+        $discord->guild->addGuildMemberRole([
+            'guild.id' => (int)config('services.discord.server-id'),
+            'user.id' => (int)$user->discord['id'],
+            'role.id' => $driverRole->id
+        ]);
+    }
+
+    private function checkForMissingDriverRankRole(User $user): void
+    {
+        if (!$user->discord) {
+            return;
+        }
+
+        // Init a new Discord Client session
+        $discord = new DiscordClient(['token' => config('services.discord.token')]);
+
+        // Get and collect the guild roles
+        $roles = $discord->guild->getGuildRoles(['guild.id' => (int)config('services.discord.server-id')]);
+        $roles = collect($roles);
+
+        // Find all the Driver Level roles
+        $driverRoles = $roles->filter(function ($role) {
+            return stripos($role->name, 'Driver Level') !== false;
+        });
+
+        $availableRanks = [];
+
+        // Only get rank number for every available role
+        foreach ($driverRoles as $role) {
+            $rankNumber = (int)Str::after($role->name, 'Driver Level');
+
+            $availableRanks[] = $rankNumber;
+        }
+
+        // Filter through all the available levels
+        $passedLevels = array_filter($availableRanks, fn($level) => $level <= $user->driverLevel);
+
+        // Get the highest level in the array
+        $highestLevel = max(array_values($passedLevels));
+
+        // get the role of the highest available level
+        $driverRole = $driverRoles->where('name', 'Driver Level ' . ($highestLevel))->first();
 
         // Add the Driver Level role to the user
         $discord->guild->addGuildMemberRole([
