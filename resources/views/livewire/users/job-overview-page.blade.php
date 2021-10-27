@@ -28,7 +28,7 @@
 
 @section('meta')
     <x-header.meta-item icon="s-cash">
-        {!! Auth::user()->preferred_currency_symbol !!} {{ number_format(Auth::user()->default_wallet_balance) }}
+        {!! Auth::user()->preferred_currency_symbol !!} {{ number_format($user->default_wallet_balance) }}
     </x-header.meta-item>
 @endsection
 
