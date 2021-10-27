@@ -27,7 +27,6 @@ use App\Http\Livewire\ScreenshotHub\ShowShowPage as ScreenshotHubShowShowPage;
 use App\Http\Livewire\ScreenshotHub\ShowCreatePage as ScreenshotHubShowCreatePage;
 use App\Http\Livewire\ScreenshotHub\ShowIndexPage as ScreenshotHubShowIndexPage;
 use App\Http\Livewire\ShowLeaderboardPage;
-use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
 use App\Http\Livewire\ShowNotificationsPage;
 use App\Http\Livewire\ShowTrackerInformationPage;
 use App\Http\Livewire\UserManagement\DriverInactivity\ShowIndexPage as DriverInactivityShowIndexPage;
@@ -80,15 +79,15 @@ Route::get('/', ShowDashboard::class)
     ->name('dashboard');
 
 Route::prefix('recruitment')->name('recruitment.')->middleware(['auth', 'can:handle driver applications'])->group(function () {
-    Route::get('index', RecruitmentShowIndex::class)->name('index');
+    Route::get('/', RecruitmentShowIndex::class)->name('index');
     Route::get('application/{uuid}', ShowApplication::class)->name('show');
 });
 
 Route::prefix('user-management')->name('user-management.')->middleware(['auth', 'can:manage users'])->group(function () {
-    Route::get('index', UserManagementShowIndex::class)->name('index');
-    Route::get('roles/index', UserManagementRolesShowIndex::class)->name('roles.index');
-    Route::get('permissions/index', UserManagementPermissionsShowIndex::class)->name('permissions.index');
-    Route::get('driver-inactivity/index', DriverInactivityShowIndexPage::class)->middleware('can:manage driver inactivity')->name('driver-inactivity.index');
+    Route::get('/', UserManagementShowIndex::class)->name('index');
+    Route::get('roles', UserManagementRolesShowIndex::class)->name('roles.index');
+    Route::get('permissions', UserManagementPermissionsShowIndex::class)->name('permissions.index');
+    Route::get('driver-inactivity', DriverInactivityShowIndexPage::class)->middleware('can:manage driver inactivity')->name('driver-inactivity.index');
 });
 
 Route::prefix('vacation-requests')->name('vacation-requests.')->middleware(['auth'])->group(function () {
@@ -97,7 +96,7 @@ Route::prefix('vacation-requests')->name('vacation-requests.')->middleware(['aut
 });
 
 Route::prefix('vacation-requests/manage')->name('vacation-requests.manage.')->middleware(['auth', 'can:manage vacation requests'])->group(function () {
-    Route::get('index', VacationRequestsManagementShowIndex::class)->name('index');
+    Route::get('/', VacationRequestsManagementShowIndex::class)->name('index');
 });
 
 Route::prefix('event-management')->name('event-management.')->middleware(['auth', 'can:manage events'])->group(function () {
@@ -122,7 +121,9 @@ Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage 
 });
 
 Route::prefix('jobs')->name('jobs.')->middleware(['auth'])->group(function () {
-    Route::get('personal-overview', JobsShowPersonalOverviewPage::class)->name('personal-overview');
+    Route::get('personal-overview', function () {
+        return Redirect::route('users.jobs-overview', ['user' => Auth::user()]);
+    })->name('personal-overview');
     Route::get('choose-game', JobsShowSelectGamePage::class)->name('choose-game');
     Route::get('submit/{game_id}', JobsShowSubmitPage::class)
         ->whereNumber('game_id')
@@ -170,10 +171,10 @@ Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
 });
 
 Route::prefix('downloads')->name('downloads.')->middleware('auth')->group(function () {
-    Route::get('index', DownloadsShowIndexPage::class)->name('index');
+    Route::get('/', DownloadsShowIndexPage::class)->name('index');
 
     Route::prefix('management')->name('management.')->middleware(['auth', 'can:manage downloads'])->group(function () {
-        Route::get('index', DownloadsManagementShowIndexPage::class)->name('index');
+        Route::get('/', DownloadsManagementShowIndexPage::class)->name('index');
         Route::get('create', DownloadsManagementShowCreatePage::class)->name('create');
         Route::get('{download}/edit', DownloadsManagementShowEditPage::class)->name('edit');
         Route::get('{download}/revisions', DownloadsManagementShowRevisionsPage::class)->name('revisions');
