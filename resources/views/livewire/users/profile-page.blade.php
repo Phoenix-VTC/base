@@ -35,7 +35,7 @@
                                         To
                                     </th>
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        class="px-6 py-3 whitespace-nowrap text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Submitted At
                                     </th>
                                 </tr>
@@ -43,7 +43,7 @@
                                 <tbody>
                                 @foreach($recent_jobs as $job)
                                     <tr class="@if($loop->odd) bg-white @else bg-gray-50 @endif">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 text-sm text-gray-500">
                                             @switch($job->status->key)
                                                 @case('Incomplete')
                                                 <div
@@ -71,16 +71,16 @@
                                                 @break
                                             @endswitch
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 text-sm text-gray-500">
                                             {{ App\Models\Game::getAbbreviationById($job->game_id) ?? 'Unknown Game' }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 prose prose-sm">
+                                        <td class="px-6 py-4 text-sm text-gray-500 prose prose-sm">
                                             <a href="{{ route('jobs.show', $job->id) }}">
                                                 {{ ucwords($job->pickupCity->real_name ?? 'Unknown City') }}
                                                 ({{ ucwords($job->pickupCompany->name ?? 'Unknown Company') }})
                                             </a>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 prose prose-sm">
+                                        <td class="px-6 py-4 text-sm text-gray-500 prose prose-sm">
                                             <a href="{{ route('jobs.show', $job->id) }}">
                                                 {{ ucwords($job->destinationCity->real_name ?? 'Unknown City') }}
                                                 ({{ ucwords($job->destinationCompany->name ?? 'Unknown Company') }})
@@ -93,7 +93,7 @@
                                 @endforeach
                                 @if(!$recent_jobs->count())
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900">
                                             Aww, this user hasn't submitted any jobs yet..
                                         </td>
                                     </tr>
@@ -155,13 +155,13 @@
                                                     <span class="font-semibold">System</span>
                                                 @endif
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <td class="px-6 py-4 text-sm text-gray-500">
                                                 {{ $revision->fieldName() ?? 'Unknown' }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <td class="px-6 py-4 text-sm text-gray-500">
                                                 {{ $revision->oldValue() ?? '' }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <td class="px-6 py-4 text-sm text-gray-500">
                                                 {{ $revision->newValue() ?? '' }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
