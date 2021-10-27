@@ -5,7 +5,7 @@
 @section('actions')
     <div class="ml-3">
         <a href="{{ route('event-management.create') }}"
-                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+           class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             Create new event
         </a>
     </div>
@@ -33,7 +33,7 @@
                                         Hosted By
                                     </th>
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        class="px-6 py-3 whitespace-nowrap text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Departure Date
                                     </th>
                                     <th scope="col" class="relative px-6 py-3">
@@ -44,7 +44,7 @@
                                 <tbody>
                                 @foreach($upcoming_events as $event)
                                     <tr class="@if($loop->odd) bg-white @else bg-gray-50 @endif font-medium">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 text-sm text-gray-500">
                                             {{ $event->name }}
                                             @if(!$event->published)
                                                 <span
