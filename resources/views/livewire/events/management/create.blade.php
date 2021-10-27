@@ -12,16 +12,31 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <script>
-        document.addEventListener("trix-file-accept", function (event) {
-            event.preventDefault();
-        });
-    </script>
+        function uploadEventImage(attachment) {
+            @this.upload(
+                'images',
+                attachment.file,
+                function (uploadedURL) {
+                    const trixUploadCompletedEvent = `trix-upload-completed:${btoa(uploadedURL)}`;
 
-    <style>
-        trix-toolbar .trix-button-group--file-tools {
-            display: none;
+                    const trixUploadCompletedListener = function(event) {
+                        attachment.setAttributes(event.detail);
+                        window.removeEventListener(trixUploadCompletedEvent, trixUploadCompletedListener);
+                    }
+
+                    window.addEventListener(trixUploadCompletedEvent, trixUploadCompletedListener);
+
+                    @this.call('completeImageUpload', uploadedURL, trixUploadCompletedEvent);
+                },
+
+                function() {},
+
+                function(event){
+                    attachment.setUploadProgress(event.detail.progress);
+                }
+            )
         }
-    </style>
+    </script>
 @endpush
 
 @section('title', 'New Event')
@@ -99,7 +114,7 @@
 
                     <x-input.group col-span="6" label="Description" for="description"
                                    :error="$errors->first('description')">
-                        <x-input.rich-text wire:model.lazy="description" id="description"/>
+                        <x-input.rich-text wire:model.lazy="description" @trix-attachment-add="uploadEventImage($event.attachment)" id="description"/>
                     </x-input.group>
 
                     @if($tmp_event_description ?? null)

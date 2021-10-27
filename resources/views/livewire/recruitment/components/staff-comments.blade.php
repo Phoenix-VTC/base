@@ -24,13 +24,14 @@
                                         <p>{{ $comment->body }}</p>
                                     </div>
                                     <div class="mt-2 text-sm space-x-2">
-                                        <span
-                                            class="text-gray-500 font-medium">{{ \Carbon\Carbon::parse($comment->created_at)->diffForHumans() }}</span>
-                                        <span class="text-gray-500 font-medium">&middot;</span>
-                                        <button type="button" wire:click="deleteComment('{{ $comment->uuid }}')"
-                                                class="text-gray-900 font-medium">
-                                            Delete
-                                        </button>
+                                        <span class="text-gray-500 font-medium">{{ \Carbon\Carbon::parse($comment->created_at)->diffForHumans() }}</span>
+                                        @can('delete', $comment)
+                                            <span class="text-gray-500 font-medium">&middot;</span>
+                                            <button type="button" wire:click="deleteComment('{{ $comment->uuid }}')"
+                                                    class="text-gray-900 font-medium">
+                                                Delete
+                                            </button>
+                                        @endcan
                                     </div>
                                 </div>
                             </div>
