@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Lab404\Impersonate\Models\Impersonate;
@@ -155,7 +156,7 @@ class User extends Authenticatable implements Wallet
         $balance = $this->getWallet('default')->balance ?? 0;
 
         // Convert to USD if required
-        if ($this->settings()->get('preferences.currency') === 'dollar') {
+        if (Auth::user()->settings()->get('preferences.currency') === 'dollar') {
             $balance *= 1.21;
         }
 
