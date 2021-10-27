@@ -15,7 +15,7 @@
 
     <livewire:components.dropdown title="My Jobs" icon="o-briefcase" activeRoute="jobs.*"
                                   :items="[
-                                    ['title' => 'Personal Overview', 'route' => 'jobs.personal-overview'],
+                                    ['title' => 'Personal Overview', 'route' => 'users.jobs-overview', 'parameters' => Auth::id()],
                                     ['title' => 'Submit New Job', 'route' => 'jobs.choose-game'],
                                   ]">
     </livewire:components.dropdown>
@@ -38,7 +38,7 @@
 </x-sidebar.group>
 
 @hasanyrole('super admin|management|human resources|events|media|modding|developer')
-    <x-sidebar.separator title="Management"/>
+<x-sidebar.separator title="Management"/>
 @endhasanyrole
 
 <x-sidebar.group>
