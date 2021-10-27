@@ -1,15 +1,35 @@
 {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day --}}
 
-@section('title', 'Viewing ' . $user->username . '\'s jobs')
+@if(Auth::id() == $user->id)
+    @section('title', 'Personal Job Overview')
 
-@section('actions')
-    <div class="ml-3">
-        <a href="{{ route('users.profile', $user) }}"
-           class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            <x-heroicon-s-identification class="-ml-1 mr-2 h-5 w-5 text-gray-500"/>
-            View {{ $user->username }}'s profile
-        </a>
-    </div>
+    @section('actions')
+        <div class="ml-3">
+            <a href="{{ route('jobs.choose-game') }}"
+               class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <x-heroicon-s-truck class="-ml-1 mr-2 h-5 w-5"/>
+                Submit New Job
+            </a>
+        </div>
+    @endsection
+@else
+    @section('title', 'Viewing ' . $user->username . '\'s jobs')
+
+    @section('actions')
+        <div class="ml-3">
+            <a href="{{ route('users.profile', $user) }}"
+               class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <x-heroicon-s-identification class="-ml-1 mr-2 h-5 w-5 text-gray-500"/>
+                View {{ $user->username }}'s profile
+            </a>
+        </div>
+    @endsection
+@endif
+
+@section('meta')
+    <x-header.meta-item icon="s-cash">
+        {!! Auth::user()->preferred_currency_symbol !!} {{ number_format(Auth::user()->default_wallet_balance) }}
+    </x-header.meta-item>
 @endsection
 
 <div>
