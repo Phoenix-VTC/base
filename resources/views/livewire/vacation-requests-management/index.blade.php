@@ -29,7 +29,7 @@
                                         Reason
                                     </th>
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        class="px-6 py-3 whitespace-nowrap text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Handled By
                                     </th>
                                     <th scope="col"
@@ -51,12 +51,12 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <time datetime="{{ $vacation_request->start_date }}">
-                                                {{ $vacation_request->start_date }}
+                                                {{ $vacation_request->start_date->format('M d, Y') }}
                                             </time>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <time datetime="{{ $vacation_request->end_date }}">
-                                                {{ $vacation_request->end_date }}
+                                                {{ $vacation_request->end_date->format('M d, Y') }}
                                             </time>
                                             @if($vacation_request->leaving)
                                                 <span
@@ -65,7 +65,7 @@
                                                 </span>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 text-sm text-gray-500">
                                             {{ $vacation_request->reason }}
                                         </td>
                                         <td class="px-6 py-4 flex whitespace-nowrap text-sm text-gray-500">

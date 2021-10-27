@@ -34,7 +34,7 @@
                                         Reason
                                     </th>
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        class="px-6 py-3 whitespace-nowrap text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Handled By
                                     </th>
                                     <th scope="col"
@@ -46,17 +46,17 @@
                                 <tbody>
                                 @foreach($vacation_requests as $vacation_request)
                                     <tr class="@if($loop->odd) bg-white @else bg-gray-50 @endif font-medium">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                             <time datetime="{{ $vacation_request->start_date }}">
-                                                {{ $vacation_request->start_date }}
+                                                {{ $vacation_request->start_date->format('M d, Y') }}
                                             </time>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                             <time datetime="{{ $vacation_request->end_date }}">
-                                                {{ $vacation_request->end_date }}
+                                                {{ $vacation_request->end_date->format('M d, Y')}}
                                             </time>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 text-sm text-gray-500">
                                             {{ $vacation_request->reason }}
                                             @if($vacation_request->leaving)
                                                 <span
@@ -65,12 +65,12 @@
                                                 </span>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 flex whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 flex text-sm text-gray-500">
                                             @isset($vacation_request->handled_by)
                                                 {{ $vacation_request->staff->username ?? 'Unknown User' }}
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <td class="px-6 py-4 text-sm">
                                             @empty($vacation_request->handled_by)
                                                 <span
                                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
