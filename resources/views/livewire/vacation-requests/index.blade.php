@@ -52,9 +52,11 @@
                                             </time>
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                                            <time datetime="{{ $vacation_request->end_date }}">
-                                                {{ $vacation_request->end_date->format('M d, Y')}}
-                                            </time>
+                                            @if(!$vacation_request->leaving)
+                                                <time datetime="{{ $vacation_request->end_date }}">
+                                                    {{ $vacation_request->end_date->format('M d, Y')}}
+                                                </time>
+                                            @endif
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-500">
                                             {{ $vacation_request->reason }}
