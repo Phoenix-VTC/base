@@ -55,14 +55,15 @@
                                             </time>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <time datetime="{{ $vacation_request->end_date }}">
-                                                {{ $vacation_request->end_date->format('M d, Y') }}
-                                            </time>
                                             @if($vacation_request->leaving)
                                                 <span
                                                     class="px-2 ml-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                                     Leaving Phoenix
                                                 </span>
+                                            @else
+                                                <time datetime="{{ $vacation_request->end_date }}">
+                                                    {{ $vacation_request->end_date->format('M d, Y') }}
+                                                </time>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-500">
