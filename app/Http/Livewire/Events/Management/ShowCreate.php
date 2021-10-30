@@ -77,7 +77,7 @@ class ShowCreate extends Component
         ];
     }
 
-    protected $validationAttributes = [
+    protected array $validationAttributes = [
         'tmp_event_url' => 'TruckersMP Event URL',
         'tmp_event_id' => 'TruckersMP Event ID',
         'name' => 'Event Name',
