@@ -77,6 +77,19 @@ class ShowCreate extends Component
         ];
     }
 
+    protected array $validationAttributes = [
+        'tmp_event_url' => 'TruckersMP Event URL',
+        'tmp_event_id' => 'TruckersMP Event ID',
+        'name' => 'Event Name',
+        'description' => 'Description',
+        'featured_image_url' => 'Featured Image URL',
+        'start_date' => 'Departure Date and Time',
+        'distance' => 'Distance',
+        'points' => 'Event XP',
+        'hosted_by' => 'Event Host',
+        'announce' => 'Announce Event',
+    ];
+
     protected array $messages = [
         'starts_with' => 'The URL must begin with https://',
     ];
