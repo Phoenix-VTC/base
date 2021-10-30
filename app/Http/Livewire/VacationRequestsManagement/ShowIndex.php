@@ -6,6 +6,7 @@ use App\Mail\LeaveRequestApproved;
 use App\Models\VacationRequest;
 use App\Notifications\VacationRequestMarkedAsSeen;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -43,6 +44,8 @@ class ShowIndex extends Component
         if (!$vacation_request->handled_by) {
             $vacation_request->handled_by = Auth::id();
             $vacation_request->save();
+
+            Cache::forget('vacation_request_count');
 
             if (!$vacation_request->leaving) {
                 $vacation_request->user->notify(new VacationRequestMarkedAsSeen);
