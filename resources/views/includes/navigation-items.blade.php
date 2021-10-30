@@ -14,6 +14,12 @@
             return App\Models\Application::whereNull('claimed_by')->count();
         });
     }
+
+    if(Auth::user()->can('manage vacation requests')) {
+        $pendingVacationRequestCount = Cache::remember('vacation_request_count', 300, function () {
+            return App\Models\VacationRequest::whereNull('handled_by')->count();
+        });
+    }
 @endphp
 
 <x-sidebar.group>
@@ -55,7 +61,8 @@
 
     @can('manage vacation requests')
         <x-sidebar.item title="Vacation Requests" icon="o-clock" route="vacation-requests.manage.index"
-                        activeRoute="vacation-requests.manage.*"/>
+                        activeRoute="vacation-requests.manage.*"
+                        :unreadCount="$pendingVacationRequestCount ?? 0"/>
     @endcan
 
     @canany(['manage users', 'manage driver inactivity'])
