@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -48,6 +49,8 @@ class ShowApplication extends Component
         $this->application->claimed_by = Auth::id();
         $this->application->save();
 
+        $this->forgetPendingApplicationCount();
+
         $this->sendDiscordWebhook('Application Claimed', '**' . Auth::user()->username . '** claimed **' . $this->application->username . '\'s** application.', 14429954);
 
         session()->now('alert', ['type' => 'info', 'message' => 'Application claimed']);
@@ -59,6 +62,8 @@ class ShowApplication extends Component
 
         $this->application->claimed_by = null;
         $this->application->save();
+
+        $this->forgetPendingApplicationCount();
 
         $this->sendDiscordWebhook('Application Unclaimed', '**' . Auth::user()->username . '** unclaimed **' . $this->application->username . '\'s** application.', 14429954);
 
@@ -203,5 +208,10 @@ class ShowApplication extends Component
             ->whereKeyNot($this->application->id)
             ->latest()
             ->get();
+    }
+
+    private function forgetPendingApplicationCount(): void
+    {
+        Cache::forget('pending_application_count');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\VacationRequest;
 use App\Notifications\VacationRequest\NewVacationRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
@@ -64,6 +65,8 @@ class ShowCreate extends Component
             'start_date' => $validatedData['start_date'],
             'end_date' => $validatedData['end_date'] ?? null,
         ]);
+
+        Cache::forget('vacation_request_count');
 
         $vacation_request->notify(new NewVacationRequest($vacation_request));
 

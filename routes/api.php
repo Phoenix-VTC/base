@@ -33,6 +33,15 @@ Route::prefix('tracker')->middleware(['auth:sanctum', 'sanctum.canSubmitJobs'])-
     ]);
 
     Route::get('online-users', [OnlineUserController::class, 'onlineTrackerUsers']);
+
+    Route::get('pending-jobs-count', function (\Illuminate\Http\Request $request) {
+        return Cache::remember("pending-jobs-count-{$request->user()->id}", 900, function () use ($request) {
+            return $request->user()
+                ->jobs()
+                ->whereIn('status', [0, 1])
+                ->count();
+        });
+    });
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {

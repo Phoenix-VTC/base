@@ -8,6 +8,18 @@
             return $unapprovedCargosCount + $unapprovedCitiesCount + $unapprovedCompaniesCount;
         });
     }
+
+    if(Auth::user()->can('handle driver applications')) {
+        $pendingApplicationCount = Cache::remember('pending_application_count', 300, function () {
+            return App\Models\Application::whereNull('claimed_by')->count();
+        });
+    }
+
+    if(Auth::user()->can('manage vacation requests')) {
+        $pendingVacationRequestCount = Cache::remember('vacation_request_count', 300, function () {
+            return App\Models\VacationRequest::whereNull('handled_by')->count();
+        });
+    }
 @endphp
 
 <x-sidebar.group>
@@ -43,12 +55,14 @@
 
 <x-sidebar.group>
     @can('handle driver applications')
-        <x-sidebar.item title="Recruitment" icon="o-inbox" route="recruitment.index" activeRoute="recruitment.*"/>
+        <x-sidebar.item title="Recruitment" icon="o-inbox" route="recruitment.index" activeRoute="recruitment.*"
+                        :unreadCount="$pendingApplicationCount ?? 0"/>
     @endcan
 
     @can('manage vacation requests')
         <x-sidebar.item title="Vacation Requests" icon="o-clock" route="vacation-requests.manage.index"
-                        activeRoute="vacation-requests.manage.*"/>
+                        activeRoute="vacation-requests.manage.*"
+                        :unreadCount="$pendingVacationRequestCount ?? 0"/>
     @endcan
 
     @canany(['manage users', 'manage driver inactivity'])
