@@ -7,9 +7,9 @@ use App\Models\Job;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use willvincent\Feeds\Facades\FeedsFacade;
 
@@ -36,7 +36,10 @@ class ShowDashboard extends Component
         })->with(['jobs' => function ($q) {
             // Then include today's jobs of those users
             $q->whereDate('finished_at', Carbon::today());
+        }])->withSum(['jobs:distance' => function (Builder $q) {
+            $q->whereDate('finished_at', Carbon::today());
         }])->take(10)
+            ->orderByDesc('jobs_distance_sum')
             ->get();
 
         $this->recent_news = $this->getRecentNewsPosts();
