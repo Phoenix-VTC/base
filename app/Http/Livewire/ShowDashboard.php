@@ -47,7 +47,7 @@ class ShowDashboard extends Component
         return view('livewire.dashboard')->extends('layouts.app');
     }
 
-    public function calculatePersonalStats(): array
+    private function calculatePersonalStats(): array
     {
         // Convert income to the user's preferred income
         if (Auth::user()->settings()->get('preferences.currency') === 'dollar') {
@@ -113,7 +113,7 @@ class ShowDashboard extends Component
         ];
     }
 
-    public function getRecentNewsPosts(): array
+    private function getRecentNewsPosts(): array
     {
         $feed = FeedsFacade::make('https://phoenixvtc.com/feed');
 
