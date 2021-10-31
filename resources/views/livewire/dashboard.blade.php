@@ -101,7 +101,7 @@
                                             </a>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $user->jobs->sum('distance') }} km
+                                            {{ $user->jobs_distance_sum }} km
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $user->jobs->count() }}
