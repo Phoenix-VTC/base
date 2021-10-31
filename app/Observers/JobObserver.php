@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Notifications\DriverLevelUp;
 use Bavix\Wallet\Models\Transaction;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use RestCord\DiscordClient;
 
@@ -39,6 +40,8 @@ class JobObserver
      */
     public function created(Job $job): void
     {
+        Cache::forget("pending-jobs-count-{$job->user->id}");
+
         $job = $job->refresh();
 
         if ($job->status->value !== JobStatus::Complete) {
@@ -61,6 +64,8 @@ class JobObserver
      */
     public function updated(Job $job): void
     {
+        Cache::forget("pending-jobs-count-{$job->user->id}");
+
         // Return when the job status isn't complete
         if ($job->status->value !== JobStatus::Complete) {
             return;
@@ -108,6 +113,8 @@ class JobObserver
      */
     public function deleted(Job $job): void
     {
+        Cache::forget("pending-jobs-count-{$job->user->id}");
+
         if ($job->status->value !== JobStatus::Complete) {
             return;
         }
