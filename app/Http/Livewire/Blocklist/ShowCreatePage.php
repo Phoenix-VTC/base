@@ -116,16 +116,21 @@ class ShowCreatePage extends Component
         return redirect()->route('user-management.blocklist.show', $blocklist->id);
     }
 
-    private function validateBaseOrRecruitmentId()
+    private function validateBaseOrRecruitmentId(): void
     {
         // If the base_or_recruitment_id is a UUID, try to find the driver application
         if (Str::isUuid($this->base_or_recruitment_id)) {
             try {
                 $this->driverApplication = Application::query()->where('uuid', $this->base_or_recruitment_id)->firstOrFail();
-            } catch (ModelNotFoundException $e) {
+            } catch (ModelNotFoundException) {
                 $this->addError('base_or_recruitment_id', 'Invalid Driver Application ID');
 
                 return;
+            }
+
+            // Check if application is completed
+            if (!$this->driverApplication->is_completed) {
+                $this->addError('base_or_recruitment_id', 'The chosen driver application is not completed yet. If you want to blocklist them, do this via the recruitment system instead.');
             }
 
             return;
@@ -135,7 +140,7 @@ class ShowCreatePage extends Component
         if (is_numeric($this->base_or_recruitment_id)) {
             try {
                 $this->user = User::query()->withTrashed()->findOrFail($this->base_or_recruitment_id);
-            } catch (ModelNotFoundException $e) {
+            } catch (ModelNotFoundException) {
                 $this->addError('base_or_recruitment_id', 'Invalid User ID');
 
                 return;
