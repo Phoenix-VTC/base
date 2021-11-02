@@ -12,7 +12,7 @@ use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Mail;
 
-class ShowForm extends Component
+class ShowFormPage extends Component
 {
     public array $countries = [
         'AF' => 'Afghanistan',

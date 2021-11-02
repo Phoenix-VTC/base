@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\DriverApplication\AuthController;
-use App\Http\Livewire\DriverApplication\Auth as DriverAuth;
+use App\Http\Livewire\DriverApplication\ShowAuthPage;
 use App\Http\Livewire\DriverApplication\ShowBlockedPage;
-use App\Http\Livewire\DriverApplication\ShowCompletion;
-use App\Http\Livewire\DriverApplication\ShowForm;
+use App\Http\Livewire\DriverApplication\ShowCompletionPage;
+use App\Http\Livewire\DriverApplication\ShowFormPage;
 use App\Http\Middleware\DriverApplication\NotSteamAuthenticated;
 use App\Http\Middleware\DriverApplication\SteamAuthenticated;
 use Illuminate\Support\Facades\Route;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', DriverAuth::class)->middleware(NotSteamAuthenticated::class)->name('authenticate');
+Route::get('/', ShowAuthPage::class)->middleware(NotSteamAuthenticated::class)->name('authenticate');
 
 Route::prefix('auth/steam')->name('auth.')->group(function () {
     Route::post('/', [AuthController::class, 'redirectToSteam'])->name('steam');
@@ -30,8 +30,8 @@ Route::prefix('auth/steam')->name('auth.')->group(function () {
     });
 });
 
-Route::get('/apply', ShowForm::class)->middleware(SteamAuthenticated::class)->name('apply');
+Route::get('/apply', ShowFormPage::class)->middleware(SteamAuthenticated::class)->name('apply');
 
-Route::get('application/status/{uuid}', ShowCompletion::class)->name('status');
+Route::get('application/status/{uuid}', ShowCompletionPage::class)->name('status');
 
 Route::get('blocked', ShowBlockedPage::class)->middleware(SteamAuthenticated::class)->name('blocked');
