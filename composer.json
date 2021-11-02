@@ -40,6 +40,7 @@
         "monicahq/laravel-cloudflare": "^1.7",
         "rappasoft/laravel-livewire-tables": "1.14",
         "razorui/blade-application-ui": "^0.2.13",
+        "restcord/restcord": "dev-guzzle72",
         "sentry/sentry-laravel": "^2.3",
         "silviolleite/laravelpwa": "^2.0",
         "socialiteproviders/discord": "^4.1",
@@ -49,7 +50,7 @@
         "syntax/steam-api": "^2.2",
         "venturecraft/revisionable": "1.*",
         "willvincent/feeds": "^2.2",
-        "restcord/restcord": "dev-guzzle72"
+        "wire-elements/modal": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",

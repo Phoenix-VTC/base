@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5dcd5b3681ce1bf213735d5e44daf5aa",
+    "content-hash": "0c509a98c07328825d186d7ae0473c79",
     "packages": [
         {
             "name": "alexmg86/laravel-sub-query",
@@ -10757,6 +10757,64 @@
                 "source": "https://github.com/willvincent/feeds/tree/v2.2.0"
             },
             "time": "2020-09-14T15:37:36+00:00"
+        },
+        {
+            "name": "wire-elements/modal",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wire-elements/modal.git",
+                "reference": "dd9beb7875742d9608bc67d61601b9b7e95c0031"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wire-elements/modal/zipball/dd9beb7875742d9608bc67d61601b9b7e95c0031",
+                "reference": "dd9beb7875742d9608bc67d61601b9b7e95c0031",
+                "shasum": ""
+            },
+            "require": {
+                "livewire/livewire": "^2.0",
+                "php": "^7.4|^8.0",
+                "spatie/laravel-package-tools": "^1.9"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.15",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LivewireUI\\Modal\\LivewireModalServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LivewireUI\\Modal\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Philo Hermans",
+                    "email": "me@philohermans.com"
+                }
+            ],
+            "description": "Laravel Livewire modal component",
+            "keywords": [
+                "laravel",
+                "livewire",
+                "modal"
+            ],
+            "support": {
+                "issues": "https://github.com/wire-elements/modal/issues",
+                "source": "https://github.com/wire-elements/modal/tree/1.0.2"
+            },
+            "time": "2021-10-30T13:48:07+00:00"
         },
         {
             "name": "zbateson/mail-mime-parser",
