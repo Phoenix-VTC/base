@@ -154,16 +154,6 @@ class ShowApplication extends Component
         session()->now('alert', ['type' => 'info', 'message' => 'Application status changed to <b>' . str_replace("_", " ", $status) . '</b>']);
     }
 
-    public function blacklist(): void
-    {
-        $this->authorize('update', $this->application);
-
-        $this->application->status = 'denied';
-        $this->application->save();
-
-        // Handle blacklist
-    }
-
     public function hydrate(): void
     {
         $this->application = $this->application->fresh();
