@@ -33,7 +33,7 @@ class NoRecentBans implements Rule
         $ban = $bans->firstWhere('timeAdded', '>', Carbon::now()->subMonths(3));
 
         // Return true if the ban is a @BANBYMISTAKE
-        if ($ban['reason'] === '@BANBYMISTAKE') {
+        if (isset($ban) && $ban['reason'] === '@BANBYMISTAKE') {
             return true;
         }
 
