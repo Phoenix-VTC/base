@@ -101,7 +101,7 @@
                                             </a>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $user->jobs->sum('distance') }} km
+                                            {{ $user->jobs_distance_sum }} km
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $user->jobs->count() }}
@@ -434,10 +434,19 @@
                                                     <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                                                         <a href="{{ route('jobs.show', $job) }}">
                                                             <p class="text-sm text-gray-500">
+                                                                <span class="font-medium text-gray-900">
+                                                                    {{ $job->user->username }}
+                                                                </span>
+                                                                <br>
                                                                 Submitted a job to
                                                                 <span class="font-medium text-gray-900">
                                                                     {{ $job->destinationCity->real_name }}
                                                                 </span>
+                                                                @if($job->game_id === 1)
+                                                                    [{{ $job->distance }} km]
+                                                                @else
+                                                                    [{{ round($job->distance / 1.609) }} mi]
+                                                                @endif
                                                             </p>
                                                         </a>
                                                         <div class="text-right text-sm whitespace-nowrap text-gray-500">
@@ -476,6 +485,53 @@
                     </div>
                 </div>
             </section>
+
+            @isset($online_users)
+                <section aria-labelledby="online-users-title">
+                    <div class="rounded-lg bg-white dark:bg-gray-900 overflow-hidden shadow">
+                        <div class="p-6">
+                            <h2 class="text-lg font-medium text-gray-900 dark:text-white" id="online-users-title">
+                                Online Users
+                            </h2>
+                            <div class="flow-root mt-6">
+                                <ul role="list" class="-my-5 divide-y divide-gray-200">
+                                    @foreach($online_users->take(7) as $user)
+                                        <li class="py-4">
+                                            <div class="flex items-center space-x-4">
+                                                <div class="flex-shrink-0">
+                                                    <span class="inline-block relative">
+                                                        <img class="h-8 w-8 rounded-full"
+                                                             src="{{ $user['profile_picture'] }}"
+                                                             alt="{{ $user['username'] }}'s profile picture">
+                                                        <span
+                                                            class="absolute top-0 right-0 block h-2 w-2 rounded-full ring-2 ring-white @if($user['away']) bg-orange-400 @else bg-green-400 @endif"></span>
+                                                    </span>
+                                                </div>
+                                                <div class="flex-1 min-w-0">
+                                                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                                        {{ $user['username'] }}
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <a href="{{ route('users.profile', $user['id']) }}"
+                                                       class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 dark:border-gray-600 text-sm leading-5 font-medium rounded-full text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                                        View Profile
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                    @if($online_users->count() > 7)
+                                        <p class="text-center text-xs text-gray-500 py-4">
+                                            And {{ $online_users->count() - 7 }} other {{ Str::plural('user', ($online_users->count() - 7)) }}
+                                        </p>
+                                    @endif
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            @endisset
 
             <section aria-labelledby="news-title">
                 <div class="rounded-lg bg-white overflow-hidden shadow">

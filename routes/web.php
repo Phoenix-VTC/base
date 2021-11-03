@@ -31,7 +31,6 @@ use App\Http\Livewire\ScreenshotHub\ShowShowPage as ScreenshotHubShowShowPage;
 use App\Http\Livewire\ScreenshotHub\ShowCreatePage as ScreenshotHubShowCreatePage;
 use App\Http\Livewire\ScreenshotHub\ShowIndexPage as ScreenshotHubShowIndexPage;
 use App\Http\Livewire\ShowLeaderboardPage;
-use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
 use App\Http\Livewire\ShowNotificationsPage;
 use App\Http\Livewire\ShowTrackerInformationPage;
 use App\Http\Livewire\UserManagement\DriverInactivity\ShowIndexPage as DriverInactivityShowIndexPage;
@@ -135,7 +134,9 @@ Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage 
 });
 
 Route::prefix('jobs')->name('jobs.')->middleware(['auth'])->group(function () {
-    Route::get('personal-overview', JobsShowPersonalOverviewPage::class)->name('personal-overview');
+    Route::get('personal-overview', function () {
+        return Redirect::route('users.jobs-overview', ['user' => Auth::user()]);
+    })->name('personal-overview');
     Route::get('choose-game', JobsShowSelectGamePage::class)->name('choose-game');
     Route::get('submit/{game_id}', JobsShowSubmitPage::class)
         ->whereNumber('game_id')

@@ -24,12 +24,19 @@ class NoRecentBans implements Rule
         $response = $client->request('GET', 'https://api.truckersmp.com/v2/bans/' . $value)->getBody();
         $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
+        // Return true if the user has no bans
         if (!$response['error'] && !$response['response']) {
-            return true; // Return true if the user has no bans
+            return true;
         }
 
         $bans = collect($response['response']);
         $ban = $bans->firstWhere('timeAdded', '>', Carbon::now()->subMonths(3));
+
+        // Return true if the ban is a @BANBYMISTAKE
+        if ($ban['reason'] === '@BANBYMISTAKE') {
+            return true;
+        }
+
         return is_null($ban);
     }
 

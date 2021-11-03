@@ -12,16 +12,31 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <script>
-        document.addEventListener("trix-file-accept", function (event) {
-            event.preventDefault();
-        });
-    </script>
+        function uploadEventImage(attachment) {
+            @this.upload(
+                'images',
+                attachment.file,
+                function (uploadedURL) {
+                    const trixUploadCompletedEvent = `trix-upload-completed:${btoa(uploadedURL)}`;
 
-    <style>
-        trix-toolbar .trix-button-group--file-tools {
-            display: none;
+                    const trixUploadCompletedListener = function(event) {
+                        attachment.setAttributes(event.detail);
+                        window.removeEventListener(trixUploadCompletedEvent, trixUploadCompletedListener);
+                    }
+
+                    window.addEventListener(trixUploadCompletedEvent, trixUploadCompletedListener);
+
+                @this.call('completeImageUpload', uploadedURL, trixUploadCompletedEvent);
+                },
+
+                function() {},
+
+                function(event){
+                    attachment.setUploadProgress(event.detail.progress);
+                }
+            )
         }
-    </style>
+    </script>
 @endpush
 
 @section('title', 'Edit Event')
@@ -113,8 +128,7 @@
                     </x-input.group>
 
                     <x-input.group col-span="6" label="Description" for="description">
-                        <x-input.rich-text wire:model.lazy="description" id="description"
-                                           :initial-value="$description"/>
+                        <x-input.rich-text wire:model.lazy="description" id="description" @trix-attachment-add="uploadEventImage($event.attachment)" :initial-value="$description"/>
                     </x-input.group>
 
                     @if($event->tmp_description ?? null)

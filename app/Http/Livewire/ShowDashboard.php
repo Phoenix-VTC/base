@@ -7,6 +7,7 @@ use App\Models\Job;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -19,6 +20,7 @@ class ShowDashboard extends Component
     public Collection $recent_jobs;
     public array $recent_news;
     public Collection $today_overview;
+    public null|\Illuminate\Support\Collection $online_users;
 
     public function mount(): void
     {
@@ -36,10 +38,15 @@ class ShowDashboard extends Component
         })->with(['jobs' => function ($q) {
             // Then include today's jobs of those users
             $q->whereDate('finished_at', Carbon::today());
+        }])->withSum(['jobs:distance' => function (Builder $q) {
+            $q->whereDate('finished_at', Carbon::today());
         }])->take(10)
+            ->orderByDesc('jobs_distance_sum')
             ->get();
 
         $this->recent_news = $this->getRecentNewsPosts();
+
+        $this->online_users = $this->getOnlineUsers();
     }
 
     public function render(): View
@@ -47,7 +54,7 @@ class ShowDashboard extends Component
         return view('livewire.dashboard')->extends('layouts.app');
     }
 
-    public function calculatePersonalStats(): array
+    private function calculatePersonalStats(): array
     {
         // Convert income to the user's preferred income
         if (Auth::user()->settings()->get('preferences.currency') === 'dollar') {
@@ -113,7 +120,7 @@ class ShowDashboard extends Component
         ];
     }
 
-    public function getRecentNewsPosts(): array
+    private function getRecentNewsPosts(): array
     {
         $feed = FeedsFacade::make('https://phoenixvtc.com/feed');
 
@@ -128,5 +135,41 @@ class ShowDashboard extends Component
         }
 
         return $items;
+    }
+
+    private function getOnlineUsers(): ?\Illuminate\Support\Collection
+    {
+        // Get the array of users
+        $users = Cache::get('online-users');
+        if (!$users) {
+            return null;
+        }
+
+        // Add the array to a collection, so you can pluck the IDs
+        $onlineUsers = collect($users);
+        // Get all users by ID from the DB (1 very quick query)
+        $dbUsers = User::find($onlineUsers->pluck('id')->toArray());
+
+        // Prepare the return array
+        $displayUsers = [];
+
+        // Iterate over the retrieved DB users
+        foreach ($dbUsers as $user) {
+            // Get the same user as this iteration from the cache
+            // so that we can check the last activity.
+            $onlineUser = $onlineUsers->firstWhere('id', $user['id']);
+            // Append the data to the return array
+            $displayUsers[] = [
+                'id' => $user->id,
+                'username' => $user->username,
+                'profile_picture' => $user->profile_picture,
+                // This bool operation below, checks if the last activity
+                // is older than 3 minutes and returns true or false,
+                // so that if it's true you can change the status color to orange.
+                'away' => $onlineUser['last_activity_at'] < now()->subMinutes(3),
+            ];
+        }
+
+        return collect($displayUsers);
     }
 }

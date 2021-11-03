@@ -31,18 +31,11 @@
 
     <div class="bg-gray-900 rounded-b-md" x-show="showDropdown" @if(!$showDropdown) x-cloak @endif>
         @foreach($items as $item)
-            @if(!array_key_exists('permission', $item))
+            @if(!array_key_exists('permission', $item) || Auth::user()->can($item['permission']))
                 <a class="py-2 px-12 block text-sm text-gray-100 hover:bg-gray-700 hover:text-white @if($loop->last) rounded-b-md @endif"
-                   href="{{ route($item['route']) }}">
+                   href="{{ route($item['route'], $item['parameters'] ?? null) }}">
                     {{ $item['title'] }}
                 </a>
-            @else
-                @if(Auth::user()->can($item['permission']))
-                    <a class="py-2 px-12 block text-sm text-gray-100 hover:bg-gray-700 hover:text-white @if($loop->last) rounded-b-md @endif"
-                       href="{{ route($item['route']) }}">
-                        {{ $item['title'] }}
-                    </a>
-                @endif
             @endif
         @endforeach
     </div>

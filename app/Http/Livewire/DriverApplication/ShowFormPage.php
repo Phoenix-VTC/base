@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Notifications\Recruitment\NewDriverApplication;
 use App\Rules\NotInBlocklist;
 use App\Rules\UsernameNotReserved;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -349,6 +350,8 @@ class ShowFormPage extends Component
         ]])->send(new ApplicationReceived($application));
 
         $application->notify(new NewDriverApplication($application));
+
+        Cache::forget('pending_application_count');
 
         return redirect()->route('driver-application.status', ['uuid' => $application->uuid]);
     }

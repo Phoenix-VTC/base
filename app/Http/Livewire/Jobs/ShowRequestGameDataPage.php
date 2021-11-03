@@ -59,11 +59,11 @@ class ShowRequestGameDataPage extends Component
         switch ($this->type) {
             case 'city':
                 City::create([
-                    'real_name' => $this->real_name,
+                    'real_name' => ucwords($this->real_name),
                     'name' => Str::snake($this->real_name),
-                    'country' => $this->country,
-                    'dlc' => $this->dlc,
-                    'mod' => $this->mod,
+                    'country' => ucwords($this->country),
+                    'dlc' => ucwords($this->dlc),
+                    'mod' => ucwords($this->mod),
                     'game_id' => (int)$this->game_id,
                     'x' => $this->x ?: null,
                     'z' => $this->z ?: null,
@@ -73,11 +73,11 @@ class ShowRequestGameDataPage extends Component
                 break;
             case 'company':
                 Company::create([
-                    'name' => $this->real_name,
-                    'category' => $this->category,
-                    'specialization' => $this->specialization,
-                    'dlc' => $this->dlc,
-                    'mod' => $this->mod,
+                    'name' => ucwords($this->real_name),
+                    'category' => ucwords($this->category),
+                    'specialization' => ucwords($this->specialization),
+                    'dlc' => ucwords($this->dlc),
+                    'mod' => ucwords($this->mod),
                     'game_id' => (int)$this->game_id,
                     'approved' => false,
                     'requested_by' => Auth::id(),
@@ -85,9 +85,9 @@ class ShowRequestGameDataPage extends Component
                 break;
             case 'cargo':
                 Cargo::create([
-                    'name' => $this->real_name,
-                    'dlc' => $this->dlc,
-                    'mod' => $this->mod,
+                    'name' => ucwords($this->real_name),
+                    'dlc' => ucwords($this->dlc),
+                    'mod' => ucwords($this->mod),
                     'weight' => (int)$this->weight,
                     'game_id' => (int)$this->game_id,
                     'world_of_trucks' => (bool)$this->wot,
