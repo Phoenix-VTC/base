@@ -3,11 +3,13 @@
 namespace App\Http\Livewire\Recruitment;
 
 use App\Events\NewBlocklistEntry;
+use App\Mail\DriverApplication\ApplicationDenied;
 use App\Models\Application;
 use App\Models\Blocklist;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use LivewireUI\Modal\ModalComponent;
+use Illuminate\Support\Facades\Mail;
 
 class ShowBlocklistModal extends ModalComponent
 {
@@ -47,6 +49,14 @@ class ShowBlocklistModal extends ModalComponent
     public function submit()
     {
         $validatedData = $this->validate();
+
+        $this->application->status = 'denied';
+        $this->application->save();
+
+        Mail::to([[
+            'email' => $this->application->email,
+            'name' => $this->application->username
+        ]])->send(new ApplicationDenied($this->application));
 
         $blocklist = Blocklist::query()->create([
             'usernames' => [(string)$this->application->username],
