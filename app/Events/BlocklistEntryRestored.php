@@ -6,11 +6,6 @@ use App\Models\Blocklist;
 
 class BlocklistEntryRestored
 {
-    /**
-     * The user.
-     *
-     * @var Blocklist
-     */
     public Blocklist $blocklist;
 
     /**
