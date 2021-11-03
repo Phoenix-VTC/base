@@ -87,6 +87,7 @@ class ShowCreatePage extends Component
         $blocklist = new Blocklist;
 
         if ($this->base_or_recruitment_id && $this->user) {
+            // If the blocklist entry is a chosen user
             $user = $this->user;
 
             $blocklist->usernames = [(string)$user->username];
@@ -98,6 +99,7 @@ class ShowCreatePage extends Component
             $blocklist->steam_ids = [(string)$user->steam_id];
             $blocklist->base_ids = [(string)$user->id];
         } elseif ($this->base_or_recruitment_id && $this->driverApplication) {
+            // If the blocklist entry is a chosen driver application
             $driverApplication = $this->driverApplication;
 
             $blocklist->usernames = [(string)$driverApplication->username];
@@ -105,6 +107,7 @@ class ShowCreatePage extends Component
             $blocklist->truckersmp_ids = [(string)$driverApplication->truckersmp_id];
             $blocklist->steam_ids = [(string)$driverApplication->steam_data['steamID64']];
         } else {
+            // If the blocklist entry is manual
             $blocklist->usernames = $validatedData['usernames'];
             $blocklist->emails = $validatedData['emails'];
             $blocklist->discord_ids = $validatedData['discord_ids'];
@@ -162,6 +165,7 @@ class ShowCreatePage extends Component
             return;
         }
 
+        // If the validation reaches this, add an invalid error message.
         $this->addError('base_or_recruitment_id', 'Invalid PhoenixBase ID or Driver Application ID');
     }
 }
