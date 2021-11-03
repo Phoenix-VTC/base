@@ -7,11 +7,14 @@ use App\Models\Application;
 use App\Models\Blocklist;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
 class ShowCreatePage extends Component
 {
+    use AuthorizesRequests;
+
     public string $base_or_recruitment_id = '';
     public ?Application $driverApplication = null;
     public ?User $user = null;
@@ -44,6 +47,11 @@ class ShowCreatePage extends Component
         'steam_ids' => 'SteamID64 IDs',
         'base_ids' => 'PhoenixBase IDs',
     ];
+
+    public function mount(): void
+    {
+        $this->authorize('create', Blocklist::class);
+    }
 
     public function updated($propertyName): void
     {

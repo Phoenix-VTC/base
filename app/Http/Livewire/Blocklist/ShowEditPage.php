@@ -4,10 +4,13 @@ namespace App\Http\Livewire\Blocklist;
 
 use App\Events\BlocklistEntryUpdated;
 use App\Models\Blocklist;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
 class ShowEditPage extends Component
 {
+    use AuthorizesRequests;
+
     public Blocklist $blocklist;
     public ?array $usernames = [];
     public ?array $emails = [];
@@ -38,6 +41,8 @@ class ShowEditPage extends Component
     ];
 
     public function mount() {
+        $this->authorize('update', $this->blocklist);
+
         $this->fill([
             'usernames' => $this->blocklist->usernames,
             'emails' => $this->blocklist->emails,

@@ -5,15 +5,20 @@ namespace App\Http\Livewire\Blocklist;
 use App\Events\BlocklistEntryDeleted;
 use App\Events\BlocklistEntryRestored;
 use App\Models\Blocklist;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
 class ShowShowPage extends Component
 {
+    use AuthorizesRequests;
+
     public Blocklist $blocklist;
 
     public function mount(int $id): void
     {
         $this->blocklist = Blocklist::withTrashed()->findOrFail($id);
+
+        $this->authorize('view', $this->blocklist);
     }
 
     public function render()
@@ -23,6 +28,8 @@ class ShowShowPage extends Component
 
     public function delete(): void
     {
+        $this->authorize('delete', $this->blocklist);
+
         event(new BlocklistEntryDeleted($this->blocklist));
 
         $this->blocklist->delete();
@@ -32,6 +39,8 @@ class ShowShowPage extends Component
 
     public function restore(): void
     {
+        $this->authorize('restore', $this->blocklist);
+
         $this->blocklist->restore();
 
         event(new BlocklistEntryRestored($this->blocklist));
