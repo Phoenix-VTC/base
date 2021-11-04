@@ -13,8 +13,8 @@ class ShowEditPage extends Component
     public User $user;
     public array $available_roles;
     // Form fields
-    public string $username = '';
-    public string $email = '';
+    public $username = '';
+    public $email = '';
     public string $steam_id = '';
     public string $truckersmp_id = '';
     public string $date_of_birth = '';
@@ -40,8 +40,8 @@ class ShowEditPage extends Component
     public function rules(): array
     {
         return [
-            'username' => ['required', 'min:3', 'unique:users,username,' . $this->user->id, new UsernameNotReserved],
-            'email' => 'required|email|unique:users,email,' . $this->user->id,
+            'username' => ['bail', 'string', 'required', 'min:3', 'unique:users,username,' . $this->user->id, new UsernameNotReserved],
+            'email' => ['bail', 'string', 'required', 'email', 'unique:users,email,' . $this->user->id],
             'steam_id' => 'required|numeric',
             'truckersmp_id' => 'required|numeric',
             'date_of_birth' => 'required|date|before_or_equal:' . Carbon::now()->subYears(16),

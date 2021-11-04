@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Settings;
 
 use App\Events\PasswordChanged;
-use App\Rules\MatchOldPassword;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
@@ -11,16 +10,17 @@ use Livewire\Component;
 class ShowSecurityPage extends Component
 {
     // Form fields
-    public string $old_password = '';
-    public string $new_password = '';
-    public string $new_password_confirmation = '';
+    public $old_password = '';
+    public $new_password = '';
+    public $new_password_confirmation = '';
     public string $tracker_token = '******************************************';
 
     public function rules(): array
     {
         return [
-            'old_password' => ['required', 'min:8', new MatchOldPassword],
-            'new_password' => ['required', 'min:8', 'confirmed', 'not_in:' . $this->old_password],
+            'old_password' => ['bail', 'string', 'required', 'min:8', 'current_password'],
+            'new_password' => ['bail', 'string', 'required', 'min:8', 'confirmed', 'different:old_password'],
+            'new_password_confirmation' => ['bail', 'string', 'required'],
         ];
     }
 

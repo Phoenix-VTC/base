@@ -266,9 +266,9 @@ class ShowForm extends Component
         'ZW' => 'Zimbabwe',
     ];
 
-    public string $username = '';
-    public string $discord_username = '';
-    public string $email = '';
+    public $username = '';
+    public $discord_username = '';
+    public $email = '';
     public string $date_of_birth = '';
     public string $country = '';
     public string $another_vtc = '';
@@ -282,9 +282,9 @@ class ShowForm extends Component
     public function rules(): array
     {
         return [
-            'discord_username' => ['required', 'min:3', 'regex:/^.{3,32}#[0-9]{4}$/i'],
-            'username' => ['required', 'min:3', Rule::unique('users')->whereNull('deleted_at'), new UsernameNotReserved],
-            'email' => ['required', 'email', Rule::unique('users')->whereNull('deleted_at')],
+            'discord_username' => ['bail', 'string', 'required', 'min:3', 'regex:/^.{3,32}#[0-9]{4}$/i'],
+            'username' => ['bail', 'string', 'required', 'min:3', Rule::unique('users')->whereNull('deleted_at'), new UsernameNotReserved],
+            'email' => ['bail', 'string', 'required', 'email', Rule::unique('users')->whereNull('deleted_at')],
             'date_of_birth' => 'required|date',
             'country' => 'required',
             'another_vtc' => 'required|boolean',

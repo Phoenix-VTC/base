@@ -45,9 +45,9 @@ class Reset extends Component
         }
 
         $this->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:8|same:passwordConfirmation',
+            'token' => ['required'],
+            'email' => ['bail', 'string', 'required', 'email'],
+            'password' => ['bail', 'string', 'required', 'min:8', 'same:passwordConfirmation'],
         ]);
 
         $response = $this->broker()->reset(

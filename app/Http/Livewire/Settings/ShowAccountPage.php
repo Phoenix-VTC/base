@@ -19,8 +19,8 @@ class ShowAccountPage extends Component
 
     public User $user;
     // Form fields
-    public string $username = '';
-    public string $email = '';
+    public $username = '';
+    public $email = '';
     public ?string $steam_id = '';
     public ?string $truckersmp_id = '';
     public ?string $date_of_birth = '';
@@ -30,8 +30,8 @@ class ShowAccountPage extends Component
     public function rules(): array
     {
         return [
-            'username' => ['required', 'min:3', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id), new UsernameNotReserved],
-            'email' => ['required', 'min:3', 'email', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id)],
+            'username' => ['bail', 'string', 'required', 'min:3', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id), new UsernameNotReserved],
+            'email' => ['bail', 'string', 'required', 'min:3', 'email', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id)],
             'profile_picture' => ['nullable', 'image', 'max:2048'],
             'profile_banner' => ['nullable', 'image', 'max:2048'],
         ];
