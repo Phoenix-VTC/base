@@ -37,10 +37,11 @@
                                           :error="$errors->first('new_password')" autocomplete="new-password" required/>
                         </x-input.group>
 
-                        <x-input.group label="Confirm New Password" for="new_password_confirmation" col-span="3">
+                        <x-input.group label="Confirm New Password" for="new_password_confirmation" :error="$errors->first('new_password_confirmation')"
+                                       col-span="3">
                             <x-input.text wire:model.lazy="new_password_confirmation" type="password"
                                           id="new_password_confirmation"
-                                          autocomplete="new-password" required/>
+                                          :error="$errors->first('new_password_confirmation')" autocomplete="new-password" required/>
                         </x-input.group>
                     </div>
                 </div>
