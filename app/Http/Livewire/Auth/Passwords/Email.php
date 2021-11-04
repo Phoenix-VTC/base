@@ -28,7 +28,7 @@ class Email extends Component
         }
 
         $this->validate([
-            'email' => ['bail', 'string', 'required', 'email'],
+            'email' => ['bail', 'required', 'string', 'email'],
         ]);
 
         $response = $this->broker()->sendResetLink(['email' => $this->email]);

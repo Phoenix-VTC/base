@@ -282,9 +282,9 @@ class ShowForm extends Component
     public function rules(): array
     {
         return [
-            'discord_username' => ['bail', 'string', 'required', 'min:3', 'regex:/^.{3,32}#[0-9]{4}$/i'],
-            'username' => ['bail', 'string', 'required', 'min:3', Rule::unique('users')->whereNull('deleted_at'), new UsernameNotReserved],
-            'email' => ['bail', 'string', 'required', 'email', Rule::unique('users')->whereNull('deleted_at')],
+            'discord_username' => ['bail', 'required', 'string', 'min:3', 'regex:/^.{3,32}#[0-9]{4}$/i'],
+            'username' => ['bail', 'required', 'string', 'min:3', Rule::unique('users')->whereNull('deleted_at'), new UsernameNotReserved],
+            'email' => ['bail', 'required', 'string', 'email', Rule::unique('users')->whereNull('deleted_at')],
             'date_of_birth' => 'required|date',
             'country' => 'required',
             'another_vtc' => 'required|boolean',

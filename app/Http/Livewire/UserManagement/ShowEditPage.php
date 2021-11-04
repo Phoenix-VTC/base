@@ -40,8 +40,8 @@ class ShowEditPage extends Component
     public function rules(): array
     {
         return [
-            'username' => ['bail', 'string', 'required', 'min:3', 'unique:users,username,' . $this->user->id, new UsernameNotReserved],
-            'email' => ['bail', 'string', 'required', 'email', 'unique:users,email,' . $this->user->id],
+            'username' => ['bail', 'required', 'string', 'min:3', 'unique:users,username,' . $this->user->id, new UsernameNotReserved],
+            'email' => ['bail', 'required', 'string', 'email', 'unique:users,email,' . $this->user->id],
             'steam_id' => 'required|numeric',
             'truckersmp_id' => 'required|numeric',
             'date_of_birth' => 'required|date|before_or_equal:' . Carbon::now()->subYears(16),

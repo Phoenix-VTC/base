@@ -30,8 +30,8 @@ class ShowAccountPage extends Component
     public function rules(): array
     {
         return [
-            'username' => ['bail', 'string', 'required', 'min:3', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id), new UsernameNotReserved],
-            'email' => ['bail', 'string', 'required', 'min:3', 'email', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id)],
+            'username' => ['bail', 'required', 'string', 'min:3', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id), new UsernameNotReserved],
+            'email' => ['bail', 'required', 'string', 'min:3', 'email', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id)],
             'profile_picture' => ['nullable', 'image', 'max:2048'],
             'profile_banner' => ['nullable', 'image', 'max:2048'],
         ];

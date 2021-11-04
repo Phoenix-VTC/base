@@ -22,8 +22,8 @@ class Login extends Component
     public $remember = false;
 
     protected $rules = [
-        'email' => ['bail', 'string', 'required', 'email'],
-        'password' => ['bail', 'string', 'required'],
+        'email' => ['bail', 'required', 'string', 'email'],
+        'password' => ['bail', 'required', 'string'],
     ];
 
     public function authenticate()

@@ -18,9 +18,9 @@ class ShowSecurityPage extends Component
     public function rules(): array
     {
         return [
-            'old_password' => ['bail', 'string', 'required', 'min:8', 'current_password'],
-            'new_password' => ['bail', 'string', 'required', 'min:8', 'confirmed', 'different:old_password'],
-            'new_password_confirmation' => ['bail', 'string', 'required'],
+            'old_password' => ['bail', 'required', 'string', 'min:8', 'current_password'],
+            'new_password' => ['bail', 'required', 'string', 'min:8', 'confirmed', 'different:old_password'],
+            'new_password_confirmation' => ['bail', 'required', 'string'],
         ];
     }
 
