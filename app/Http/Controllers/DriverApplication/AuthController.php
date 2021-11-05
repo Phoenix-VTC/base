@@ -164,6 +164,7 @@ class AuthController extends Controller
                 new NotInBlocklist,
             ],
             'discordSnowflake' => [
+                'nullable',
                 new NotInBlocklist,
             ],
         ]);
