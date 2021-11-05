@@ -4,7 +4,7 @@ namespace App\Http\Livewire\DriverApplication;
 
 use Livewire\Component;
 
-class Auth extends Component
+class ShowAuthPage extends Component
 {
     public function render()
     {

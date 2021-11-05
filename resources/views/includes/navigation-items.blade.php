@@ -65,13 +65,14 @@
                         :unreadCount="$pendingVacationRequestCount ?? 0"/>
     @endcan
 
-    @canany(['manage users', 'manage driver inactivity'])
+    @canany(['manage users', 'manage driver inactivity', 'view blocklist'])
         <livewire:components.dropdown title="User Management" icon="o-document-search" activeRoute="user-management.*"
                                       :items="[
-                                        ['title' => 'Users', 'route' => 'user-management.index'],
-                                        ['title' => 'Driver Inactivity', 'route' => 'user-management.driver-inactivity.index'],
-                                        ['title' => 'Roles', 'route' => 'user-management.roles.index'],
-                                        ['title' => 'Permissions', 'route' => 'user-management.permissions.index'],
+                                        ['title' => 'Users', 'route' => 'user-management.index', 'permission' => 'manage users'],
+                                        ['title' => 'Blocklist', 'route' => 'user-management.blocklist.index', 'permission' => 'view blocklist'],
+                                        ['title' => 'Driver Inactivity', 'route' => 'user-management.driver-inactivity.index', 'permission' => 'manage driver inactivity'],
+                                        ['title' => 'Roles', 'route' => 'user-management.roles.index', 'permission' => 'manage users'],
+                                        ['title' => 'Permissions', 'route' => 'user-management.permissions.index', 'permission' => 'manage users'],
                                       ]">
         </livewire:components.dropdown>
     @endcan
