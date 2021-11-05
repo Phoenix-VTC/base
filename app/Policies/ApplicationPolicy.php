@@ -31,6 +31,18 @@ class ApplicationPolicy
      */
     public function update(User $user, Application $application): bool
     {
-        return $application->claimed_by == $user->id;
+        return $application->claimed_by === $user->id;
+    }
+
+    /**
+     * Determine whether the user can add the applicant to the blocklist.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Application  $application
+     * @return bool
+     */
+    public function blocklist(User $user, Application $application): bool
+    {
+        return $user->can('handle driver applications') && $user->can('create blocklist') && $application->claimed_by === $user->id;
     }
 }

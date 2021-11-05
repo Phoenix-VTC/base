@@ -36,6 +36,7 @@ return [
     ],
     'boolean' => 'The :attribute field must be true or false.',
     'confirmed' => 'The :attribute confirmation does not match.',
+    'current_password' => 'The current password is incorrect.',
     'date' => 'The :attribute is not a valid date.',
     'date_equals' => 'The :attribute must be a date equal to :date.',
     'date_format' => 'The :attribute does not match the format :format.',
@@ -140,6 +141,12 @@ return [
             'required' => 'Please verify that you are not a robot.',
             'captcha' => 'Captcha error! try again later or contact site admin.',
         ],
+        'username.string' => 'The given username is invalid. You might be using a password manager that is auto filling this field with an invalid format!',
+        'email.string' => 'The given email is invalid. You might be using a password manager that is auto filling this field with an invalid format!',
+        'password.string' => 'The given password is invalid. You might be using a password manager that is auto filling this field with an invalid format!',
+        'old_password.string' => 'The given password is invalid. You might be using a password manager that is auto filling this field with an invalid format!',
+        'new_password.string' => 'The given password is invalid. You might be using a password manager that is auto filling this field with an invalid format!',
+        'new_password_confirmation.string' => 'The given password is invalid. You might be using a password manager that is auto filling this field with an invalid format!',
     ],
 
     /*

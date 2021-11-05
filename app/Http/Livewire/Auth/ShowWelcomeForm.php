@@ -22,7 +22,7 @@ class ShowWelcomeForm extends Component
     public $passwordConfirmation = '';
 
     protected $rules = [
-        'password' => ['required', 'min:8', 'same:passwordConfirmation']
+        'password' => ['bail', 'required', 'string', 'min:8', 'confirmed']
     ];
 
     public function updated($propertyName): void
