@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Recruitment;
 
-use App\Jobs\Recruitment\ProcessAcceptation;
 use App\Mail\DriverApplication\ApplicationDenied;
 use App\Models\Application;
 use App\Models\Comment;
@@ -115,19 +114,13 @@ class ShowApplication extends Component
         $this->authorize('update', $this->application);
 
         Validator::make($this->application->toArray(), [
+            'username' => [Rule::unique('users')->whereNull('deleted_at')],
             'email' => ['email', Rule::unique('users')->whereNull('deleted_at')],
             'truckersmp_id' => [Rule::unique('users')->whereNull('deleted_at')],
             'steam_data.steamID64' => ['required', Rule::unique('users', 'steam_id')->whereNull('deleted_at')],
         ])->validate();
 
-        ProcessAcceptation::dispatch($this->application);
-
-        $this->application->status = 'accepted';
-        $this->application->save();
-
-        $this->sendDiscordWebhook('Application Accepted', 'By **' . Auth::user()->username . '**', 5763719);
-
-        session()->now('alert', ['type' => 'success', 'message' => 'Application successfully <b>accepted</b>!']);
+        $this->emit('openModal', 'recruitment.show-accept-modal', ['uuid' => $this->application->uuid]);
     }
 
     public function deny(): void
