@@ -5,6 +5,10 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ScreenshotController;
 use App\Http\Controllers\UserManagement\UserController as UserManagementUserController;
 use App\Http\Livewire\Auth\ShowWelcomeForm;
+use App\Http\Livewire\Blocklist\ShowIndexPage as BlocklistShowIndexPage;
+use App\Http\Livewire\Blocklist\ShowCreatePage as BlocklistShowCreatePage;
+use App\Http\Livewire\Blocklist\ShowShowPage as BlocklistShowShowPage;
+use App\Http\Livewire\Blocklist\ShowEditPage as BlocklistShowEditPage;
 use App\Http\Livewire\Downloads\ShowIndexPage as DownloadsShowIndexPage;
 use App\Http\Livewire\DownloadsManagement\ShowEditPage as DownloadsManagementShowEditPage;
 use App\Http\Livewire\DownloadsManagement\ShowCreatePage as DownloadsManagementShowCreatePage;
@@ -83,11 +87,20 @@ Route::prefix('recruitment')->name('recruitment.')->middleware(['auth', 'can:han
     Route::get('application/{uuid}', ShowApplication::class)->name('show');
 });
 
-Route::prefix('user-management')->name('user-management.')->middleware(['auth', 'can:manage users'])->group(function () {
-    Route::get('/', UserManagementShowIndex::class)->name('index');
-    Route::get('roles', UserManagementRolesShowIndex::class)->name('roles.index');
-    Route::get('permissions', UserManagementPermissionsShowIndex::class)->name('permissions.index');
-    Route::get('driver-inactivity', DriverInactivityShowIndexPage::class)->middleware('can:manage driver inactivity')->name('driver-inactivity.index');
+Route::prefix('user-management')->name('user-management.')->middleware('auth')->group(function () {
+    Route::middleware('can:manage users')->group(function () {
+        Route::get('/', UserManagementShowIndex::class)->name('index');
+        Route::get('roles', UserManagementRolesShowIndex::class)->name('roles.index');
+        Route::get('permissions', UserManagementPermissionsShowIndex::class)->name('permissions.index');
+        Route::get('driver-inactivity', DriverInactivityShowIndexPage::class)->middleware('can:manage driver inactivity')->name('driver-inactivity.index');
+    });
+
+    Route::prefix('blocklist')->name('blocklist.')->group(function () {
+        Route::get('/', BlocklistShowIndexPage::class)->middleware('can:view blocklist')->name('index');
+        Route::get('create', BlocklistShowCreatePage::class)->middleware('can:create blocklist')->name('create');
+        Route::get('{id}', BlocklistShowShowPage::class)->middleware('can:view blocklist')->name('show');
+        Route::get('{blocklist}/edit', BlocklistShowEditPage::class)->middleware('can:create blocklist')->name('edit');
+    });
 });
 
 Route::prefix('vacation-requests')->name('vacation-requests.')->middleware(['auth'])->group(function () {

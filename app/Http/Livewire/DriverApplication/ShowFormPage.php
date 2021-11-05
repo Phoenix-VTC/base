@@ -5,13 +5,15 @@ namespace App\Http\Livewire\DriverApplication;
 use App\Mail\DriverApplication\ApplicationReceived;
 use App\Models\Application;
 use App\Notifications\Recruitment\NewDriverApplication;
+use App\Rules\NotInBlocklist;
 use App\Rules\UsernameNotReserved;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Mail;
 
-class ShowForm extends Component
+class ShowFormPage extends Component
 {
     public array $countries = [
         'AF' => 'Afghanistan',
@@ -304,7 +306,18 @@ class ShowForm extends Component
 
     public function submit()
     {
+        // Validate form fields
         $applicationData = $this->validate();
+
+        // Check blocklist for username and email
+        $blocklistCheck = Validator::make($applicationData, [
+            'username' => [new NotInBlocklist],
+            'email' => [new NotInBlocklist],
+        ]);
+
+        if ($blocklistCheck->fails()) {
+            return redirect()->route('driver-application.blocked');
+        }
 
         $application = new Application;
         $application->username = $applicationData['username'];
@@ -329,8 +342,7 @@ class ShowForm extends Component
 
         $application->save();
 
-        session()->forget('steam_user');
-        session()->forget('truckersmp_user');
+        $this->logout();
 
         Mail::to([[
             'email' => $application->email,
@@ -347,5 +359,11 @@ class ShowForm extends Component
     public function render()
     {
         return view('livewire.driver-application.form')->extends('layouts.driver-application');
+    }
+
+    private function logout(): void
+    {
+        session()->forget('steam_user');
+        session()->forget('truckersmp_user');
     }
 }

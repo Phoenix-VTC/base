@@ -6,7 +6,7 @@ use App\Models\Application;
 use Illuminate\View\View;
 use Livewire\Component;
 
-class ShowCompletion extends Component
+class ShowCompletionPage extends Component
 {
     public object $application;
 
