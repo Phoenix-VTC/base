@@ -132,7 +132,7 @@ class Application extends Revisionable
      */
     public function routeNotificationForDiscord(): string
     {
-        return config('services.discord.hr_channel_id');
+        return config('services.discord.channels.human-resources');
     }
 
     /**

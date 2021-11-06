@@ -33,8 +33,12 @@ return [
     'discord' => [
         'server-id' => env('DISCORD_SERVER_ID'),
         'token' => env('DISCORD_BOT_TOKEN'),
-        'hr_channel_id' => env('DISCORD_HR_CHANNEL_ID'),
-        'member_events_channel_id' => env('DISCORD_MEMBER_EVENTS_CHANNEL_ID'),
+
+        'channels' => [
+            'human-resources' => env('DISCORD_HR_CHANNEL_ID'),
+            'member-events' => env('DISCORD_MEMBER_EVENTS_CHANNEL_ID'),
+            'member-chat' => env('DISCORD_MEMBER_CHAT_CHANNEL_ID'),
+        ],
 
         'webhooks' => [
             'screenshot-hub' => env('DISCORD_SCREENSHOT_HUB_WEBHOOK'),

@@ -3,10 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Models\Cargo;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
+use Exception;
 use Illuminate\Console\Command;
-use JsonException;
+use Illuminate\Support\Facades\Http;
 
 class ImportCargosFromJson extends Command
 {
@@ -15,7 +14,7 @@ class ImportCargosFromJson extends Command
      *
      * @var string
      */
-    protected $signature = 'cargos:json-import {url} {game_id}';
+    protected $signature = 'cargos:json-import {url} {game_id} {--d|dlc=} {--m|mod=}';
 
     /**
      * The console command description.
@@ -42,69 +41,53 @@ class ImportCargosFromJson extends Command
             exit;
         }
 
-        $client = new Client();
-
         try {
-            $response = $client->request('GET', $this->argument('url'))->getBody();
+            $cargos = Http::get($this->argument('url'))
+                ->throw()
+                ->collect();
 
-            $cargos = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
-        } catch (GuzzleException | JsonException $e) {
-            $this->error($e->getMessage());
+            $bar = $this->output->createProgressBar(count($cargos));
+            $bar->start();
+
+            $cargos->each(function ($cargo) use ($bar) {
+                $cargoNameCount = count($cargo['localizedNames']);
+
+                $bar->setMaxSteps($bar->getMaxSteps() + $cargoNameCount);
+
+                foreach($cargo['localizedNames'] as $cargoName) {
+                    $this->findOrCreateCargo($cargoName);
+                }
+
+                $bar->advance($cargoNameCount);
+            });
+
+            $bar->finish();
+            $this->newLine();
+            $this->alert('Cargo importing finished!');
+        } catch (Exception $e) {
+            $this->error('Something went wrong while importing the cargos.');
+            $this->alert($e->getMessage());
 
             exit;
         }
-
-        $bar = $this->output->createProgressBar(count($cargos));
-        $bar->start();
-
-        foreach ($cargos as $key => $cargo) {
-            // Find the cargo by name or create it
-            $cargoModel = Cargo::firstOrCreate(
-                [
-                    'name' => $key,
-                    'game_id' => $this->argument('game_id'),
-                ],
-                [
-                    'dlc' => $cargo[0]['DLC'],
-                    'weight' => $this->convertWeightToInt($cargo[0]['Weight (t) *'] ?? $cargo[0]['Weight (lb) *']) ?: null,
-                ]
-            );
-
-            if (!$cargoModel->wasRecentlyCreated) {
-                $this->line("Skipped $key, already exists.");
-            }
-
-            if ($cargoModel->wasRecentlyCreated) {
-                $this->info("$key has been added.");
-            }
-
-            $bar->advance();
-        }
-
-        $bar->finish();
-        $this->newLine();
-        $this->info('Cargo importing finished!');
     }
 
-    /**
-     * Convert a weight value with multiple values to the highest value
-     *
-     * Example: "17-21" will be converted to "21"
-     *
-     * @param $weight
-     * @return int|string|null
-     */
-    public function convertWeightToInt($weight)
+    private function findOrCreateCargo(string $cargoName): void
     {
-        // Remove any decimal separators
-        $weight = str_replace(',', '', $weight);
+        $cargoModel = Cargo::firstOrCreate([
+            'name' => $cargoName,
+            'game_id' => $this->argument('game_id'),
+        ], [
+            'dlc' => $this->option('dlc'),
+            'mod' => $this->option('mod'),
+        ]);
 
-        // Return the weight if there is no -
-        if (!str_contains($weight, '-')) {
-            return $weight;
+        if (!$cargoModel->wasRecentlyCreated) {
+            $this->line("Skipped $cargoName, already exists.");
         }
 
-        // Return the value after -, so the highest weight
-        return substr($weight, strpos($weight, "-") + 1);
+        if ($cargoModel->wasRecentlyCreated) {
+            $this->info("$cargoName has been added.");
+        }
     }
 }

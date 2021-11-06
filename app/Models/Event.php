@@ -152,7 +152,7 @@ class Event extends Model
      */
     public function routeNotificationForDiscord(): string
     {
-        return config('services.discord.member_events_channel_id');
+        return config('services.discord.channels.member-events');
     }
 
     /**
