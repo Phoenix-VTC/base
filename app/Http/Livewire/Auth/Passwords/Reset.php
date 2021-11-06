@@ -26,7 +26,7 @@ class Reset extends Component
     public $password;
 
     /** @var string */
-    public $passwordConfirmation;
+    public $password_confirmation;
 
     public function mount($token)
     {
@@ -47,7 +47,7 @@ class Reset extends Component
         $this->validate([
             'token' => ['required'],
             'email' => ['bail', 'required', 'string', 'email'],
-            'password' => ['bail', 'required', 'string', 'min:8', 'same:passwordConfirmation'],
+            'password' => ['bail', 'required', 'string', 'min:8', 'confirmed'],
         ]);
 
         $response = $this->broker()->reset(
