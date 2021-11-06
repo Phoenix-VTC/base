@@ -3,11 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Models\Company;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
+use Exception;
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
-use JsonException;
+use Illuminate\Support\Facades\Http;
 
 class ImportCompaniesFromJson extends Command
 {
@@ -16,7 +14,7 @@ class ImportCompaniesFromJson extends Command
      *
      * @var string
      */
-    protected $signature = 'companies:json-import {url} {game_id}';
+    protected $signature = 'companies:json-import {url} {game_id} {--d|dlc=} {--m|mod=}';
 
     /**
      * The console command description.
@@ -43,48 +41,47 @@ class ImportCompaniesFromJson extends Command
             exit;
         }
 
-        $client = new Client();
-
         try {
-            $response = $client->request('GET', $this->argument('url'))->getBody();
+            $companies = Http::get($this->argument('url'))
+                ->throw()
+                ->collect();
 
-            $companies = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
-        } catch (GuzzleException | JsonException $e) {
-            $this->error($e->getMessage());
+            $bar = $this->output->createProgressBar(count($companies));
+            $bar->start();
+
+            $companies->each(function ($company) use ($bar) {
+                $this->findOrCreateCompany($company['name']);
+
+                $bar->advance();
+            });
+
+            $bar->finish();
+            $this->newLine();
+            $this->alert('Company importing finished!');
+        } catch (Exception $e) {
+            $this->error('Something went wrong while importing the companies.');
+            $this->alert($e->getMessage());
 
             exit;
         }
+    }
 
-        $bar = $this->output->createProgressBar(count($companies));
-        $bar->start();
+    private function findOrCreateCompany(string $companyName): void
+    {
+        $companyModel = Company::firstOrCreate([
+            'name' => $companyName,
+            'game_id' => $this->argument('game_id'),
+        ], [
+            'dlc' => $this->option('dlc'),
+            'mod' => $this->option('mod'),
+        ]);
 
-        foreach ($companies as $key => $company) {
-            // Find the company by name or create it
-            $companyModel = Company::firstOrCreate(
-                [
-                    'name' => $key,
-                    'game_id' => $this->argument('game_id'),
-                ],
-                [
-                    'category' => Str::limit($company['Category'], 250),
-                    'specialization' => $company['Specialization'],
-                    'dlc' => str_replace(' / ', ', ', $company['Required Expansion']),
-                ]
-            );
-
-            if (!$companyModel->wasRecentlyCreated) {
-                $this->line("Skipped $key, already exists.");
-            }
-
-            if ($companyModel->wasRecentlyCreated) {
-                $this->info("$key has been added.");
-            }
-
-            $bar->advance();
+        if (!$companyModel->wasRecentlyCreated) {
+            $this->line("Skipped $companyName, already exists.");
         }
 
-        $bar->finish();
-        $this->newLine();
-        $this->info('Company importing finished!');
+        if ($companyModel->wasRecentlyCreated) {
+            $this->info("$companyName has been added.");
+        }
     }
 }
