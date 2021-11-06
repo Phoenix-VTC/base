@@ -41,7 +41,7 @@
 <div>
     <x-alert/>
 
-    @if($job->user_id === Auth::id() && $job->status->value === \App\Enums\JobStatus::PendingVerification)
+    @if($job->status->value === \App\Enums\JobStatus::PendingVerification && $job->user_id === Auth::id())
         <x-app-ui::alert icon="iconic-information" color="warning">
             <x-slot name="heading">
                 Pending verification
