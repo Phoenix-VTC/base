@@ -19,16 +19,11 @@ class ShowWelcomeForm extends Component
     public User $user;
 
     public $password = '';
-    public $passwordConfirmation = '';
+    public $password_confirmation = '';
 
     protected $rules = [
         'password' => ['bail', 'required', 'string', 'min:8', 'confirmed']
     ];
-
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
 
     public function mount($token): void
     {
