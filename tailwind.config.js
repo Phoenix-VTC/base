@@ -28,10 +28,15 @@ module.exports = {
             './resources/**/*.vue',
             './resources/**/*.twig',
             './vendor/razorui/blade-application-ui/resources/views/components/**/*.blade.php',
+            './vendor/wire-elements/modal/resources/views/*.blade.php',
+            './storage/framework/views/*.php',
         ],
         options: {
             defaultExtractor: (content) => content.match(/[\w-/.:]+(?<!:)/g) || [],
             whitelistPatterns: [/-active$/, /-enter$/, /-leave-to$/, /show$/],
+            safelist: [
+                'sm:max-w-2xl'
+            ]
         },
     },
     plugins: [
