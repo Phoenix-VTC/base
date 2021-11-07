@@ -31,11 +31,6 @@ class UniqueForDay implements Rule
     {
         $value = Carbon::parse($value)->toDateString();
 
-        ray(Event::query()
-        ->where('id', '!=', $this->except)
-        ->whereDate('start_date', $value)
-        ->get());
-
         return Event::query()
             ->where('id', '!=', $this->except)
             ->whereDate('start_date', $value)
