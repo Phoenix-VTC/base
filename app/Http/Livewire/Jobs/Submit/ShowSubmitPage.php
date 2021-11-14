@@ -3,30 +3,40 @@
 namespace App\Http\Livewire\Jobs\Submit;
 
 use App\Enums\JobStatus;
+use App\Models\Cargo;
+use App\Models\City;
+use App\Models\Company;
+use App\Models\Game;
 use App\Models\Job;
+use BladeUIKit\Components\Forms\Form;
 use Carbon\Carbon;
+use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class ShowSubmitPage extends Component
+class ShowSubmitPage extends Component implements HasForms
 {
+    use InteractsWithForms;
+
     public int $game_id;
     // Form fields
-    public string $pickup_city = '';
-    public string $destination_city = '';
-    public string $pickup_company = '';
-    public string $destination_company = '';
-    public string $cargo = '';
-    public string $finished_at = '';
-    public string $distance = '';
-    public string $load_damage = '';
-    public string $estimated_income = '';
-    public string $total_income = '';
-    public string $comments = '';
+    public $pickup_city;
+    public $destination_city;
+    public $pickup_company;
+    public $destination_company;
+    public $cargo;
+    public $finished_at;
+    public $distance;
+    public $load_damage;
+    public $estimated_income;
+    public $total_income;
+    public $comments;
 
     public function mount(): void
     {
-        $this->finished_at = Carbon::now()->format('Y-m-d');
+        $this->form->fill();
     }
 
     public function rules(): array
@@ -80,5 +90,157 @@ class ShowSubmitPage extends Component
         session()->flash('alert', ['type' => 'success', 'message' => 'Job successfully submitted!']);
 
         return redirect()->route('jobs.show', $job);
+    }
+
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\Grid::make()
+                ->columns()
+                ->schema([
+                    Forms\Components\Grid::make()
+                        ->columns()
+                        ->schema([
+                            Forms\Components\Select::make('pickup_city')
+                                ->columnSpan(1)
+                                ->getSearchResultsUsing(function (string $query) {
+                                    return City::dropdownSearch($query);
+                                })
+                                ->getOptionLabelUsing(fn($value) => City::find($value)?->getDropdownName())
+                                ->exists(table: City::class, column: 'id')
+                                ->searchable()
+                                ->required(),
+
+                            Forms\Components\Select::make('destination_city')
+                                ->columnSpan(1)
+                                ->getSearchResultsUsing(function (string $query) {
+                                    return City::query()
+                                        ->search($query)
+                                        ->limit(10)
+                                        ->get()
+                                        ->mapWithKeys(function (City $city) {
+                                            return [
+                                                $city->id => $city->getDropdownName(),
+                                            ];
+                                        });
+                                })
+                                ->getOptionLabelUsing(fn($value) => City::find($value)?->real_name)
+                                ->exists(table: City::class, column: 'id')
+                                ->searchable()
+                                ->required(),
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->columns()
+                        ->schema([
+                            Forms\Components\Select::make('pickup_company')
+                                ->columnSpan(1)
+                                ->getSearchResultsUsing(function (string $query) {
+                                    return Company::query()
+                                        ->search($query)
+                                        ->limit(10)
+                                        ->get()
+                                        ->mapWithKeys(function (City $city) {
+                                            return [
+                                                $city->id => $city->getDropdownName(),
+                                            ];
+                                        });
+                                })
+                                ->getOptionLabelUsing(fn($value) => Company::find($value)?->name)
+                                ->exists(table: Company::class, column: 'id')
+                                ->searchable()
+                                ->required(),
+
+                            Forms\Components\Select::make('destination_company')
+                                ->columnSpan(1)
+                                ->getSearchResultsUsing(function (string $query) {
+                                    return Company::query()
+                                        ->search($query)
+                                        ->limit(10)
+                                        ->pluck('name', 'id');
+                                })
+                                ->getOptionLabelUsing(fn($value) => Company::find($value)?->name)
+                                ->exists(table: Company::class, column: 'id')
+                                ->searchable()
+                                ->required(),
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->columns()
+                        ->schema([
+                            Forms\Components\Select::make('cargo')
+                                ->columnSpan(1)
+                                ->getSearchResultsUsing(function (string $query) {
+                                    return Cargo::query()
+                                        ->search($query)
+                                        ->limit(10)
+                                        ->pluck('name', 'id');
+                                })
+                                ->getOptionLabelUsing(fn($value) => Cargo::find($value)?->name)
+                                ->exists(table: Cargo::class, column: 'id')
+                                ->searchable()
+                                ->required(),
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->columns()
+                        ->schema([
+                            Forms\Components\DatePicker::make('finished_at')
+                                ->columnSpan(1)
+                                ->minDate(now()->subDays(7))
+                                ->maxDate(now())
+                                ->default(now())
+                                ->required(),
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->columns()
+                        ->schema([
+                            Forms\Components\TextInput::make('distance')
+                                ->columnSpan(1)
+                                ->numeric()
+                                ->minValue(1)
+                                ->maxValue(1200)
+                                ->placeholder(1200)
+                                ->hint(fn() => 'In ' . Game::getQualifiedDistanceMetric($this->game_id) ?? '??')
+                                ->required(),
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->columns()
+                        ->schema([
+                            Forms\Components\TextInput::make('load_damage')
+                                ->label('Cargo damage')
+                                ->columnSpan(1)
+                                ->numeric()
+                                ->minValue(0)
+                                ->maxValue(100)
+                                ->default(0)
+                                ->helperText('A value between 0 and 100%')
+                                ->required(),
+                        ]),
+
+                    Forms\Components\TextInput::make('estimated_income')
+                        ->columnSpan(1)
+                        ->numeric()
+                        ->minValue(1)
+                        ->maxValue(400000)
+                        ->placeholder('The original estimate, before any penalties')
+                        ->required(),
+
+                    Forms\Components\TextInput::make('total_income')
+                        ->columnSpan(1)
+                        ->numeric()
+                        ->minValue(1)
+                        ->maxValue(400000)
+                        ->placeholder('Including any in-game penalties')
+                        ->required(),
+
+                    Forms\Components\Textarea::make('comments')
+                        ->columnSpan(2)
+                        ->placeholder('Any notes and/or comments about this delivery'),
+                ]),
+
+        ];
     }
 }

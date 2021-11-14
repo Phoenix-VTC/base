@@ -9,7 +9,7 @@ module.exports = {
             },
             colors: {
                 danger: colors.rose,
-                primary: colors.blue,
+                primary: colors.orange,
                 success: colors.green,
                 warning: colors.yellow,
             },
@@ -27,9 +27,10 @@ module.exports = {
             './resources/**/*.php',
             './resources/**/*.vue',
             './resources/**/*.twig',
+            './storage/framework/views/*.php',
             './vendor/razorui/blade-application-ui/resources/views/components/**/*.blade.php',
             './vendor/wire-elements/modal/resources/views/*.blade.php',
-            './storage/framework/views/*.php',
+            './vendor/filament/forms/resources/views/**/*.blade.php',
         ],
         options: {
             defaultExtractor: (content) => content.match(/[\w-/.:]+(?<!:)/g) || [],
