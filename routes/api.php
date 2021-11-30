@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CmsController;
 use App\Http\Controllers\API\DiscordBotController;
 use App\Http\Controllers\API\Select2\GameDataController;
 use App\Http\Controllers\API\Select2\UserController;
@@ -64,3 +65,8 @@ Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Reque
         'profile_link' => route('users.profile', $user->id)
     ];
 });
+
+Route::prefix('cms')->group(function () {
+    Route::get('statistics', [CmsController::class, 'statistics']);
+});
+
