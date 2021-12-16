@@ -17,7 +17,7 @@ class AddColorFieldToRolesTable extends Migration
     public function down()
     {
         Schema::table('roles', function (Blueprint $table) {
-            $table->dropColumn('color');
+            $table->dropColumn('badge_color');
             $table->dropColumn('text_color');
         });
     }
