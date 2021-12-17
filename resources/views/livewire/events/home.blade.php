@@ -11,7 +11,8 @@
     Feel free to browse through our upcoming events here.
 @endsection
 
-@section('hero-image', 'https://phoenixvtc.com/img/fc4b88a6-7864-41d8-a79b-eda11a2b915c/euro-truck-simulator-2-screenshot-20210108-14360243-edit.png')
+{{-- TEMP-WINTER --}}
+@section('hero-image', 'https://phoenix-base.s3.nl-ams.scw.cloud/images/snow_background.png')
 
 <div>
     <!-- Featured Events -->

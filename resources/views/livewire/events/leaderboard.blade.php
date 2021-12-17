@@ -13,7 +13,8 @@
     On this page, you can view our most active event attendees, as well as taking an in-depth look into our event numbers.
 @endsection
 
-@section('hero-image', 'https://phoenixvtc.com/img/dd9f153d-a7b5-477d-be78-9cc4014aeeab/227300-20210216162827-11.png?fm=jpg&q=80&fit=max&crop=1920%2C1002%2C0%2C78')
+{{-- TEMP-WINTER --}}
+@section('hero-image', 'https://phoenix-base.s3.nl-ams.scw.cloud/images/snow_background.png')
 
 <div>
     <!-- Event Statistics -->
