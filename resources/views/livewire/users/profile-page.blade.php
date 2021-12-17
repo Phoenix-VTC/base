@@ -215,7 +215,7 @@
                         @if($user->roles->count())
                             @foreach($user->roles as $role)
                                 <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-purple-800 mr-2" style="background-color: {{ $role->badge_color }}; color: {{ $role->text_color }}">
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium mr-2" style="background-color: {{ $role->badge_color }}; color: {{ $role->text_color }}">
                                     {{ ucwords($role->name) }}
                                 </span>
                             @endforeach
