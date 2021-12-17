@@ -9,7 +9,7 @@ class AddRoleColors extends Migration
 {
      private array $roleColors = [
         'super admin' => ['#f3e8ff', '#6b21a8'],
-        'management' => ['#ff0235', '#ffffff'],
+        'management' => ['#df012f', '#ffffff'],
         'human resources' => ['#a30000', '#ffffff'],
         'events' => ['#a30000', '#ffffff'],
         'media' => ['#a30000', '#ffffff'],
