@@ -11,7 +11,7 @@ class AddRoleColors extends Migration
         'super admin' => ['#f3e8ff', '#6b21a8'],
         'management' => ['#ff0235', '#ffffff'],
         'human resources' => ['#a30000', '#ffffff'],
-        'events' => ['#3498db', '#ffffff'],
+        'events' => ['#a30000', '#ffffff'],
         'media' => ['#a30000', '#ffffff'],
         'modding' => ['#a30000', '#ffffff'],
         'driver' => ['#f48c06', '#ffffff'],
