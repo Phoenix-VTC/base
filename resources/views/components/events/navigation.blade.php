@@ -1,3 +1,13 @@
+{{-- TEMP-WINTER --}}
+@push('scripts')
+    <script>
+        snowStorm.targetElement = 'cover-image'; // Render it in the cover-image div
+        snowStorm.followMouse = false; // Snowflakes won't follow the mouse
+        snowStorm.snowStick = false; // Snowflakes won't stick to the bottom of the window
+        snowStorm.animationInterval = 100; // Set the interval for the snow to fall (lower value = more snow)
+    </script>
+@endpush
+
 <div class="relative bg-gray-900 overflow-hidden" x-data="{ open: false }">
     <div class="max-w-7xl mx-auto">
         <div
@@ -140,7 +150,7 @@
         </div>
     </div>
     {{-- Hero Image --}}
-    <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+    <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2" id="cover-image">
         <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full"
              src="@yield('hero-image')"
              alt="Phoenix">
