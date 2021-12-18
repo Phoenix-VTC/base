@@ -214,54 +214,10 @@
                     <div class="mt-3 pt-3 flex flex-wrap mx-6 border-t gap-y-2">
                         @if($user->roles->count())
                             @foreach($user->roles as $role)
-                                @switch($role->name)
-                                    @case('super admin')
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-purple-100 text-purple-800 mr-2">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium mr-2" style="background-color: {{ $role->badge_color }}; color: {{ $role->text_color }}">
                                     {{ ucwords($role->name) }}
                                 </span>
-                                    @break
-                                    @case('management')
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2"
-                                        style="background-color: #ff0235">
-                                    {{ ucwords($role->name) }}
-                                </span>
-                                    @break
-                                    @case('phoenix staff')
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2"
-                                        style="background-color: #a30000">
-                                    {{ ucwords($role->name) }}
-                                </span>
-                                    @break
-                                    @case('driver')
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2"
-                                        style="background-color: #f48c06">
-                                    {{ ucwords($role->name) }}
-                                </span>
-                                    @break
-                                    @case('early bird')
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-white mr-2"
-                                        style="background-color: #3498db">
-                                    {{ ucwords($role->name) }}
-                                </span>
-                                    @break
-                                    @case('beta tester')
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium text-black mr-2"
-                                        style="background-color: #fbd19b">
-                                    {{ ucwords($role->name) }}
-                                </span>
-                                    @break
-                                    @default
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-gray-800 mr-2">
-                                    {{ ucwords($role->name) }}
-                                </span>
-                                @endswitch
                             @endforeach
                         @else
                             <span

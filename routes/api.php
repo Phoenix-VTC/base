@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\API\CmsController;
 use App\Http\Controllers\API\DiscordBotController;
 use App\Http\Controllers\API\Select2\GameDataController;
 use App\Http\Controllers\API\Select2\UserController;
+use App\Http\Controllers\API\Tracker\EventController;
 use App\Http\Controllers\API\Tracker\IncomingDataController;
 use App\Http\Controllers\API\Tracker\JobController;
 use App\Http\Controllers\API\OnlineUserController;
@@ -42,6 +44,12 @@ Route::prefix('tracker')->middleware(['auth:sanctum', 'sanctum.canSubmitJobs'])-
                 ->count();
         });
     });
+
+    Route::get('events/next', [EventController::class, 'showNext']);
+    Route::apiResource('events', EventController::class)->only([
+        'index',
+        'show',
+    ]);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {
@@ -57,3 +65,8 @@ Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Reque
         'profile_link' => route('users.profile', $user->id)
     ];
 });
+
+Route::prefix('cms')->group(function () {
+    Route::get('statistics', [CmsController::class, 'statistics']);
+});
+
