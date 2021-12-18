@@ -13,12 +13,32 @@
                         <div class="bg-white overflow-hidden sm:rounded-lg sm:shadow">
 
                             <div class="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                    {{ ucwords($role->name) }}
+                                <h3 class="leading-6 font-medium pb-3">
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5" style="background-color: {{ $role->badge_color }}; color: {{ $role->text_color }}">
+                                        {{ ucwords($role->name) }}
+                                    </span>
                                 </h3>
                                 <div class="mt-1 flex flex-row divide-x space-x-3 text-sm text-gray-500">
                                     <div>
                                         ID: <code>{{ $role->id }}</code>
+                                    </div>
+
+                                    <div class="pl-3">
+                                        Level: <code>{{ $role->level }}</code>
+                                        @if($role->level === 1)
+                                            <span
+                                                class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                Minimum
+                                            </span>
+                                        @endif
+
+                                        @if($role->level === 255)
+                                            <span
+                                                class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
+                                                Maximum
+                                            </span>
+                                        @endif
                                     </div>
 
                                     <div class="pl-3">
