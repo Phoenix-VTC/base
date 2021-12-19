@@ -45,8 +45,8 @@ class UserPolicy
             return Response::deny('You cannot update upper staff.');
         }
 
-        // Check if the user's role level is higher than or equal to the model's role level
-        if ($user->roleLevel() >= $model->roleLevel()) {
+        // Check if the user's role level is higher than the model's role level
+        if ($user->roleLevel() > $model->roleLevel()) {
             return true;
         }
 
@@ -63,7 +63,7 @@ class UserPolicy
     public function delete(User $user, User $model): bool
     {
         return $user->can('delete users') &&
-            $user->roleLevel() >= $model->roleLevel() &&
+            $user->roleLevel() > $model->roleLevel() &&
             $user->id !== $model->id;
     }
 
@@ -77,7 +77,7 @@ class UserPolicy
     public function restore(User $user, User $model): bool
     {
         return $user->can('delete users') &&
-            $user->roleLevel() >= $model->roleLevel();
+            $user->roleLevel() > $model->roleLevel();
     }
 
     /**
@@ -90,7 +90,7 @@ class UserPolicy
     public function forceDelete(User $user, User $model): bool
     {
         return $user->can('delete users') &&
-            $user->roleLevel() >= $model->roleLevel() &&
+            $user->roleLevel() > $model->roleLevel() &&
             $user->id !== $model->id;
     }
 }
