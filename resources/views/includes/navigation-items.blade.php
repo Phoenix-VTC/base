@@ -49,9 +49,9 @@
                     activeRoute="screenshot-hub.*"/>
 </x-sidebar.group>
 
-@hasanyrole('super admin|management|human resources|events|media|modding|developer')
-<x-sidebar.separator title="Management"/>
-@endhasanyrole
+@if(Auth::user()->isStaff() || Auth::user()->isUpperStaff())
+    <x-sidebar.separator title="Management"/>
+@endif
 
 <x-sidebar.group>
     @can('handle driver applications')
