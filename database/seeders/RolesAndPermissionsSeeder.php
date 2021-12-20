@@ -159,7 +159,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $roles = $this->roles;
         $permissions = $this->permissions;
 
-        $roles['manager']->givePermissionTo([
+        $roles['manager']->syncPermissions([
             $permissions['handle driver applications'],
             $permissions['manage users'],
             $permissions['delete users'],
@@ -177,12 +177,12 @@ class RolesAndPermissionsSeeder extends Seeder
             $permissions['delete blocklist'],
         ]);
 
-        $roles['developer']->givePermissionTo([
+        $roles['developer']->syncPermissions([
             $permissions['manage users'],
             $permissions['impersonate users'],
         ]);
 
-        $roles['human resources team']->givePermissionTo([
+        $roles['human resources team']->syncPermissions([
             $permissions['handle driver applications'],
             $permissions['manage users'],
             $permissions['delete users'],
@@ -192,15 +192,15 @@ class RolesAndPermissionsSeeder extends Seeder
             $permissions['create blocklist'],
         ]);
 
-        $roles['event team']->givePermissionTo([
+        $roles['event team']->syncPermissions([
             $permissions['manage events'],
         ]);
 
-        $roles['driver']->givePermissionTo([
+        $roles['driver']->syncPermissions([
             $permissions['submit jobs'],
         ]);
 
-        $roles['beta tester']->givePermissionTo([
+        $roles['beta tester']->syncPermissions([
             $permissions['use switch'],
             $permissions['beta test'],
         ]);
