@@ -31,7 +31,6 @@ Roles can be renamed without any issues, just make sure to not rename the `ident
 ### Deleting a role
 In order to delete a role, simply remove its row from the `$roleList` array, and run the seeder.
 
-
 ## Creating a new permission
 To create a new permission, simply add a new item to the `$permissionList` array in the `RolesAndPermissionsSeeder.php`. For example:
 ```php
