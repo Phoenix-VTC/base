@@ -323,18 +323,20 @@
                 </div>
             </section>
 
-            @if(Auth::user()->can('manage users'))
+            @can('manage users')
                 <section aria-labelledby="staff-actions-title" class="lg:col-start-3 lg:col-span-1">
                     <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
                         <h2 id="staff-actions-title" class="text-lg font-medium text-red-700">Staff Actions</h2>
 
                         <div class="mt-6 flex flex-col justify-stretch space-y-3">
-                            <a
-                                class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                                href="{{ route('users.edit', $user) }}">
-                                <x-heroicon-s-pencil-alt class="-ml-1 mr-3 h-5 w-5"/>
-                                Edit User
-                            </a>
+                            @can('update', $user)
+                                <a
+                                    class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                    href="{{ route('users.edit', $user) }}">
+                                    <x-heroicon-s-pencil-alt class="-ml-1 mr-3 h-5 w-5"/>
+                                    Edit User
+                                </a>
+                            @endcan
 
                             @canBeImpersonated($user, $guard = null)
                             <a
@@ -345,7 +347,7 @@
                             </a>
                             @endCanBeImpersonated
 
-                            @if($user->id !== Auth::id() && !$user->trashed())
+                            @if(!$user->trashed() && Auth::user()->can('delete', $user))
                                 <button
                                     class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                     onclick="confirm('Are you sure you want to delete this user?') || event.stopImmediatePropagation()"
@@ -355,7 +357,7 @@
                                 </button>
                             @endif
 
-                            @if($user->trashed())
+                            @if($user->trashed() && Auth::user()->can('restore', $user))
                                 <button
                                     class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                     onclick="confirm('Are you sure you want to restore this user?') || event.stopImmediatePropagation()"
@@ -365,7 +367,7 @@
                                 </button>
                             @endif
 
-                            @if($user->application)
+                            @if($user->application && Auth::user()->can('handle driver applications'))
                                 <a
                                     class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                                     href="{{ route('recruitment.show', $user->application->uuid) }}">
@@ -376,7 +378,7 @@
                         </div>
                     </div>
                 </section>
-            @endif
+            @endcan
         </div>
     </div>
 </div>

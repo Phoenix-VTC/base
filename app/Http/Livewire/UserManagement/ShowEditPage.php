@@ -4,12 +4,16 @@ namespace App\Http\Livewire\UserManagement;
 
 use App\Models\User;
 use App\Rules\UsernameNotReserved;
+use Auth;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
 
 class ShowEditPage extends Component
 {
+    use AuthorizesRequests;
+
     public User $user;
     public array $available_roles;
     // Form fields
@@ -26,7 +30,12 @@ class ShowEditPage extends Component
             'roles',
         ])->findOrFail($id);
 
-        $this->available_roles = Role::pluck('name', 'id')->toArray();
+        $this->authorize('update', $this->user);
+
+        $this->available_roles = Role::query()
+            ->where('level', '<=', Auth::user()->roleLevel())
+            ->pluck('name', 'id')
+            ->toArray();
 
         // Form fields
         $this->username = $this->user->username;

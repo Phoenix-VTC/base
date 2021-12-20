@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Alexmg86\LaravelSubQuery\Traits\LaravelSubQueryTrait;
+use App\Traits\HasRoleLevelTrait;
 use Assada\Achievements\Achiever;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
@@ -39,6 +40,7 @@ class User extends Authenticatable implements Wallet
     use RevisionableTrait;
     use Impersonate;
     use Achiever;
+    use HasRoleLevelTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -278,6 +280,6 @@ class User extends Authenticatable implements Wallet
 
     public function canBeImpersonated(): bool
     {
-        return !$this->hasRole('phoenix staff');
+        return Auth::user()->roleLevel() > $this->roleLevel();
     }
 }
