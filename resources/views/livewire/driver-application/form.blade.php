@@ -93,7 +93,7 @@
                                 <span class="sr-only">Use setting</span>
                                 <span aria-hidden="true"
                                       :class="{ 'translate-x-5': inDiscord, 'translate-x-0': !(inDiscord) }"
-                                      class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
+                                      class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow  ring-0 transition ease-in-out duration-200"></span>
                             </button>
                         </div>
                     </div>
