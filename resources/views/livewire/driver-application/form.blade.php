@@ -342,6 +342,12 @@
                             <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
                             @enderror
                         </div>
+                        <p class="mt-2 text-sm text-gray-500">
+                            <a class="font-medium text-orange-600 hover:text-orange-500"
+                               href="https://phoenixvtc.com/en/rules" target="_blank">
+                                You can view our rules here.
+                            </a>
+                        </p>
                     </fieldset>
 
                     <div class="col-span-6 sm:col-span-4" x-data="{findUsCount: 0}"
