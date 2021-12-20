@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
@@ -25,12 +26,31 @@ class UserPolicy
      *
      * @param \App\Models\User $user
      * @param \App\Models\User $model
-     * @return bool
+     * @return bool|Response
      */
-    public function update(User $user, User $model): bool
+    public function update(User $user, User $model): bool|Response
     {
-        return $user->can('manage users') &&
-            $user->roleLevel() >= $model->roleLevel();
+        // Check if the user can manage users
+        if ($user->cannot('manage users')) {
+            return false;
+        }
+
+        // Check if the user is trying to update staff, excluding themselves
+        if ($user->id !== $model->id && $model->isStaff() && !$user->isUpperStaff()) {
+            return Response::deny('You cannot update staff.');
+        }
+
+        // Check if the user is trying to update upper staff, excluding themselves
+        if ($user->id !== $model->id && $model->isUpperStaff() && !$user->isSuperAdmin()) {
+            return Response::deny('You cannot update upper staff.');
+        }
+
+        // Check if the user's role level is higher than the model's role level
+        if ($user->roleLevel() > $model->roleLevel()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -43,7 +63,7 @@ class UserPolicy
     public function delete(User $user, User $model): bool
     {
         return $user->can('delete users') &&
-            $user->roleLevel() >= $model->roleLevel() &&
+            $user->roleLevel() > $model->roleLevel() &&
             $user->id !== $model->id;
     }
 
@@ -57,7 +77,7 @@ class UserPolicy
     public function restore(User $user, User $model): bool
     {
         return $user->can('delete users') &&
-            $user->roleLevel() >= $model->roleLevel();
+            $user->roleLevel() > $model->roleLevel();
     }
 
     /**
@@ -70,7 +90,7 @@ class UserPolicy
     public function forceDelete(User $user, User $model): bool
     {
         return $user->can('delete users') &&
-            $user->roleLevel() >= $model->roleLevel() &&
+            $user->roleLevel() > $model->roleLevel() &&
             $user->id !== $model->id;
     }
 }

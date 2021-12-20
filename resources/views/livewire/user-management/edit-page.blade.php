@@ -92,8 +92,8 @@
                     <x-input.group label="Roles" for="user_roles" :error="$errors->first('user_roles')"
                                    help-text="<b>Note:</b> Hold down the ctrl/cmd key to select multiple roles.">
                         <x-input.select wire:model.lazy="user_roles" id="user_roles" size="10" multiple required>
-                            @foreach($available_roles as $key => $role)
-                                <option value="{{ $key }}">{{ ucwords($role) }}</option>
+                            @foreach($available_roles as $role)
+                                <option value="{{ $role->id }}">{{ ucwords($role->name) }}</option>
                             @endforeach
                         </x-input.select>
                     </x-input.group>
