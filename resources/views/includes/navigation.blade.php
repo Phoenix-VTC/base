@@ -14,7 +14,7 @@
         <div class="ml-4 flex items-center md:ml-6">
             <x-dropdown icon="o-bell" title="View notifications" width="w-80" :notification-dot-color="Auth::user()->unreadNotifications->count() ? 'bg-red-400' : ''">
                 <ul class="divide-y divide-gray-200">
-                    @forelse(Auth::user()->unreadNotifications as $notification)
+                    @forelse(Auth::user()->unreadNotifications->take(4) as $notification)
                         <li class="relative bg-white py-5 px-4 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                             <form class="flex justify-between" method="POST"
                                   action="{{ route('notifications.markAsRead', $notification->id) }}">
