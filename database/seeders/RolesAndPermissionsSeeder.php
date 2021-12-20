@@ -13,14 +13,8 @@ class RolesAndPermissionsSeeder extends Seeder
     private array $roles = [];
 
     /**
-     * This seeder seeds all defined roles and permissions.
-     * If a certain role or permission needs to be changed/added, simply change it here, and it'll be updated on the next run.
-     * Just keep in mind that it uses the name of the role/permission as the search key, so if you change the name of the role/permission, you'll need to update some things manually.
-     *
-     * Note from me (Diego):
-     * I'm pretty proud of this seeder lmao. I wanted to find an efficient way to manage permissions and roles,
-     * since I never really found a good way to implement role & permission seeding yet, without manually having to create them on every environment.
-     * This seems to limit code duplication better than any other solution I've seen so far, so I see it as a win!
+     * This seeder seeds all defined roles, permissions and role permissions.
+     * For more information about its usage, please refer to the documentation (documentation\roles-and-permissions.md).
      *
      * @return void
      */
@@ -136,6 +130,9 @@ class RolesAndPermissionsSeeder extends Seeder
                 'identifier' => $identifier,
             ], $role);
         }
+
+        // Delete all roles that are not in the array of roles
+        Role::query()->whereNotIn('identifier', array_keys($roleList))->delete();
     }
 
     private function seedPermissions(): void
@@ -165,6 +162,9 @@ class RolesAndPermissionsSeeder extends Seeder
                 'name' => $permission,
             ]);
         }
+
+        // Delete all permissions that are not in the array of permissions
+        Permission::query()->whereNotIn('name', $permissionList)->delete();
     }
 
     private function assignPermissionsToRoles(): void
