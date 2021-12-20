@@ -148,7 +148,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         foreach ($permissionList as $permission) {
             // Create or update the permission, and assign it to the array of permissions
-            $this->permissions[$permission] = Permission::query()->updateOrCreate([
+            $this->permissions[$permission] = Permission::query()->firstOrCreate([
                 'name' => $permission,
             ]);
         }
