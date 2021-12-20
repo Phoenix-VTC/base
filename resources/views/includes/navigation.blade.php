@@ -70,11 +70,11 @@
                     role="menu" aria-orientation="vertical" aria-labelledby="user-menu" x-show="profileOpen"
                     @click.away="profileOpen = false" x-cloak
                     x-transition:enter="transition ease-out duration-100"
-                    x-transition:enter-start="transform opacity-0 scale-95"
-                    x-transition:enter-end="transform opacity-100 scale-100"
+                    x-transition:enter-start=" opacity-0 scale-95"
+                    x-transition:enter-end=" opacity-100 scale-100"
                     x-transition:leave="transition ease-in duration-75"
-                    x-transition:leave-start="transform opacity-100 scale-100"
-                    x-transition:leave-end="transform opacity-0 scale-95">
+                    x-transition:leave-start=" opacity-100 scale-100"
+                    x-transition:leave-end=" opacity-0 scale-95">
                     <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                        role="menuitem">
                         Profile
