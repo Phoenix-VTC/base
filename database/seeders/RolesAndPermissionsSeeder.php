@@ -39,76 +39,89 @@ class RolesAndPermissionsSeeder extends Seeder
         // The array of roles to be seeded
         $roleList = [
             'driver' => [
+                'name' => 'driver',
                 'badge_color' => '#f48c06',
                 'text_color' => '#ffffff',
                 'level' => 1,
             ],
-            'early bird' => [
+            'early_bird' => [
+                'name' => 'early bird',
                 'badge_color' => '#3498db',
                 'text_color' => '#ffffff',
                 'level' => 1,
             ],
-            'beta tester' => [
+            'beta_tester' => [
+                'name' => 'beta tester',
                 'badge_color' => '#fbd19b',
                 'text_color' => '#000000',
                 'level' => 1,
             ],
-            'phoenix staff' => [
+            'phoenix_staff' => [
+                'name' => 'phoenix staff',
                 'badge_color' => '#a30000',
                 'text_color' => '#ffffff',
                 'level' => 2,
                 'is_staff' => true,
             ],
-            'modding team' => [
+            'modding_team' => [
+                'name' => 'modding team',
                 'badge_color' => '#a30000',
                 'text_color' => '#ffffff',
                 'level' => 3,
                 'is_staff' => true,
             ],
-            'media team' => [
+            'media_team' => [
+                'name' => 'media team',
                 'badge_color' => '#a30000',
                 'text_color' => '#ffffff',
                 'level' => 4,
                 'is_staff' => true,
             ],
-            'recruitment team' => [
+            'recruitment_team' => [
+                'name' => 'recruitment team',
                 'badge_color' => '#a30000',
                 'text_color' => '#ffffff',
                 'level' => 5,
                 'is_staff' => true,
             ],
-            'event team' => [
+            'event_team' => [
+                'name' => 'event team',
                 'badge_color' => '#a30000',
                 'text_color' => '#ffffff',
                 'level' => 6,
                 'is_staff' => true,
             ],
-            'human resources team' => [
+            'human_resources_team' => [
+                'name' => 'human resources team',
                 'badge_color' => '#a30000',
                 'text_color' => '#ffffff',
                 'level' => 7,
                 'is_staff' => true,
             ],
             'developer' => [
+                'name' => 'developer',
                 'badge_color' => '#a30000',
                 'text_color' => '#ffffff',
                 'level' => 8,
                 'is_staff' => true,
             ],
-            'senior staff team' => [
+            'senior_staff_team' => [
+                'name' => 'senior staff team',
                 'badge_color' => '#c10118',
                 'text_color' => '#ffffff',
                 'level' => 9,
                 'is_staff' => true,
             ],
             'manager' => [
+                'name' => 'manager',
                 'badge_color' => '#df012f',
                 'text_color' => '#ffffff',
                 'level' => 10,
                 'is_staff' => true,
                 'is_upper_staff' => true,
             ],
-            'super admin' => [
+            'super_admin' => [
+                'name' => 'super admin',
                 'badge_color' => '#f3e8ff',
                 'text_color' => '#6b21a',
                 'level' => 255,
@@ -117,10 +130,10 @@ class RolesAndPermissionsSeeder extends Seeder
             ],
         ];
 
-        foreach ($roleList as $name => $role) {
+        foreach ($roleList as $identifier => $role) {
             // Create or update the role, and assign it to the array of roles
-            $this->roles[$name] = Role::query()->updateOrCreate([
-                'name' => $name,
+            $this->roles[$role['name']] = Role::query()->updateOrCreate([
+                'identifier' => $identifier,
             ], $role);
         }
     }

@@ -56,12 +56,14 @@
                                         @endif
                                     </div>
 
-                                    <div class="pl-3">
-                                        Real Name: <code>{{ $role->name }}</code>
-                                    </div>
+                                    @isset($role->identifier)
+                                        <div class="pl-3">
+                                            Identifier: <code>{{ $role->identifier }}</code>
+                                        </div>
+                                    @endif
 
                                     <div class="pl-3">
-                                        Guard Name: <code>{{ $role->guard_name }}</code>
+                                        Real Name: <code>{{ $role->name }}</code>
                                     </div>
 
                                     <div class="pl-3">
