@@ -10,10 +10,10 @@
             <div class="absolute inset-0 bg-gray-600 opacity-75"></div>
         </div>
         <div class="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-gray-800" x-show="sidebarOpen" x-cloak
-             x-transition:enter="transition ease-in-out duration-300 transform"
+             x-transition:enter="transition ease-in-out duration-300"
              x-transition:enter-start="-translate-x-full"
              x-transition:enter-end="translate-x-0"
-             x-transition:leave="transition ease-in-out duration-300 transform"
+             x-transition:leave="transition ease-in-out duration-300"
              x-transition:leave-start="translate-x-0"
              x-transition:leave-end="-translate-x-full">
             <div class="absolute top-0 right-0 -mr-12 pt-2">
@@ -48,7 +48,7 @@
     <div class="flex flex-col w-64">
         <div class="flex flex-col h-0 flex-1">
             <div class="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
-                <img class="h-14 w-14 w-auto"
+                <img class="h-14 w-auto"
                      src="{{ asset('img/logo.png') }}" height="56" width="56" alt="Phoenix">
             </div>
             <div class="flex-1 flex flex-col overflow-y-auto">

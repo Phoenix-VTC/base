@@ -44,14 +44,6 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @production
-        @auth
-            <!-- Appzi: Capture Insightful Feedback -->
-            <script async src="https://w.appzi.io/w.js?token=tb4V7"></script>
-            <!-- End Appzi -->
-        @endauth
-    @endproduction
-
     @stack('scripts')
 </head>
 

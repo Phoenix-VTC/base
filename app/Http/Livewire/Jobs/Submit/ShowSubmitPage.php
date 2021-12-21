@@ -8,8 +8,6 @@ use App\Models\City;
 use App\Models\Company;
 use App\Models\Game;
 use App\Models\Job;
-use BladeUIKit\Components\Forms\Form;
-use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -39,57 +37,9 @@ class ShowSubmitPage extends Component implements HasForms
         $this->form->fill();
     }
 
-    public function rules(): array
-    {
-        return [
-            'pickup_city' => ['required', 'integer', 'exists:App\Models\City,id'],
-            'destination_city' => ['required', 'integer', 'exists:App\Models\City,id'],
-            'pickup_company' => ['required', 'integer', 'exists:App\Models\Company,id'],
-            'destination_company' => ['required', 'integer', 'exists:App\Models\Company,id'],
-            'cargo' => ['required', 'integer', 'exists:App\Models\Cargo,id'],
-            'finished_at' => ['required', 'date', 'after_or_equal:' . date('Y-m-d', strtotime('-7 days')), 'before_or_equal:today'],
-            'distance' => ['required', 'integer', 'min:1', 'max:5000'],
-            'load_damage' => ['required', 'integer', 'min:0', 'max:100'],
-            'estimated_income' => ['required', 'integer', 'min:1', 'max:400000'],
-            'total_income' => ['required', 'integer', 'min:1', 'max:' . $this->estimated_income],
-            'comments' => ['sometimes', 'string'],
-        ];
-    }
-
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
-
     public function render()
     {
         return view('livewire.jobs.submit.submit-page')->extends('layouts.app');
-    }
-
-    public function submit()
-    {
-        $validatedData = $this->validate();
-
-        $job = Job::create([
-            'user_id' => Auth::id(),
-            'game_id' => $this->game_id,
-            'pickup_city_id' => $validatedData['pickup_city'],
-            'destination_city_id' => $validatedData['destination_city'],
-            'pickup_company_id' => $validatedData['pickup_company'],
-            'destination_company_id' => $validatedData['destination_company'],
-            'cargo_id' => $validatedData['cargo'],
-            'finished_at' => $validatedData['finished_at'],
-            'distance' => $validatedData['distance'],
-            'load_damage' => $validatedData['load_damage'],
-            'estimated_income' => $validatedData['estimated_income'],
-            'total_income' => $validatedData['total_income'],
-            'comments' => $validatedData['comments'],
-            'status' => JobStatus::Complete,
-        ]);
-
-        session()->flash('alert', ['type' => 'success', 'message' => 'Job successfully submitted!']);
-
-        return redirect()->route('jobs.show', $job);
     }
 
     protected function getFormSchema(): array
@@ -139,12 +89,7 @@ class ShowSubmitPage extends Component implements HasForms
                                     return Company::query()
                                         ->search($query)
                                         ->limit(10)
-                                        ->get()
-                                        ->mapWithKeys(function (City $city) {
-                                            return [
-                                                $city->id => $city->getDropdownName(),
-                                            ];
-                                        });
+                                        ->pluck('name', 'id');
                                 })
                                 ->getOptionLabelUsing(fn($value) => Company::find($value)?->name)
                                 ->exists(table: Company::class, column: 'id')
@@ -200,7 +145,7 @@ class ShowSubmitPage extends Component implements HasForms
                                 ->columnSpan(1)
                                 ->numeric()
                                 ->minValue(1)
-                                ->maxValue(1200)
+                                ->maxValue(5000)
                                 ->placeholder(1200)
                                 ->hint(fn() => 'In ' . Game::getQualifiedDistanceMetric($this->game_id) ?? '??')
                                 ->required(),
@@ -216,6 +161,7 @@ class ShowSubmitPage extends Component implements HasForms
                                 ->minValue(0)
                                 ->maxValue(100)
                                 ->default(0)
+                                ->postfix('%')
                                 ->helperText('A value between 0 and 100%')
                                 ->required(),
                         ]),
@@ -232,7 +178,7 @@ class ShowSubmitPage extends Component implements HasForms
                         ->columnSpan(1)
                         ->numeric()
                         ->minValue(1)
-                        ->maxValue(400000)
+                        ->lte('estimated_income')
                         ->placeholder('Including any in-game penalties')
                         ->required(),
 
@@ -242,5 +188,31 @@ class ShowSubmitPage extends Component implements HasForms
                 ]),
 
         ];
+    }
+
+    public function submit()
+    {
+        $validatedData = $this->form->getState();
+
+        $job = Job::create([
+            'user_id' => Auth::id(),
+            'game_id' => $this->game_id,
+            'pickup_city_id' => $validatedData['pickup_city'],
+            'destination_city_id' => $validatedData['destination_city'],
+            'pickup_company_id' => $validatedData['pickup_company'],
+            'destination_company_id' => $validatedData['destination_company'],
+            'cargo_id' => $validatedData['cargo'],
+            'finished_at' => $validatedData['finished_at'],
+            'distance' => $validatedData['distance'],
+            'load_damage' => $validatedData['load_damage'],
+            'estimated_income' => $validatedData['estimated_income'],
+            'total_income' => $validatedData['total_income'],
+            'comments' => $validatedData['comments'],
+            'status' => JobStatus::Complete,
+        ]);
+
+        session()->flash('alert', ['type' => 'success', 'message' => 'Job successfully submitted!']);
+
+        return redirect()->route('jobs.show', $job);
     }
 }

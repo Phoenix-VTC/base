@@ -4,14 +4,19 @@ namespace App\Http\Livewire\UserManagement;
 
 use App\Models\User;
 use App\Rules\UsernameNotReserved;
+use Auth;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
 
 class ShowEditPage extends Component
 {
+    use AuthorizesRequests;
+
     public User $user;
-    public array $available_roles;
+    public Collection $available_roles;
     // Form fields
     public $username = '';
     public $email = '';
@@ -26,7 +31,9 @@ class ShowEditPage extends Component
             'roles',
         ])->findOrFail($id);
 
-        $this->available_roles = Role::pluck('name', 'id')->toArray();
+        $this->authorize('update', $this->user);
+
+        $this->available_roles = $this->getAvailableRoles();
 
         // Form fields
         $this->username = $this->user->username;
@@ -71,5 +78,26 @@ class ShowEditPage extends Component
         session()->flash('alert', ['type' => 'success', 'message' => 'Profile successfully updated!']);
 
         return redirect(route('users.profile', $this->user));
+    }
+
+    private function getAvailableRoles(): Collection
+    {
+        // Query all roles below or equal to the current user's role level
+        $roles = Role::query()
+            ->where('level', '<=', Auth::user()->roleLevel());
+
+        // If the user isn't upper staff, remove all staff roles
+        if (!Auth::user()->isUpperStaff()) {
+            $roles->where('is_staff', false);
+        }
+
+        // If the user isn't a super admin, remove all upper staff roles
+        if (!Auth::user()->isSuperAdmin()) {
+            $roles->where('is_upper_staff', false);
+        }
+
+        // Order by level and return the results
+        return $roles->orderByDesc('level')
+            ->get(['id', 'name', 'level']);
     }
 }

@@ -1,9 +1,19 @@
+{{-- TEMP-WINTER --}}
+@push('scripts')
+    <script>
+        snowStorm.targetElement = 'cover-image'; // Render it in the cover-image div
+        snowStorm.followMouse = false; // Snowflakes won't follow the mouse
+        snowStorm.snowStick = false; // Snowflakes won't stick to the bottom of the window
+        snowStorm.animationInterval = 100; // Set the interval for the snow to fall (lower value = more snow)
+    </script>
+@endpush
+
 <div class="relative bg-gray-900 overflow-hidden" x-data="{ open: false }">
     <div class="max-w-7xl mx-auto">
         <div
             class="relative z-10 pb-8 bg-gray-900 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
             <svg
-                class="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-gray-900 transform translate-x-1/2"
+                class="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-gray-900 translate-x-1/2"
                 fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                 <polygon points="50,0 100,0 50,100 0,100"/>
             </svg>
@@ -11,7 +21,7 @@
             <div class="relative pt-6 px-4 sm:px-6 lg:px-8">
                 <nav class="relative flex items-center justify-between sm:h-10 lg:justify-start"
                      aria-label="Global">
-                    <div class="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
+                    <div class="flex items-center grow shrink-0 lg:grow-0">
                         <div class="flex items-center justify-between w-full md:w-auto">
                             <a href="{{ route('events.home') }}">
                                 <x-logo class="h-12 w-auto"/>
@@ -69,7 +79,7 @@
                  x-cloak x-transition:enter="duration-150 ease-out" x-transition:enter-start="opacity-0 scale-95"
                  x-transition:enter-end="opacity-100 scale-100" x-transition:leave="duration-100 ease-in"
                  x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                 class="absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden">
+                 class="absolute top-0 inset-x-0 p-2 transition origin-top-right md:hidden">
                 <div
                     class="rounded-lg shadow-md bg-gray-900 ring-1 ring-black ring-opacity-5 overflow-hidden">
                     <div class="px-5 pt-4 flex items-center justify-between">
@@ -140,7 +150,7 @@
         </div>
     </div>
     {{-- Hero Image --}}
-    <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+    <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2" id="cover-image">
         <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full"
              src="@yield('hero-image')"
              alt="Phoenix">

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Alexmg86\LaravelSubQuery\Traits\LaravelSubQueryTrait;
+use App\Traits\HasRolesTrait;
 use Assada\Achievements\Achiever;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
@@ -21,7 +22,6 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Lab404\Impersonate\Models\Impersonate;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 use Syntax\SteamApi\Containers\Player;
 use Venturecraft\Revisionable\RevisionableTrait;
 
@@ -29,7 +29,7 @@ class User extends Authenticatable implements Wallet
 {
     use HasFactory;
     use Notifiable;
-    use HasRoles;
+    use HasRolesTrait;
     use SoftDeletes;
     use HasWallet;
     use HasWallets;
@@ -278,6 +278,6 @@ class User extends Authenticatable implements Wallet
 
     public function canBeImpersonated(): bool
     {
-        return !$this->hasRole('phoenix staff');
+        return Auth::user()->roleLevel() > $this->roleLevel();
     }
 }
