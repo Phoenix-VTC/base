@@ -4,11 +4,14 @@ namespace App\Http\Livewire\Users;
 
 use App\Enums\JobStatus;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ShowProfilePage extends Component
 {
+    use AuthorizesRequests;
+
     public User $user;
     public $recent_jobs;
 
@@ -60,13 +63,7 @@ class ShowProfilePage extends Component
 
     public function deleteUser(): void
     {
-        if (Auth::user()->cannot('manage users')) {
-            abort(403, 'You don\'t have permission to delete users.');
-        }
-
-        if ($this->user->id === Auth::id()) {
-            abort(403, 'You can\'t delete your own account. Contact Management in order to do this.');
-        }
+        $this->authorize('delete', $this->user);
 
         $this->user->delete();
 
@@ -75,6 +72,8 @@ class ShowProfilePage extends Component
 
     public function restoreUser(): void
     {
+        $this->authorize('restore', $this->user);
+
         if (Auth::user()->cannot('manage users')) {
             abort(403, 'You don\'t have permission to restore users.');
         }
