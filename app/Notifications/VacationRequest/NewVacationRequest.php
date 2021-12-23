@@ -65,12 +65,15 @@ class NewVacationRequest extends Notification implements ShouldQueue
                     'name' => 'Leaving Phoenix',
                     'value' => $this->vacation_request->leaving ? 'Yes' : 'No',
                 ],
-                [
-                    'name' => 'Starts In',
-                    'value' => Carbon::parse($this->vacation_request->start_date)->diffForHumans(),
-                ]
             ]
         ];
+
+        if (!$this->vacation_request->leaving) {
+            $embed['fields'][] = [
+                'name' => 'Starts In',
+                'value' => Carbon::parse($this->vacation_request->start_date)->diffForHumans(),
+            ];
+        }
 
         return DiscordMessage::create($body, $embed);
     }
