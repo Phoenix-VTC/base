@@ -48,26 +48,14 @@ class ShowSubmitPage extends Component implements HasForms
             Forms\Components\Grid::make()
                 ->schema([
                     Forms\Components\Select::make('pickup_city')
-                        ->getSearchResultsUsing(function (string $query) {
-                            return City::dropdownSearch($query);
-                        })
+                        ->getSearchResultsUsing(fn($query) => City::dropdownSearch($query))
                         ->getOptionLabelUsing(fn($value) => City::find($value)?->getDropdownName())
                         ->exists(table: City::class, column: 'id')
                         ->searchable()
                         ->required(),
 
                     Forms\Components\Select::make('destination_city')
-                        ->getSearchResultsUsing(function (string $query) {
-                            return City::query()
-                                ->search($query)
-                                ->limit(10)
-                                ->get()
-                                ->mapWithKeys(function (City $city) {
-                                    return [
-                                        $city->id => $city->getDropdownName(),
-                                    ];
-                                });
-                        })
+                        ->getSearchResultsUsing(fn($query) => City::dropdownSearch($query))
                         ->getOptionLabelUsing(fn($value) => City::find($value)?->real_name)
                         ->exists(table: City::class, column: 'id')
                         ->searchable()
@@ -75,12 +63,7 @@ class ShowSubmitPage extends Component implements HasForms
 
                     Forms\Components\Select::make('pickup_company')
                         ->columnSpan(1)
-                        ->getSearchResultsUsing(function (string $query) {
-                            return Company::query()
-                                ->search($query)
-                                ->limit(10)
-                                ->pluck('name', 'id');
-                        })
+                        ->getSearchResultsUsing(fn($query) => Company::dropdownSearch($query))
                         ->getOptionLabelUsing(fn($value) => Company::find($value)?->name)
                         ->exists(table: Company::class, column: 'id')
                         ->searchable()
@@ -88,12 +71,7 @@ class ShowSubmitPage extends Component implements HasForms
 
                     Forms\Components\Select::make('destination_company')
                         ->columnSpan(1)
-                        ->getSearchResultsUsing(function (string $query) {
-                            return Company::query()
-                                ->search($query)
-                                ->limit(10)
-                                ->pluck('name', 'id');
-                        })
+                        ->getSearchResultsUsing(fn($query) => Company::dropdownSearch($query))
                         ->getOptionLabelUsing(fn($value) => Company::find($value)?->name)
                         ->exists(table: Company::class, column: 'id')
                         ->searchable()
@@ -103,12 +81,7 @@ class ShowSubmitPage extends Component implements HasForms
                         ->columns()
                         ->schema([
                             Forms\Components\Select::make('cargo')
-                                ->getSearchResultsUsing(function (string $query) {
-                                    return Cargo::query()
-                                        ->search($query)
-                                        ->limit(10)
-                                        ->pluck('name', 'id');
-                                })
+                                ->getSearchResultsUsing(fn($query) => Cargo::dropdownSearch($query))
                                 ->getOptionLabelUsing(fn($value) => Cargo::find($value)?->name)
                                 ->exists(table: Cargo::class, column: 'id')
                                 ->searchable()

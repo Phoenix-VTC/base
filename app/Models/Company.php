@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 class Company extends Model
 {
@@ -52,5 +53,12 @@ class Company extends Model
         return $query->where(
             fn($query) => $query->where('name', 'like', '%' . $term . '%')
         );
+    }
+
+    public function scopeDropdownSearch($query, string $term): Collection
+    {
+        return $this->search($term)
+            ->limit(10)
+            ->pluck('name', 'id');
     }
 }
