@@ -46,75 +46,63 @@ class ShowSubmitPage extends Component implements HasForms
     {
         return [
             Forms\Components\Grid::make()
-                ->columns()
                 ->schema([
-                    Forms\Components\Grid::make()
-                        ->columns()
-                        ->schema([
-                            Forms\Components\Select::make('pickup_city')
-                                ->columnSpan(1)
-                                ->getSearchResultsUsing(function (string $query) {
-                                    return City::dropdownSearch($query);
-                                })
-                                ->getOptionLabelUsing(fn($value) => City::find($value)?->getDropdownName())
-                                ->exists(table: City::class, column: 'id')
-                                ->searchable()
-                                ->required(),
+                    Forms\Components\Select::make('pickup_city')
+                        ->getSearchResultsUsing(function (string $query) {
+                            return City::dropdownSearch($query);
+                        })
+                        ->getOptionLabelUsing(fn($value) => City::find($value)?->getDropdownName())
+                        ->exists(table: City::class, column: 'id')
+                        ->searchable()
+                        ->required(),
 
-                            Forms\Components\Select::make('destination_city')
-                                ->columnSpan(1)
-                                ->getSearchResultsUsing(function (string $query) {
-                                    return City::query()
-                                        ->search($query)
-                                        ->limit(10)
-                                        ->get()
-                                        ->mapWithKeys(function (City $city) {
-                                            return [
-                                                $city->id => $city->getDropdownName(),
-                                            ];
-                                        });
-                                })
-                                ->getOptionLabelUsing(fn($value) => City::find($value)?->real_name)
-                                ->exists(table: City::class, column: 'id')
-                                ->searchable()
-                                ->required(),
-                        ]),
+                    Forms\Components\Select::make('destination_city')
+                        ->getSearchResultsUsing(function (string $query) {
+                            return City::query()
+                                ->search($query)
+                                ->limit(10)
+                                ->get()
+                                ->mapWithKeys(function (City $city) {
+                                    return [
+                                        $city->id => $city->getDropdownName(),
+                                    ];
+                                });
+                        })
+                        ->getOptionLabelUsing(fn($value) => City::find($value)?->real_name)
+                        ->exists(table: City::class, column: 'id')
+                        ->searchable()
+                        ->required(),
 
-                    Forms\Components\Grid::make()
-                        ->columns()
-                        ->schema([
-                            Forms\Components\Select::make('pickup_company')
-                                ->columnSpan(1)
-                                ->getSearchResultsUsing(function (string $query) {
-                                    return Company::query()
-                                        ->search($query)
-                                        ->limit(10)
-                                        ->pluck('name', 'id');
-                                })
-                                ->getOptionLabelUsing(fn($value) => Company::find($value)?->name)
-                                ->exists(table: Company::class, column: 'id')
-                                ->searchable()
-                                ->required(),
+                    Forms\Components\Select::make('pickup_company')
+                        ->columnSpan(1)
+                        ->getSearchResultsUsing(function (string $query) {
+                            return Company::query()
+                                ->search($query)
+                                ->limit(10)
+                                ->pluck('name', 'id');
+                        })
+                        ->getOptionLabelUsing(fn($value) => Company::find($value)?->name)
+                        ->exists(table: Company::class, column: 'id')
+                        ->searchable()
+                        ->required(),
 
-                            Forms\Components\Select::make('destination_company')
-                                ->columnSpan(1)
-                                ->getSearchResultsUsing(function (string $query) {
-                                    return Company::query()
-                                        ->search($query)
-                                        ->limit(10)
-                                        ->pluck('name', 'id');
-                                })
-                                ->getOptionLabelUsing(fn($value) => Company::find($value)?->name)
-                                ->exists(table: Company::class, column: 'id')
-                                ->searchable()
-                                ->required(),
-                        ]),
+                    Forms\Components\Select::make('destination_company')
+                        ->columnSpan(1)
+                        ->getSearchResultsUsing(function (string $query) {
+                            return Company::query()
+                                ->search($query)
+                                ->limit(10)
+                                ->pluck('name', 'id');
+                        })
+                        ->getOptionLabelUsing(fn($value) => Company::find($value)?->name)
+                        ->exists(table: Company::class, column: 'id')
+                        ->searchable()
+                        ->required(),
 
                     Forms\Components\Grid::make()
                         ->columns()
                         ->schema([
                             Forms\Components\Select::make('cargo')
-                                ->columnSpan(1)
                                 ->getSearchResultsUsing(function (string $query) {
                                     return Cargo::query()
                                         ->search($query)
@@ -131,7 +119,6 @@ class ShowSubmitPage extends Component implements HasForms
                         ->columns()
                         ->schema([
                             Forms\Components\DatePicker::make('finished_at')
-                                ->columnSpan(1)
                                 ->minDate(now()->subDays(7))
                                 ->maxDate(now())
                                 ->default(now())
@@ -142,7 +129,6 @@ class ShowSubmitPage extends Component implements HasForms
                         ->columns()
                         ->schema([
                             Forms\Components\TextInput::make('distance')
-                                ->columnSpan(1)
                                 ->numeric()
                                 ->minValue(1)
                                 ->maxValue(5000)
@@ -156,7 +142,6 @@ class ShowSubmitPage extends Component implements HasForms
                         ->schema([
                             Forms\Components\TextInput::make('load_damage')
                                 ->label('Cargo damage')
-                                ->columnSpan(1)
                                 ->numeric()
                                 ->minValue(0)
                                 ->maxValue(100)
@@ -167,7 +152,6 @@ class ShowSubmitPage extends Component implements HasForms
                         ]),
 
                     Forms\Components\TextInput::make('estimated_income')
-                        ->columnSpan(1)
                         ->numeric()
                         ->minValue(1)
                         ->maxValue(400000)
@@ -175,7 +159,6 @@ class ShowSubmitPage extends Component implements HasForms
                         ->required(),
 
                     Forms\Components\TextInput::make('total_income')
-                        ->columnSpan(1)
                         ->numeric()
                         ->minValue(1)
                         ->lte('estimated_income')
@@ -183,10 +166,12 @@ class ShowSubmitPage extends Component implements HasForms
                         ->required(),
 
                     Forms\Components\Textarea::make('comments')
-                        ->columnSpan(2)
+                        ->columnSpan([
+                            'sm' => 1,
+                            'md' => 2,
+                        ])
                         ->placeholder('Any notes and/or comments about this delivery'),
                 ]),
-
         ];
     }
 
