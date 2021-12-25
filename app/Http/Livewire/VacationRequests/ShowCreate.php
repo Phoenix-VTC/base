@@ -11,7 +11,6 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Unique;
 use Livewire\Component;
 
@@ -27,28 +26,6 @@ class ShowCreate extends Component implements HasForms
     public function mount(): void
     {
         $this->form->fill();
-    }
-
-    public function rules(): array
-    {
-        return [
-            'start_date' => ['required', 'date', 'after_or_equal:tomorrow',
-                Rule::unique('vacation_requests')->where(function ($query) {
-                    return $query->where('user_id', Auth::id());
-                })
-            ],
-            'end_date' => ['exclude_if:leaving,1', 'required_unless:leaving,1', 'date', 'after_or_equal:tomorrow', 'after:start_date', 'after_or_equal:' . Carbon::parse($this->start_date)->addWeek(),
-                Rule::unique('vacation_requests')->where(function ($query) {
-                    return $query->where('user_id', Auth::id());
-                })
-            ],
-            'reason' => ['required', 'min:3'],
-            'leaving' => ['required', 'boolean',
-                Rule::unique('vacation_requests')->where(function ($query) {
-                    return $query->where('user_id', Auth::id())->where('leaving', 1)->whereNull('handled_by');
-                })
-            ],
-        ];
     }
 
     public function messages(): array
