@@ -159,6 +159,14 @@ class ShowEditPage extends Component implements HasForms
                         ->maxValue(400000)
                         ->prefix(Game::getCurrencySymbol($this->job->game_id) ?? '??')
                         ->placeholder('The original estimate, before any penalties')
+                        ->disabled($this->job->tracker_job)
+                        ->helperText(function () {
+                            if ($this->job->tracker_job) {
+                                return 'This value was saved by the tracker, and cannot be changed.';
+                            }
+
+                            return null;
+                        })
                         ->required(),
 
                     Forms\Components\TextInput::make('total_income')
