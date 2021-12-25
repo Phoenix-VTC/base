@@ -128,6 +128,7 @@ class ShowSubmitPage extends Component implements HasForms
                         ->numeric()
                         ->minValue(1)
                         ->maxValue(400000)
+                        ->prefix(Game::getCurrencySymbol($this->game_id) ?? '??')
                         ->placeholder('The original estimate, before any penalties')
                         ->required(),
 
@@ -135,6 +136,7 @@ class ShowSubmitPage extends Component implements HasForms
                         ->numeric()
                         ->minValue(1)
                         ->lte('estimated_income')
+                        ->prefix(Game::getCurrencySymbol($this->game_id) ?? '??')
                         ->placeholder('Including any in-game penalties')
                         ->required(),
 
