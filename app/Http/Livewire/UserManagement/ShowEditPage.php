@@ -6,42 +6,42 @@ use App\Models\User;
 use App\Rules\UsernameNotReserved;
 use Auth;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
+use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
 
-class ShowEditPage extends Component
+class ShowEditPage extends Component implements HasForms
 {
     use AuthorizesRequests;
+    use InteractsWithForms;
 
     public User $user;
-    public Collection $available_roles;
     // Form fields
-    public $username = '';
-    public $email = '';
-    public string $steam_id = '';
-    public string $truckersmp_id = '';
-    public string $date_of_birth = '';
-    public array $user_roles = [];
+    public $username;
+    public $email;
+    public $steam_id;
+    public $truckersmp_id;
+    public $date_of_birth;
+    public $roles;
 
-    public function mount(int $id): void
+    public function mount(User $user): void
     {
-        $this->user = User::with([
-            'roles',
-        ])->findOrFail($id);
+        $this->user = $user;
 
-        $this->authorize('update', $this->user);
+        $this->authorize('update', $user);
 
-        $this->available_roles = $this->getAvailableRoles();
-
-        // Form fields
-        $this->username = $this->user->username;
-        $this->email = $this->user->email;
-        $this->steam_id = $this->user->steam_id ?? '';
-        $this->truckersmp_id = $this->user->truckersmp_id ?? '';
-        $this->date_of_birth = $this->user->date_of_birth ?? '';
-        $this->user_roles = $this->user->roles->pluck('id')->toArray();
+        // Fill the form fields
+        $this->form->fill([
+            'username' => $this->user->username,
+            'email' => $this->user->email,
+            'steam_id' => $this->user->steam_id,
+            'truckersmp_id' => $this->user->truckersmp_id,
+            'date_of_birth' => $this->user->date_of_birth,
+            'roles' => $this->user->roles->pluck('id')->toArray(),
+        ]);
     }
 
     public function rules(): array
@@ -61,26 +61,79 @@ class ShowEditPage extends Component
         return view('livewire.user-management.edit-page')->extends('layouts.app');
     }
 
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\Grid::make()
+                ->schema([
+                    Forms\Components\TextInput::make('username')
+                        ->required()
+                        ->minLength(3)
+                        ->unique(table: User::class, ignorable: $this->user)
+                        ->rule(new UsernameNotReserved),
+
+                    Forms\Components\TextInput::make('email')
+                        ->required()
+                        ->email()
+                        ->unique(table: User::class, ignorable: $this->user)
+                        ->helperText(function () {
+                            return 'Account activated via the initial welcome email: **' . ($this->user->welcome_valid_until ? 'no' : 'yes') . '**';
+                        }),
+
+                    Forms\Components\TextInput::make('steam_id')
+                        ->label('Steam ID')
+                        ->required()
+                        ->numeric()
+                        ->helperText(function () {
+                            return "<u><a href='https://steamidfinder.com/lookup/{$this->user->steam_id}' target='_blank'>**Steam account information**</a></u>"
+                                . '<br>Needs to be steamID64 (DEC)';
+                        }),
+
+                    Forms\Components\TextInput::make('truckersmp_id')
+                        ->label('TruckersMP ID')
+                        ->required()
+                        ->numeric()
+                        ->helperText(function () {
+                            return "<u><a href='https://truckersmp.com/user/{$this->user->truckersmp_id}' target='_blank'>**View TruckersMP account**</a></u>";
+                        }),
+
+                    Forms\Components\DatePicker::make('date_of_birth')
+                        ->required()
+                        ->helperText(function () {
+                            return 'The user must be at least 16 years old';
+                        }),
+
+                    Forms\Components\MultiSelect::make('roles')
+                        ->options($this->getAvailableRoles())
+                ]),
+        ];
+    }
+
+    protected function getFormModel(): User
+    {
+        return $this->user;
+    }
+
     public function submit()
     {
-        $this->validate();
+        $validatedData = $this->form->getState();
 
         $this->user->update([
-            'username' => $this->username,
-            'email' => $this->email,
-            'steam_id' => $this->steam_id,
-            'truckersmp_id' => $this->truckersmp_id,
-            'date_of_birth' => $this->date_of_birth,
+            'username' => $validatedData['username'],
+            'email' => $validatedData['email'],
+            'steam_id' => $validatedData['steam_id'],
+            'truckersmp_id' => $validatedData['truckersmp_id'],
+            'date_of_birth' => $validatedData['date_of_birth'],
         ]);
 
-        $this->user->syncRoles($this->user_roles);
+        $this->user->syncRoles($this->roles);
 
         session()->flash('alert', ['type' => 'success', 'message' => 'Profile successfully updated!']);
 
         return redirect(route('users.profile', $this->user));
     }
 
-    private function getAvailableRoles(): Collection
+    private function getAvailableRoles(): array
     {
         // Query all roles below or equal to the current user's role level
         $roles = Role::query()
@@ -96,8 +149,10 @@ class ShowEditPage extends Component
             $roles->where('is_upper_staff', false);
         }
 
-        // Order by level and return the results
-        return $roles->orderByDesc('level')
-            ->get(['id', 'name', 'level']);
+        return $roles
+            ->orderByDesc('level') // Highest level first
+            ->get() // Get the results
+            ->pluck('name', 'id') // Convert them to key => value pairs
+            ->toArray(); // Convert them to an array
     }
 }

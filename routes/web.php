@@ -175,7 +175,7 @@ Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
 
     Route::get('{user}/jobs', UsersShowJobOverviewPage::class)->name('jobs-overview');
 
-    Route::prefix('{id}')->middleware('can:manage users')->group(function () {
+    Route::prefix('{user}')->middleware('can:manage users')->group(function () {
         Route::get('edit', UserManagementShowEditPage::class)->name('edit')->whereNumber('id');
 
         Route::get('remove-profile-picture', [UserManagementUserController::class, 'removeProfilePicture'])->name('removeProfilePicture')->whereNumber('id');
