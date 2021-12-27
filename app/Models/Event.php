@@ -41,6 +41,7 @@ class Event extends Model
         'external_event' => 'boolean',
         'public_event' => 'boolean',
         'completed' => 'boolean',
+        'required_dlcs' => 'array',
     ];
 
     public static function getFeaturedEvents()
