@@ -231,13 +231,15 @@ class ShowCreate extends Component implements HasForms
                                 ->label('Publish event')
                                 ->onIcon('heroicon-s-eye')
                                 ->offIcon('heroicon-s-eye-off')
-                                ->hint("If the event should be visible to users. Don't tick if it is a draft."),
+                                ->hint("If the event should be visible to users. Don't tick if it is a draft.")
+                                ->reactive(),
 
                             Forms\Components\Toggle::make('announce')
                                 ->label('Announce event')
                                 ->onIcon('heroicon-o-bell')
                                 ->offIcon('heroicon-s-x')
-                                ->hint("If the event should be announced on Discord. If skipped, it can't be done afterwards."),
+                                ->hint("If the event should be announced on Discord. If skipped, it can't be done afterwards.")
+                                ->hidden(fn(Closure $get) => !$get('published')),
                         ]),
                 ]),
         ];
