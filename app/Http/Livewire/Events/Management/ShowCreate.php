@@ -6,7 +6,6 @@ use App\Enums\Attending;
 use App\Models\Event;
 use App\Models\User;
 use App\Notifications\Events\NewEvent;
-use App\Rules\Events\UniqueForDay;
 use Carbon\Carbon;
 use Closure;
 use Filament\Forms;
@@ -49,39 +48,9 @@ class ShowCreate extends Component implements HasForms
     public $public_event = '';
     public $hosted_by = '';
     public $announce = '';
-    public bool $form_data_changed = false;
-
-    public function rules(): array
-    {
-        // TODO: Migrate these rules to the Filament form fields
-        // TODO: Also implement all this on the edit page, currently it's broken because of the `required_dlcs` type switch (to JSON array)
-        return [
-            'tmp_event_url' => ['required_without:name'],
-            'tmp_event_id' => ['required_without:name', 'integer'],
-            'name' => ['required', 'string'],
-            'featured_image_url' => ['required', 'url', 'starts_with:https://', 'ends_with:.png,.jpg,.jpeg'],
-            'map_image_url' => ['sometimes', 'url', 'starts_with:https://', 'ends_with:.png,.jpg,.jpeg'],
-            'description' => ['required_without:tmp_event_id', 'string'],
-            'server' => ['sometimes', 'string'],
-            'required_dlcs' => ['sometimes', 'string'],
-            'departure_location' => ['sometimes', 'string'],
-            'arrival_location' => ['sometimes', 'string'],
-            'start_date' => ['required', 'date', new UniqueForDay],
-            'distance' => ['required', 'integer', 'min:0'],
-            'points' => ['required', 'integer', 'min:100', 'max:500'],
-            'game_id' => ['sometimes', 'integer'],
-            'published' => ['required', 'boolean'],
-            'featured' => ['sometimes', 'boolean'],
-            'external_event' => ['sometimes', 'boolean'],
-            'public_event' => ['sometimes', 'boolean'],
-            'hosted_by' => ['required', 'int'],
-            'announce' => ['required', 'boolean'],
-        ];
-    }
 
     protected array $validationAttributes = [
         'tmp_event_url' => 'TruckersMP Event URL',
-        'tmp_event_id' => 'TruckersMP Event ID',
         'name' => 'Event Name',
         'description' => 'Description',
         'featured_image_url' => 'Featured Image URL',
@@ -111,7 +80,8 @@ class ShowCreate extends Component implements HasForms
                         ->schema([
                             Forms\Components\TextInput::make('tmp_event_url')
                                 ->label('TruckersMP event URL')
-                                ->required()
+                                ->url()
+                                ->rule('starts_with:https://')
                                 ->placeholder('https://truckersmp.com/events/123-event-name')
                                 ->reactive()
                                 ->afterStateUpdated(fn() => $this->setTruckersMpFormData())
@@ -136,6 +106,9 @@ class ShowCreate extends Component implements HasForms
                     Forms\Components\TextInput::make('featured_image_url')
                         ->label('Featured image URL')
                         ->required()
+                        ->url()
+                        ->rule('starts_with:https://')
+                        ->rule('ends_with:.png,.jpg,.jpeg')
                         ->placeholder('https://i.imgur.com/Uv6fmAq.png')
                         ->helperText(function (Closure $get) {
                             if (!$get('featured_image_url')) {
@@ -148,6 +121,9 @@ class ShowCreate extends Component implements HasForms
                     Forms\Components\TextInput::make('map_image_url')
                         ->label('Map image URL')
                         ->required()
+                        ->url()
+                        ->rule('starts_with:https://')
+                        ->rule('ends_with:.png,.jpg,.jpeg')
                         ->placeholder('https://i.imgur.com/vJOyb72.png')
                         ->helperText(function (Closure $get) {
                             if (!$get('map_image_url')) {
@@ -161,6 +137,7 @@ class ShowCreate extends Component implements HasForms
                         ->columns(1)
                         ->schema([
                             Forms\Components\RichEditor::make('description')
+                                ->required()
                                 ->fileAttachmentsDisk('scaleway')
                                 ->fileAttachmentsDirectory('event-images')
                         ]),
@@ -169,7 +146,6 @@ class ShowCreate extends Component implements HasForms
                         ->columns(1)
                         ->schema([
                             Forms\Components\TextInput::make('server')
-                                ->required()
                                 ->placeholder('Simulation 1'),
 
                             Forms\Components\TagsInput::make('required_dlcs')
@@ -180,11 +156,9 @@ class ShowCreate extends Component implements HasForms
                         ]),
 
                     Forms\Components\TextInput::make('departure_location')
-                        ->required()
                         ->placeholder('Kaarfor, Amsterdam'),
 
                     Forms\Components\TextInput::make('arrival_location')
-                        ->required()
                         ->placeholder('EuroAcres, Groningen'),
 
                     Forms\Components\Grid::make()
@@ -204,11 +178,18 @@ class ShowCreate extends Component implements HasForms
                     Forms\Components\TextInput::make('distance')
                         ->hint('In kilometres')
                         ->required()
+                        ->numeric()
+                        ->minValue(0)
                         ->placeholder('1200'),
 
                     Forms\Components\TextInput::make('points')
                         ->label('Event XP')
                         ->required()
+                        ->numeric()
+                        ->minValue(100)
+                        ->step(10)
+                        ->hint('In steps of 10, but preferably 100')
+                        ->helperText('*Event XP should be a value between 100 - 500, unless specified otherwise.*')
                         ->placeholder('100'),
 
                     Forms\Components\Radio::make('game_id')
