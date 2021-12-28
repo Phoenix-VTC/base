@@ -3,48 +3,84 @@
 namespace App\Http\Livewire\GameData\Cargos;
 
 use App\Models\Cargo;
-use Illuminate\Validation\Rule;
-use Illuminate\View\View;
+use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
 
-class ShowIndexPage extends Component
+class ShowIndexPage extends Component implements HasForms
 {
-    public string $name = '';
-    public string $dlc = '';
-    public string $mod = '';
-    public string $weight = '';
-    public string $game_id = '1';
-    public string $wot = '0';
+    use InteractsWithForms;
 
-    public function rules(): array
+    public $name = '';
+    public $dlc = '';
+    public $mod = '';
+    public $weight = '';
+    public $game_id = 1;
+    public $wot = 0;
+
+    public function render()
     {
-        return [
-            'name' => ['required'],
-            'dlc' => ['sometimes'],
-            'mod' => ['sometimes'],
-            'weight' => ['sometimes', 'numeric', 'min:1'],
-            'game_id' => ['required', 'integer', Rule::in(['1', '2'])],
-            'wot' => ['required', 'boolean'],
-        ];
+        return view('livewire.game-data.cargos')->extends('layouts.app');
     }
 
-    public function render(): View
+    protected function getFormSchema(): array
     {
-        return view('livewire.game-data.cargos')
-            ->extends('layouts.app');
+        return [
+            Forms\Components\Grid::make()
+                ->schema([
+                    Forms\Components\Grid::make()
+                        ->columns(1)
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->required()
+                        ]),
+
+                    Forms\Components\TextInput::make('dlc')
+                        ->label('DLC'),
+
+                    Forms\Components\TextInput::make('mod'),
+
+                    Forms\Components\Grid::make()
+                        ->schema([
+                            Forms\Components\TextInput::make('weight')
+                                ->numeric()
+                                ->minValue(1)
+                                ->helperText('Tonnes (t) for ETS2, pounds (lb) for ATS.')
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->schema([
+                            Forms\Components\Select::make('game_id')
+                                ->label('Game')
+                                ->options([
+                                    1 => 'Euro Truck Simulator 2',
+                                    2 => 'American Truck Simulator',
+                                ])
+                                ->required()
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->schema([
+                            Forms\Components\Radio::make('wot')
+                                ->label('World of Trucky only')
+                                ->boolean()
+                        ]),
+                ]),
+        ];
     }
 
     public function submit(): void
     {
-        $this->validate();
+        $validateData = $this->form->getState();
 
         $cargo = Cargo::create([
-            'name' => $this->name,
-            'dlc' => $this->dlc,
-            'mod' => $this->mod,
-            'weight' => (int)$this->weight,
-            'game_id' => (int)$this->game_id,
-            'world_of_trucks' => (bool)$this->wot,
+            'name' => $validateData['name'],
+            'dlc' => $validateData['dlc'],
+            'mod' => $validateData['mod'],
+            'weight' => $validateData['weight'] ?: null,
+            'game_id' => $validateData['game_id'],
+            'world_of_trucks' => $validateData['wot'],
         ]);
 
         $this->reset();
