@@ -82,7 +82,7 @@ class ShowEditPage extends Component implements HasForms
                     Forms\Components\Grid::make()
                         ->schema([
                             Forms\Components\Radio::make('wot')
-                                ->label('World of Trucky only')
+                                ->label('World of Trucks only')
                                 ->boolean()
                         ]),
                 ]),
