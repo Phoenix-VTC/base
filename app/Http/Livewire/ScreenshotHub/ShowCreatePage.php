@@ -62,7 +62,7 @@ class ShowCreatePage extends Component implements HasForms
                                 ->directory('screenshot-hub-uploads')
                                 ->required()
                                 ->label('Screenshot')
-                                ->image()
+                                ->acceptedFileTypes(['image/jpeg', 'image/png'])
                                 ->hint('Max 2MB')
                                 ->maxSize(2048)
                         ]),
