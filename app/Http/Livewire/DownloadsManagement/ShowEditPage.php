@@ -21,16 +21,6 @@ class ShowEditPage extends Component implements HasForms
     public $image;
     public $file;
 
-    public function rules(): array
-    {
-        return [
-            'name' => ['required'],
-            'description' => ['present'],
-            'image' => ['nullable', 'image', 'max:1024'],
-            'file' => ['nullable', 'file', 'mimes:pdf,zip,rar', 'max:102400'],
-        ];
-    }
-
     public function mount(): void
     {
         $this->form->fill([
