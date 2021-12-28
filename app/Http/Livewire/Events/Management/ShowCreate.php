@@ -192,13 +192,25 @@ class ShowCreate extends Component implements HasForms
                         ->helperText('*Event XP should be a value between 100 - 500, unless specified otherwise.*')
                         ->placeholder('100'),
 
-                    Forms\Components\Radio::make('game_id')
-                        ->label('Game')
-                        ->required()
-                        ->options([
-                            1 => 'Euro Truck Simulator 2',
-                            2 => 'American Truck Simulator',
+                    Forms\Components\Grid::make()
+                        ->columns(1)
+                        ->schema([
+                            Forms\Components\Radio::make('game_id')
+                                ->label('Game')
+                                ->required()
+                                ->options([
+                                    1 => 'Euro Truck Simulator 2',
+                                    2 => 'American Truck Simulator',
+                                ]),
                         ]),
+
+                    Forms\Components\Select::make('hosted_by')
+                        ->label('Event host')
+                        ->placeholder('Choose a host/lead')
+                        ->options(Event::getAvailableHosts())
+                        ->required()
+                        ->searchable()
+                        ->hint('The user that is hosting or leading the event.'),
 
                     Forms\Components\Fieldset::make('Extra Options')
                         ->columns(1)
@@ -215,14 +227,6 @@ class ShowCreate extends Component implements HasForms
                                 ->label('Public event')
                                 ->hint('For events that non-phoenix members can attend.'),
                         ]),
-
-                    Forms\Components\Select::make('hosted_by')
-                        ->label('Event host')
-                        ->placeholder('Choose a host/lead')
-                        ->options($this->getAvailableHosts())
-                        ->required()
-                        ->searchable()
-                        ->hint('The user that is hosting or leading the event.'),
 
                     Forms\Components\Fieldset::make('Visibility')
                         ->columns(1)
@@ -349,18 +353,6 @@ class ShowCreate extends Component implements HasForms
             'start_date' => $this->tmp_event_data['response']['start_at'] ?? '',
             'game_id' => $this->gameNameToId($this->tmp_event_data['response']['game']),
         ]);
-    }
-
-    private function getAvailableHosts(): array
-    {
-        // Get every user that can manage events
-        $users = User::permission('manage events')->pluck('username', 'id');
-
-        // Get all super admins
-        $superAdmins = User::role('super admin')->pluck('username', 'id');
-
-        // Merge the two arrays while keeping the original keys (IDs), and return them as an array
-        return $users->union($superAdmins)->toArray();
     }
 
     private function gameNameToId($game): int|null

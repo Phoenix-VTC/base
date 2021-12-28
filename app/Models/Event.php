@@ -200,4 +200,21 @@ class Event extends Model
             return $ets + $ats;
         });
     }
+
+    /**
+     * Get a key-value array of users that can host events.
+     *
+     * @return array
+     */
+    public static function getAvailableHosts(): array
+    {
+        // Get every user that can manage events
+        $users = User::permission('manage events')->pluck('username', 'id');
+
+        // Get all super admins
+        $superAdmins = User::role('super admin')->pluck('username', 'id');
+
+        // Merge the two arrays while keeping the original keys (IDs), and return them as an array
+        return $users->union($superAdmins)->toArray();
+    }
 }
