@@ -67,7 +67,7 @@ class ProcessAcceptation implements ShouldQueue
             'welcome_token' => Str::random(64),
             'application_id' => $this->application->id,
             'discord' => [
-                'id' => $this->discordUser->id,
+                'id' => (string)$this->discordUser->id,
                 'name' => $this->discordUser->username,
                 'nickname' => "{$this->discordUser->username}#{$this->discordUser->discriminator}",
                 'avatar' => $this->discordUser->getAvatar('jpg'),
