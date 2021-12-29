@@ -49,23 +49,25 @@
                                             {{ $vacation_request->user->username ?? 'Deleted User' }}
                                             ({{ $vacation_request->user_id }})
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <time datetime="{{ $vacation_request->start_date }}">
-                                                {{ $vacation_request->start_date->format('M d, Y') }}
-                                            </time>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            @if($vacation_request->leaving)
+                                        @if($vacation_request->leaving)
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" colspan="2">
                                                 <span
                                                     class="px-2 ml-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                                     Leaving Phoenix
                                                 </span>
-                                            @else
+                                            </td>
+                                        @else
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <time datetime="{{ $vacation_request->start_date }}">
+                                                    {{ $vacation_request->start_date->format('M d, Y') }}
+                                                </time>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 <time datetime="{{ $vacation_request->end_date }}">
                                                     {{ $vacation_request->end_date->format('M d, Y') }}
                                                 </time>
-                                            @endif
-                                        </td>
+                                            </td>
+                                        @endif
                                         <td class="px-6 py-4 text-sm text-gray-500">
                                             {{ $vacation_request->reason }}
                                         </td>

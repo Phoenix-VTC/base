@@ -14,7 +14,7 @@ module.exports = {
                 purple: colors.violet,
 
                 danger: colors.rose,
-                primary: colors.blue,
+                primary: colors.orange,
                 success: colors.green,
                 warning: colors.yellow,
 
@@ -36,6 +36,7 @@ module.exports = {
         './vendor/razorui/blade-application-ui/resources/views/components/**/*.blade.php',
         './vendor/wire-elements/modal/resources/views/*.blade.php',
         './storage/framework/views/*.php',
+        './vendor/filament/**/*.blade.php',
     ],
     safelist: [
         "sm:max-w-sm",

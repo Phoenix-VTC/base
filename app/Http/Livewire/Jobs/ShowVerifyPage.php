@@ -3,27 +3,36 @@
 namespace App\Http\Livewire\Jobs;
 
 use App\Enums\JobStatus;
+use App\Models\Cargo;
+use App\Models\City;
+use App\Models\Company;
+use App\Models\Game;
 use App\Models\Job;
 use Carbon\Carbon;
+use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class ShowVerifyPage extends Component
+class ShowVerifyPage extends Component implements HasForms
 {
+    use InteractsWithForms;
+
     public Job $job;
     // Form fields
-    public string $pickup_city = '';
-    public string $destination_city = '';
-    public string $pickup_company = '';
-    public string $destination_company = '';
-    public string $cargo = '';
-    public ?string $started_at = '';
-    public ?string $finished_at = '';
-    public string $distance = '';
-    public string $load_damage = '';
-    public string $estimated_income = '';
-    public string $total_income = '';
-    public ?string $comments = '';
+    public $pickup_city;
+    public $destination_city;
+    public $pickup_company;
+    public $destination_company;
+    public $cargo;
+    public $started_at;
+    public $finished_at;
+    public $distance;
+    public $load_damage;
+    public $estimated_income;
+    public $total_income;
+    public $comments;
 
     public function mount(): void
     {
@@ -35,7 +44,7 @@ class ShowVerifyPage extends Component
             abort(403, 'You don\'t have permission to verify this job.');
         }
 
-        $this->fill([
+        $this->form->fill([
             'pickup_city' => $this->job->pickup_city_id,
             'destination_city' => $this->job->destination_city_id,
             'pickup_company' => $this->job->pickup_company_id,
@@ -61,35 +70,124 @@ class ShowVerifyPage extends Component
         }
     }
 
-    public function rules(): array
-    {
-        return [
-            'pickup_city' => ['required', 'integer', 'exists:App\Models\City,id'],
-            'destination_city' => ['required', 'integer', 'exists:App\Models\City,id'],
-            'pickup_company' => ['required', 'integer', 'exists:App\Models\Company,id'],
-            'destination_company' => ['required', 'integer', 'exists:App\Models\Company,id'],
-            'cargo' => ['required', 'integer', 'exists:App\Models\Cargo,id'],
-            'finished_at' => ['required', 'date', 'after_or_equal:' . date('Y-m-d', strtotime('-7 days')), 'before_or_equal:today'],
-            'distance' => ['required', 'integer', 'min:1', 'max:5000'],
-            'load_damage' => ['required', 'integer', 'min:0', 'max:100'],
-            'total_income' => ['required', 'integer', 'min:1', 'max:' . $this->estimated_income],
-            'comments' => ['sometimes', 'string'],
-        ];
-    }
-
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
-
     public function render()
     {
         return view('livewire.jobs.show-verify-page')->extends('layouts.app');
     }
 
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\Grid::make()
+                ->schema([
+                    Forms\Components\Select::make('pickup_city')
+                        ->getSearchResultsUsing(fn($query) => City::dropdownSearch($query))
+                        ->getOptionLabelUsing(fn($value) => City::find($value)?->getDropdownName())
+                        ->exists(table: City::class, column: 'id')
+                        ->searchable()
+                        ->required(),
+
+                    Forms\Components\Select::make('destination_city')
+                        ->getSearchResultsUsing(fn($query) => City::dropdownSearch($query))
+                        ->getOptionLabelUsing(fn($value) => City::find($value)?->real_name)
+                        ->exists(table: City::class, column: 'id')
+                        ->searchable()
+                        ->required(),
+
+                    Forms\Components\Select::make('pickup_company')
+                        ->columnSpan(1)
+                        ->getSearchResultsUsing(fn($query) => Company::dropdownSearch($query))
+                        ->getOptionLabelUsing(fn($value) => Company::find($value)?->name)
+                        ->exists(table: Company::class, column: 'id')
+                        ->searchable()
+                        ->required(),
+
+                    Forms\Components\Select::make('destination_company')
+                        ->columnSpan(1)
+                        ->getSearchResultsUsing(fn($query) => Company::dropdownSearch($query))
+                        ->getOptionLabelUsing(fn($value) => Company::find($value)?->name)
+                        ->exists(table: Company::class, column: 'id')
+                        ->searchable()
+                        ->required(),
+
+                    Forms\Components\Grid::make()
+                        ->columns()
+                        ->schema([
+                            Forms\Components\Select::make('cargo')
+                                ->getSearchResultsUsing(fn($query) => Cargo::dropdownSearch($query))
+                                ->getOptionLabelUsing(fn($value) => Cargo::find($value)?->name)
+                                ->exists(table: Cargo::class, column: 'id')
+                                ->searchable()
+                                ->required(),
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->columns()
+                        ->schema([
+                            Forms\Components\DatePicker::make('finished_at')
+                                ->minDate(now()->subDays(7))
+                                ->maxDate(now())
+                                ->default(now())
+                                ->required(),
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->columns()
+                        ->schema([
+                            Forms\Components\TextInput::make('distance')
+                                ->numeric()
+                                ->minValue(1)
+                                ->maxValue(5000)
+                                ->placeholder(1200)
+                                ->hint(fn() => 'In ' . Game::getQualifiedDistanceMetric($this->job->game_id) ?? '??')
+                                ->required(),
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->columns()
+                        ->schema([
+                            Forms\Components\TextInput::make('load_damage')
+                                ->label('Cargo damage')
+                                ->numeric()
+                                ->minValue(0)
+                                ->maxValue(100)
+                                ->default(0)
+                                ->postfix('%')
+                                ->helperText('A value between 0 and 100%')
+                                ->required(),
+                        ]),
+
+                    Forms\Components\TextInput::make('estimated_income')
+                        ->numeric()
+                        ->disabled()
+                        ->prefix(Game::getCurrencySymbol($this->job->game_id) ?? '??')
+                        ->minValue(1)
+                        ->maxValue(400000)
+                        ->helperText('The original estimate, before any penalties.<br>' .
+                            'This value was saved by the tracker, and cannot be changed.')
+                        ->required(),
+
+                    Forms\Components\TextInput::make('total_income')
+                        ->numeric()
+                        ->minValue(1)
+                        ->prefix(Game::getCurrencySymbol($this->job->game_id) ?? '??')
+                        ->lte('estimated_income')
+                        ->helperText('Including any in-game penalties.')
+                        ->required(),
+
+                    Forms\Components\Textarea::make('comments')
+                        ->columnSpan([
+                            'sm' => 1,
+                            'md' => 2,
+                        ])
+                        ->placeholder('Any notes and/or comments about this delivery.'),
+                ]),
+        ];
+    }
+
     public function submit()
     {
-        $validatedData = $this->validate();
+        $validatedData = $this->form->getState();
 
         $this->job->update([
             'pickup_city_id' => $validatedData['pickup_city'],
