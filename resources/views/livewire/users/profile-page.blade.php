@@ -213,7 +213,7 @@
 
                     <div class="mt-3 pt-3 flex flex-wrap mx-6 border-t gap-y-2">
                         @if($user->roles->count())
-                            @foreach($user->roles as $role)
+                            @foreach($user->roles->sortByDesc('level') as $role)
                                 <span
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium mr-2" style="background-color: {{ $role->badge_color }}; color: {{ $role->text_color }}">
                                     {{ ucwords($role->name) }}
