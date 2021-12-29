@@ -10,6 +10,7 @@ use App\Events\NewBlocklistEntry;
 use App\Events\PasswordChanged;
 use App\Events\UserInBlocklistAuthenticated;
 use App\Events\UserInBlocklistTriedToApply;
+use App\Listeners\ClearUserWelcomeFields;
 use App\Listeners\SendAchievementUnlockedNotification;
 use App\Listeners\SendDeletedBlocklistEntryNotification;
 use App\Listeners\SendEmailChangedNotification;
@@ -28,6 +29,7 @@ use App\Models\Job as JobModel;
 use App\Observers\JobObserver;
 use App\Observers\ScreenshotObserver;
 use Assada\Achievements\Event\Unlocked as UnlockedAchievement;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -82,6 +84,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         UserInBlocklistAuthenticated::class => [
             SendUserInBlocklistAuthenticatedNotification::class,
+        ],
+        Login::class => [
+            ClearUserWelcomeFields::class
         ],
     ];
 
