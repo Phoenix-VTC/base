@@ -86,7 +86,7 @@
 
                         <x-app-ui::table.cell>
                             @if($job->user)
-                                <x-app-ui::link href="{{ route('users.profile', $job->user->id) }}">
+                                <x-app-ui::link href="{{ route('users.profile', $job->user) }}">
                                     {{ $job->user->username }}
                                 </x-app-ui::link>
                             @else
@@ -146,7 +146,7 @@
 
                         <x-app-ui::table.cell>
                             @if($job->user)
-                                <x-app-ui::link href="{{ route('users.profile', $job->user->id) }}">
+                                <x-app-ui::link href="{{ route('users.profile', $job->user) }}">
                                     {{ $job->user->username }}
                                 </x-app-ui::link>
                             @else

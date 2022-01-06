@@ -65,6 +65,7 @@ use App\Http\Livewire\UserManagement\Permissions\ShowIndexPage as UserManagement
 use App\Http\Livewire\Wallet\ShowIndexPage as WalletShowIndexPage;
 use App\Http\Controllers\Auth\SteamController as SteamAuthController;
 use App\Http\Controllers\Auth\DiscordController as DiscordAuthController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -168,18 +169,26 @@ Route::get('profile', function () {
     return redirect()->route('users.profile', Auth::user());
 })->middleware('auth')->name('profile');
 
-Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
-    Route::get('{id}', ShowProfilePage::class)->name('profile')->whereNumber('id');
+Route::get('@{user}', function (User $user) {
+    return redirect()->route('users.profile', $user);
+})->name('profile.fancy-redirect');
 
-    Route::get('{id}/achievements', ShowAchievementsPage::class)->name('achievements')->whereNumber('id');
+Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
+    Route::get('{id}', function ($id) {
+        return redirect()->route('users.profile', User::findOrFail($id));
+    })->whereNumber('id');
+
+    Route::get('{user}', ShowProfilePage::class)->name('profile');
+
+    Route::get('{user}/achievements', ShowAchievementsPage::class)->name('achievements');
 
     Route::get('{user}/jobs', UsersShowJobOverviewPage::class)->name('jobs-overview');
 
     Route::prefix('{user}')->middleware('can:manage users')->group(function () {
-        Route::get('edit', UserManagementShowEditPage::class)->name('edit')->whereNumber('id');
+        Route::get('edit', UserManagementShowEditPage::class)->name('edit');
 
-        Route::get('remove-profile-picture', [UserManagementUserController::class, 'removeProfilePicture'])->name('removeProfilePicture')->whereNumber('id');
-        Route::get('remove-profile-banner', [UserManagementUserController::class, 'removeProfileBanner'])->name('removeProfileBanner')->whereNumber('id');
+        Route::get('remove-profile-picture', [UserManagementUserController::class, 'removeProfilePicture'])->name('removeProfilePicture');
+        Route::get('remove-profile-banner', [UserManagementUserController::class, 'removeProfileBanner'])->name('removeProfileBanner');
     });
 });
 
