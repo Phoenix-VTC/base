@@ -47,6 +47,7 @@ class User extends Authenticatable implements Wallet
      */
     protected $fillable = [
         'username',
+        'slug',
         'email',
         'steam_id',
         'truckersmp_id',
@@ -89,6 +90,11 @@ class User extends Authenticatable implements Wallet
     ];
 
     protected array $dontKeepRevisionOf = ['password', 'remember_token'];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     /**
      * Get all of the vacation requests for the user.
