@@ -15,7 +15,7 @@ class AddSlugToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('slug')->nullable()->unique()->after('username');
+            $table->string('slug')->nullable()->after('username');
         });
 
         User::all()->each(function (User $user) {
@@ -25,6 +25,10 @@ class AddSlugToUsersTable extends Migration
             }
             $user->slug = $slug;
             $user->save();
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('slug')->nullable(false)->change();
         });
     }
 
