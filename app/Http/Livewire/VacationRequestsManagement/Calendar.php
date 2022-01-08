@@ -26,8 +26,8 @@ class Calendar extends LivewireCalendar
 
     public function onEventClick($eventId): Redirector
     {
-        $userId = VacationRequest::findOrFail($eventId)->user_id;
+        $user = VacationRequest::findOrFail($eventId)->user;
 
-        return redirect()->route('users.profile', $userId);
+        return redirect()->route('users.profile', $user);
     }
 }

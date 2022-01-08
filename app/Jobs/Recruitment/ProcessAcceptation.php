@@ -59,6 +59,7 @@ class ProcessAcceptation implements ShouldQueue
         $user = $userRepository->create([
             'email' => $this->application->email,
             'username' => $this->application->username,
+            'slug' => $this->generateSlug($this->application->username),
             'date_of_birth' => $this->application->date_of_birth,
             'steam_id' => $this->application->steam_data['steamID64'],
             'truckersmp_id' => $this->application->truckersmp_id,
@@ -79,5 +80,15 @@ class ProcessAcceptation implements ShouldQueue
 
         $this->application->status = 'accepted';
         $this->application->save();
+    }
+
+    protected function generateSlug(string $username): string
+    {
+        $slug = Str::slug($username);
+        while (User::whereSlug($slug)->exists()) {
+            $slug .= Str::random(3);
+        }
+
+        return $slug;
     }
 }
