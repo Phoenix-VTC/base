@@ -83,7 +83,7 @@ class CheckDriverVTC implements ShouldQueue
                     'fields' => [
                         [
                             'name' => 'PhoenixBase Profile',
-                            'value' => '[' . $user->username . '](' . route('users.profile', $user->id) . ')',
+                            'value' => '[' . $user->username . '](' . route('users.profile', $user) . ')',
                             'inline' => true
                         ],
                         [
@@ -147,7 +147,7 @@ class CheckDriverVTC implements ShouldQueue
                     'fields' => [
                         [
                             'name' => 'PhoenixBase Profile',
-                            'value' => '[' . $user->username . '](' . route('users.profile', $user->id) . ')',
+                            'value' => '[' . $user->username . '](' . route('users.profile', $user) . ')',
                             'inline' => true
                         ],
                         [
@@ -176,7 +176,7 @@ class CheckDriverVTC implements ShouldQueue
                     'fields' => [
                         [
                             'name' => 'PhoenixBase Profile',
-                            'value' => '[' . $user->username . '](' . route('users.profile', $user->id) . ')',
+                            'value' => '[' . $user->username . '](' . route('users.profile', $user) . ')',
                             'inline' => true
                         ],
                         [

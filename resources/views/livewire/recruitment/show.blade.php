@@ -376,8 +376,8 @@
                             @forelse($application->revisionHistoryWithUser as $revision)
                                 <tr class="@if($loop->odd) bg-white @else bg-gray-50 @endif">
                                     <td class="px-6 py-4 text-sm prose-sm prose text-gray-900 whitespace-nowrap">
-                                        @if($revision->user_id)
-                                            <a href="{{ route('users.profile', $revision->user_id) }}">
+                                        @if($revision->user)
+                                            <a href="{{ route('users.profile', $revision->user) }}">
                                                 {{ $revision->user->username ?? 'Deleted User' }}
                                             </a>
                                         @else

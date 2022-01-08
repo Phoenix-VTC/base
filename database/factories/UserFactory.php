@@ -23,7 +23,8 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'username' => $this->faker->unique()->userName,
+            'username' => $username = $this->faker->unique()->userName(),
+            'slug' => \Illuminate\Support\Str::slug($username),
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
             'steam_id' => random_int(1000000, 10000000000000000),

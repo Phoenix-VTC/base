@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\UserManagement;
 
 use App\Models\User;
+use App\Rules\IncludesLetters;
 use App\Rules\UsernameNotReserved;
 use Auth;
 use Carbon\Carbon;
@@ -10,6 +11,8 @@ use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
 
@@ -21,6 +24,7 @@ class ShowEditPage extends Component implements HasForms
     public User $user;
     // Form fields
     public $username;
+    public $slug;
     public $email;
     public $steam_id;
     public $truckersmp_id;
@@ -36,6 +40,7 @@ class ShowEditPage extends Component implements HasForms
         // Fill the form fields
         $this->form->fill([
             'username' => $this->user->username,
+            'slug' => $this->user->slug,
             'email' => $this->user->email,
             'steam_id' => $this->user->steam_id,
             'truckersmp_id' => $this->user->truckersmp_id,
@@ -48,6 +53,7 @@ class ShowEditPage extends Component implements HasForms
     {
         return [
             'username' => ['bail', 'required', 'string', 'min:3', 'unique:users,username,' . $this->user->id, new UsernameNotReserved],
+            'slug' => ['bail', 'required', 'string', 'min:3', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id), new IncludesLetters],
             'email' => ['bail', 'required', 'string', 'email', 'unique:users,email,' . $this->user->id],
             'steam_id' => 'required|numeric',
             'truckersmp_id' => 'required|numeric',
@@ -79,6 +85,13 @@ class ShowEditPage extends Component implements HasForms
                         ->helperText(function () {
                             return 'Account activated via the initial welcome email: **' . ($this->user->welcome_valid_until ? 'no' : 'yes') . '**';
                         }),
+
+                    Forms\Components\TextInput::make('slug')
+                        ->required()
+                        ->minLength(3)
+                        ->helperText(fn (): string => url()->route('profile.fancy-redirect', $this->slug))
+                        ->unique(table: User::class, ignorable: $this->user)
+                        ->rule(new IncludesLetters),
 
                     Forms\Components\TextInput::make('steam_id')
                         ->label('Steam ID')
@@ -120,6 +133,7 @@ class ShowEditPage extends Component implements HasForms
 
         $this->user->update([
             'username' => $validatedData['username'],
+            'slug' => Str::slug($validatedData['slug']) ?: $this->user->slug,
             'email' => $validatedData['email'],
             'steam_id' => $validatedData['steam_id'],
             'truckersmp_id' => $validatedData['truckersmp_id'],

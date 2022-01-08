@@ -6,7 +6,9 @@ use App\Achievements\UserSetAProfileBanner;
 use App\Achievements\UserSetAProfilePicture;
 use App\Events\EmailChanged;
 use App\Models\User;
+use App\Rules\IncludesLetters;
 use App\Rules\UsernameNotReserved;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -20,6 +22,7 @@ class ShowAccountPage extends Component
     public User $user;
     // Form fields
     public $username = '';
+    public string $slug = '';
     public $email = '';
     public ?string $steam_id = '';
     public ?string $truckersmp_id = '';
@@ -31,6 +34,7 @@ class ShowAccountPage extends Component
     {
         return [
             'username' => ['bail', 'required', 'string', 'min:3', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id), new UsernameNotReserved],
+            'slug' => ['bail', 'required', 'string', 'min:3', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id), new IncludesLetters],
             'email' => ['bail', 'required', 'string', 'min:3', 'email', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id)],
             'profile_picture' => ['nullable', 'image', 'max:2048'],
             'profile_banner' => ['nullable', 'image', 'max:2048'],
@@ -42,6 +46,7 @@ class ShowAccountPage extends Component
         $this->user = Auth::user();
 
         $this->username = $this->user->username;
+        $this->slug = $this->user->slug;
         $this->email = $this->user->email;
         $this->steam_id = $this->user->steam_id;
         $this->truckersmp_id = $this->user->truckersmp_id;
@@ -51,6 +56,14 @@ class ShowAccountPage extends Component
     public function render()
     {
         return view('livewire.settings.account-page')->extends('layouts.app');
+    }
+
+    public function updatedSlug(string $slug) {
+        $this->slug = Str::slug($slug);
+
+        if (! $this->slug) {
+            $this->slug = $this->user->slug;
+        }
     }
 
     public function submit(): void
@@ -79,6 +92,7 @@ class ShowAccountPage extends Component
             'profile_picture_path' => $profile_picture ?? $this->user->profile_picture_path,
             'profile_banner_path' => $profile_banner ?? $this->user->profile_banner_path,
             'username' => $this->username,
+            'slug' => $this->slug,
             'email' => $this->email,
         ]);
 
