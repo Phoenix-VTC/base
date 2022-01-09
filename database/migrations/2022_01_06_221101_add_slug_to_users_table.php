@@ -27,6 +27,15 @@ class AddSlugToUsersTable extends Migration
             $user->save();
         });
 
+        User::onlyTrashed()->get()->each(function (User $user) {
+            $slug = Str::slug($user->username);
+            while (User::whereSlug($slug)->exists()) {
+                $slug .= '_' . Str::random(3);
+            }
+            $user->slug = $slug;
+            $user->save();
+        });
+
         Schema::table('users', function (Blueprint $table) {
             $table->string('slug')->nullable(false)->change();
         });
