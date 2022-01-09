@@ -3,36 +3,30 @@
 namespace App\Http\Livewire\DownloadsManagement;
 
 use App\Models\Download;
+use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
-class ShowEditPage extends Component
+class ShowEditPage extends Component implements HasForms
 {
-    use WithFileUploads;
+    use InteractsWithForms;
 
     public Download $download;
     // Form fields
-    public string $name = '';
-    public string $description = '';
+    public $name = '';
+    public $description = '';
     public $image;
     public $file;
 
-    public function rules(): array
-    {
-        return [
-            'name' => ['required'],
-            'description' => ['present'],
-            'image' => ['nullable', 'image', 'max:1024'],
-            'file' => ['nullable', 'file', 'mimes:pdf,zip,rar', 'max:102400'],
-        ];
-    }
-
     public function mount(): void
     {
-        $this->name = $this->download->name;
-        $this->description = $this->download->description ?? '';
+        $this->form->fill([
+            'name' => $this->download->name,
+            'description' => $this->download->description,
+        ]);
     }
 
     public function render()
@@ -40,32 +34,69 @@ class ShowEditPage extends Component
         return view('livewire.downloads-management.edit-page')->extends('layouts.app');
     }
 
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\Grid::make()
+                ->schema([
+                    Forms\Components\Grid::make()
+                        ->columns(1)
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->required()
+                                ->placeholder('Kenji tuning mod')
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->columns(1)
+                        ->schema([
+                            Forms\Components\FileUpload::make('image')
+                                ->disk('scaleway')
+                                ->directory('downloads/thumbnails')
+                                ->label('Thumbnail image')
+                                ->image()
+                                ->hint('Max 2MB')
+                                ->helperText('Only upload an image if it needs to be changed')
+                                ->maxSize(2048),
+
+                            Forms\Components\FileUpload::make('file')
+                                ->disk('scaleway')
+                                ->directory('downloads/files')
+                                ->hint('Max 100MB')
+                                ->helperText('Only upload a file if it needs to be changed')
+                                ->maxSize(102400),
+
+                            Forms\Components\Textarea::make('description')
+                                ->rows(3)
+                        ]),
+                ]),
+        ];
+    }
+
     public function submit()
     {
-        $this->validate();
+        $validatedData = $this->form->getState();
 
-        $this->download->name = $this->name;
-        $this->download->description = $this->description;
+        $this->download->name = $validatedData['name'];
+        $this->download->description = $validatedData['description'] ?: null;
         $this->download->updated_by = Auth::id();
 
-        if (!is_null($this->image)) {
+        // Update the image if it's changed
+        if (!is_null($validatedData['image'])) {
             // Delete the old image
             Storage::disk('scaleway')->delete($this->download->image_path);
 
-            // Store the new image
-            $image = $this->image->storePublicly('downloads/' . $this->download->id, 'scaleway');
-
-            $this->download->image_path = $image;
+            // Save the new image path
+            $this->download->image_path = $validatedData['image'];
         }
 
-        if (!is_null($this->file)) {
+        // Update the file if it's changed
+        if (!is_null($validatedData['file'])) {
             // Delete the old file
             Storage::disk('scaleway')->delete($this->download->file_path);
 
-            // Store the new file
-            $file = $this->file->store('downloads/' . $this->download->id, 'scaleway');
-
-            $this->download->file_path = $file;
+            // Save the new file path
+            $this->download->file_path = $validatedData['file'];
         }
 
         $this->download->save();

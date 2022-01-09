@@ -6,38 +6,31 @@ use App\Enums\JobStatus;
 use App\Models\Company;
 use App\Notifications\GameDataRequestApproved;
 use App\Notifications\GameDataRequestDenied;
+use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Component;
 
-class ShowEditPage extends Component
+class ShowEditPage extends Component implements HasForms
 {
+    use InteractsWithForms;
+
     public Company $company;
 
-    public string $name = '';
-    public ?string $category = '';
-    public ?string $specialization = '';
-    public ?string $dlc = '';
-    public ?string $mod = '';
-    public string $game_id = '1';
-
-    public function rules(): array
-    {
-        return [
-            'name' => ['required'],
-            'category' => ['sometimes'],
-            'specialization' => ['sometimes'],
-            'dlc' => ['sometimes'],
-            'mod' => ['sometimes'],
-            'game_id' => ['required', 'integer', Rule::in(['1', '2'])],
-        ];
-    }
+    public $name;
+    public $category;
+    public $specialization;
+    public $dlc;
+    public $mod;
+    public $game_id = 1;
 
     public function mount(): void
     {
-        $this->fill([
+        $this->form->fill([
             'name' => $this->company->name,
             'category' => $this->company->category,
             'specialization' => $this->company->specialization,
@@ -47,15 +40,49 @@ class ShowEditPage extends Component
         ]);
     }
 
-    public function render(): View
+    public function render()
     {
-        return view('livewire.game-data.companies-edit')
-            ->extends('layouts.app');
+        return view('livewire.game-data.companies-edit')->extends('layouts.app');
+    }
+
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\Grid::make()
+                ->schema([
+                    Forms\Components\Grid::make()
+                        ->columns(1)
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->required()
+                        ]),
+
+                    Forms\Components\TextInput::make('category'),
+
+                    Forms\Components\TextInput::make('specialization'),
+
+                    Forms\Components\TextInput::make('dlc')
+                        ->label('DLC'),
+
+                    Forms\Components\TextInput::make('mod'),
+
+                    Forms\Components\Grid::make()
+                        ->schema([
+                            Forms\Components\Select::make('game_id')
+                                ->label('Game')
+                                ->options([
+                                    1 => 'Euro Truck Simulator 2',
+                                    2 => 'American Truck Simulator',
+                                ])
+                                ->required()
+                        ]),
+                ]),
+        ];
     }
 
     public function submit()
     {
-        $this->validate();
+        $validatedData = $this->form->getState();
 
         if (!$this->company->approved) {
             $this->forgetUnapprovedGameDataCount();
@@ -73,12 +100,12 @@ class ShowEditPage extends Component
         }
 
         $this->company->update([
-            'name' => $this->name,
-            'category' => $this->category,
-            'specialization' => $this->specialization,
-            'dlc' => $this->dlc,
-            'mod' => $this->mod,
-            'game_id' => (int)$this->game_id,
+            'name' => $validatedData['name'],
+            'category' => $validatedData['category'],
+            'specialization' => $validatedData['specialization'],
+            'dlc' => $validatedData['dlc'],
+            'mod' => $validatedData['mod'],
+            'game_id' => $validatedData['game_id'],
             'approved' => true,
         ]);
 

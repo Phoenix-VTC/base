@@ -28,6 +28,7 @@ class VacationRequest extends Model
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
+        'leaving' => 'boolean',
     ];
 
     public function user(): BelongsTo

@@ -31,7 +31,7 @@
                         <div class="ml-3 flex-1 md:flex md:justify-between">
                             <p class="text-sm text-purple-700">
                                 You are currently impersonating
-                                <a class="font-semibold" href="{{ route('users.profile', Auth::id()) }}">
+                                <a class="font-semibold" href="{{ route('users.profile', Auth::user()) }}">
                                     {{ Auth::user()->username }}
                                 </a>
                             </p>

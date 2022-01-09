@@ -6,17 +6,17 @@
 
 <div>
     @if(!Auth::user()->discord)
-        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
+        <div class="p-4 mb-8 border-l-4 border-yellow-400 bg-yellow-50">
             <div class="flex">
                 <div class="flex-shrink-0">
-                    <x-heroicon-s-information-circle class="h-5 w-5 text-yellow-400"/>
+                    <x-heroicon-s-information-circle class="w-5 h-5 text-yellow-400"/>
                 </div>
                 <div class="ml-3">
                     <p class="text-sm text-yellow-700">
                         Hey, you haven't connected your Discord account yet! You will need this in the future.
                         <br>
                         <a href="{{ route('settings.socials') }}"
-                           class="font-medium underline text-yellow-700 hover:text-yellow-600">
+                           class="font-medium text-yellow-700 underline hover:text-yellow-600">
                             Go to your settings now.
                         </a>
                     </p>
@@ -26,7 +26,7 @@
     @endif
 
     <div>
-        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">
+        <h3 class="mb-2 text-lg font-medium leading-6 text-gray-900">
             This month
         </h3>
 
@@ -63,30 +63,30 @@
     </div>
 
     <div
-        class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
+        class="grid max-w-3xl grid-cols-1 gap-6 mx-auto mt-8 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
         {{-- Left col --}}
         <div class="space-y-6 lg:col-start-1 lg:col-span-2">
 
             <div class="flex flex-col">
-                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">
+                <h3 class="mb-2 text-lg font-medium leading-6 text-gray-900">
                     Today's overview
                 </h3>
                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                        <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                         Driver
                                     </th>
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                         Distance
                                     </th>
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                         Delivered Jobs
                                     </th>
                                 </tr>
@@ -94,23 +94,23 @@
                                 <tbody>
                                 @foreach($today_overview as $user)
                                     <tr class="@if($loop->odd) bg-white @else bg-gray-50 @endif">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
                                             <a href="{{ route('users.profile', $user) }}"
                                                class="font-medium hover:font-semibold">
                                                 {{ $user->username ?? 'Unknown User' }}
                                             </a>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                             {{ $user->jobs_distance_sum }} km
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                             {{ $user->jobs->count() }}
                                         </td>
                                     </tr>
                                 @endforeach
                                 @if(!$today_overview->count())
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                                             Aww, no one submitted any jobs yet for today..
                                         </td>
                                     </tr>
@@ -130,13 +130,13 @@
             </div>
 
             <div
-                class="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
+                class="overflow-hidden bg-gray-200 divide-y divide-gray-200 rounded-lg shadow sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
 
                 <div
-                    class="rounded-tl-lg rounded-tr-lg sm:rounded-tr-none relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                    class="relative p-6 bg-white rounded-tl-lg rounded-tr-lg sm:rounded-tr-none group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                     <div>
-                        <span class="rounded-lg inline-flex p-3 bg-teal-50 text-teal-700 ring-4 ring-white">
-                            <x-heroicon-o-calendar class="h-6 w-6"/>
+                        <span class="inline-flex p-3 text-teal-700 rounded-lg bg-teal-50 ring-4 ring-white">
+                            <x-heroicon-o-calendar class="w-6 h-6"/>
                         </span>
                     </div>
                     <div class="mt-8">
@@ -152,9 +152,9 @@
                             hosting our own monthly public convoy and regular private member convoys.
                         </p>
                     </div>
-                    <span class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
+                    <span class="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
                           aria-hidden="true">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z"></path>
                         </svg>
@@ -162,10 +162,10 @@
                 </div>
 
                 <div
-                    class="sm:rounded-tr-lg relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                    class="relative p-6 bg-white sm:rounded-tr-lg group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                     <div>
-                        <span class="rounded-lg inline-flex p-3 bg-pink-50 text-pink-700 ring-4 ring-white">
-                            <x-heroicon-o-briefcase class="h-6 w-6"/>
+                        <span class="inline-flex p-3 text-pink-700 rounded-lg bg-pink-50 ring-4 ring-white">
+                            <x-heroicon-o-briefcase class="w-6 h-6"/>
                         </span>
                     </div>
                     <div class="mt-8">
@@ -180,9 +180,9 @@
                             Submit some new jobs to keep up with our monthly requirements!
                         </p>
                     </div>
-                    <span class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
+                    <span class="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
                           aria-hidden="true">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z"></path>
                         </svg>
@@ -190,10 +190,10 @@
                 </div>
 
                 <div
-                    class="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                    class="relative p-6 bg-white group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                     <div>
-                        <span class="rounded-lg inline-flex p-3 bg-red-50 text-red-700 ring-4 ring-white">
-                            <x-heroicon-o-truck class="h-6 w-6"/>
+                        <span class="inline-flex p-3 text-red-700 rounded-lg bg-red-50 ring-4 ring-white">
+                            <x-heroicon-o-truck class="w-6 h-6"/>
                         </span>
                     </div>
                     <div class="mt-8">
@@ -208,9 +208,9 @@
                             Join our VTC Page, view our latest news posts, and upcoming public events!
                         </p>
                     </div>
-                    <span class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
+                    <span class="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
                           aria-hidden="true">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z"></path>
                         </svg>
@@ -218,10 +218,10 @@
                 </div>
 
                 <div
-                    class="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                    class="relative p-6 bg-white group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                     <div>
-                        <span class="rounded-lg inline-flex p-3 bg-blue-50 text-blue-700 ring-4 ring-white">
-                            <x-heroicon-o-camera class="h-6 w-6"/>
+                        <span class="inline-flex p-3 text-blue-700 rounded-lg bg-blue-50 ring-4 ring-white">
+                            <x-heroicon-o-camera class="w-6 h-6"/>
                         </span>
                     </div>
                     <div class="mt-8">
@@ -236,9 +236,9 @@
                             Want to show off that sweet screenshot you took? This is the place to be!
                         </p>
                     </div>
-                    <span class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
+                    <span class="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
                           aria-hidden="true">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z"></path>
                         </svg>
@@ -246,10 +246,10 @@
                 </div>
 
                 <div
-                    class="sm:rounded-bl-lg relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                    class="relative p-6 bg-white sm:rounded-bl-lg group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                     <div>
-                        <span class="rounded-lg inline-flex p-3 bg-yellow-50 text-yellow-700 ring-4 ring-white">
-                            <x-heroicon-o-cash class="h-6 w-6"/>
+                        <span class="inline-flex p-3 text-yellow-700 rounded-lg bg-yellow-50 ring-4 ring-white">
+                            <x-heroicon-o-cash class="w-6 h-6"/>
                         </span>
                     </div>
                     <div class="mt-8">
@@ -265,9 +265,9 @@
                             transactions!
                         </p>
                     </div>
-                    <span class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
+                    <span class="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
                           aria-hidden="true">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z"></path>
                         </svg>
@@ -275,10 +275,10 @@
                 </div>
 
                 <div
-                    class="rounded-bl-lg rounded-br-lg sm:rounded-bl-none relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                    class="relative p-6 bg-white rounded-bl-lg rounded-br-lg sm:rounded-bl-none group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                     <div>
-                        <span class="rounded-lg inline-flex p-3 bg-purple-50 text-purple-700 ring-4 ring-white">
-                            <img src="{{ asset('icons/discord.svg') }}" alt="Discord" class="h-6 w-6" height="24"
+                        <span class="inline-flex p-3 text-purple-700 rounded-lg bg-purple-50 ring-4 ring-white">
+                            <img src="{{ asset('icons/discord.svg') }}" alt="Discord" class="w-6 h-6" height="24"
                                  width="24"/>
                         </span>
                     </div>
@@ -295,9 +295,9 @@
                             Drivers, Staff Members, and stay up-to-date with the latest updates and changes!
                         </p>
                     </div>
-                    <span class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
+                    <span class="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
                           aria-hidden="true">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z"></path>
                         </svg>
@@ -310,24 +310,24 @@
         {{-- End of left col --}}
 
         {{-- Right col --}}
-        <div class="lg:col-start-3 lg:col-span-1 space-y-6">
+        <div class="space-y-6 lg:col-start-3 lg:col-span-1">
 
 {{--            <div>--}}
 {{--                <div class="lg:col-start-3 lg:col-span-1">--}}
-{{--                    <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">--}}
+{{--                    <div class="px-4 py-5 bg-white shadow sm:rounded-lg sm:px-6">--}}
 {{--                        <h2 class="text-lg font-medium text-gray-900">My driver level</h2>--}}
-{{--                        <div class="pt-6 relative flex items-center h-full justify-center">--}}
-{{--                            <div class="flex items-center h-full justify-center relative">--}}
+{{--                        <div class="relative flex items-center justify-center h-full pt-6">--}}
+{{--                            <div class="relative flex items-center justify-center h-full">--}}
 {{--                                <canvas tabindex="0" class="focus:outline-none" aria-label="chart" role="img" id="progress-1" data-percent="15" width="200" height="200"></canvas>--}}
-{{--                                <div class="w-40 h-40 absolute rounded-full flex items-center justify-center">--}}
-{{--                                    <p tabindex="0" class="focus:outline-none text-4xl font-medium leading-10 text-center text-orange-600">--}}
+{{--                                <div class="absolute flex items-center justify-center w-40 h-40 rounded-full">--}}
+{{--                                    <p tabindex="0" class="text-4xl font-medium leading-10 text-center text-orange-600 focus:outline-none">--}}
 {{--                                        {{ Auth::user()->driver_level }}--}}
 {{--                                    </p>--}}
 {{--                                </div>--}}
 {{--                            </div>--}}
 {{--                        </div>--}}
-{{--                        <div class="flex pt-6 justify-center text-center">--}}
-{{--                            <p class="focus:outline-none text-sm leading-none text-gray-800">--}}
+{{--                        <div class="flex justify-center pt-6 text-center">--}}
+{{--                            <p class="text-sm leading-none text-gray-800 focus:outline-none">--}}
 {{--                                {{ number_format(Auth::user()->jobs()->sum('distance')) }} / {{ number_format(Auth::user()->nextDriverLevelDistance) }} km--}}
 {{--                            </p>--}}
 {{--                        </div>--}}
@@ -406,11 +406,11 @@
 {{--            </div>--}}
 
             <section aria-labelledby="job-activity-feed-title" class="lg:col-start-3 lg:col-span-1">
-                <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
+                <div class="px-4 py-5 bg-white shadow sm:rounded-lg sm:px-6">
                     <h2 id="job-activity-feed-title" class="text-lg font-medium text-gray-900">Recent jobs</h2>
 
                     <!-- Job Activity Feed -->
-                    <div class="mt-6 flow-root">
+                    <div class="flow-root mt-6">
                         <ul class="-mb-8">
                             @if($recent_jobs->count())
                                 @foreach($recent_jobs as $job)
@@ -423,7 +423,7 @@
                                                 @endif
                                                 <div class="relative flex space-x-3">
                                                     <div>
-                                                        <a class="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white"
+                                                        <a class="flex items-center justify-center w-8 h-8 bg-gray-400 rounded-full ring-8 ring-white"
                                                            href="{{ route('users.profile', $job->user) }}">
                                                             <img class="w-8 h-8 rounded-full"
                                                                  src="{{ $job->user->profile_picture ?? '' }}"
@@ -449,7 +449,7 @@
                                                                 @endif
                                                             </p>
                                                         </a>
-                                                        <div class="text-right text-sm whitespace-nowrap text-gray-500">
+                                                        <div class="text-sm text-right text-gray-500 whitespace-nowrap">
                                                         <span title="{{ $job->created_at->toDateTimeString() }}">
                                                             {{ $job->created_at->isoFormat('HH:mm') }}
                                                         </span>
@@ -466,7 +466,7 @@
                                         <div class="relative flex space-x-3">
                                             <div>
                                             <span
-                                                class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white">
+                                                class="flex items-center justify-center w-8 h-8 rounded-full ring-8 ring-white">
                                                 <x-heroicon-o-emoji-sad class="w-8 h-8 text-gray-400"/>
                                             </span>
                                             </div>
@@ -488,7 +488,7 @@
 
             @isset($online_users)
                 <section aria-labelledby="online-users-title">
-                    <div class="rounded-lg bg-white dark:bg-gray-900 overflow-hidden shadow">
+                    <div class="overflow-hidden bg-white rounded-lg shadow dark:bg-gray-900">
                         <div class="p-6">
                             <h2 class="text-lg font-medium text-gray-900 dark:text-white" id="online-users-title">
                                 Online Users
@@ -499,8 +499,8 @@
                                         <li class="py-4">
                                             <div class="flex items-center space-x-4">
                                                 <div class="flex-shrink-0">
-                                                    <span class="inline-block relative">
-                                                        <img class="h-8 w-8 rounded-full"
+                                                    <span class="relative inline-block">
+                                                        <img class="w-8 h-8 rounded-full"
                                                              src="{{ $user['profile_picture'] }}"
                                                              alt="{{ $user['username'] }}'s profile picture">
                                                         <span
@@ -508,7 +508,7 @@
                                                     </span>
                                                 </div>
                                                 <div class="flex-1 min-w-0">
-                                                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                                                         {{ $user['username'] }}
                                                     </p>
                                                 </div>
@@ -522,7 +522,7 @@
                                         </li>
                                     @endforeach
                                     @if($online_users->count() > 7)
-                                        <p class="text-center text-xs text-gray-500 py-4">
+                                        <p class="py-4 text-xs text-center text-gray-500">
                                             And {{ $online_users->count() - 7 }} other {{ Str::plural('user', ($online_users->count() - 7)) }}
                                         </p>
                                     @endif
@@ -534,7 +534,7 @@
             @endisset
 
             <section aria-labelledby="news-title">
-                <div class="rounded-lg bg-white overflow-hidden shadow">
+                <div class="overflow-hidden bg-white rounded-lg shadow">
                     <div class="p-6">
                         <h2 class="text-base font-medium text-gray-900" id="news-title">Recent News Posts</h2>
                         <div class="flow-root mt-6">
@@ -567,7 +567,7 @@
                         </div>
                         <div class="mt-6">
                             <a href="https://phoenixvtc.com/en/news" target="_blank"
-                               class="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                               class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50">
                                 View all
                             </a>
                         </div>

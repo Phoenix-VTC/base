@@ -15,11 +15,12 @@ class ShowProfilePage extends Component
     public User $user;
     public $recent_jobs;
 
-    public function mount(int $id): void
+    public function mount(User $user): void
     {
+        $this->user = $user;
         if (Auth::user()->can('manage users')) {
-            $this->user = User::withTrashed()
-                ->with([
+            $this->user::query()
+                ->withTrashed()->with([
                     'jobs',
                     'roles',
                     'permissions',
@@ -27,12 +28,12 @@ class ShowProfilePage extends Component
                     'vacation_requests',
                     'wallets',
                     'modelSettings'
-                ])->findOrFail($id);
+                ])->get();
         } else {
-            $this->user = User::with([
+            $this->user::query()->with([
                 'jobs',
                 'roles',
-            ])->findOrFail($id);
+            ])->get();
         }
 
         $this->recent_jobs = $this->user->jobs()

@@ -1,7 +1,10 @@
 import Alpine from 'alpinejs'
-import Clipboard from "@ryangjchandler/alpine-clipboard"
+import Clipboard from '@ryangjchandler/alpine-clipboard'
+import FormsAlpinePlugin from '../../vendor/filament/forms/dist/module.esm'
 
 Alpine.plugin(Clipboard)
+
+Alpine.plugin(FormsAlpinePlugin)
 
 require('flatpickr');
 

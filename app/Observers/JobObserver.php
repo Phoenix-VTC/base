@@ -215,7 +215,7 @@ class JobObserver
             'embeds' => [
                 [
                     'title' => "{$user->username} leveled up to **Driver Level " . ($user->driverLevel + 1) . '**!',
-                    'url' => route('users.profile', $user->id),
+                    'url' => route('users.profile', $user),
                     'description' => 'Their total driven distance is now ' . number_format($user->jobs()->sum('distance') + $job->distance) . ' kilometres. Enjoy the new rank!',
                     'color' => 14429954, // #DC2F02
                     'footer' => [

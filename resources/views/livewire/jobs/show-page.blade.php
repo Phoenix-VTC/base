@@ -55,20 +55,20 @@
     @endif
 
     <div
-        class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
+        class="grid max-w-3xl grid-cols-1 gap-6 mx-auto mt-8 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
         <div class="space-y-6 lg:col-start-1 lg:col-span-2">
             <!-- Delivery Information -->
             <section aria-labelledby="delivery-information-title">
                 <div class="bg-white shadow sm:rounded-lg">
                     <div class="px-4 py-5 sm:px-6">
-                        <h2 id="delivery-information-title" class="text-lg leading-6 font-medium text-gray-900">
+                        <h2 id="delivery-information-title" class="text-lg font-medium leading-6 text-gray-900">
                             Delivery Information
                         </h2>
-                        <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                        <p class="max-w-2xl mt-1 text-sm text-gray-500">
                             Information about the submitted delivery
                         </p>
                     </div>
-                    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                    <div class="px-4 py-5 border-t border-gray-200 sm:px-6">
                         <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                             <div class="sm:col-span-2">
                                 <dt class="text-sm font-medium text-gray-500">
@@ -231,29 +231,29 @@
                 <!-- Revision History -->
                 <x-info-card title="Revision History">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                            <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
                                 <table class="min-w-full divide-y divide-gray-200">
                                     <thead class="bg-gray-50">
                                     <tr>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                             User ID
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                             Field Name
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                             Old Value
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                             New Value
                                         </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                             Date
                                         </th>
                                     </tr>
@@ -261,31 +261,31 @@
                                     <tbody>
                                     @forelse($job->revisionHistoryWithUser as $revision)
                                         <tr class="@if($loop->odd) bg-white @else bg-gray-50 @endif">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 prose prose-sm">
-                                                @if($revision->user_id)
-                                                    <a href="{{ route('users.profile', $revision->user_id) }}">
+                                            <td class="px-6 py-4 text-sm prose-sm prose text-gray-900 whitespace-nowrap">
+                                                @if($revision->user)
+                                                    <a href="{{ route('users.profile', $revision->user) }}">
                                                         {{ $revision->user->username ?? 'Deleted User' }}
                                                     </a>
                                                 @else
                                                     <span class="font-semibold">System</span>
                                                 @endif
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                                 {{ $revision->fieldName() ?? 'Unknown' }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                                 {{ $revision->oldValue() ?? '' }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                                 {{ $revision->newValue() ?? '' }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                                 {{ $revision->created_at }}
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                 There is no revision history available yet for this job.
                                             </td>
                                         </tr>
@@ -299,26 +299,26 @@
             @endcan
         </div>
 
-        <div class="lg:col-start-3 lg:col-span-1 space-y-6">
+        <div class="space-y-6 lg:col-start-3 lg:col-span-1">
             <section aria-labelledby="job-title" class="lg:col-start-3 lg:col-span-1">
-                <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
+                <div class="px-4 py-5 bg-white shadow sm:rounded-lg sm:px-6">
                     <h2 id="job-title" class="text-lg font-medium text-gray-900">Job Information</h2>
 
-                    <div class="mt-6 flow-root">
+                    <div class="flow-root mt-6">
                         <div class="space-y-5">
                             <div class="flex items-center space-x-2">
-                                <x-heroicon-s-calculator class="h-5 w-5 text-gray-400"/>
-                                <span class="text-gray-900 text-sm font-medium">Price per distance:</span>
-                                <span class="text-gray-900 text-sm font-bold">
+                                <x-heroicon-s-calculator class="w-5 h-5 text-gray-400"/>
+                                <span class="text-sm font-medium text-gray-900">Price per distance:</span>
+                                <span class="text-sm font-bold text-gray-900">
                                     {{ App\Models\Game::getCurrencySymbol($job->game_id) ?? '??' }} {{ $job->pricePerDistance }}
                                 </span>
                             </div>
 
                             <div class="flex items-center space-x-2">
-                                <x-heroicon-s-switch-horizontal class="h-5 w-5 text-gray-400"/>
-                                <span class="text-gray-900 text-sm font-medium"
+                                <x-heroicon-s-switch-horizontal class="w-5 h-5 text-gray-400"/>
+                                <span class="text-sm font-medium text-gray-900"
                                       title="Difference between the estimated and total income">Income difference:</span>
-                                <span class="text-gray-900 text-sm font-bold">
+                                <span class="text-sm font-bold text-gray-900">
                                     {{ App\Models\Game::getCurrencySymbol($job->game_id) ?? '??' }} {{ $job->total_income - $job->estimated_income }}
                                 </span>
                             </div>
@@ -332,9 +332,9 @@
 
                             @if($job->finished_at)
                                 <div class="flex items-center space-x-2">
-                                    <x-heroicon-s-clipboard-check class="h-5 w-5 text-gray-400"/>
-                                    <span class="text-gray-900 text-sm font-medium">Finished on</span>
-                                    <span class="text-gray-900 text-sm font-bold">
+                                    <x-heroicon-s-clipboard-check class="w-5 h-5 text-gray-400"/>
+                                    <span class="text-sm font-medium text-gray-900">Finished on</span>
+                                    <span class="text-sm font-bold text-gray-900">
                                         {{-- Only show date if time is 00:00:00 --}}
                                         @if($job->finished_at->isStartOfDay())
                                             {{ $job->finished_at->format('M d, Y') }}
@@ -346,16 +346,16 @@
                             @endif
 
                             <div class="flex items-center space-x-2">
-                                <x-heroicon-s-calendar class="h-5 w-5 text-gray-400"/>
-                                <span class="text-gray-900 text-sm font-medium">Submitted on</span>
-                                <span class="text-gray-900 text-sm font-bold">
+                                <x-heroicon-s-calendar class="w-5 h-5 text-gray-400"/>
+                                <span class="text-sm font-medium text-gray-900">Submitted on</span>
+                                <span class="text-sm font-bold text-gray-900">
                                     {{ $job->created_at->toDayDateTimeString() }}
                                 </span>
                             </div>
 
                             <div class="flex items-center space-x-2">
-                                <x-heroicon-s-information-circle class="h-5 w-5 text-gray-400"/>
-                                <span class="text-gray-900 text-sm font-medium">Status:</span>
+                                <x-heroicon-s-information-circle class="w-5 h-5 text-gray-400"/>
+                                <span class="text-sm font-medium text-gray-900">Status:</span>
                                 @switch(App\Enums\JobStatus::fromValue($job->status)->key)
                                     @case('Incomplete')
                                     <span
@@ -384,14 +384,14 @@
                                 @if($job->tracker_job)
                                     <span
                                         class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
-                                        <x-heroicon-o-location-marker class="h-4 w-4"/>
+                                        <x-heroicon-o-location-marker class="w-4 h-4"/>
                                     </span>
                                 @endif
                             </div>
 
-                            <div class="mt-6 flex items-center">
-                                <a class="flex-shrink-0" href="{{ route('users.profile', $job->user_id) }}">
-                                    <img class="h-10 w-10 rounded-full"
+                            <div class="flex items-center mt-6">
+                                <a class="flex-shrink-0" href="{{ route('users.profile', $job->user) }}">
+                                    <img class="w-10 h-10 rounded-full"
                                          src="{{ $job->user->profile_picture ?? asset('svg/unknown_avatar.svg') }}"
                                          alt="{{ $job->user->username ?? 'Deleted User' }}" height="40" width="40">
                                 </a>
@@ -399,8 +399,8 @@
                                     <div class="flex space-x-1 text-sm text-gray-500">
                                         <span>Submitted By</span>
                                     </div>
-                                    <a class="text-sm font-medium capitalize text-gray-900"
-                                       href="{{ route('users.profile', $job->user_id) }}">
+                                    <a class="text-sm font-medium text-gray-900 capitalize"
+                                       href="{{ route('users.profile', $job->user) }}">
                                         {{ $job->user->username ?? 'Deleted User' }}
                                     </a>
                                 </div>
@@ -412,40 +412,40 @@
 
             @if($job->canEdit)
                 <section aria-labelledby="actions-title" class="lg:col-start-3 lg:col-span-1">
-                    <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
+                    <div class="px-4 py-5 bg-white shadow sm:rounded-lg sm:px-6">
                         @if(Auth::user()->can('manage users'))
                             <h2 id="actions-title" class="text-lg font-medium text-red-700">Staff Actions</h2>
                         @else
                             <h2 id="actions-title" class="text-lg font-medium text-gray-900">Actions</h2>
                         @endif
 
-                        <div class="mt-6 flex flex-col justify-stretch space-y-3">
-                            <a class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        <div class="flex flex-col mt-6 space-y-3 justify-stretch">
+                            <a class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                                href="{{ route('jobs.edit', $job) }}">
-                                <x-heroicon-s-pencil-alt class="-ml-1 mr-3 h-5 w-5"/>
+                                <x-heroicon-s-pencil-alt class="w-5 h-5 mr-3 -ml-1"/>
                                 Edit
                             </a>
 
                             <button
-                                class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                 onclick="confirm('Are you sure you want to delete this job? This action is irreversible.') || event.stopImmediatePropagation()"
                                 wire:click="delete">
-                                <x-heroicon-s-trash class="-ml-1 mr-3 h-5 w-5"/>
+                                <x-heroicon-s-trash class="w-5 h-5 mr-3 -ml-1"/>
                                 Delete
                             </button>
 
                             @if($job->status->value === \App\Enums\JobStatus::PendingVerification && Auth::user()->can('manage users'))
                                 <button
-                                    class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                    class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                                     onclick="confirm('Are you sure you want to approve this job?') || event.stopImmediatePropagation()"
                                     wire:click="approve">
-                                    <x-heroicon-s-check class="-ml-1 mr-3 h-5 w-5"/>
+                                    <x-heroicon-s-check class="w-5 h-5 mr-3 -ml-1"/>
                                     Approve
                                 </button>
                             @endif
 
                             @if(Auth::user()->cannot('manage users'))
-                                <p class="text-center text-sm text-gray-500">
+                                <p class="text-sm text-center text-gray-500">
                                     You have
                                     <strong>{{ Carbon\Carbon::now()->diffInMinutes($job->created_at->addHour(), false) . ' minute(s)' }}</strong>
                                     remaining to edit or delete this job.

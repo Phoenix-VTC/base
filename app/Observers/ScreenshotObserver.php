@@ -40,7 +40,7 @@ class ScreenshotObserver
                     ],
                     'author' => [
                         'name' => $screenshot->user->username,
-                        'url' => route('users.profile', $screenshot->user->id),
+                        'url' => route('users.profile', $screenshot->user),
                         'icon_url' => $screenshot->user->profile_picture
                     ],
                     'footer' => [
