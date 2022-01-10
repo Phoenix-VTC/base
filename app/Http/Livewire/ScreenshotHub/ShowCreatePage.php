@@ -63,8 +63,8 @@ class ShowCreatePage extends Component implements HasForms
                                 ->required()
                                 ->label('Screenshot')
                                 ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                                ->hint('Max 2MB')
-                                ->maxSize(2048)
+                                ->hint('Max 10MB')
+                                ->maxSize(10240)
                         ]),
 
                     Forms\Components\Textarea::make('description')
