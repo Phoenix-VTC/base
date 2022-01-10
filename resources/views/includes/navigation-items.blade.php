@@ -27,7 +27,7 @@
 
     <livewire:components.dropdown title="My Jobs" icon="o-briefcase" activeRoute="jobs.*"
                                   :items="[
-                                    ['title' => 'Personal Overview', 'route' => 'users.jobs-overview', 'parameters' => Auth::id()],
+                                    ['title' => 'Personal Overview', 'route' => 'users.jobs-overview', 'parameters' => Auth::user()],
                                     ['title' => 'Submit New Job', 'route' => 'jobs.choose-game'],
                                   ]">
     </livewire:components.dropdown>
