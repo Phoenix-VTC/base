@@ -317,7 +317,7 @@
                         </ul>
                     </div>
                     <div class="mt-6">
-                        <a href="{{ route('users.achievements', $user->id) }}"
+                        <a href="{{ route('users.achievements', $user) }}"
                            class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50">
                             View all
                         </a>
