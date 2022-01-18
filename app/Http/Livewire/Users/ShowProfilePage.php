@@ -18,17 +18,21 @@ class ShowProfilePage extends Component
     public function mount(User $user): void
     {
         $this->user = $user;
+
+        if($this->user->deleted_at && !Auth::user()->can('manage users')) {
+            abort(404);
+        }
+
         if (Auth::user()->can('manage users')) {
-            $this->user::query()
-                ->withTrashed()->with([
-                    'jobs',
-                    'roles',
-                    'permissions',
-                    'application',
-                    'vacation_requests',
-                    'wallets',
-                    'modelSettings'
-                ])->get();
+            $this->user::query()->with([
+                'jobs',
+                'roles',
+                'permissions',
+                'application',
+                'vacation_requests',
+                'wallets',
+                'modelSettings'
+            ])->get();
         } else {
             $this->user::query()->with([
                 'jobs',

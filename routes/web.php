@@ -178,7 +178,7 @@ Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
         return redirect()->route('users.profile', User::findOrFail($id));
     })->whereNumber('id');
 
-    Route::get('{user}', ShowProfilePage::class)->name('profile');
+    Route::get('{user}', ShowProfilePage::class)->withTrashed()->name('profile');
 
     Route::get('{user}/achievements', ShowAchievementsPage::class)->name('achievements');
 
