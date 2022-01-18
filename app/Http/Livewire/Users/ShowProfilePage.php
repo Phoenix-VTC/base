@@ -19,7 +19,7 @@ class ShowProfilePage extends Component
     {
         $this->user = $user;
 
-        if($this->user->deleted_at && !Auth::user()->can('manage users')) {
+        if ($this->user->deleted_at && !Auth::user()->can('manage users')) {
             abort(404);
         }
 
