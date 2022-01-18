@@ -42,7 +42,7 @@ class ShowEditPage extends Component implements HasForms
             'username' => $this->user->username,
             'slug' => $this->user->slug,
             'email' => $this->user->email,
-            'steam_id' => $this->user->steam_id,
+            'steam_id' => (string) $this->user->steam_id,
             'truckersmp_id' => $this->user->truckersmp_id,
             'date_of_birth' => $this->user->date_of_birth,
             'roles' => $this->user->roles->pluck('id')->toArray(),
