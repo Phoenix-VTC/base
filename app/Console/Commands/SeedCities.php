@@ -3,9 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Models\City;
+use App\Models\Game;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
 use JsonException;
 
 class SeedCities extends Command
@@ -31,19 +33,17 @@ class SeedCities extends Command
      */
     public function handle(): void
     {
-        $client = new Client();
+        // For whatever reason trucky blocks the default guzzle user-agent
+        $request = Http::withHeaders(['user-agent' => 'seeder'])
+            ->get('https://api.truckyapp.com/v2/map/cities/all');
 
-        try {
-            $response = $client->request('GET', 'https://api.truckyapp.com/v2/map/cities/all')->getBody();
-
-            $cities = json_decode($response, true, 512, JSON_THROW_ON_ERROR)['response'];
-        } catch (GuzzleException | JsonException $e) {
-            $this->error($e->getMessage());
+        if (!$request->ok() || !$request['response']) {
+            $this->error("Failed to fetch cities from Trucky API");
 
             exit;
         }
 
-        $this->withProgressBar($cities, function ($city) {
+        $this->withProgressBar($request['response'], function ($city) {
             $cityModel = City::firstOrCreate([
                 'real_name' => $city['realName'],
                 'name' => $city['in_game_id'] ?? $city['realName'],

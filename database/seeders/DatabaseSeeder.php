@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             CargoSeeder::class,
             CompanySeeder::class,
             JobSeeder::class,
-            BlocklistSeeder::class
+            BlocklistSeeder::class,
+            RolesAndPermissionsSeeder::class
         ]);
     }
 }
