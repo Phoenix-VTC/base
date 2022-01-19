@@ -97,7 +97,7 @@
                                                         </td>
 
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                            @if($wallet->slug !== 'event-xp')
+                                                            @if(!Str::contains($wallet->slug, 'xp'))
                                                             &euro;
                                                             @endif
                                                             {{ $transaction->amount }}

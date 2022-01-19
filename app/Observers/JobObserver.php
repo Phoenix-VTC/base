@@ -9,6 +9,9 @@ use App\Achievements\JobStonks;
 use App\Achievements\LongDrive;
 use App\Achievements\MoneyMan;
 use App\Enums\JobStatus;
+use App\Jobs\Jobs\HandleCompletedJobPoints;
+use App\Jobs\Jobs\HandleDeletedJobPoints;
+use App\Jobs\Jobs\HandleEditedJobPoints;
 use App\Models\Job;
 use App\Models\User;
 use App\Notifications\DriverLevelUp;
@@ -52,6 +55,9 @@ class JobObserver
 
         $user->deposit($job->total_income, ['description' => 'Submitted job', 'job_id' => $job->id]);
 
+        // Reward the user with points (Job XP)
+        HandleCompletedJobPoints::dispatch($job);
+
         // Handle achievement unlocking
         $this->handleAchievements($job);
     }
@@ -83,8 +89,8 @@ class JobObserver
             // Handle achievement unlocking
             $this->handleAchievements($job);
 
-            // Handle the driver ranking
-            //$this->handleDriverRank($job);
+            // Reward the user with points (Job XP)
+            HandleCompletedJobPoints::dispatch($job);
 
             return;
         }
@@ -103,6 +109,9 @@ class JobObserver
         if ($income_diff < 0) {
             $user->withdraw(abs($income_diff), ['description' => 'Edited job', 'job_id' => $job->id]);
         }
+
+        // Reward or subtract the user with points (Job XP)
+        HandleEditedJobPoints::dispatch($job);
     }
 
     /**
@@ -123,6 +132,9 @@ class JobObserver
 
         // Remove one progress point on the job achievement chain
         $job->user->removeProgress(new JobChain(), 1);
+
+        // Subtract the user's points for this job (Job XP)
+        HandleDeletedJobPoints::dispatch($job);
     }
 
     /**

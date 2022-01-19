@@ -10,6 +10,7 @@ use App\Events\NewBlocklistEntry;
 use App\Events\PasswordChanged;
 use App\Events\UserInBlocklistAuthenticated;
 use App\Events\UserInBlocklistTriedToApply;
+use App\Events\UserPointsChanged;
 use App\Listeners\SendAchievementUnlockedNotification;
 use App\Listeners\SendDeletedBlocklistEntryNotification;
 use App\Listeners\SendEmailChangedNotification;
@@ -21,6 +22,7 @@ use App\Listeners\SendRestoredBlocklistEntryNotification;
 use App\Listeners\SendUpdatedBlocklistEntryNotification;
 use App\Listeners\SendUserInBlocklistAuthenticatedNotification;
 use App\Listeners\SendUserInBlocklistTriedToApplyNotification;
+use App\Listeners\TriggerUserLevelCheck;
 use App\Models\Download as DownloadModel;
 use App\Models\Screenshot as ScreenshotModel;
 use App\Observers\DownloadObserver;
@@ -82,6 +84,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         UserInBlocklistAuthenticated::class => [
             SendUserInBlocklistAuthenticatedNotification::class,
+        ],
+        UserPointsChanged::class => [
+            TriggerUserLevelCheck::class,
         ],
     ];
 
