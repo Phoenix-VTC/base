@@ -32,10 +32,15 @@ class HandleDeletedJobPoints implements ShouldQueue
      */
     public function handle(): void
     {
+        // Get the multiplier
+        $multiplier = config('phoenix.job_xp_multiplier');
+
         // Find or create the job XP wallet
         $wallet = (new FindOrCreateWallet())->execute($this->job->user, 'Job XP');
 
-        $wallet->withdraw($this->job->distance, ['description' => 'Deleted job', 'job_id' => $this->job->id]);
+        $points = $this->job->distance * $multiplier;
+
+        $wallet->withdraw($points, ['description' => 'Deleted job', 'job_id' => $this->job->id]);
 
         event(new UserPointsChanged($this->job->user));
     }
