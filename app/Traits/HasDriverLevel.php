@@ -64,6 +64,22 @@ trait HasDriverLevel
     }
 
     /**
+     * Get the user's previous milestone level
+     * This can be useful when "downgrading" a user to a lower level, and their Discord role needs to be updated
+     *
+     * @return int
+     */
+    public function previousMilestoneLevel(): int
+    {
+        return DriverLevel::query()
+            ->where('id', '<', $this->driver_level)
+            ->where('milestone', true)
+            ->orderByDesc('id')
+            ->first()
+            ->id;
+    }
+
+    /**
      * Calculate the user's driver level based on their total points (Event XP + Job XP)
      *
      * @throws Exception
