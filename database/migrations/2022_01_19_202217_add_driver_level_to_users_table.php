@@ -14,7 +14,7 @@ class AddDriverLevelToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('driver_level')->after('profile_banner_path')->default(1);
+            $table->integer('driver_level')->after('profile_banner_path')->default(0);
         });
     }
 

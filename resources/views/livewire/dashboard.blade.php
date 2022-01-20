@@ -321,7 +321,7 @@
                                 <canvas tabindex="0" class="focus:outline-none" aria-label="chart" role="img" id="driver-level-progress" data-percent="{{ Auth::user()->percentageUntilLevelUp() }}" width="200" height="200"></canvas>
                                 <div class="w-40 h-40 absolute rounded-full flex items-center justify-center">
                                     <p tabindex="0" class="focus:outline-none text-4xl font-medium leading-10 text-center text-orange-600">
-                                        {{ Auth::user()->driverLevel->id }}
+                                        {{ Auth::user()->driver_level }}
                                     </p>
                                 </div>
                             </div>

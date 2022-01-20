@@ -16,7 +16,7 @@ trait HasDriverLevel
      */
     public function driverLevel(): BelongsTo
     {
-        return $this->belongsTo(DriverLevel::class, 'driver_level');
+        return $this->belongsTo(DriverLevel::class, 'driver_level')->withDefault();
     }
 
     /**
