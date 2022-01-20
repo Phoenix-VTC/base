@@ -68,14 +68,19 @@ trait HasDriverLevel
      *
      * @throws Exception
      */
-    public function calculateUserLevel(): DriverLevel
+    public function calculateUserLevel(): int
     {
         $levels = DriverLevel::all();
 
         foreach ($levels as $level) {
+            // If the user's total driver points are 0, return 0 (since there is no level with 0 as the required points)
+            if ($this->totalDriverPoints() === 0) {
+                return 0;
+            }
+
             // If the user's total points are greater than or equal to the required points, and less than the next level's required points, then that is the user's level.
             if ($this->totalDriverPoints() >= $level->required_points && $this->totalDriverPoints() < $level->next()->required_points) {
-                return $level;
+                return $level->id;
             }
         }
 
