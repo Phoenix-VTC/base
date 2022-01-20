@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class DriverLevelUp extends Notification implements ShouldQueue
+class DriverLevelDown extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -41,8 +41,8 @@ class DriverLevelUp extends Notification implements ShouldQueue
     public function toArray(): array
     {
         return [
-            'title' => 'You have levelled up!',
-            'content' => "Congrats! You are now Driver Level {$this->user->driver_level}."
+            'title' => 'Your driver level has been changed.',
+            'content' => "Sorry, but we had to level you down because a job or event reward belonging to you has been edited that negatively impacted your Driver XP. Your new level is {$this->user->driver_level}.",
         ];
     }
 }
