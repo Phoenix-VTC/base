@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Actions\Wallet\FindOrCreateWallet;
 use App\Models\DriverLevel;
+use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasDriverLevel
@@ -67,5 +68,25 @@ trait HasDriverLevel
     public function percentageUntilLevelUp(): int
     {
         return round(($this->totalDriverPoints() / $this->nextDriverLevelPoints()) * 100);
+    }
+
+    /**
+     * Calculate the user's driver level based on their total points (Event XP + Job XP)
+     *
+     * @throws Exception
+     */
+    public function calculateUserLevel(): DriverLevel
+    {
+        $levels = DriverLevel::all();
+
+        foreach ($levels as $level) {
+            // If the user's total points are greater than or equal to the required points, and less than the next level's required points, then that is the user's level.
+            if ($this->totalDriverPoints() >= $level->required_points && $this->totalDriverPoints() < $level->next()->required_points) {
+                return $level;
+            }
+        }
+
+        // TODO: When this happens, we have ran out of levels. This should be handled nicely, so that a user does not level up (and probably notify Management)
+        return throw new Exception('User level could not be calculated. This should never happen.');
     }
 }
