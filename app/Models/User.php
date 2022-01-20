@@ -215,64 +215,6 @@ class User extends Authenticatable implements Wallet
         });
     }
 
-    public function getDriverLevelAttribute(): int
-    {
-        $total_distance = $this->jobs()->sum('distance');
-
-        if ($total_distance <= 10000) {
-            $level = $total_distance * 0.001;
-        } else {
-            $level = $total_distance / 2000 + 5;
-        }
-
-        return floor($level);
-    }
-
-    public function getNextDriverLevelDistanceAttribute(): int
-    {
-        $level = $this->getDriverLevelAttribute();
-
-        if ($level <= 10) {
-            $current_level_distance = $level / 0.001;
-
-            return $current_level_distance + 1000;
-        } else {
-            $current_level_distance = -10000 + 2000 * $level;
-
-            return $current_level_distance + 2000;
-        }
-    }
-
-    public function getRequiredDistanceUntilNextLevelAttribute(): int
-    {
-        $total_distance = $this->jobs()->sum('distance');
-        $level = $this->getDriverLevelAttribute();
-
-        if ($level <= 10) {
-            $current_level_distance = $level / 0.001;
-
-            $next_level_distance = $current_level_distance + 1000;
-        } else {
-            $current_level_distance = -10000 + 2000 * $level;
-
-            $next_level_distance = $current_level_distance + 2000;
-        }
-
-        return floor($next_level_distance - $total_distance);
-    }
-
-    public function getPercentageUntilDriverLevelUpAttribute(): int
-    {
-        $total_distance = $this->jobs()->sum('distance');
-        $level = $this->getDriverLevelAttribute();
-
-        if ($level <= 10) {
-            return floor(($total_distance / 1000 - $level) * 100);
-        } else {
-            return floor(($total_distance / 2000 + 5 - $level) * 100);
-        }
-    }
-
     public function canImpersonate(): bool
     {
         return $this->can('impersonate users');
