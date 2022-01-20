@@ -61,6 +61,7 @@ class User extends Authenticatable implements Wallet
         'discord',
         'profile_picture_path',
         'profile_banner_path',
+        'driver_level'
     ];
 
     /**
