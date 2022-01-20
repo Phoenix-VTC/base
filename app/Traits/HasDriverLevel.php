@@ -9,13 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasDriverLevel
 {
-    private FindOrCreateWallet $findOrCreateWallet;
-
-    public function __construct()
-    {
-        $this->findOrCreateWallet = new FindOrCreateWallet();
-    }
-
     /**
      * Get the user's driver level
      *
@@ -33,9 +26,9 @@ trait HasDriverLevel
      */
     public function totalDriverPoints(): int
     {
-        $eventXpWallet = $this->findOrCreateWallet->execute($this, 'Event XP');
+        $eventXpWallet = (new FindOrCreateWallet())->execute($this, 'Event XP');
 
-        $jobXpWallet = $this->findOrCreateWallet->execute($this, 'Job XP');
+        $jobXpWallet = (new FindOrCreateWallet())->execute($this, 'Job XP');
 
         return $eventXpWallet->balance + $jobXpWallet->balance;
     }
@@ -86,7 +79,8 @@ trait HasDriverLevel
             }
         }
 
-        // TODO: When this happens, we have ran out of levels. This should be handled nicely, so that a user does not level up (and probably notify Management)
+        // TODO: When this happens, we have ran out of levels or something went horribly wrong.
+        //  This should be handled nicely, so that a user does not level up (and probably notify Management)
         return throw new Exception('User level could not be calculated. This should never happen.');
     }
 }
