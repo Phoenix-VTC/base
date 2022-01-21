@@ -55,12 +55,13 @@ trait HasDriverLevel
 
     /**
      * Calculate the progress percentage towards the next level
+     * This can be calculated by `(totalPoints - currentLevelPoints) / (nextLevelPoints - currentLevelPoints) * 100`
      *
      * @return int
      */
     public function percentageUntilLevelUp(): int
     {
-        return round(($this->totalDriverPoints() / $this->nextDriverLevelPoints()) * 100);
+        return round(($this->totalDriverPoints() - $this->driverLevel->required_points) / ($this->nextDriverLevelPoints() - $this->driverLevel->required_points) * 100);
     }
 
     /**
