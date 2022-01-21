@@ -65,6 +65,16 @@ trait HasDriverLevel
     }
 
     /**
+     * Get the user's points starting from the current level
+     *
+     * @return int
+     */
+    public function pointsFromLevelUp(): int
+    {
+        return $this->totalDriverPoints() - $this->driverLevel->required_points;
+    }
+
+    /**
      * Get the user's previous milestone level
      * This can be useful when "downgrading" a user to a lower level, and their Discord role needs to be updated
      *
