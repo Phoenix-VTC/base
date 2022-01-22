@@ -25,7 +25,16 @@
                 <p class="focus:outline-none text-sm leading-none text-gray-800">
                     {{ number_format($user->totalDriverPoints()) }}
                     / {{ number_format($user->nextDriverLevelPoints()) }} XP
-                    @if($user->percentageUntilLevelUp() === 100)
+
+                    @if($user->driverLevel->next()->id === $user->driver_level)
+                        {{-- Show badge if the user has the maximum level --}}
+                        <br>
+                        <span
+                            class="mt-3 inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-yellow-100 text-yellow-800">
+                            Congrats! You currently have the maximum driver level. 🥳
+                        </span>
+                    @elseif($user->percentageUntilLevelUp() === 100)
+                        {{-- If the percentage until level up is 100, it should currently be a pending job, thus show a badge that it's pending --}}
                         <br>
                         <span
                             class="mt-3 inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-yellow-100 text-yellow-800">

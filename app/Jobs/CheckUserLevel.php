@@ -39,8 +39,6 @@ class CheckUserLevel implements ShouldQueue
      */
     public function handle()
     {
-        // TODO: Catch exception
-
         $user = $this->user;
 
         $currentLevel = $user->driver_level;

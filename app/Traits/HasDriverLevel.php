@@ -62,6 +62,10 @@ trait HasDriverLevel
      */
     public function percentageUntilLevelUp(): int
     {
+        if ($this->driverLevel->next()->id === $this->driver_level) {
+            return 100;
+        }
+
         // This is inside a try/catch because DivisionByZeroError is thrown when the user has the maximum level
         try {
             $percentage = round(($this->totalDriverPoints() - $this->driverLevel->required_points) / ($this->nextDriverLevelPoints() - $this->driverLevel->required_points) * 100);
@@ -114,14 +118,19 @@ trait HasDriverLevel
                 return 0;
             }
 
-            // If the user's total points are greater than or equal to the required points, and less than the next level's required points, then that is the user's level.
+            // If the user's total points are greater than or equal to this level's required points, and less than the next level's required points, then that is the user's level.
             if ($this->totalDriverPoints() >= $level->required_points && $this->totalDriverPoints() < $level->next()->required_points) {
+                return $level->id;
+            }
+
+            // If the user's total points are greater than or equal to this level's required points, and the next level is this level, then that is the user's level.
+            // The only use case for this is when we have run out of levels.
+            if ($this->totalDriverPoints() >= $level->required_points && $level->next()->id === $level->id) {
                 return $level->id;
             }
         }
 
-        // TODO: When this happens, we have ran out of levels or something went horribly wrong.
-        //  This should be handled nicely, so that a user does not level up (and probably notify Management)
+        // This should basically never happen
         return throw new Exception('User level could not be calculated. This should never happen.');
     }
 }
