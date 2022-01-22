@@ -255,7 +255,7 @@ class ShowEdit extends Component implements HasForms
         $event = $this->event;
         $validatedData = $this->form->getState();
 
-        $event->tmp_event_id = $validatedData['tmp_event_id'];
+        $event->tmp_event_id = $validatedData['tmp_event_id'] ?? null;
         $event->name = $validatedData['name'];
         $event->featured_image_url = $validatedData['featured_image_url'];
         $event->map_image_url = $validatedData['map_image_url'];
