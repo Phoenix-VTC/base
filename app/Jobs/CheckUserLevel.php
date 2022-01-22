@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\DriverLevel;
 use App\Models\User;
 use App\Notifications\DriverLevelDown;
 use App\Notifications\DriverLevelUp;
@@ -108,6 +109,25 @@ class CheckUserLevel implements ShouldQueue
 
             // Send a level up notification
             $this->user->notify(new DriverLevelUp($this->user));
+        }
+
+        // Check if the level doesn't have at least 10 levels above it
+        if (DriverLevel::query()->whereKey($this->user->driver_level + 10)->doesntExist()) {
+            // Post a warning in the #management channel on Discord
+            Http::post(config('services.discord.webhooks.management'), [
+                'embeds' => [
+                    [
+                        'title' => "⚠️ Heads-up! We're running out of driver levels! ⚠️",
+                        'description' => "User {$this->user->username} has levelled up to **level {$this->user->driver_level}**, but they will run out of levels in 10 level-ups or less. Please consider adding more levels.",
+                        'color' => 15228164, // #E85D04
+                        'footer' => [
+                            'text' => 'PhoenixBase',
+                            'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        ],
+                        'timestamp' => Carbon::now(),
+                    ]
+                ],
+            ]);
         }
     }
 
