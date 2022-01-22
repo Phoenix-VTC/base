@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Repositories\UserRepositoryInterface;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Validator;
 
 class CreateUser extends Command
@@ -56,6 +57,7 @@ class CreateUser extends Command
         $user = $userRepository->create([
             'username' => $data['username'],
             'email' => $data['email'],
+            'slug' => Str::slug($data['username']),
             'password' => Hash::make($data['password']),
         ]);
 

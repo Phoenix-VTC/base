@@ -33,7 +33,7 @@
             @isset($event->truckersmp_event_vtc_data)
                     {{ $event->truckersmp_event_vtc_data['response']['name'] ?? 'Unknown VTC' }}
                 @else
-                    {{ ucfirst($event->host->username) ?? 'Unknown User' }}
+                    {{ $event->host?->username ? ucfirst($event->host->username): 'Unknown User' }}
                 @endif
             </span>
         </span>
@@ -160,7 +160,18 @@
                     @endif
                     <div class="sm:col-span-2">
                         <dt class="text-sm font-medium text-gray-500">Required DLCs</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $event->required_dlcs ?: 'None' }}</dd>
+                        <dd class="mt-1 text-sm text-gray-900">
+                            {{-- Since we have switched from a comma separated string to a JSON array for storing DLCs, check what the var type is here --}}
+                            @if(is_array($event->required_dlcs))
+                                @if($event->required_dlcs)
+                                    {{ implode(', ', $event->required_dlcs) }}
+                                @else
+                                    None
+                                @endif
+                            @else
+                                {{ $event->required_dlcs ?: 'None' }}
+                            @endif
+                        </dd>
                     </div>
                 </dl>
             </x-info-card>

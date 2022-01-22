@@ -9,10 +9,8 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function removeProfilePicture($id): RedirectResponse
+    public function removeProfilePicture(User $user): RedirectResponse
     {
-        $user = User::findOrFail($id);
-
         Storage::disk('scaleway')->delete($user->profile_picture_path);
         $user->update(['profile_picture_path' => null]);
 
@@ -21,10 +19,8 @@ class UserController extends Controller
         return redirect()->route('users.edit', [$user]);
     }
 
-    public function removeProfileBanner($id): RedirectResponse
+    public function removeProfileBanner(User $user): RedirectResponse
     {
-        $user = User::findOrFail($id);
-
         Storage::disk('scaleway')->delete($user->profile_banner_path);
         $user->update(['profile_banner_path' => null]);
 

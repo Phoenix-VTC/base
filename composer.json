@@ -23,6 +23,7 @@
         "cornford/googlmapper": "3.*",
         "danharrin/livewire-rate-limiting": "^0.2.0",
         "fideloper/proxy": "^4.4",
+        "filament/forms": "^2.4",
         "fruitcake/laravel-cors": "^2.0",
         "glorand/laravel-model-settings": "^4.2",
         "graham-campbell/markdown": "13.1",

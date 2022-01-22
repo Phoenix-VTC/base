@@ -15,24 +15,29 @@ class ShowProfilePage extends Component
     public User $user;
     public $recent_jobs;
 
-    public function mount(int $id): void
+    public function mount(User $user): void
     {
+        $this->user = $user;
+
+        if ($this->user->deleted_at && !Auth::user()->can('manage users')) {
+            abort(404);
+        }
+
         if (Auth::user()->can('manage users')) {
-            $this->user = User::withTrashed()
-                ->with([
-                    'jobs',
-                    'roles',
-                    'permissions',
-                    'application',
-                    'vacation_requests',
-                    'wallets',
-                    'modelSettings'
-                ])->findOrFail($id);
-        } else {
-            $this->user = User::with([
+            $this->user::query()->with([
                 'jobs',
                 'roles',
-            ])->findOrFail($id);
+                'permissions',
+                'application',
+                'vacation_requests',
+                'wallets',
+                'modelSettings'
+            ])->get();
+        } else {
+            $this->user::query()->with([
+                'jobs',
+                'roles',
+            ])->get();
         }
 
         $this->recent_jobs = $this->user->jobs()
