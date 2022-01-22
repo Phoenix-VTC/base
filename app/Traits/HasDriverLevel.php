@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Actions\Wallet\FindOrCreateWallet;
 use App\Models\DriverLevel;
+use DivisionByZeroError;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -61,7 +62,12 @@ trait HasDriverLevel
      */
     public function percentageUntilLevelUp(): int
     {
-        $percentage = round(($this->totalDriverPoints() - $this->driverLevel->required_points) / ($this->nextDriverLevelPoints() - $this->driverLevel->required_points) * 100);
+        // This is inside a try/catch because DivisionByZeroError is thrown when the user has the maximum level
+        try {
+            $percentage = round(($this->totalDriverPoints() - $this->driverLevel->required_points) / ($this->nextDriverLevelPoints() - $this->driverLevel->required_points) * 100);
+        } catch (DivisionByZeroError) {
+            $percentage = 0;
+        }
 
         // Return the percentage, but make sure it's never above 100
         return min($percentage, 100);
