@@ -61,7 +61,10 @@ trait HasDriverLevel
      */
     public function percentageUntilLevelUp(): int
     {
-        return round(($this->totalDriverPoints() - $this->driverLevel->required_points) / ($this->nextDriverLevelPoints() - $this->driverLevel->required_points) * 100);
+        $percentage = round(($this->totalDriverPoints() - $this->driverLevel->required_points) / ($this->nextDriverLevelPoints() - $this->driverLevel->required_points) * 100);
+
+        // Return the percentage, but make sure it's never above 100
+        return min($percentage, 100);
     }
 
     /**

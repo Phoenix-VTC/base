@@ -25,7 +25,7 @@
                 <p class="focus:outline-none text-sm leading-none text-gray-800">
                     {{ number_format($user->totalDriverPoints()) }}
                     / {{ number_format($user->nextDriverLevelPoints()) }} XP
-                    @if($user->percentageUntilLevelUp() >= 100)
+                    @if($user->percentageUntilLevelUp() === 100)
                         <br>
                         <span
                             class="mt-3 inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-yellow-100 text-yellow-800">
