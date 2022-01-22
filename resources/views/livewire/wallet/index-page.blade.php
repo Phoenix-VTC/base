@@ -23,7 +23,14 @@
                 @empty(!$user->wallets->count())
                     @foreach($user->wallets->take(10) as $wallet)
                         <div>
-                            <h2 class="text-lg leading-6 font-medium text-gray-900">{{ $wallet->name }}</h2>
+                            <h2 class="text-lg leading-6 font-medium text-gray-900">
+                                {{ $wallet->name }}
+                                <span
+                                    class="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium bg-blue-100 text-blue-800">
+                                    Total: @if(!Str::contains($wallet->slug, 'xp'))&euro; @endif
+                                    {{ $wallet->balance }}
+                                </span>
+                            </h2>
                             <div class="flex flex-col mt-3">
                                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
