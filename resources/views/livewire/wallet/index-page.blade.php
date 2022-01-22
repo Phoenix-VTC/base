@@ -16,6 +16,10 @@
     <x-header.meta-item icon="o-star">
         {{ number_format($user->getWallet('event-xp')->balance ?? 0) }} Event XP
     </x-header.meta-item>
+
+    <x-header.meta-item icon="o-calculator">
+        Total XP: {{ number_format($user->totalDriverPoints()) }}
+    </x-header.meta-item>
 @endsection
 
 <div>
