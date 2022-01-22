@@ -10,17 +10,28 @@
             <h2 class="text-lg font-medium text-gray-900">My driver level</h2>
             <div class="pt-6 relative flex items-center h-full justify-center">
                 <div class="flex items-center h-full justify-center relative">
-                    <canvas tabindex="0" class="focus:outline-none" aria-label="chart" role="img" id="driver-level-progress" data-percent="{{ $user->percentageUntilLevelUp() }}" width="200" height="200"></canvas>
+                    <canvas tabindex="0" class="focus:outline-none" aria-label="chart" role="img"
+                            id="driver-level-progress" data-percent="{{ $user->percentageUntilLevelUp() }}" width="200"
+                            height="200"></canvas>
                     <div class="w-40 h-40 absolute rounded-full flex items-center justify-center">
-                        <p tabindex="0" class="focus:outline-none text-4xl font-medium leading-10 text-center text-orange-600">
+                        <p tabindex="0"
+                           class="focus:outline-none text-4xl font-medium leading-10 text-center text-orange-600">
                             {{ $user->driver_level }}
                         </p>
                     </div>
                 </div>
             </div>
-            <div class="flex pt-6 justify-center text-center">
+            <div class="flex pt-6 justify-center text-center flex-col">
                 <p class="focus:outline-none text-sm leading-none text-gray-800">
-                    {{ number_format($user->totalDriverPoints()) }} / {{ number_format($user->nextDriverLevelPoints()) }} XP
+                    {{ number_format($user->totalDriverPoints()) }}
+                    / {{ number_format($user->nextDriverLevelPoints()) }} XP
+                    @if($user->percentageUntilLevelUp() >= 100)
+                        <br>
+                        <span
+                            class="mt-3 inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-yellow-100 text-yellow-800">
+                            Congrats! We are processing your level up.
+                        </span>
+                    @endif
                 </p>
             </div>
         </div>
@@ -74,7 +85,7 @@
                 ],
             },
             options: {
-                hover: { mode: null },
+                hover: {mode: null},
                 elements: {
                     arc: {
                         roundedCornersFor: 0,
