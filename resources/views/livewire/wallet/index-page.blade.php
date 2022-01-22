@@ -9,6 +9,10 @@
         {!! $user->preferred_currency_symbol !!} {{ number_format($user->default_wallet_balance) }}
     </x-header.meta-item>
 
+    <x-header.meta-item icon="o-briefcase">
+        {{ number_format($user->getWallet('job-xp')->balance ?? 0) }} Job XP
+    </x-header.meta-item>
+
     <x-header.meta-item icon="o-star">
         {{ number_format($user->getWallet('event-xp')->balance ?? 0) }} Event XP
     </x-header.meta-item>
