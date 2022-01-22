@@ -20,7 +20,7 @@
             </div>
             <div class="flex pt-6 justify-center text-center">
                 <p class="focus:outline-none text-sm leading-none text-gray-800">
-                    {{ $user->totalDriverPoints() }} / {{ $user->nextDriverLevelPoints() }} XP
+                    {{ number_format($user->totalDriverPoints()) }} / {{ number_format($user->nextDriverLevelPoints()) }} XP
                 </p>
             </div>
         </div>
