@@ -27,6 +27,8 @@ class DiscordBotController extends Controller
         $user = array_merge($user->toArray(), [
             'wallet_balance' => $user->getWallet('default')->balance ?? 0,
             'event_xp' => $user->getWallet('event-xp')->balance ?? 0,
+            'job_xp' => $user->getWallet('job-xp')->balance ?? 0,
+            'driver_points' => $user->totalDriverPoints(),
             'profile_picture' => $user->profile_picture,
             'profile_link' => route('users.profile', $user)
         ]);
