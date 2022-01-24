@@ -105,7 +105,7 @@ class AuthController extends Controller
                     return redirect(route('driver-application.apply'));
                 }
             }
-        } catch (GuzzleException | RequestException | RequestException) {
+        } catch (GuzzleException | RequestException) {
             return redirect(route('driver-application.authenticate'))
                 ->withErrors([
                     'TruckersMP API Error' => 'We couldn\'t contact the Steam or TruckersMP API, please try again. If this keeps happening, visit <a class="font-semibold" href="https://truckersmpstatus.com/">TruckersMPStatus.com</a>.'
