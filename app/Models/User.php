@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Lab404\Impersonate\Models\Impersonate;
 use Laravel\Sanctum\HasApiTokens;
+use Syntax\SteamApi\Client as SteamClient;
 use Syntax\SteamApi\Containers\Player;
 use Venturecraft\Revisionable\RevisionableTrait;
 
@@ -198,7 +199,9 @@ class User extends Authenticatable implements Wallet
     {
         // Cached for 15 minutes
         return Cache::remember($this->id . '_steam', 900, function () {
-            return \Steam::user($this->steam_id ?? 0)->GetPlayerSummaries()[0] ?? null;
+            $steamClient = new SteamClient();
+
+            return $steamClient->user($this->steam_id ?? 0)->GetPlayerSummaries()[0] ?? null;
         });
     }
 

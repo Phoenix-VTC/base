@@ -3,6 +3,7 @@
 namespace App\Rules\Steam;
 
 use Illuminate\Contracts\Validation\Rule;
+use Syntax\SteamApi\Client as SteamClient;
 
 class HasGame implements Rule
 {
@@ -15,7 +16,8 @@ class HasGame implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        $games = \Steam::player($value)->GetOwnedGames();
+        $steamClient = new SteamClient();
+        $games = $steamClient->player($value)->GetOwnedGames();
 
         $games = $games->contains(function ($value) {
             return (

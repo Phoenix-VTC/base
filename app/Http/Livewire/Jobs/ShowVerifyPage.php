@@ -15,6 +15,9 @@ use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
+/**
+ * @property Forms\ComponentContainer $form
+ */
 class ShowVerifyPage extends Component implements HasForms
 {
     use InteractsWithForms;

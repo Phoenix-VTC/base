@@ -15,6 +15,9 @@ use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Component;
 
+/**
+ * @property Forms\ComponentContainer $form
+ */
 class ShowEditPage extends Component implements HasForms
 {
     use InteractsWithForms;

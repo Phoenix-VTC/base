@@ -12,11 +12,6 @@ class JobController extends Controller
 {
     public User $user;
 
-    public function __construct(Request $request)
-    {
-        //
-    }
-
     /**
      * Display a listing unverified tracker jobs.
      *
