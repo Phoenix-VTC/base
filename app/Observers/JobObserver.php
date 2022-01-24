@@ -31,8 +31,7 @@ class JobObserver
      */
     public function creating(Job $job): void
     {
-        // Handle the driver ranking
-        //$this->handleDriverRank($job);
+        //
     }
 
     /**
