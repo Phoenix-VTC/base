@@ -1,6 +1,6 @@
 {{-- Nothing in the world is as soft and yielding as water. --}}
 
-@section('title', ucfirst($orderBy) . ' Leaderboard (' . Carbon\Carbon::create()->month($month)->startOfMonth()->isoFormat('MMMM') . ')')
+@section('title', Str::of($orderBy)->replace('_', ' ')->headline() . ' Leaderboard (' . Carbon\Carbon::create()->month($month)->startOfMonth()->isoFormat('MMMM') . ')')
 
 @section('actions')
     @if($month !== date('m'))
@@ -55,13 +55,16 @@
                  class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                  role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                 <div class="py-1" role="none">
-                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'distance']) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'distance') bg-gray-100 text-gray-900 @endif" role="menuitem" tabindex="-1" id="menu-item-0">
+                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'job_points']) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'job_points') bg-gray-100 text-gray-900 @endif" role="menuitem" tabindex="-1">
+                        Job XP
+                    </a>
+                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'distance']) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'distance') bg-gray-100 text-gray-900 @endif" role="menuitem" tabindex="-1">
                         Distance
                     </a>
-                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'income']) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'income') bg-gray-100 text-gray-900 @endif" role="menuitem" tabindex="-1" id="menu-item-0">
+                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'income']) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'income') bg-gray-100 text-gray-900 @endif" role="menuitem" tabindex="-1">
                         Income
                     </a>
-                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'deliveries']) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'deliveries') bg-gray-100 text-gray-900 @endif" role="menuitem" tabindex="-1" id="menu-item-0">
+                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'deliveries']) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'deliveries') bg-gray-100 text-gray-900 @endif" role="menuitem" tabindex="-1">
                         Deliveries
                     </a>
                 </div>
@@ -86,6 +89,7 @@
                                 {{ number_format($user->jobs_distance_sum) ? number_format($user->jobs_distance_sum) . ' km' : '' }}
                                 {{ number_format($user->jobs_total_income_sum) ? '€ ' . number_format($user->jobs_total_income_sum) : '' }}
                                 {{ number_format($user->jobs_count) ? number_format($user->jobs_count) . \Illuminate\Support\Str::plural(' delivery', $user->jobs_count) : '' }}
+                                {{ $user->transactions_amount_sum ? number_format($user->transactions_amount_sum) . ' Job XP' : '' }}
                             </dd>
                             <dt class="sr-only">Position</dt>
                             <dd class="mt-3">
@@ -129,6 +133,7 @@
                                 {{ number_format($user->jobs_distance_sum) ? number_format($user->jobs_distance_sum) . ' km' : '' }}
                                 {{ number_format($user->jobs_total_income_sum) ? '€ ' . number_format($user->jobs_total_income_sum) : '' }}
                                 {{ number_format($user->jobs_count) ? number_format($user->jobs_count) . \Illuminate\Support\Str::plural(' delivery', $user->jobs_count) : '' }}
+                                {{ $user->transactions_amount_sum ? number_format($user->transactions_amount_sum) . ' Job XP' : '' }}
                             </dd>
                             <dt class="sr-only">Position</dt>
                             <dd class="mt-3">
