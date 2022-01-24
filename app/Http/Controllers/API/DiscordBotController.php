@@ -30,7 +30,7 @@ class DiscordBotController extends Controller
             'job_xp' => $user->getWallet('job-xp')->balance ?? 0,
             'driver_points' => $user->totalDriverPoints(),
             'profile_picture' => $user->profile_picture,
-            'profile_link' => route('users.profile', $user)
+            'profile_link' => route('users.profile', $user->username)
         ]);
 
         return response()->json($user);
