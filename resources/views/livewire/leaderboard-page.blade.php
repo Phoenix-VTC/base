@@ -1,9 +1,15 @@
 {{-- Nothing in the world is as soft and yielding as water. --}}
 
-@section('title', Str::of($orderBy)->replace('_', ' ')->headline() . ' Leaderboard (' . Carbon\Carbon::create()->month($month)->startOfMonth()->isoFormat('MMMM') . ')')
+@section('title')
+    {{ Str::of($orderBy)->replace('_', ' ')->headline() }} Leaderboard
+
+    @if($orderBy !== 'driver_level')
+        ({{ Carbon\Carbon::create()->month($month)->startOfMonth()->isoFormat('MMMM') }})
+    @endif
+@endsection
 
 @section('actions')
-    @if($month !== date('m'))
+    @if($orderBy !== 'driver_level' && $month !== date('m'))
         <div class="ml-3">
             <a href="{{ route('leaderboard') }}"
                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -13,7 +19,8 @@
         </div>
     @endif
 
-    <div class="ml-3">
+    @if($orderBy !== 'driver_level')
+        <div class="ml-3">
         <span class="relative z-0 inline-flex shadow-sm rounded-md">
             <a href="{{ route('leaderboard', ['month' => Carbon\Carbon::create()->month($month)->startOfMonth()->subMonth()->format('m'), 'orderBy' => $orderBy]) }}"
                class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
@@ -31,7 +38,8 @@
                 <x-heroicon-s-chevron-right class="h-5 w-5"/>
             </a>
         </span>
-    </div>
+        </div>
+    @endif
 
     <div class="ml-3">
         <div class="relative inline-block text-left" x-data="{ open: false }">
@@ -52,19 +60,39 @@
                  x-transition:leave="transition ease-in duration-75"
                  x-transition:leave-start="opacity-100 scale-100"
                  x-transition:leave-end="opacity-0 scale-95"
-                 class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                 class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100"
                  role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                <div class="py-1" role="none">
-                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'job_points']) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'job_points') bg-gray-100 text-gray-900 @endif" role="menuitem" tabindex="-1">
+                <div class="py-1">
+                    <a href="{{ route('leaderboard', ['orderBy' => 'driver_level']) }}"
+                       class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'driver_level') bg-gray-100 text-gray-900 @endif"
+                       role="menuitem" tabindex="-1">
+                        Driver Level
+                    </a>
+                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'driver_points']) }}"
+                       class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'driver_points') bg-gray-100 text-gray-900 @endif"
+                       role="menuitem" tabindex="-1">
+                        Driver XP
+                    </a>
+                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'job_points']) }}"
+                       class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'job_points') bg-gray-100 text-gray-900 @endif"
+                       role="menuitem" tabindex="-1">
                         Job XP
                     </a>
-                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'distance']) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'distance') bg-gray-100 text-gray-900 @endif" role="menuitem" tabindex="-1">
+                </div>
+                <div class="py-1" role="none">
+                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'distance']) }}"
+                       class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'distance') bg-gray-100 text-gray-900 @endif"
+                       role="menuitem" tabindex="-1">
                         Distance
                     </a>
-                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'income']) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'income') bg-gray-100 text-gray-900 @endif" role="menuitem" tabindex="-1">
+                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'income']) }}"
+                       class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'income') bg-gray-100 text-gray-900 @endif"
+                       role="menuitem" tabindex="-1">
                         Income
                     </a>
-                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'deliveries']) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'deliveries') bg-gray-100 text-gray-900 @endif" role="menuitem" tabindex="-1">
+                    <a href="{{ route('leaderboard', ['month' => $month, 'orderBy' => 'deliveries']) }}"
+                       class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 @if($orderBy === 'deliveries') bg-gray-100 text-gray-900 @endif"
+                       role="menuitem" tabindex="-1">
                         Deliveries
                     </a>
                 </div>
@@ -84,12 +112,15 @@
                              alt="{{ $user->username }}'s Profile Picture">
                         <h3 class="mt-6 text-gray-900 text-2xl font-semibold">{{ $user->username ?? 'Deleted User' }}</h3>
                         <dl class="mt-1 flex-grow flex flex-col justify-between">
+                            <dd class="text-gray-500 mb-1">
+                                Driver Level {{ number_format($user->driver_level) }}
+                            </dd>
                             <dt class="sr-only">Total</dt>
                             <dd class="text-gray-500">
                                 {{ number_format($user->jobs_distance_sum) ? number_format($user->jobs_distance_sum) . ' km' : '' }}
                                 {{ number_format($user->jobs_total_income_sum) ? '€ ' . number_format($user->jobs_total_income_sum) : '' }}
                                 {{ number_format($user->jobs_count) ? number_format($user->jobs_count) . \Illuminate\Support\Str::plural(' delivery', $user->jobs_count) : '' }}
-                                {{ $user->transactions_amount_sum ? number_format($user->transactions_amount_sum) . ' Job XP' : '' }}
+                                {{ $user->transactions_amount_sum ? number_format($user->transactions_amount_sum) . ' XP' : '' }}
                             </dd>
                             <dt class="sr-only">Position</dt>
                             <dd class="mt-3">
