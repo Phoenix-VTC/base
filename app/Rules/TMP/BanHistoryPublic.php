@@ -2,8 +2,9 @@
 
 namespace App\Rules\TMP;
 
-use GuzzleHttp\Client;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Http;
 
 class BanHistoryPublic implements Rule
 {
@@ -13,15 +14,14 @@ class BanHistoryPublic implements Rule
      * @param string $attribute
      * @param mixed $value
      * @return bool
-     * @throws \JsonException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws RequestException
      */
     public function passes($attribute, $value): bool
     {
-        $client = new Client();
-
-        $response = $client->request('GET', 'https://api.truckersmp.com/v2/player/' . $value)->getBody();
-        $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+        $response = Http::timeout(3)
+            ->get("https://api.truckersmp.com/v2/player/$value")
+            ->throw()
+            ->json();
 
         if ($response['response']['permissions']['isStaff']) {
             // User is staff if bansCount is null, staff can't set their ban history to public. So return true here so they can apply anyway.
