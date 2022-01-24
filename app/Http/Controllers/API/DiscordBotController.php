@@ -20,7 +20,7 @@ class DiscordBotController extends Controller
      */
     public function findUserByDiscordId($discordId): JsonResponse
     {
-        $user = User::select(['id', 'username', 'steam_id', 'truckersmp_id', 'discord->nickname as discord_nickname', 'profile_picture_path', 'created_at'])
+        $user = User::select(['id', 'username', 'steam_id', 'truckersmp_id', 'discord->nickname as discord_nickname', 'profile_picture_path', 'driver_level', 'created_at'])
             ->whereJsonContains('discord->id', $discordId)
             ->firstOrFail();
 
@@ -29,6 +29,7 @@ class DiscordBotController extends Controller
             'event_xp' => $user->getWallet('event-xp')->balance ?? 0,
             'job_xp' => $user->getWallet('job-xp')->balance ?? 0,
             'driver_points' => $user->totalDriverPoints(),
+            'percentage_until_level_up' => $user->percentageUntilLevelUp(),
             'profile_picture' => $user->profile_picture,
             'profile_link' => route('users.profile', $user->username)
         ]);
