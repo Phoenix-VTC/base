@@ -63,50 +63,48 @@ class AuthController extends Controller
             if ($this->steam->validate()) {
                 $info = $this->steam->getUserInfo();
 
-                if (!is_null($info)) {
-                    $validator = Validator::make($info->toArray(), [
-                        'steamID64' => [
-                            'bail',
-                            new NotInBlocklist,
-                            new HasGame,
-                            new MinHours,
-                            new AccountExists,
-                            new BanHistoryPublic,
-                            new NoRecentBans,
-                            new NotInVTC,
-                            new VTCHistoryPublic,
-                            new UniqueInUsers,
-                            new UniqueInApplications
-                        ],
-                        'personaname' => [
-                            new NotInBlocklist,
-                        ]
-                    ]);
+                $validator = Validator::make($info->toArray(), [
+                    'steamID64' => [
+                        'bail',
+                        new NotInBlocklist,
+                        new HasGame,
+                        new MinHours,
+                        new AccountExists,
+                        new BanHistoryPublic,
+                        new NoRecentBans,
+                        new NotInVTC,
+                        new VTCHistoryPublic,
+                        new UniqueInUsers,
+                        new UniqueInApplications
+                    ],
+                    'personaname' => [
+                        new NotInBlocklist,
+                    ]
+                ]);
 
-                    if ($validator->fails()) {
-                        return redirect(route('driver-application.authenticate'))
-                            ->withErrors($validator)
-                            ->withInput();
-                    }
-
-                    // Perform a blocklist check with the TruckersMP user data
-                    $tmpBlocklistCheck = $this->checkBlocklistWithTruckersmpData($info->toArray());
-
-                    if ($tmpBlocklistCheck->fails()) {
-                        return redirect(route('driver-application.authenticate'))
-                            ->withErrors($tmpBlocklistCheck)
-                            ->withInput();
-                    }
-
-                    // Store the TruckersMP account
-                    $this->storeTruckersMPAccount($info->toArray()['steamID64']);
-
-                    $request->session()->put('steam_user', $info);
-
-                    return redirect(route('driver-application.apply'));
+                if ($validator->fails()) {
+                    return redirect(route('driver-application.authenticate'))
+                        ->withErrors($validator)
+                        ->withInput();
                 }
+
+                // Perform a blocklist check with the TruckersMP user data
+                $tmpBlocklistCheck = $this->checkBlocklistWithTruckersmpData($info->toArray());
+
+                if ($tmpBlocklistCheck->fails()) {
+                    return redirect(route('driver-application.authenticate'))
+                        ->withErrors($tmpBlocklistCheck)
+                        ->withInput();
+                }
+
+                // Store the TruckersMP account
+                $this->storeTruckersMPAccount($info->toArray()['steamID64']);
+
+                $request->session()->put('steam_user', $info);
+
+                return redirect(route('driver-application.apply'));
             }
-        } catch (GuzzleException | RequestException $e) {
+        } catch (GuzzleException|RequestException $e) {
             return redirect(route('driver-application.authenticate'))
                 ->withErrors([
                     'TruckersMP API Error' => 'We couldn\'t contact the Steam or TruckersMP API, please try again. If this keeps happening, visit <a class="font-semibold" href="https://truckersmpstatus.com/">TruckersMPStatus.com</a>.'

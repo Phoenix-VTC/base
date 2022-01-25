@@ -138,7 +138,7 @@ class ShowEditPage extends Component implements HasForms
                                 ->minValue(1)
                                 ->maxValue(5000)
                                 ->placeholder(1200)
-                                ->hint(fn() => 'In ' . Game::getQualifiedDistanceMetric($this->job->game_id) ?? '??')
+                                ->hint(fn() => 'In ' . Game::getQualifiedDistanceMetric($this->job->game_id))
                                 ->required(),
                         ]),
 

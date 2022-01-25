@@ -59,29 +59,27 @@ class SteamController extends Controller
             if ($this->steam->validate()) {
                 $info = $this->steam->getUserInfo();
 
-                if (!is_null($info)) {
-                    $user = $this->findUserOrNull($info);
+                $user = $this->findUserOrNull($info);
 
-                    // If the user couldn't be found
-                    if (is_null($user)) {
-                        return redirect()
-                            ->route('login')
-                            ->withErrors(['socialAuth' => [
-                                'title' => 'Hmm, are you a Phoenix Member?',
-                                'message' => '
+                // If the user couldn't be found
+                if (is_null($user)) {
+                    return redirect()
+                        ->route('login')
+                        ->withErrors(['socialAuth' => [
+                            'title' => 'Hmm, are you a Phoenix Member?',
+                            'message' => '
                                     We couldn\'t link any Phoenix accounts to the Steam account that you used.
                                     <br>
                                     If you\'re trying to apply to Phoenix, please do this <a href="https://phoenixvtc.com/en/apply" class="font-bold">here</a>.
                                 '
-                            ]]);
-                    }
-
-                    Auth::login($user, true);
-
-                    return redirect($this->redirectURL);
+                        ]]);
                 }
+
+                Auth::login($user, true);
+
+                return redirect($this->redirectURL);
             }
-        } catch (BadResponseException | GuzzleException $e) {
+        } catch (BadResponseException|GuzzleException $e) {
             return redirect()
                 ->route('login')
                 ->withErrors(['socialAuth' => [

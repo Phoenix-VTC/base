@@ -109,7 +109,7 @@ class ShowSubmitPage extends Component implements HasForms
                                 ->minValue(1)
                                 ->maxValue(5000)
                                 ->placeholder(1200)
-                                ->hint(fn() => 'In ' . Game::getQualifiedDistanceMetric($this->game_id) ?? '??')
+                                ->hint(fn() => 'In ' . Game::getQualifiedDistanceMetric($this->game_id))
                                 ->required(),
                         ]),
 

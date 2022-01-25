@@ -67,7 +67,7 @@ class ShowWelcomeForm extends Component
             abort(403, 'This welcome link has already been used.');
         }
 
-        if (is_null($this->user->welcome_valid_until || Carbon::create($this->user->welcome_valid_until)->isPast())) {
+        if (is_null($this->user->welcome_valid_until) || Carbon::create($this->user->welcome_valid_until)->isPast()) {
             abort(403, 'This welcome link has expired.');
         }
     }
