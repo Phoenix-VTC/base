@@ -150,7 +150,7 @@ class ShowCreatePage extends Component
         // If the base_or_recruitment_id is numeric, try to find the user
         if (is_numeric($this->base_or_recruitment_id)) {
             try {
-                $this->user = User::query()->withTrashed()->findOrFail($this->base_or_recruitment_id);
+                $this->user = User::withTrashed()->findOrFail($this->base_or_recruitment_id);
             } catch (ModelNotFoundException) {
                 $this->addError('base_or_recruitment_id', 'Invalid User ID');
 
