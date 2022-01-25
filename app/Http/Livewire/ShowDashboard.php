@@ -61,20 +61,20 @@ class ShowDashboard extends Component
         if (Auth::user()->settings()->get('preferences.currency') === 'dollar') {
             $income_current_month = Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->month)
                     ->sum('total_income') * 1.21;
             $income_previous_month = Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                     ->sum('total_income') * 1.21;
         } else {
             $income_current_month = Auth::user()
                 ->jobs()
-                ->whereMonth('finished_at', Carbon::now()->month)
+                ->whereMonth('finished_at', (string)Carbon::now()->month)
                 ->sum('total_income');
             $income_previous_month = Auth::user()
                 ->jobs()
-                ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                 ->sum('total_income');
         }
 
@@ -82,20 +82,20 @@ class ShowDashboard extends Component
         if (Auth::user()->settings()->get('preferences.distance') === 'miles') {
             $distance_current_month = Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->month)
                     ->sum('distance') / 1.609;
             $distance_previous_month = Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                     ->sum('distance') / 1.609;
         } else {
             $distance_current_month = Auth::user()
                 ->jobs()
-                ->whereMonth('finished_at', Carbon::now()->month)
+                ->whereMonth('finished_at', (string)Carbon::now()->month)
                 ->sum('distance');
             $distance_previous_month = Auth::user()
                 ->jobs()
-                ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                 ->sum('distance');
         }
 
@@ -103,11 +103,11 @@ class ShowDashboard extends Component
             'delivery_count' => [
                 'current_month' => Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->month)
                     ->count(),
                 'previous_month' => Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                     ->count(),
             ],
             'income' => [
@@ -123,7 +123,7 @@ class ShowDashboard extends Component
 
     private function getRecentNewsPosts(): array
     {
-        $feed = FeedsFacade::make('https://phoenixvtc.com/feed');
+        $feed = FeedsFacade::make(['https://phoenixvtc.com/feed']);
 
         // Manually convert this to an array, otherwise Alpine dies because of Livewire lol
         $items = [];

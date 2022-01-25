@@ -141,7 +141,7 @@ class ShowVerifyPage extends Component implements HasForms
                                 ->numeric()
                                 ->minValue(1)
                                 ->maxValue(5000)
-                                ->placeholder(1200)
+                                ->placeholder("1200")
                                 ->hint(fn() => 'In ' . Game::getQualifiedDistanceMetric($this->job->game_id))
                                 ->required(),
                         ]),
