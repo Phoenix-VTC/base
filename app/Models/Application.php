@@ -52,10 +52,10 @@ class Application extends Revisionable
     /**
      * Get the user's Steam data.
      *
-     * @param $value
+     * @param string $value
      * @return Collection
      */
-    public function getSteamDataAttribute($value): Collection
+    public function getSteamDataAttribute(string $value): Collection
     {
         return collect(json_decode($value));
     }
@@ -107,10 +107,10 @@ class Application extends Revisionable
     /**
      * Get the user's application answers.
      *
-     * @param $value
+     * @param string $value
      * @return Collection
      */
-    public function getApplicationAnswersAttribute($value): Collection
+    public function getApplicationAnswersAttribute(string $value): Collection
     {
         return collect(json_decode($value));
     }

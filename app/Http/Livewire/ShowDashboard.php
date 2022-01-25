@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
@@ -32,15 +33,15 @@ class ShowDashboard extends Component
             ->take(5)
             ->get();
 
-        $this->today_overview = User::whereHas('jobs', function ($q) {
+        $this->today_overview = User::whereHas('jobs', function (Builder $q) {
             // Get the users that have finished a job today
             $q->whereDate('finished_at', Carbon::today());
-        })->with(['jobs' => function ($q) {
+        })->with(['jobs' => function (HasMany $q) {
             // Then include today's jobs of those users
             $q->whereDate('finished_at', Carbon::today());
         }])->withSum(['jobs:distance' => function (Builder $q) {
             $q->whereDate('finished_at', Carbon::today());
-        }])->take(10)
+        }], 'distance')->take(10)
             ->orderByDesc('jobs_distance_sum')
             ->get();
 

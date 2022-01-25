@@ -10,6 +10,7 @@ use Illuminate\Routing\Redirector;
 use Invisnik\LaravelSteamAuth\SteamAuth;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Invisnik\LaravelSteamAuth\SteamInfo;
 
 class SteamController extends Controller
 {
@@ -99,11 +100,11 @@ class SteamController extends Controller
     /**
      * Get the user by steam_id or return null
      *
-     * @param $info
+     * @param SteamInfo $info
      * @return User|null
      */
-    protected function findUserOrNull($info): ?User
+    protected function findUserOrNull(SteamInfo $info): ?User
     {
-        return User::where('steam_id', $info->steamID64)->first();
+        return User::where('steam_id', $info['steamID64'])->first();
     }
 }
