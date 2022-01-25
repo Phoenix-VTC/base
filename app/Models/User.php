@@ -44,7 +44,7 @@ class User extends Authenticatable implements Wallet
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'username',
@@ -222,7 +222,7 @@ class User extends Authenticatable implements Wallet
         });
     }
 
-    public function getDriverLevelAttribute(): int
+    public function getDriverLevelAttribute(): int|float
     {
         $total_distance = $this->jobs()->sum('distance');
 
@@ -235,7 +235,7 @@ class User extends Authenticatable implements Wallet
         return floor($level);
     }
 
-    public function getNextDriverLevelDistanceAttribute(): int
+    public function getNextDriverLevelDistanceAttribute(): int|float
     {
         $level = $this->getDriverLevelAttribute();
 
@@ -243,14 +243,14 @@ class User extends Authenticatable implements Wallet
             $current_level_distance = $level / 0.001;
 
             return $current_level_distance + 1000;
-        } else {
-            $current_level_distance = -10000 + 2000 * $level;
-
-            return $current_level_distance + 2000;
         }
+
+        $current_level_distance = -10000 + 2000 * $level;
+
+        return $current_level_distance + 2000;
     }
 
-    public function getRequiredDistanceUntilNextLevelAttribute(): int
+    public function getRequiredDistanceUntilNextLevelAttribute(): int|float
     {
         $total_distance = $this->jobs()->sum('distance');
         $level = $this->getDriverLevelAttribute();
@@ -268,16 +268,16 @@ class User extends Authenticatable implements Wallet
         return floor($next_level_distance - $total_distance);
     }
 
-    public function getPercentageUntilDriverLevelUpAttribute(): int
+    public function getPercentageUntilDriverLevelUpAttribute(): int|float
     {
         $total_distance = $this->jobs()->sum('distance');
         $level = $this->getDriverLevelAttribute();
 
         if ($level <= 10) {
             return floor(($total_distance / 1000 - $level) * 100);
-        } else {
-            return floor(($total_distance / 2000 + 5 - $level) * 100);
         }
+
+        return floor(($total_distance / 2000 + 5 - $level) * 100);
     }
 
     public function canImpersonate(): bool

@@ -9,7 +9,7 @@ parameters:
         - '#Access to an undefined property App\\Models\\User::\$unreadNotifications.#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\User>::orderByRelation\(\).#'
 
-    # The level 9 is the highest level
-    level: 2
+    # Level 9 is the highest level
+    level: 3
 
     checkMissingIterableValueType: false

@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Alexmg86\LaravelSubQuery\Collection\LaravelSubQueryCollection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class ShowLeaderboardPage extends Component
     public string $month;
     public string $orderBy;
 
-    public LaravelSubQueryCollection $users;
+    public LaravelSubQueryCollection|Collection $users;
 
     public function mount(Request $request): void
     {

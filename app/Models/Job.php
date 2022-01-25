@@ -10,6 +10,66 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Auth;
 use Venturecraft\Revisionable\RevisionableTrait;
 
+/**
+ * App\Models\Job
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $game_id
+ * @property int $pickup_city_id
+ * @property int $destination_city_id
+ * @property int $pickup_company_id
+ * @property int $destination_company_id
+ * @property int $cargo_id
+ * @property \Illuminate\Support\Carbon|null $started_at
+ * @property \Illuminate\Support\Carbon|null $finished_at
+ * @property int $distance
+ * @property int|float $load_damage
+ * @property int $estimated_income
+ * @property int $total_income
+ * @property string|null $comments
+ * @property JobStatus|int $status
+ * @property bool $tracker_job
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Cargo $cargo
+ * @property-read \App\Models\City $destinationCity
+ * @property-read \App\Models\Company $destinationCompany
+ * @property-read bool $can_edit
+ * @property-read bool $has_pending_game_data
+ * @property-read int $price_per_distance
+ * @property-read \App\Models\City $pickupCity
+ * @property-read \App\Models\Company $pickupCompany
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Venturecraft\Revisionable\Revision[] $revisionHistory
+ * @property-read int|null $revision_history_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Revision[] $revisionHistoryWithUser
+ * @property-read int|null $revision_history_with_user_count
+ * @property-read \App\Models\User $user
+ * @method static \Database\Factories\JobFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Job newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Job query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereCargoId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereComments($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereDestinationCityId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereDestinationCompanyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereDistance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereEstimatedIncome($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereFinishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereGameId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereLoadDamage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job wherePickupCityId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job wherePickupCompanyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereStartedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereTotalIncome($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereTrackerJob($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Job whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Job extends Model
 {
     use HasFactory;
@@ -18,7 +78,7 @@ class Job extends Model
     /**
      * The attributes that aren't mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $guarded = [];
 
@@ -132,9 +192,9 @@ class Job extends Model
     /**
      * Calculate the price per distance
      *
-     * @return int
+     * @return int|float
      */
-    public function getPricePerDistanceAttribute(): int
+    public function getPricePerDistanceAttribute(): int|float
     {
         try {
             return round($this->estimated_income / $this->distance, 2);
