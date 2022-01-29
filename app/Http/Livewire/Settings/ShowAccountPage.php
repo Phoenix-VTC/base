@@ -24,8 +24,8 @@ class ShowAccountPage extends Component
     public $username = '';
     public string $slug = '';
     public $email = '';
-    public ?string $steam_id = '';
-    public ?string $truckersmp_id = '';
+    public string|int|null $steam_id = '';
+    public string|int|null $truckersmp_id = '';
     public ?string $date_of_birth = '';
     public $profile_picture;
     public $profile_banner;

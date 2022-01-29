@@ -11,6 +11,9 @@ use Filament\Forms\Contracts\HasForms;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Livewire\Component;
 
+/**
+ * @property Forms\ComponentContainer $form
+ */
 class ShowEdit extends Component implements HasForms
 {
     use InteractsWithForms;

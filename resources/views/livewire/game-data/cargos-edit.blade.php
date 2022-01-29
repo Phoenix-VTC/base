@@ -23,9 +23,11 @@
             <br>
             Before approving, make sure that all fields marked as "unknown" are either corrected or emptied.
             <br><br>
-            <b>If</b> this request needs to be denied, make sure to delete all the related jobs first, and inform the member!
+            <b>If</b> this request needs to be denied, make sure to delete all the related jobs first, and inform the
+            member!
             <br>
-            <b>Otherwise</b>, if this request is a duplicate of an already existing cargo, first edit the job(s) to the other cargo instance, and manually approve the job.
+            <b>Otherwise</b>, if this request is a duplicate of an already existing cargo, first edit the job(s) to the
+            other cargo instance, and manually approve the job.
         </x-app-ui::alert>
     @endif
 
@@ -40,8 +42,13 @@
                             Cancel
                         </x-app-ui::button>
 
-                        <x-app-ui::button type="submit">
-                            Update
+                        <x-app-ui::button type="button" wire:click="delete" color="danger"
+                                          onclick="return confirm('Are you sure you want to {{ $cargo->approved ? 'delete' : 'deny' }} this cargo request?') || event.stopImmediatePropagation()">
+                            {{ $cargo->approved ? 'Delete' : 'Deny' }}
+                        </x-app-ui::button>
+
+                        <x-app-ui::button type="submit" :color="$cargo->approved ? 'primary' : 'success'">
+                            {{ $cargo->approved ? 'Update' : 'Approve' }}
                         </x-app-ui::button>
                     </x-app-ui::card.actions>
                 </x-slot>

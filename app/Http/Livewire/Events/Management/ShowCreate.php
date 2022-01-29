@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Events\Management;
 
 use App\Enums\Attending;
 use App\Models\Event;
-use App\Models\User;
 use App\Notifications\Events\NewEvent;
 use Carbon\Carbon;
 use Closure;
@@ -20,6 +19,9 @@ use Illuminate\View\View;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
+/**
+ * @property Forms\ComponentContainer $form
+ */
 class ShowCreate extends Component implements HasForms
 {
     use WithFileUploads;

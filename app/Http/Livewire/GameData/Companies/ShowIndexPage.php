@@ -10,6 +10,9 @@ use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Component;
 
+/**
+ * @property Forms\ComponentContainer $form
+ */
 class ShowIndexPage extends Component implements HasForms
 {
     use InteractsWithForms;

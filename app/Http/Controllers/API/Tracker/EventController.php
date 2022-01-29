@@ -55,16 +55,16 @@ class EventController extends Controller
                 ->firstOrFail();
 
             // Strip the HTML from the description, except <br>
-            $description = strip_tags($event?->description, ['<br>']);
+            $description = strip_tags($event->description, ['<br>']);
             // If there's multiple <br> tags, replace them with just one
             $description = preg_replace('/(<br>\s*)+/', '<br>', $description);
             // Limit the description to the first 200 characters
             $description = Str::limit($description, 200);
 
             // Add the event description and URL to the array
-            $event = array_merge($event?->toArray(), [
+            $event = array_merge($event->toArray(), [
                 'description' => strip_tags($description, ['<br>']),
-                'url' => route('events.show', [$event?->id, $event?->slug]),
+                'url' => route('events.show', [$event->id, $event->slug]),
             ]);
 
             return response()->json($event);

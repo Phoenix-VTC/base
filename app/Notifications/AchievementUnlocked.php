@@ -36,14 +36,14 @@ class AchievementUnlocked extends Notification implements ShouldQueue
     /**
      * Get the array representation of the notification.
      *
-     * @param $notifiable
+     * @param mixed $notifiable
      * @return array
      */
-    public function toArray($notifiable): array
+    public function toArray(mixed $notifiable): array
     {
         return [
             'title' => 'Achievement unlocked!',
-            'content' => 'You have unlocked the <b>' . $this->achievement->name . '</b> achievement!',
+            'content' => 'You have unlocked the <b>' . $this->achievement['name'] . '</b> achievement!',
             'link' => route('users.achievements', $notifiable->id),
         ];
     }

@@ -4,6 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Game
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Game newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Game newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Game query()
+ * @mixin \Eloquent
+ */
 class Game extends Model
 {
     /**
@@ -21,30 +29,26 @@ class Game extends Model
      * Get the abbreviation of the game using the ID.
      *
      * @param int $gameId
-     * @return string
+     * @return string|null
      */
     public static function getAbbreviationById(int $gameId): ?string
     {
-        try {
-            return self::GAMES[$gameId][0];
-        } catch (\Exception $e) {
-            return null;
-        }
+        $game = self::GAMES[$gameId] ?? [];
+
+        return $game[0] ?? null;
     }
 
     /**
      * Get the fully qualified name of the game using the ID.
      *
      * @param int $gameId
-     * @return string
+     * @return string|null
      */
     public static function getQualifiedName(int $gameId): ?string
     {
-        try {
-            return self::GAMES[$gameId][1];
-        } catch (\Exception $e) {
-            return null;
-        }
+        $game = self::GAMES[$gameId] ?? [];
+
+        return $game[1] ?? null;
     }
 
     public static function getAbbreviationDistanceMetric(int $gameId): ?string

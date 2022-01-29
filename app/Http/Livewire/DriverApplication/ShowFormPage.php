@@ -325,8 +325,8 @@ class ShowFormPage extends Component
         $application->discord_username = $applicationData['discord_username'];
         $application->date_of_birth = $applicationData['date_of_birth'];
         $application->country = $applicationData['country'];
-        $application->steam_data = json_encode(session('steam_user'));
-        $application->truckersmp_id = json_encode(session('truckersmp_user.id'));
+        $application->steam_data = session('steam_user');
+        $application->truckersmp_id = session('truckersmp_user.id');
 
         $application_answers = [
             __('driver-application.default_questions.another_vtc') => $applicationData['another_vtc'],
@@ -338,7 +338,7 @@ class ShowFormPage extends Component
             __('driver-application.default_questions.find_us') => $applicationData['find_us'],
         ];
 
-        $application->application_answers = json_encode($application_answers);
+        $application->application_answers = collect($application_answers);
 
         $application->save();
 

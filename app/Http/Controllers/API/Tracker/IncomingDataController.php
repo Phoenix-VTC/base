@@ -28,7 +28,7 @@ class IncomingDataController extends Controller
     private Company $destinationCompany;
     private Cargo $cargo;
     private int $gameId;
-    private int $cargoDamage;
+    private int|float $cargoDamage;
 
     /**
      * Handle the incoming tracker request

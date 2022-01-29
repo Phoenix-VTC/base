@@ -16,6 +16,9 @@ use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
 
+/**
+ * @property Forms\ComponentContainer $form
+ */
 class ShowEditPage extends Component implements HasForms
 {
     use AuthorizesRequests;
