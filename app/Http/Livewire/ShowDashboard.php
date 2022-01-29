@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
@@ -32,15 +33,15 @@ class ShowDashboard extends Component
             ->take(5)
             ->get();
 
-        $this->today_overview = User::whereHas('jobs', function ($q) {
+        $this->today_overview = User::whereHas('jobs', function (Builder $q) {
             // Get the users that have finished a job today
             $q->whereDate('finished_at', Carbon::today());
-        })->with(['jobs' => function ($q) {
+        })->with(['jobs' => function (HasMany $q) {
             // Then include today's jobs of those users
             $q->whereDate('finished_at', Carbon::today());
         }])->withSum(['jobs:distance' => function (Builder $q) {
             $q->whereDate('finished_at', Carbon::today());
-        }])->take(10)
+        }], 'distance')->take(10)
             ->orderByDesc('jobs_distance_sum')
             ->get();
 
@@ -60,20 +61,20 @@ class ShowDashboard extends Component
         if (Auth::user()->settings()->get('preferences.currency') === 'dollar') {
             $income_current_month = Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->month)
                     ->sum('total_income') * 1.21;
             $income_previous_month = Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                     ->sum('total_income') * 1.21;
         } else {
             $income_current_month = Auth::user()
                 ->jobs()
-                ->whereMonth('finished_at', Carbon::now()->month)
+                ->whereMonth('finished_at', (string)Carbon::now()->month)
                 ->sum('total_income');
             $income_previous_month = Auth::user()
                 ->jobs()
-                ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                 ->sum('total_income');
         }
 
@@ -81,20 +82,20 @@ class ShowDashboard extends Component
         if (Auth::user()->settings()->get('preferences.distance') === 'miles') {
             $distance_current_month = Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->month)
                     ->sum('distance') / 1.609;
             $distance_previous_month = Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                     ->sum('distance') / 1.609;
         } else {
             $distance_current_month = Auth::user()
                 ->jobs()
-                ->whereMonth('finished_at', Carbon::now()->month)
+                ->whereMonth('finished_at', (string)Carbon::now()->month)
                 ->sum('distance');
             $distance_previous_month = Auth::user()
                 ->jobs()
-                ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                 ->sum('distance');
         }
 
@@ -102,11 +103,11 @@ class ShowDashboard extends Component
             'delivery_count' => [
                 'current_month' => Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->month)
                     ->count(),
                 'previous_month' => Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                     ->count(),
             ],
             'income' => [
@@ -122,7 +123,7 @@ class ShowDashboard extends Component
 
     private function getRecentNewsPosts(): array
     {
-        $feed = FeedsFacade::make('https://phoenixvtc.com/feed');
+        $feed = FeedsFacade::make(['https://phoenixvtc.com/feed']);
 
         // Manually convert this to an array, otherwise Alpine dies because of Livewire lol
         $items = [];

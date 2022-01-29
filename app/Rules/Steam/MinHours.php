@@ -3,6 +3,7 @@
 namespace App\Rules\Steam;
 
 use Illuminate\Contracts\Validation\Rule;
+use Syntax\SteamApi\Client as SteamClient;
 
 class MinHours implements Rule
 {
@@ -15,7 +16,9 @@ class MinHours implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        $playtime = \Steam::player($value)
+        $steamClient = new SteamClient();
+
+        $playtime = $steamClient->player($value)
             ->GetOwnedGames()
             ->filter(function ($value) {
                 return (

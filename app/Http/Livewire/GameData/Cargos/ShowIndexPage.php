@@ -8,6 +8,9 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
 
+/**
+ * @property Forms\ComponentContainer $form
+ */
 class ShowIndexPage extends Component implements HasForms
 {
     use InteractsWithForms;

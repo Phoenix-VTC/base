@@ -2,8 +2,9 @@
 
 namespace App\Rules\TMP;
 
-use GuzzleHttp\Client;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Http;
 
 class NotInVTC implements Rule
 {
@@ -13,15 +14,14 @@ class NotInVTC implements Rule
      * @param string $attribute
      * @param mixed $value
      * @return bool
-     * @throws \JsonException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws RequestException
      */
     public function passes($attribute, $value): bool
     {
-        $client = new Client();
-
-        $response = $client->request('GET', 'https://api.truckersmp.com/v2/player/' . $value)->getBody();
-        $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+        $response = Http::timeout(3)
+            ->get("https://api.truckersmp.com/v2/player/$value")
+            ->throw()
+            ->json();
 
         if ($response['response']['vtc']['id'] === 30294) {
             // Return true if the VTC is Phoenix

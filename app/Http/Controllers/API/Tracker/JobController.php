@@ -7,16 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Job;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Laravel\Sanctum\PersonalAccessToken;
 
 class JobController extends Controller
 {
     public User $user;
-
-    public function __construct(Request $request)
-    {
-        //
-    }
 
     /**
      * Display a listing unverified tracker jobs.
@@ -67,10 +61,10 @@ class JobController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return void
      */
-    public function store(Request $request)
+    public function store(Request $request): void
     {
         //
     }
@@ -78,10 +72,10 @@ class JobController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Job $job
-     * @return \Illuminate\Http\Response
+     * @param Job $job
+     * @return void
      */
-    public function show(Job $job)
+    public function show(Job $job): void
     {
         //
     }
@@ -89,10 +83,10 @@ class JobController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Job $job
-     * @return \Illuminate\Http\Response
+     * @param Job $job
+     * @return void
      */
-    public function edit(Job $job)
+    public function edit(Job $job): void
     {
         //
     }
@@ -100,11 +94,11 @@ class JobController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Job $job
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Job $job
+     * @return void
      */
-    public function update(Request $request, Job $job)
+    public function update(Request $request, Job $job): void
     {
         //
     }
@@ -112,10 +106,10 @@ class JobController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Job $job
-     * @return \Illuminate\Http\Response
+     * @param Job $job
+     * @return void
      */
-    public function destroy(Job $job)
+    public function destroy(Job $job): void
     {
         //
     }

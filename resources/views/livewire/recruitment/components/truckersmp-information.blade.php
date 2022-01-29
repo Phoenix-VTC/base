@@ -12,7 +12,7 @@
                                     <p class="text-red-600">TruckersMP error while trying to fetch data</p>
                                     @isset($application->ban_history['error'])
                                         <p>
-                                            Error: <strong>{{ $application->ban_history['descriptor'] }}</strong>
+                                            Error: <strong>{{ $application->ban_history['descriptor'] ?? 'Unknown' }}</strong>
                                         </p>
                                     @endisset
                                 </div>

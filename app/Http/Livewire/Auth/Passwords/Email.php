@@ -12,10 +12,10 @@ class Email extends Component
     use WithRateLimiting;
 
     /** @var string */
-    public $email;
+    public string $email;
 
-    /** @var string|null */
-    public $emailSentMessage = false;
+    /** @var string|bool|null */
+    public string|bool|null $emailSentMessage = false;
 
     public function sendResetPasswordLink()
     {

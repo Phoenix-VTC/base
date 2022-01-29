@@ -2,12 +2,13 @@
 
 namespace App\Rules\TMP;
 
-use GuzzleHttp\Client;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Contracts\Validation\Rule;
 
 class AccountExists implements Rule
 {
-    private $response;
+    private array $response;
 
     /**
      * Determine if the validation rule passes.
@@ -15,15 +16,14 @@ class AccountExists implements Rule
      * @param string $attribute
      * @param mixed $value
      * @return bool
-     * @throws \JsonException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws RequestException
      */
     public function passes($attribute, $value): bool
     {
-        $client = new Client();
-
-        $this->response = $client->request('GET', 'https://api.truckersmp.com/v2/player/' . $value)->getBody();
-        $this->response = json_decode($this->response, true, 512, JSON_THROW_ON_ERROR);
+        $this->response = Http::timeout(3)
+            ->get("https://api.truckersmp.com/v2/player/$value")
+            ->throw()
+            ->json();
 
         return !$this->response['error'];
     }
@@ -35,6 +35,6 @@ class AccountExists implements Rule
      */
     public function message(): string
     {
-        return '<b>TruckersMP Error: </b>' . $this->response['response'];
+        return "<b>TruckersMP Error: </b> {$this->response['response']}";
     }
 }

@@ -11,6 +11,49 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Venturecraft\Revisionable\RevisionableTrait;
 
+/**
+ * App\Models\VacationRequest
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int|null $handled_by
+ * @property string $reason
+ * @property bool $leaving
+ * @property \Illuminate\Support\Carbon|null $start_date
+ * @property \Illuminate\Support\Carbon|null $end_date
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read string $duration
+ * @property-read bool $is_active
+ * @property-read bool $is_expired
+ * @property-read bool $is_upcoming
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Venturecraft\Revisionable\Revision[] $revisionHistory
+ * @property-read int|null $revision_history_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Revision[] $revisionHistoryWithUser
+ * @property-read int|null $revision_history_with_user_count
+ * @property-read \App\Models\User|null $staff
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest newQuery()
+ * @method static \Illuminate\Database\Query\Builder|VacationRequest onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest query()
+ * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereEndDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereHandledBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereLeaving($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereStartDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|VacationRequest withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|VacationRequest withoutTrashed()
+ * @mixin \Eloquent
+ */
 class VacationRequest extends Model
 {
     use HasFactory;
@@ -63,7 +106,7 @@ class VacationRequest extends Model
 
     public function getDurationAttribute(): string
     {
-        return Carbon::parse($this->end_date)->diffForHumans($this->start_date, true);
+        return Carbon::parse($this->end_date)->diffForHumans($this->start_date, short: true);
     }
 
     /**

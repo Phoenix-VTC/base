@@ -11,6 +11,7 @@ class UserController extends Controller
 {
     public function index(Request $request): LengthAwarePaginator
     {
+        // @phpstan-ignore-next-line
         return User::query()
             ->where('username', 'like', '%' . $request->input('q') . '%')
             ->select([

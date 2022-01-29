@@ -14,6 +14,9 @@ use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
+/**
+ * @property Forms\ComponentContainer $form
+ */
 class ShowSubmitPage extends Component implements HasForms
 {
     use InteractsWithForms;
@@ -105,8 +108,8 @@ class ShowSubmitPage extends Component implements HasForms
                                 ->numeric()
                                 ->minValue(1)
                                 ->maxValue(5000)
-                                ->placeholder(1200)
-                                ->hint(fn() => 'In ' . Game::getQualifiedDistanceMetric($this->game_id) ?? '??')
+                                ->placeholder("1200")
+                                ->hint(fn() => 'In ' . Game::getQualifiedDistanceMetric($this->game_id))
                                 ->required(),
                         ]),
 

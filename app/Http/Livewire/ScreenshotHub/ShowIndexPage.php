@@ -5,7 +5,7 @@ namespace App\Http\Livewire\ScreenshotHub;
 use App\Models\Screenshot;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
 class ShowIndexPage extends Component
