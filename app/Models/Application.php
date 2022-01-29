@@ -4,8 +4,9 @@ namespace App\Models;
 
 use App\Concerns\HasComments;
 use App\Concerns\HasUuid;
+use Cache;
 use Carbon\Carbon;
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -114,13 +115,8 @@ class Application extends Revisionable
      */
     public function getTruckersMPDataAttribute(): Collection
     {
-        return \Cache::remember($this->truckersmp_id . "_truckersmp_data", 86400, function () {
-            $client = new Client();
-
-            $response = $client->request('GET', 'https://api.truckersmp.com/v2/player/' . $this->truckersmp_id)->getBody();
-            $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
-
-            return collect($response['response']);
+        return Cache::remember($this->truckersmp_id . "_truckersmp_data", 86400, function () {
+            return Http::get("https://api.truckersmp.com/v2/player/$this->truckersmp_id")->collect('response');
         });
     }
 
@@ -131,13 +127,8 @@ class Application extends Revisionable
      */
     public function getBanHistoryAttribute(): Collection
     {
-        return \Cache::remember($this->truckersmp_id . "_truckersmp_ban_history", 86400, function () {
-            $client = new Client();
-
-            $response = $client->request('GET', 'https://api.truckersmp.com/v2/bans/' . $this->truckersmp_id)->getBody();
-            $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
-
-            return collect($response);
+        return Cache::remember($this->truckersmp_id . "_truckersmp_ban_history", 86400, function () {
+            return Http::get("https://api.truckersmp.com/v2/bans/$this->truckersmp_id")->collect();
         });
     }
 

@@ -9,7 +9,6 @@ use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Traits\HasWallets;
 use Glorand\Model\Settings\Traits\HasSettingsTable;
-use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,6 +18,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Lab404\Impersonate\Models\Impersonate;
 use Laravel\Sanctum\HasApiTokens;
@@ -320,10 +320,7 @@ class User extends Authenticatable implements Wallet
     {
         // Cached for 15 minutes
         return Cache::remember($this->id . '_truckersmp', 900, function () {
-            $client = new Client();
-
-            $response = $client->get('https://api.truckersmp.com/v2/player/' . $this->truckersmp_id)->getBody();
-            $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+            $response = Http::get("https://api.truckersmp.com/v2/player/$this->truckersmp_id")->collect();
 
             if ($response['error']) {
                 return [];

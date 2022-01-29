@@ -3,9 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Models\City;
-use App\Models\Game;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use JsonException;
