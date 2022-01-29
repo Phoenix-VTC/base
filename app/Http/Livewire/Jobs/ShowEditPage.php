@@ -12,6 +12,9 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
 
+/**
+ * @property Forms\ComponentContainer $form
+ */
 class ShowEditPage extends Component implements HasForms
 {
     use InteractsWithForms;
@@ -134,8 +137,8 @@ class ShowEditPage extends Component implements HasForms
                                 ->numeric()
                                 ->minValue(1)
                                 ->maxValue(5000)
-                                ->placeholder(1200)
-                                ->hint(fn() => 'In ' . Game::getQualifiedDistanceMetric($this->job->game_id) ?? '??')
+                                ->placeholder("1200")
+                                ->hint(fn() => 'In ' . Game::getQualifiedDistanceMetric($this->job->game_id))
                                 ->required(),
                         ]),
 

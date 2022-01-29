@@ -23,4 +23,10 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         return $this->model::all();
     }
+
+    /** {@inheritdoc} */
+    public function create(array $attributes): User
+    {
+        return $this->model::create($attributes);
+    }
 }

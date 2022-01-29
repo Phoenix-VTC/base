@@ -40,8 +40,13 @@
                             Cancel
                         </x-app-ui::button>
 
-                        <x-app-ui::button type="submit">
-                            Update
+                        <x-app-ui::button type="button" wire:click="delete" color="danger"
+                                          onclick="return confirm('Are you sure you want to {{ $city->approved ? 'delete' : 'deny' }} this cargo request?') || event.stopImmediatePropagation()">
+                            {{ $city->approved ? 'Delete' : 'Deny' }}
+                        </x-app-ui::button>
+
+                        <x-app-ui::button type="submit" :color="$city->approved ? 'primary' : 'success'">
+                            {{ $city->approved ? 'Update' : 'Approve' }}
                         </x-app-ui::button>
                     </x-app-ui::card.actions>
                 </x-slot>

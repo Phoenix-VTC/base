@@ -62,6 +62,9 @@ class CmsController extends Controller
 
     private function calculateStaffMembers(): int
     {
-        return Role::findByName('phoenix staff')->users()->count();
+        return Role::query()
+            ->firstWhere('name', 'phoenix staff')
+            ?->users()
+            ->count();
     }
 }

@@ -9,10 +9,13 @@ use App\Notifications\GameDataRequestDenied;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
+use Throwable;
 
+/**
+ * @property Forms\ComponentContainer $form
+ */
 class ShowEditPage extends Component implements HasForms
 {
     use InteractsWithForms;
@@ -165,8 +168,8 @@ class ShowEditPage extends Component implements HasForms
         }
 
         try {
-            $this->city->delete();
-        } catch (QueryException $e) {
+            $this->city->deleteOrFail();
+        } catch (Throwable) {
             session()->now('alert', ['type' => 'danger', 'message' => 'You can\'t delete this city, it\'s used in a job somewhere!']);
 
             return;
