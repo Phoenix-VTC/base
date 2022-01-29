@@ -5,6 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Sushi\Sushi;
 
+/**
+ * App\Models\DriverLevel
+ *
+ * @property int $id
+ * @property int|null $required_points
+ * @property string|null $milestone
+ * @method static \Illuminate\Database\Eloquent\Builder|DriverLevel newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DriverLevel newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DriverLevel query()
+ * @method static \Illuminate\Database\Eloquent\Builder|DriverLevel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DriverLevel whereMilestone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DriverLevel whereRequiredPoints($value)
+ * @mixin \Eloquent
+ */
 class DriverLevel extends Model
 {
     use Sushi;

@@ -137,6 +137,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static \Illuminate\Database\Query\Builder|User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \App\Models\DriverLevel|null $driverLevel
  */
 class User extends Authenticatable implements Wallet
 {
