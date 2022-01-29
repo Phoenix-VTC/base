@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Jobs\CheckUserLevel;
+use App\Jobs\DepositInitialJobPoints;
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Bus;
 
 class CheckUserLevels extends Command
 {
@@ -13,7 +15,8 @@ class CheckUserLevels extends Command
      *
      * @var string
      */
-    protected $signature = 'users:check-levels';
+    protected $signature = 'users:check-levels
+                            {--deposit-initial-job-xp : Whether every user should have their initial job XP calculated and rewarded (only if their Job XP wallet is empty)}';
 
     /**
      * The console command description.
@@ -31,8 +34,19 @@ class CheckUserLevels extends Command
     {
         $users = User::all();
 
+        $depositInitialJobXp = $this->option('deposit-initial-job-xp');
+
         foreach ($users as $user) {
-            CheckUserLevel::dispatch($user, false);
+            // If $depositInitialJobXp is true, dispatch a DepositInitialJobPoints job for every user first
+            if ($depositInitialJobXp) {
+                Bus::chain([
+                    new DepositInitialJobPoints($user),
+                    new CheckUserLevel($user, false),
+                ])->dispatch();
+            } else {
+                // Otherwise, only dispatch a CheckUserLevel job for every user
+                CheckUserLevel::dispatch($user, false);
+            }
         }
 
         $this->info('All level check jobs have been dispatched.');

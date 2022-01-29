@@ -18,7 +18,10 @@ use Throwable;
 
 class CheckUserLevel implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     protected User $user;
     protected bool $notifyOnDiscord;
