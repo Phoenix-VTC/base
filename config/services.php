@@ -45,6 +45,7 @@ return [
             'human-resources' => env('DISCORD_HUMAN_RESOURCES_WEBHOOK'),
             'development-updates' => env('DISCORD_DEVELOPMENT_UPDATES_WEBHOOK'),
             'member-chat' => env('DISCORD_MEMBER_CHAT_WEBHOOK'),
+            'management' => env('DISCORD_MANAGEMENT_WEBHOOK'),
         ],
 
         // Socialite stuff

@@ -239,6 +239,35 @@
                     </div>
 
                     <div class="flex flex-col pt-3 mx-6 mt-3 space-y-2 border-t">
+                        <div class="bg-gray-200 rounded h-6" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ $user->percentageUntilLevelUp() }}">
+                            <div class="bg-orange-600 rounded h-6 text-center text-sm content-center" style="width: {{ $user->percentageUntilLevelUp() }}%;">
+                                <span class="inline-block align-bottom py-0.5 whitespace-nowrap font-medium text-gray-900">Driver Level {{ $user->driver_level }}</span>
+                            </div>
+                        </div>
+
+                        <span class="relative group flex items-center space-x-2.5">
+                            <x-heroicon-o-cash class="w-5 text-gray-700"/>
+                            <span class="text-sm font-medium text-gray-500 truncate">
+                                {!! Auth::user()->preferred_currency_symbol !!} {{ number_format($user->default_wallet_balance) }}
+                            </span>
+                        </span>
+
+                        <span class="relative group flex items-center space-x-2.5">
+                            <x-heroicon-o-briefcase class="w-5 text-gray-700"/>
+                            <span class="text-sm font-medium text-gray-500 truncate">
+                                {{ number_format($user->getWallet('job-xp')->balance ?? 0) }} Job XP
+                            </span>
+                        </span>
+
+                        <span class="relative group flex items-center space-x-2.5">
+                            <x-heroicon-o-star class="w-5 text-gray-700"/>
+                            <span class="text-sm font-medium text-gray-500 truncate">
+                                {{ number_format($user->getWallet('event-xp')->balance ?? 0) }} Event XP
+                            </span>
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col pt-3 mx-6 mt-3 space-y-2 border-t">
                         <span class="relative group flex items-center space-x-2.5">
                             <i class="w-4 text-gray-700 fab fa-steam hover:text-gray-900"></i>
                             <a href="{{ $user->steamPlayerSummary->profileUrl ?? '#' }}" target="_blank"

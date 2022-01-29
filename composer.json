@@ -19,6 +19,7 @@
         "bensampo/laravel-enum": "^3.3",
         "blade-ui-kit/blade-heroicons": "^1.2",
         "blade-ui-kit/blade-ui-kit": "^0.2.0",
+        "calebporzio/sushi": "^2.4",
         "cornford/googlmapper": "3.*",
         "danharrin/livewire-rate-limiting": "^0.2.0",
         "fideloper/proxy": "^4.4",
@@ -58,7 +59,7 @@
         "barryvdh/laravel-ide-helper": "^2.8",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
-        "laravel/sail": "^0.0.5",
+        "laravel/sail": "^1.13.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "nunomaduro/larastan": "^1.0",
@@ -79,7 +80,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {
