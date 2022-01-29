@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Alexmg86\LaravelSubQuery\Traits\LaravelSubQueryTrait;
+use App\Traits\HasDriverLevel;
 use App\Traits\HasRolesTrait;
 use Assada\Achievements\Achiever;
 use Bavix\Wallet\Interfaces\Wallet;
@@ -136,6 +137,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static \Illuminate\Database\Query\Builder|User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \App\Models\DriverLevel|null $driverLevel
  */
 class User extends Authenticatable implements Wallet
 {
@@ -151,6 +153,7 @@ class User extends Authenticatable implements Wallet
     use RevisionableTrait;
     use Impersonate;
     use Achiever;
+    use HasDriverLevel;
 
     /**
      * The attributes that are mass assignable.
@@ -172,6 +175,7 @@ class User extends Authenticatable implements Wallet
         'discord',
         'profile_picture_path',
         'profile_banner_path',
+        'driver_level'
     ];
 
     /**
@@ -328,64 +332,6 @@ class User extends Authenticatable implements Wallet
 
             return $response['response'];
         });
-    }
-
-    public function getDriverLevelAttribute(): int|float
-    {
-        $total_distance = $this->jobs()->sum('distance');
-
-        if ($total_distance <= 10000) {
-            $level = $total_distance * 0.001;
-        } else {
-            $level = $total_distance / 2000 + 5;
-        }
-
-        return floor($level);
-    }
-
-    public function getNextDriverLevelDistanceAttribute(): int|float
-    {
-        $level = $this->getDriverLevelAttribute();
-
-        if ($level <= 10) {
-            $current_level_distance = $level / 0.001;
-
-            return $current_level_distance + 1000;
-        }
-
-        $current_level_distance = -10000 + 2000 * $level;
-
-        return $current_level_distance + 2000;
-    }
-
-    public function getRequiredDistanceUntilNextLevelAttribute(): int|float
-    {
-        $total_distance = $this->jobs()->sum('distance');
-        $level = $this->getDriverLevelAttribute();
-
-        if ($level <= 10) {
-            $current_level_distance = $level / 0.001;
-
-            $next_level_distance = $current_level_distance + 1000;
-        } else {
-            $current_level_distance = -10000 + 2000 * $level;
-
-            $next_level_distance = $current_level_distance + 2000;
-        }
-
-        return floor($next_level_distance - $total_distance);
-    }
-
-    public function getPercentageUntilDriverLevelUpAttribute(): int|float
-    {
-        $total_distance = $this->jobs()->sum('distance');
-        $level = $this->getDriverLevelAttribute();
-
-        if ($level <= 10) {
-            return floor(($total_distance / 1000 - $level) * 100);
-        }
-
-        return floor(($total_distance / 2000 + 5 - $level) * 100);
     }
 
     public function canImpersonate(): bool
