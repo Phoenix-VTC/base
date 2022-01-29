@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use GrahamCampbell\Markdown\Facades\Markdown;
-use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Venturecraft\Revisionable\RevisionableTrait;
 
@@ -94,12 +94,7 @@ class Event extends Model
     {
         if ($this->tmp_event_id) {
             return Cache::remember($this->tmp_event_id . "_tmp_event_data", 86400, function () {
-                $client = new Client();
-
-                $response = $client->get('https://api.truckersmp.com/v2/events/' . $this->tmp_event_id)->getBody();
-                $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
-
-                return collect($response);
+                return Http::get("https://api.truckersmp.com/v2/events/$this->tmp_event_id")->collect();
             });
         }
 
@@ -110,12 +105,7 @@ class Event extends Model
     {
         if (isset($this->truckersmp_event_data['response']['vtc']['name'])) {
             return Cache::remember($this->truckersmp_event_data['response']['vtc']['id'] . "_tmp_event_vtc_data", 86400, function () {
-                $client = new Client();
-
-                $response = $client->get('https://api.truckersmp.com/v2/vtc/' . $this->truckersmp_event_data['response']['vtc']['id'])->getBody();
-                $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
-
-                return collect($response);
+                return Http::get("https://api.truckersmp.com/v2/vtc/{$this->truckersmp_event_data['response']['vtc']['id']}")->collect();
             });
         }
 

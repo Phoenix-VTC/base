@@ -13,7 +13,6 @@ use App\Rules\TMP\NotInVTC;
 use App\Rules\TMP\UniqueInApplications;
 use App\Rules\TMP\UniqueInUsers;
 use App\Rules\TMP\VTCHistoryPublic;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\RedirectResponse;
@@ -106,7 +105,7 @@ class AuthController extends Controller
                     return redirect(route('driver-application.apply'));
                 }
             }
-        } catch (GuzzleException | RequestException $e) {
+        } catch (GuzzleException | RequestException) {
             return redirect(route('driver-application.authenticate'))
                 ->withErrors([
                     'TruckersMP API Error' => 'We couldn\'t contact the Steam or TruckersMP API, please try again. If this keeps happening, visit <a class="font-semibold" href="https://truckersmpstatus.com/">TruckersMPStatus.com</a>.'
