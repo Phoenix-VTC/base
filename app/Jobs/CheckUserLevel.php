@@ -21,15 +21,17 @@ class CheckUserLevel implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected User $user;
+    protected bool $notifyOnDiscord;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, bool $notifyOnDiscord = true)
     {
         $this->user = $user;
+        $this->notifyOnDiscord = $notifyOnDiscord;
     }
 
     /**
@@ -89,21 +91,23 @@ class CheckUserLevel implements ShouldQueue
             // Change the user's Discord role
             $this->changeDiscordRank($this->user->driver_level);
 
-            // Announce the level up in Discord
-            Http::post(config('services.discord.webhooks.member-chat'), [
-                'embeds' => [
-                    [
-                        'title' => "{$this->user->username} has leveled up to **Driver Level {$this->user->driver_level}**!",
-                        'description' => "Their total XP is now {$this->user->totalDriverPoints()}. Enjoy the new rank!",
-                        'color' => 15228164, // #E85D04
-                        'footer' => [
-                            'text' => 'PhoenixBase',
-                            'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
-                        ],
-                        'timestamp' => Carbon::now(),
-                    ]
-                ],
-            ]);
+            if ($this->notifyOnDiscord) {
+                // Announce the level up in Discord
+                Http::post(config('services.discord.webhooks.member-chat'), [
+                    'embeds' => [
+                        [
+                            'title' => "{$this->user->username} has leveled up to **Driver Level {$this->user->driver_level}**!",
+                            'description' => "Their total XP is now {$this->user->totalDriverPoints()}. Enjoy the new rank!",
+                            'color' => 15228164, // #E85D04
+                            'footer' => [
+                                'text' => 'PhoenixBase',
+                                'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                            ],
+                            'timestamp' => Carbon::now(),
+                        ]
+                    ],
+                ]);
+            }
 
             // Send a level up notification
             $this->user->notify(new DriverLevelUp($this->user));

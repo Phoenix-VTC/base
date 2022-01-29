@@ -32,7 +32,7 @@ class CheckUserLevels extends Command
         $users = User::all();
 
         foreach ($users as $user) {
-            CheckUserLevel::dispatch($user);
+            CheckUserLevel::dispatch($user, false);
         }
 
         $this->info('All level check jobs have been dispatched.');
