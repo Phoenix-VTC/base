@@ -17,14 +17,12 @@ class HasGame implements Rule
     {
         $games = \Steam::player($value)->GetOwnedGames();
 
-        $games = $games->contains(function ($value) {
+        return $games->contains(function ($value) {
             return (
                 $value->appId === 227300 || // ETS2
                 $value->appId === 270880 // ATS
             );
         });
-
-        return $games;
     }
 
     /**
