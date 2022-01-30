@@ -48,7 +48,7 @@ class ShowAccountPage extends Component
         $this->username = $this->user->username;
         $this->slug = $this->user->slug;
         $this->email = $this->user->email;
-        $this->steam_id = $this->user->steam_id;
+        $this->steam_id = (string) $this->user->steam_id;
         $this->truckersmp_id = $this->user->truckersmp_id;
         $this->date_of_birth = $this->user->date_of_birth;
     }
