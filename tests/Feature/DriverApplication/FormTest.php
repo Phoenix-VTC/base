@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 
-use App\Http\Livewire\DriverApplication\ShowForm;
+use App\Http\Livewire\DriverApplication\ShowFormPage;
 
 uses(RefreshDatabase::class);
 
@@ -77,7 +77,7 @@ it('shows the application form', function () use ($steamUser) {
     $this->withSession(['steam_user' => $steamUser])
         ->get(route('driver-application.apply'))
         ->assertSuccessful()
-        ->assertSeeLivewire(ShowForm::class)
+        ->assertSeeLivewire(ShowFormPage::class)
         ->assertSeeText('Personal Information')
         ->assertSeeText('Digital Interview');
 });
@@ -93,7 +93,7 @@ test('a user can apply', function () use ($steamUser, $truckersmpUser) {
     Mail::fake();
     Notification::fake();
 
-    $response = Livewire::test(ShowForm::class)
+    $response = Livewire::test(ShowFormPage::class)
         ->set('discord_username', 'Phoenix#0001')
         ->set('username', 'AutomaticTest')
         ->set('email', 'automatictest@example.com')
@@ -120,7 +120,7 @@ test('a user can apply', function () use ($steamUser, $truckersmpUser) {
 });
 
 test('all fields are required', function () {
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->call('submit')
         ->assertHasErrors([
             'discord_username' => 'required',
@@ -139,7 +139,7 @@ test('all fields are required', function () {
 });
 
 test('discord username is valid discord username', function () {
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('discord_username', 'InvalidUsername')
         ->call('submit')
         ->assertHasErrors([
@@ -148,7 +148,7 @@ test('discord username is valid discord username', function () {
 });
 
 test('username is minimum of three characters', function () {
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('username', 'u')
         ->call('submit')
         ->assertHasErrors([
@@ -157,7 +157,7 @@ test('username is minimum of three characters', function () {
 });
 
 test('username cannot be reserved', function () {
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('username', 'admin')
         ->call('submit')
         ->assertHasErrors([
@@ -168,7 +168,7 @@ test('username cannot be reserved', function () {
 test('username hasn\'t been taken already', function () {
     User::factory()->create(['username' => 'Diego']);
 
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('username', 'Diego')
         ->call('submit')
         ->assertHasErrors([
@@ -177,7 +177,7 @@ test('username hasn\'t been taken already', function () {
 });
 
 test('email is valid email', function () {
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('email', 'InvalidEmail')
         ->call('submit')
         ->assertHasErrors([
@@ -188,7 +188,7 @@ test('email is valid email', function () {
 test('email hasn\'t been taken already', function () {
     User::factory()->create(['email' => 'diego@phoenixvtc.com']);
 
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('email', 'diego@phoenixvtc.com')
         ->call('submit')
         ->assertHasErrors([
@@ -197,7 +197,7 @@ test('email hasn\'t been taken already', function () {
 });
 
 test('date of birth is valid date', function () {
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('date_of_birth', 'InvalidDate')
         ->call('submit')
         ->assertHasErrors([
@@ -206,7 +206,7 @@ test('date of birth is valid date', function () {
 });
 
 test('date of birth cannot be after today', function () {
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('date_of_birth', '9999-12-01')
         ->call('submit')
         ->assertHasErrors([
@@ -215,14 +215,14 @@ test('date of birth cannot be after today', function () {
 });
 
 test('user under 16 can apply', function () {
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('date_of_birth', Carbon::now()->subYears(13))
         ->call('submit')
         ->assertHasNoErrors('date_of_birth');
 });
 
 test('country is valid country', function () {
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('country', 'InvalidCountry')
         ->call('submit')
         ->assertHasErrors([
@@ -231,7 +231,7 @@ test('country is valid country', function () {
 });
 
 test('another vtc is boolean', function () {
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('another_vtc', 'NotABoolean')
         ->call('submit')
         ->assertHasErrors([
@@ -240,7 +240,7 @@ test('another vtc is boolean', function () {
 });
 
 test('games is valid game', function () {
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('games', 'NotAGame')
         ->call('submit')
         ->assertHasErrors([
@@ -249,7 +249,7 @@ test('games is valid game', function () {
 });
 
 test('fluent is boolean', function () {
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('fluent', 'NotABoolean')
         ->call('submit')
         ->assertHasErrors([
@@ -258,7 +258,7 @@ test('fluent is boolean', function () {
 });
 
 test('terms is boolean', function () {
-    Livewire::test(ShowForm::class)
+    Livewire::test(ShowFormPage::class)
         ->set('terms', 'NotABoolean')
         ->call('submit')
         ->assertHasErrors([

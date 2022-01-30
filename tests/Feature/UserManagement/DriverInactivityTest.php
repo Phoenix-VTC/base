@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 it('shows the driver inactivity page', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $this->get(route('user-management.driver-inactivity.index'))
@@ -30,7 +30,7 @@ it('returns 403 if not authorized', function () {
 });
 
 it('can display the chosen month', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
 
@@ -41,7 +41,7 @@ it('can display the chosen month', function () {
 });
 
 test('month defaults to current month if invalid input', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $this->get(route('user-management.driver-inactivity.index', ['month' => 'InvalidMonth']))

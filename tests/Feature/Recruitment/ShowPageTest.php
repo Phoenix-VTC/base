@@ -12,7 +12,7 @@ use function PHPUnit\Framework\assertEquals;
 uses(RefreshDatabase::class);
 
 it('shows the show page', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -38,7 +38,7 @@ it('returns 403 if not authorized', function () {
 });
 
 it('displays the applicant information', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -55,7 +55,7 @@ it('displays the applicant information', function () {
 });
 
 it('displays the interview questions', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -70,7 +70,7 @@ it('displays the interview questions', function () {
 });
 
 it('displays the interview answers', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -85,7 +85,7 @@ it('displays the interview answers', function () {
 });
 
 it('displays the application information', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -96,7 +96,7 @@ it('displays the application information', function () {
 });
 
 it('displays the truckersmp information', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -108,7 +108,7 @@ it('displays the truckersmp information', function () {
 });
 
 it('can refresh the truckersmp information', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -120,7 +120,7 @@ it('can refresh the truckersmp information', function () {
 });
 
 it('can claim applications', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -138,7 +138,7 @@ it('can claim applications', function () {
 });
 
 it('can unclaim applications', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -157,7 +157,7 @@ it('can unclaim applications', function () {
 });
 
 it('can change the application status', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -190,7 +190,7 @@ it('can change the application status', function () {
 });
 
 it('cannot change the application status to an invalid status', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -203,7 +203,7 @@ it('cannot change the application status to an invalid status', function () {
 });
 
 it('cannot change the application status if it doesn\'t belong to the user', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -214,7 +214,7 @@ it('cannot change the application status if it doesn\'t belong to the user', fun
 });
 
 it('cannot unclaim the application if it doesn\'t belong to the user', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -225,7 +225,7 @@ it('cannot unclaim the application if it doesn\'t belong to the user', function 
 });
 
 it('can post a comment', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -245,7 +245,7 @@ it('can post a comment', function () {
 });
 
 test('comment field is required', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -258,7 +258,7 @@ test('comment field is required', function () {
 });
 
 it('can delete a comment', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -277,7 +277,7 @@ it('can delete a comment', function () {
 });
 
 it('can accept an application', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -301,7 +301,7 @@ it('can accept an application', function () {
 });
 
 it('cannot accept the application if it doesn\'t belong to the user', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -312,7 +312,7 @@ it('cannot accept the application if it doesn\'t belong to the user', function (
 });
 
 it('can deny an application', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -336,7 +336,7 @@ it('can deny an application', function () {
 });
 
 it('cannot deny the application if it doesn\'t belong to the user', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -347,7 +347,7 @@ it('cannot deny the application if it doesn\'t belong to the user', function () 
 });
 
 it('can blacklist an application', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
@@ -363,7 +363,7 @@ it('can blacklist an application', function () {
 });
 
 it('cannot blacklist the application if it doesn\'t belong to the user', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();

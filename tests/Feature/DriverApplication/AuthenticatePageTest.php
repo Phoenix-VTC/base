@@ -2,12 +2,12 @@
 
 use function Pest\Livewire\livewire;
 
-use \App\Http\Livewire\DriverApplication\Auth;
+use \App\Http\Livewire\DriverApplication\ShowAuthPage;
 
 it('has authenticate page', function () {
     $this->get(route('driver-application.authenticate'))
         ->assertSuccessful()
-        ->assertSeeLivewire(Auth::class)
+        ->assertSeeLivewire(ShowAuthPage::class)
         ->assertSeeText('Sign in with Steam');
 });
 

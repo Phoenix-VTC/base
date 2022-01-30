@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 it('shows the permissions page', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $this->get(route('user-management.permissions.index'))

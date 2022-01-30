@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\DriverApplication\ShowCompletion;
+use App\Http\Livewire\DriverApplication\ShowCompletionPage;
 use App\Models\Application;
 
 it('shows the completion page', function () {
@@ -8,6 +8,6 @@ it('shows the completion page', function () {
 
     $this->get(route('driver-application.status', $application->uuid))
         ->assertSuccessful()
-        ->assertSeeLivewire(ShowCompletion::class)
+        ->assertSeeLivewire(ShowCompletionPage::class)
         ->assertSeeText('Thank you for applying!');
 });

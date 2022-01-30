@@ -14,7 +14,7 @@ use function PHPUnit\Framework\assertTrue;
 uses(RefreshDatabase::class);
 
 it('shows the vacation requests management page', function () {
-    $user = User::factory()->create()->assignRole('human resources');
+    $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $this->get(route('vacation-requests.manage.index'))
@@ -38,7 +38,7 @@ it('returns 403 if not authorized', function () {
 });
 
 it('can process a vacation request', function () {
-    $staff = User::factory()->create()->assignRole('human resources');
+    $staff = User::factory()->create()->assignRole('human resources team');
     $this->be($staff);
 
     Notification::fake();
@@ -66,7 +66,7 @@ it('can process a vacation request', function () {
 });
 
 it('cannot process a vacation request if already processed', function () {
-    $staff = User::factory()->create()->assignRole('human resources');
+    $staff = User::factory()->create()->assignRole('human resources team');
     $this->be($staff);
 
     Notification::fake();
@@ -86,7 +86,7 @@ it('cannot process a vacation request if already processed', function () {
 });
 
 it('can process a leaving request', function () {
-    $staff = User::factory()->create()->assignRole('human resources');
+    $staff = User::factory()->create()->assignRole('human resources team');
     $this->be($staff);
 
     Mail::fake();
@@ -114,7 +114,7 @@ it('can process a leaving request', function () {
 });
 
 it('cannot process a leaving request if already processed', function () {
-    $staff = User::factory()->create()->assignRole('human resources');
+    $staff = User::factory()->create()->assignRole('human resources team');
     $this->be($staff);
 
     Notification::fake();
@@ -134,7 +134,7 @@ it('cannot process a leaving request if already processed', function () {
 });
 
 it('can cancel a new vacation request', function () {
-    $staff = User::factory()->create()->assignRole('human resources');
+    $staff = User::factory()->create()->assignRole('human resources team');
     $this->be($staff);
 
     Notification::fake();
@@ -158,7 +158,7 @@ it('can cancel a new vacation request', function () {
 });
 
 it('can cancel a upcoming vacation request', function () {
-    $staff = User::factory()->create()->assignRole('human resources');
+    $staff = User::factory()->create()->assignRole('human resources team');
     $this->be($staff);
 
     Notification::fake();
@@ -183,7 +183,7 @@ it('can cancel a upcoming vacation request', function () {
 });
 
 it('can cancel an active vacation request', function () {
-    $staff = User::factory()->create()->assignRole('human resources');
+    $staff = User::factory()->create()->assignRole('human resources team');
     $this->be($staff);
 
     Notification::fake();
@@ -208,7 +208,7 @@ it('can cancel an active vacation request', function () {
 });
 
 it('cannot cancel a vacation request if already cancelled', function () {
-    $staff = User::factory()->create()->assignRole('human resources');
+    $staff = User::factory()->create()->assignRole('human resources team');
     $this->be($staff);
 
     Notification::fake();

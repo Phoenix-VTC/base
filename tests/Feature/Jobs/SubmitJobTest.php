@@ -56,23 +56,18 @@ it('tests the validation rules', function ($field, $value, $rule) {
         ->assertHasErrors([$field => $rule]);
 })->with([
     'pickup city is null' => ['pickup_city', null, 'required'],
-    'pickup city is not an integer' => ['pickup_city', 'NotAnInt', 'integer'],
     'pickup city does not exist' => ['pickup_city', 999, 'exists'],
 
     'destination city is null' => ['destination_city', null, 'required'],
-    'destination city is not an integer' => ['destination_city', 'NotAnInt', 'integer'],
     'destination city does not exist' => ['destination_city', 999, 'exists'],
 
     'pickup company is null' => ['pickup_company', null, 'required'],
-    'pickup company is not an integer' => ['pickup_company', 'NotAnInt', 'integer'],
     'pickup company does not exist' => ['pickup_company', 999, 'exists'],
 
     'destination company is null' => ['destination_company', null, 'required'],
-    'destination company is not an integer' => ['destination_company', 'NotAnInt', 'integer'],
     'destination company does not exist' => ['destination_company', 999, 'exists'],
 
     'cargo is null' => ['destination_company', null, 'required'],
-    'cargo is not an integer' => ['destination_company', 'NotAnInt', 'integer'],
     'cargo does not exist' => ['destination_company', 999, 'exists'],
 
     'finished at is null' => ['finished_at', null, 'required'],
@@ -81,22 +76,22 @@ it('tests the validation rules', function ($field, $value, $rule) {
     'finished at is in the future' => ['finished_at', Carbon::tomorrow(), 'before_or_equal'],
 
     'distance is null' => ['distance', null, 'required'],
-    'distance is not an integer' => ['distance', 'NotAnInt', 'integer'],
+    'distance is not numeric' => ['distance', 'NotNumeric', 'numeric'],
     'distance is less than one' => ['distance', 0, 'min'],
     'distance is more than 5000' => ['distance', 6000, 'max'],
 
     'load damage is null' => ['load_damage', null, 'required'],
-    'load damage is not an integer' => ['load_damage', 'NotAnInt', 'integer'],
+    'load damage is not numeric' => ['load_damage', 'NotNumeric', 'numeric'],
     'load damage is less than zero' => ['load_damage', -1, 'min'],
     'load damage is more than 100' => ['load_damage', 101, 'max'],
 
     'estimated income is null' => ['estimated_income', null, 'required'],
-    'estimated income is not an integer' => ['estimated_income', 'NotAnInt', 'integer'],
+    'estimated income is numeric' => ['estimated_income', 'NotNumeric', 'numeric'],
     'estimated income is less than 1' => ['estimated_income', 0, 'min'],
     'estimated income is more than 400000' => ['estimated_income', 500000, 'max'],
 
     'total income is null' => ['total_income', null, 'required'],
-    'total income is not an integer' => ['total_income', 'NotAnInt', 'integer'],
+    'total income is numeric' => ['total_income', 'NotNumeric', 'numeric'],
     'total income is less than 1' => ['total_income', 0, 'min'],
 ]);
 

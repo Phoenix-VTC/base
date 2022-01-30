@@ -1,7 +1,7 @@
 <?php
 
 use App\Enums\JobStatus;
-use App\Http\Livewire\Jobs\ShowPersonalOverviewPage;
+use App\Http\Livewire\Users\ShowJobOverviewPage;
 use App\Models\Cargo;
 use App\Models\City;
 use App\Models\Company;
@@ -11,15 +11,23 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-it('shows the personal job overview page', function () {
+it('redirects the personal job overview route to the user job overview route', function () {
     $user = User::factory()->create()->assignRole('driver');
     $this->be($user);
 
     $this->get(route('jobs.personal-overview'))
+        ->assertRedirect(route('users.jobs-overview', $user));
+});
+
+it('shows the personal job overview page', function () {
+    $user = User::factory()->create()->assignRole('driver');
+    $this->be($user);
+
+    $this->get(route('users.jobs-overview', $user))
         ->assertSuccessful()
         ->assertSeeText('Personal Job Overview')
         ->assertSeeText('Submit New Job')
-        ->assertSeeLivewire(ShowPersonalOverviewPage::class);
+        ->assertSeeLivewire(ShowJobOverviewPage::class);
 });
 
 it('shows the user\'s jobs', function () {
@@ -41,9 +49,9 @@ it('shows the user\'s jobs', function () {
         'status' => JobStatus::Complete,
     ]);
 
-    $this->get(route('jobs.personal-overview'))
+    $this->get(route('users.jobs-overview', $user))
         ->assertSuccessful()
-        ->assertSeeLivewire(ShowPersonalOverviewPage::class)
+        ->assertSeeLivewire(ShowJobOverviewPage::class)
         ->assertSeeText('Personal Job Overview')
         ->assertSeeText(App\Models\Game::getAbbreviationById($job->game_id))
         ->assertSeeText(ucwords($job->pickupCity->real_name))
@@ -74,9 +82,9 @@ it('doesn\'t show another user\'s jobs', function () {
         'status' => JobStatus::Complete,
     ]);
 
-    $this->get(route('jobs.personal-overview'))
+    $this->get(route('users.jobs-overview', $user))
         ->assertSuccessful()
-        ->assertSeeLivewire(ShowPersonalOverviewPage::class)
+        ->assertSeeLivewire(ShowJobOverviewPage::class)
         ->assertSeeText('Personal Job Overview')
         ->assertDontSeeText(App\Models\Game::getAbbreviationById($job->game_id))
         ->assertDontSeeText(ucwords($job->pickupCity->real_name))
@@ -90,7 +98,7 @@ it('shows the user\'s wallet balance', function() {
     $user = User::factory()->create()->assignRole('driver');
     $this->be($user);
 
-    $this->get(route('jobs.personal-overview'))
+    $this->get(route('users.jobs-overview', $user))
         ->assertSuccessful()
         ->assertSeeText(number_format($user->default_wallet_balance));
 });
