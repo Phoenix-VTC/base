@@ -97,7 +97,7 @@ class NewEvent extends Notification implements ShouldQueue
         if ($this->event->required_dlcs) {
             $this->embed['fields'][] = [
                 'name' => 'Required DLCs',
-                'value' => $this->event->required_dlcs,
+                'value' => implode(', ', $this->event->required_dlcs),
                 'inline' => true,
             ];
         }
