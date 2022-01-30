@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,20 +37,20 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read int|null $revision_history_with_user_count
  * @property-read \App\Models\User|null $staff
  * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest newQuery()
+ * @method static Builder|VacationRequest newModelQuery()
+ * @method static Builder|VacationRequest newQuery()
  * @method static \Illuminate\Database\Query\Builder|VacationRequest onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest query()
- * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereEndDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereHandledBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereLeaving($value)
- * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereReason($value)
- * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereStartDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|VacationRequest whereUserId($value)
+ * @method static Builder|VacationRequest query()
+ * @method static Builder|VacationRequest whereCreatedAt($value)
+ * @method static Builder|VacationRequest whereDeletedAt($value)
+ * @method static Builder|VacationRequest whereEndDate($value)
+ * @method static Builder|VacationRequest whereHandledBy($value)
+ * @method static Builder|VacationRequest whereId($value)
+ * @method static Builder|VacationRequest whereLeaving($value)
+ * @method static Builder|VacationRequest whereReason($value)
+ * @method static Builder|VacationRequest whereStartDate($value)
+ * @method static Builder|VacationRequest whereUpdatedAt($value)
+ * @method static Builder|VacationRequest whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|VacationRequest withTrashed()
  * @method static \Illuminate\Database\Query\Builder|VacationRequest withoutTrashed()
  * @mixin \Eloquent
@@ -107,6 +108,17 @@ class VacationRequest extends Model
     public function getDurationAttribute(): string
     {
         return Carbon::parse($this->end_date)->diffForHumans($this->start_date, short: true);
+    }
+
+    /**
+     * Scope a query to only include popular users.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeNotLeaving(Builder $query): Builder
+    {
+        return $query->where('leaving', false);
     }
 
     /**
