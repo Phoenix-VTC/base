@@ -59,6 +59,9 @@ class NewEvent extends Notification implements ShouldQueue
                 'icon_url' => $this->event->host->profile_picture
             ],
             'fields' => [],
+            'image' => [
+                'url' => $this->event->featured_image_url
+            ],
             'footer' => [
                 'text' => 'PhoenixEvents',
                 'icon_url' => 'https://phoenixvtc.com/assets/images/branding/logo.png',
