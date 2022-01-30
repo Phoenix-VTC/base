@@ -14,7 +14,7 @@
         <div class="ml-4 flex items-center md:ml-6">
             <x-dropdown icon="o-bell" title="View notifications" width="w-80" :notification-dot-color="Auth::user()->unreadNotifications->count() ? 'bg-red-400' : ''">
                 <ul class="divide-y divide-gray-200">
-                    @forelse(Auth::user()->unreadNotifications as $notification)
+                    @forelse(Auth::user()->unreadNotifications->take(4) as $notification)
                         <li class="relative bg-white py-5 px-4 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                             <form class="flex justify-between" method="POST"
                                   action="{{ route('notifications.markAsRead', $notification->id) }}">
@@ -70,17 +70,17 @@
                     role="menu" aria-orientation="vertical" aria-labelledby="user-menu" x-show="profileOpen"
                     @click.away="profileOpen = false" x-cloak
                     x-transition:enter="transition ease-out duration-100"
-                    x-transition:enter-start="transform opacity-0 scale-95"
-                    x-transition:enter-end="transform opacity-100 scale-100"
+                    x-transition:enter-start=" opacity-0 scale-95"
+                    x-transition:enter-end=" opacity-100 scale-100"
                     x-transition:leave="transition ease-in duration-75"
-                    x-transition:leave-start="transform opacity-100 scale-100"
-                    x-transition:leave-end="transform opacity-0 scale-95">
+                    x-transition:leave-start=" opacity-100 scale-100"
+                    x-transition:leave-end=" opacity-0 scale-95">
                     <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                        role="menuitem">
                         Profile
                     </a>
 
-                    <a href="{{ route('users.achievements', Auth::id()) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    <a href="{{ route('users.achievements', Auth::user()) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                        role="menuitem">
                         Achievements
                     </a>

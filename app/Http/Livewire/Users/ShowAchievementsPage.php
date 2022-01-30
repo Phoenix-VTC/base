@@ -11,9 +11,9 @@ class ShowAchievementsPage extends Component
     public User $user;
     public Collection $achievements;
 
-    public function mount(int $id): void
+    public function mount(User $user): void
     {
-        $this->user = User::findOrFail($id);
+        $this->user = $user;
 
         $this->achievements = $this->user
             ->achievements

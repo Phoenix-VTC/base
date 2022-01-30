@@ -75,7 +75,7 @@ class ShowShowPage extends Component
             );
 
             // Load a new Google Maps instance with Mapper (with easter egg coords), and then add the route
-            Mapper::map('35.65906740421891', '139.70062579556708', ['eventBeforeLoad' => 'addRoute(map_0);']);
+            Mapper::map(35.65906740421891, 139.70062579556708, ['eventBeforeLoad' => 'addRoute(map_0);']);
 
             $this->gmaps_data = [
                 'origin' => $pickup_city->predictions[0]->description,

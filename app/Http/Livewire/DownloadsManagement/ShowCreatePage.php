@@ -3,54 +3,79 @@
 namespace App\Http\Livewire\DownloadsManagement;
 
 use App\Models\Download;
-use Illuminate\Http\RedirectResponse;
+use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
-class ShowCreatePage extends Component
+/**
+ * @property Forms\ComponentContainer $form
+ */
+class ShowCreatePage extends Component implements HasForms
 {
-    use WithFileUploads;
+    use InteractsWithForms;
 
     // Form fields
-    public string $name = '';
-    public string $description = '';
+    public $name = '';
+    public $description = '';
     public $image;
     public $file;
-
-    public function rules(): array
-    {
-        return [
-            'name' => ['required'],
-            'description' => ['present'],
-            'image' => ['required', 'image', 'max:1024'],
-            'file' => ['required', 'file', 'mimes:pdf,zip,rar', 'max:102400'],
-        ];
-    }
 
     public function render()
     {
         return view('livewire.downloads-management.create-page')->extends('layouts.app');
     }
 
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\Grid::make()
+                ->schema([
+                    Forms\Components\Grid::make()
+                        ->columns(1)
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->required()
+                                ->placeholder('Kenji tuning mod')
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->columns(1)
+                        ->schema([
+                            Forms\Components\FileUpload::make('image')
+                                ->disk('scaleway')
+                                ->directory('downloads/thumbnails')
+                                ->required()
+                                ->label('Thumbnail image')
+                                ->image()
+                                ->hint('Max 2MB')
+                                ->maxSize(2048),
+
+                            Forms\Components\FileUpload::make('file')
+                                ->disk('scaleway')
+                                ->directory('downloads/files')
+                                ->required()
+                                ->hint('Max 100MB')
+                                ->maxSize(102400),
+
+                            Forms\Components\Textarea::make('description')
+                                ->rows(3)
+                        ]),
+                ]),
+        ];
+    }
+
     public function submit()
     {
-        $this->validate();
+        $validatedData = $this->form->getState();
 
         $download = Download::create([
-            'name' => $this->name,
-            'description' => $this->description ?: null,
-            'image_path' => '',
-            'file_path' => '',
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'] ?: null,
+            'image_path' => $validatedData['image'],
+            'file_path' => $validatedData['file'],
             'updated_by' => Auth::id(),
-        ]);
-
-        $image = $this->image->storePublicly("downloads/$download->id", 'scaleway');
-        $file = $this->file->store("downloads/$download->id", 'scaleway');
-
-        $download->update([
-            'image_path' => $image,
-            'file_path' => $file,
         ]);
 
         session()->flash('alert', ['type' => 'success', 'message' => "Download <b>$download->name</b> successfully added!"]);

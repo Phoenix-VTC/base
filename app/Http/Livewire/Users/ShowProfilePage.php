@@ -4,32 +4,40 @@ namespace App\Http\Livewire\Users;
 
 use App\Enums\JobStatus;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ShowProfilePage extends Component
 {
+    use AuthorizesRequests;
+
     public User $user;
     public $recent_jobs;
 
-    public function mount(int $id): void
+    public function mount(User $user): void
     {
+        $this->user = $user;
+
+        if ($this->user->deleted_at && !Auth::user()->can('manage users')) {
+            abort(404);
+        }
+
         if (Auth::user()->can('manage users')) {
-            $this->user = User::withTrashed()
-                ->with([
-                    'jobs',
-                    'roles',
-                    'permissions',
-                    'application',
-                    'vacation_requests',
-                    'wallets',
-                    'modelSettings'
-                ])->findOrFail($id);
-        } else {
-            $this->user = User::with([
+            $this->user::query()->with([
                 'jobs',
                 'roles',
-            ])->findOrFail($id);
+                'permissions',
+                'application',
+                'vacation_requests',
+                'wallets',
+                'modelSettings'
+            ])->get();
+        } else {
+            $this->user::query()->with([
+                'jobs',
+                'roles',
+            ])->get();
         }
 
         $this->recent_jobs = $this->user->jobs()
@@ -60,13 +68,7 @@ class ShowProfilePage extends Component
 
     public function deleteUser(): void
     {
-        if (Auth::user()->cannot('manage users')) {
-            abort(403, 'You don\'t have permission to delete users.');
-        }
-
-        if ($this->user->id === Auth::id()) {
-            abort(403, 'You can\'t delete your own account. Contact Management in order to do this.');
-        }
+        $this->authorize('delete', $this->user);
 
         $this->user->delete();
 
@@ -75,6 +77,8 @@ class ShowProfilePage extends Component
 
     public function restoreUser(): void
     {
+        $this->authorize('restore', $this->user);
+
         if (Auth::user()->cannot('manage users')) {
             abort(403, 'You don\'t have permission to restore users.');
         }

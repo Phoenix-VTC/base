@@ -6,38 +6,32 @@ use App\Enums\JobStatus;
 use App\Models\Cargo;
 use App\Notifications\GameDataRequestApproved;
 use App\Notifications\GameDataRequestDenied;
-use Illuminate\Database\QueryException;
+use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Validation\Rule;
-use Illuminate\View\View;
 use Livewire\Component;
+use Throwable;
 
-class ShowEditPage extends Component
+/**
+ * @property Forms\ComponentContainer $form
+ */
+class ShowEditPage extends Component implements HasForms
 {
+    use InteractsWithForms;
+
     public Cargo $cargo;
 
-    public string $name = '';
-    public ?string $dlc = '';
-    public ?string $mod = '';
-    public ?string $weight = '';
-    public string $game_id = '1';
-    public string $wot = '0';
-
-    public function rules(): array
-    {
-        return [
-            'name' => ['required'],
-            'dlc' => ['sometimes'],
-            'mod' => ['sometimes'],
-            'weight' => ['sometimes', 'numeric', 'min:1'],
-            'game_id' => ['required', 'integer', Rule::in(['1', '2'])],
-            'wot' => ['required', 'boolean'],
-        ];
-    }
+    public $name;
+    public $dlc;
+    public $mod;
+    public $weight;
+    public $game_id;
+    public $wot;
 
     public function mount(): void
     {
-        $this->fill([
+        $this->form->fill([
             'name' => $this->cargo->name,
             'dlc' => $this->cargo->dlc,
             'mod' => $this->cargo->mod,
@@ -47,15 +41,60 @@ class ShowEditPage extends Component
         ]);
     }
 
-    public function render(): View
+    public function render()
     {
-        return view('livewire.game-data.cargos-edit')
-            ->extends('layouts.app');
+        return view('livewire.game-data.cargos-edit')->extends('layouts.app');
+    }
+
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\Grid::make()
+                ->schema([
+                    Forms\Components\Grid::make()
+                        ->columns(1)
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->required()
+                        ]),
+
+                    Forms\Components\TextInput::make('dlc')
+                        ->label('DLC'),
+
+                    Forms\Components\TextInput::make('mod'),
+
+                    Forms\Components\Grid::make()
+                        ->schema([
+                            Forms\Components\TextInput::make('weight')
+                                ->numeric()
+                                ->minValue(1)
+                                ->helperText('Tonnes (t) for ETS2, pounds (lb) for ATS.')
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->schema([
+                            Forms\Components\Select::make('game_id')
+                                ->label('Game')
+                                ->options([
+                                    1 => 'Euro Truck Simulator 2',
+                                    2 => 'American Truck Simulator',
+                                ])
+                                ->required()
+                        ]),
+
+                    Forms\Components\Grid::make()
+                        ->schema([
+                            Forms\Components\Radio::make('wot')
+                                ->label('World of Trucks only')
+                                ->boolean()
+                        ]),
+                ]),
+        ];
     }
 
     public function submit()
     {
-        $this->validate();
+        $validatedData = $this->form->getState();
 
         if (!$this->cargo->approved) {
             $this->forgetUnapprovedGameDataCount();
@@ -73,12 +112,12 @@ class ShowEditPage extends Component
         }
 
         $this->cargo->update([
-            'name' => $this->name,
-            'dlc' => $this->dlc,
-            'mod' => $this->mod,
-            'weight' => (int)$this->weight,
-            'game_id' => (int)$this->game_id,
-            'world_of_trucks' => (bool)$this->wot,
+            'name' => $validatedData['name'],
+            'dlc' => $validatedData['dlc'],
+            'mod' => $validatedData['mod'],
+            'weight' => $validatedData['weight'] ?: null,
+            'game_id' => $validatedData['game_id'],
+            'world_of_trucks' => $validatedData['wot'],
             'approved' => true,
         ]);
 
@@ -113,8 +152,8 @@ class ShowEditPage extends Component
         }
 
         try {
-            $this->cargo->delete();
-        } catch (QueryException $e) {
+            $this->cargo->deleteOrFail();
+        } catch (Throwable) {
             session()->now('alert', ['type' => 'danger', 'message' => 'You can\'t delete this cargo, it\'s used in a job somewhere!']);
 
             return;

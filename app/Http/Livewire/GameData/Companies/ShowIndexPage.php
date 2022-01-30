@@ -3,48 +3,78 @@
 namespace App\Http\Livewire\GameData\Companies;
 
 use App\Models\Company;
+use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Component;
 
-class ShowIndexPage extends Component
+/**
+ * @property Forms\ComponentContainer $form
+ */
+class ShowIndexPage extends Component implements HasForms
 {
-    public string $name = '';
-    public string $category = '';
-    public string $specialization = '';
-    public string $dlc = '';
-    public string $mod = '';
-    public string $game_id = '1';
+    use InteractsWithForms;
 
-    public function rules(): array
+    public $name;
+    public $category;
+    public $specialization;
+    public $dlc;
+    public $mod;
+    public $game_id = 1;
+
+    public function render()
     {
-        return [
-            'name' => ['required'],
-            'category' => ['sometimes'],
-            'specialization' => ['sometimes'],
-            'dlc' => ['sometimes'],
-            'mod' => ['sometimes'],
-            'game_id' => ['required', 'integer', Rule::in(['1', '2'])],
-        ];
+        return view('livewire.game-data.companies')->extends('layouts.app');
     }
 
-    public function render(): View
+    protected function getFormSchema(): array
     {
-        return view('livewire.game-data.companies')
-            ->extends('layouts.app');
+        return [
+            Forms\Components\Grid::make()
+                ->schema([
+                    Forms\Components\Grid::make()
+                        ->columns(1)
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->required()
+                        ]),
+
+                    Forms\Components\TextInput::make('category'),
+
+                    Forms\Components\TextInput::make('specialization'),
+
+                    Forms\Components\TextInput::make('dlc')
+                        ->label('DLC'),
+
+                    Forms\Components\TextInput::make('mod'),
+
+                    Forms\Components\Grid::make()
+                        ->schema([
+                            Forms\Components\Select::make('game_id')
+                                ->label('Game')
+                                ->options([
+                                    1 => 'Euro Truck Simulator 2',
+                                    2 => 'American Truck Simulator',
+                                ])
+                                ->required()
+                        ]),
+                ]),
+        ];
     }
 
     public function submit(): void
     {
-        $this->validate();
+        $validatedData = $this->form->getState();
 
         $company = Company::create([
-            'name' => $this->name,
-            'category' => $this->category,
-            'specialization' => $this->specialization,
-            'dlc' => $this->dlc,
-            'mod' => $this->mod,
-            'game_id' => (int)$this->game_id,
+            'name' => $validatedData['name'],
+            'category' => $validatedData['category'],
+            'specialization' => $validatedData['specialization'],
+            'dlc' => $validatedData['dlc'],
+            'mod' => $validatedData['mod'],
+            'game_id' => $validatedData['game_id'],
         ]);
 
         $this->reset();

@@ -49,10 +49,10 @@ class UsernameNotReserved implements Rule
     /**
      * Strip the value to only alphanumeric chars.
      *
-     * @param $value
+     * @param string $value
      * @return string
      */
-    private function stripValue($value): string
+    private function stripValue(string $value): string
     {
         $stripped_value = preg_replace("/[^a-zA-Z0-9]/", "", $value);
 

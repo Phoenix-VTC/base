@@ -7,7 +7,9 @@ use App\Models\Job;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
@@ -19,6 +21,7 @@ class ShowDashboard extends Component
     public Collection $recent_jobs;
     public array $recent_news;
     public Collection $today_overview;
+    public null|\Illuminate\Support\Collection $online_users;
 
     public function mount(): void
     {
@@ -30,16 +33,21 @@ class ShowDashboard extends Component
             ->take(5)
             ->get();
 
-        $this->today_overview = User::whereHas('jobs', function ($q) {
+        $this->today_overview = User::whereHas('jobs', function (Builder $q) {
             // Get the users that have finished a job today
             $q->whereDate('finished_at', Carbon::today());
-        })->with(['jobs' => function ($q) {
+        })->with(['jobs' => function (HasMany $q) {
             // Then include today's jobs of those users
             $q->whereDate('finished_at', Carbon::today());
-        }])->take(10)
+        }])->withSum(['jobs:distance' => function (Builder $q) {
+            $q->whereDate('finished_at', Carbon::today());
+        }], 'distance')->take(10)
+            ->orderByDesc('jobs_distance_sum')
             ->get();
 
         $this->recent_news = $this->getRecentNewsPosts();
+
+        $this->online_users = $this->getOnlineUsers();
     }
 
     public function render(): View
@@ -47,26 +55,26 @@ class ShowDashboard extends Component
         return view('livewire.dashboard')->extends('layouts.app');
     }
 
-    public function calculatePersonalStats(): array
+    private function calculatePersonalStats(): array
     {
         // Convert income to the user's preferred income
         if (Auth::user()->settings()->get('preferences.currency') === 'dollar') {
             $income_current_month = Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->month)
                     ->sum('total_income') * 1.21;
             $income_previous_month = Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                     ->sum('total_income') * 1.21;
         } else {
             $income_current_month = Auth::user()
                 ->jobs()
-                ->whereMonth('finished_at', Carbon::now()->month)
+                ->whereMonth('finished_at', (string)Carbon::now()->month)
                 ->sum('total_income');
             $income_previous_month = Auth::user()
                 ->jobs()
-                ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                 ->sum('total_income');
         }
 
@@ -74,20 +82,20 @@ class ShowDashboard extends Component
         if (Auth::user()->settings()->get('preferences.distance') === 'miles') {
             $distance_current_month = Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->month)
                     ->sum('distance') / 1.609;
             $distance_previous_month = Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                     ->sum('distance') / 1.609;
         } else {
             $distance_current_month = Auth::user()
                 ->jobs()
-                ->whereMonth('finished_at', Carbon::now()->month)
+                ->whereMonth('finished_at', (string)Carbon::now()->month)
                 ->sum('distance');
             $distance_previous_month = Auth::user()
                 ->jobs()
-                ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                 ->sum('distance');
         }
 
@@ -95,11 +103,11 @@ class ShowDashboard extends Component
             'delivery_count' => [
                 'current_month' => Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->month)
                     ->count(),
                 'previous_month' => Auth::user()
                     ->jobs()
-                    ->whereMonth('finished_at', Carbon::now()->subMonth()->month)
+                    ->whereMonth('finished_at', (string)Carbon::now()->subMonth()->month)
                     ->count(),
             ],
             'income' => [
@@ -113,9 +121,9 @@ class ShowDashboard extends Component
         ];
     }
 
-    public function getRecentNewsPosts(): array
+    private function getRecentNewsPosts(): array
     {
-        $feed = FeedsFacade::make('https://phoenixvtc.com/feed');
+        $feed = FeedsFacade::make(['https://phoenixvtc.com/feed']);
 
         // Manually convert this to an array, otherwise Alpine dies because of Livewire lol
         $items = [];
@@ -128,5 +136,41 @@ class ShowDashboard extends Component
         }
 
         return $items;
+    }
+
+    private function getOnlineUsers(): ?\Illuminate\Support\Collection
+    {
+        // Get the array of users
+        $users = Cache::get('online-users');
+        if (!$users) {
+            return null;
+        }
+
+        // Add the array to a collection, so you can pluck the IDs
+        $onlineUsers = collect($users);
+        // Get all users by ID from the DB (1 very quick query)
+        $dbUsers = User::find($onlineUsers->pluck('id')->toArray());
+
+        // Prepare the return array
+        $displayUsers = [];
+
+        // Iterate over the retrieved DB users
+        foreach ($dbUsers as $user) {
+            // Get the same user as this iteration from the cache
+            // so that we can check the last activity.
+            $onlineUser = $onlineUsers->firstWhere('id', $user['id']);
+            // Append the data to the return array
+            $displayUsers[] = [
+                'id' => $user->id,
+                'username' => $user->username,
+                'profile_picture' => $user->profile_picture,
+                // This bool operation below, checks if the last activity
+                // is older than 3 minutes and returns true or false,
+                // so that if it's true you can change the status color to orange.
+                'away' => $onlineUser['last_activity_at'] < now()->subMinutes(3),
+            ];
+        }
+
+        return collect($displayUsers);
     }
 }

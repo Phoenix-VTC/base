@@ -5,12 +5,15 @@ namespace App\Http\Livewire\DriverApplication;
 use App\Mail\DriverApplication\ApplicationReceived;
 use App\Models\Application;
 use App\Notifications\Recruitment\NewDriverApplication;
+use App\Rules\NotInBlocklist;
 use App\Rules\UsernameNotReserved;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Mail;
 
-class ShowForm extends Component
+class ShowFormPage extends Component
 {
     public array $countries = [
         'AF' => 'Afghanistan',
@@ -265,9 +268,9 @@ class ShowForm extends Component
         'ZW' => 'Zimbabwe',
     ];
 
-    public string $username = '';
-    public string $discord_username = '';
-    public string $email = '';
+    public $username = '';
+    public $discord_username = '';
+    public $email = '';
     public string $date_of_birth = '';
     public string $country = '';
     public string $another_vtc = '';
@@ -281,11 +284,11 @@ class ShowForm extends Component
     public function rules(): array
     {
         return [
-            'discord_username' => ['required', 'regex:/^.{3,32}#[0-9]{4}$/i'],
-            'username' => ['required', 'min:3', Rule::unique('users')->whereNull('deleted_at'), new UsernameNotReserved],
-            'email' => ['required', 'email', Rule::unique('users')->whereNull('deleted_at')],
-            'date_of_birth' => 'required|date|before:today',
-            'country' => ['required', Rule::in(array_keys($this->countries))],
+            'discord_username' => ['bail', 'required', 'string', 'min:3', 'regex:/^.{3,32}#[0-9]{4}$/i'],
+            'username' => ['bail', 'required', 'string', 'min:3', Rule::unique('users')->whereNull('deleted_at'), new UsernameNotReserved],
+            'email' => ['bail', 'required', 'string', 'email', Rule::unique('users')->whereNull('deleted_at')],
+            'date_of_birth' => 'required|date',
+            'country' => 'required',
             'another_vtc' => 'required|boolean',
             'games' => 'required|in:ets2,ats,both',
             'fluent' => 'required|boolean',
@@ -303,7 +306,18 @@ class ShowForm extends Component
 
     public function submit()
     {
+        // Validate form fields
         $applicationData = $this->validate();
+
+        // Check blocklist for username and email
+        $blocklistCheck = Validator::make($applicationData, [
+            'username' => [new NotInBlocklist],
+            'email' => [new NotInBlocklist],
+        ]);
+
+        if ($blocklistCheck->fails()) {
+            return redirect()->route('driver-application.blocked');
+        }
 
         $application = new Application;
         $application->username = $applicationData['username'];
@@ -311,8 +325,8 @@ class ShowForm extends Component
         $application->discord_username = $applicationData['discord_username'];
         $application->date_of_birth = $applicationData['date_of_birth'];
         $application->country = $applicationData['country'];
-        $application->steam_data = json_encode(session('steam_user'));
-        $application->truckersmp_id = json_encode(session('truckersmp_user.id'));
+        $application->steam_data = session('steam_user');
+        $application->truckersmp_id = session('truckersmp_user.id');
 
         $application_answers = [
             __('driver-application.default_questions.another_vtc') => $applicationData['another_vtc'],
@@ -324,12 +338,11 @@ class ShowForm extends Component
             __('driver-application.default_questions.find_us') => $applicationData['find_us'],
         ];
 
-        $application->application_answers = json_encode($application_answers);
+        $application->application_answers = collect($application_answers);
 
         $application->save();
 
-        session()->forget('steam_user');
-        session()->forget('truckersmp_user');
+        $this->logout();
 
         Mail::to([[
             'email' => $application->email,
@@ -338,11 +351,19 @@ class ShowForm extends Component
 
         $application->notify(new NewDriverApplication($application));
 
+        Cache::forget('pending_application_count');
+
         return redirect()->route('driver-application.status', ['uuid' => $application->uuid]);
     }
 
     public function render()
     {
         return view('livewire.driver-application.form')->extends('layouts.driver-application');
+    }
+
+    private function logout(): void
+    {
+        session()->forget('steam_user');
+        session()->forget('truckersmp_user');
     }
 }

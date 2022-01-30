@@ -4,6 +4,7 @@ namespace App\Jobs\Recruitment;
 
 use App\Models\Application;
 use App\Models\User;
+use RestCord\Model\User\User as DiscordUser;
 use App\Notifications\DriverApplication\WelcomeNotification;
 use App\Repositories\UserRepositoryInterface;
 use Illuminate\Bus\Queueable;
@@ -29,20 +30,24 @@ class ProcessAcceptation implements ShouldQueue
      */
     public Application $application;
 
+    public DiscordUser $discordUser;
+
     /**
      * Create a new job instance.
      *
      * @param Application $application
+     * @param DiscordUser $discordUser
      */
-    public function __construct(Application $application)
+    public function __construct(Application $application, DiscordUser $discordUser)
     {
         $this->application = $application;
+        $this->discordUser = $discordUser;
     }
 
     /**
      * Execute the job.
      *
-     * @param  UserRepositoryInterface  $userRepository
+     * @param UserRepositoryInterface $userRepository
      * @return void
      */
     public function handle(UserRepositoryInterface $userRepository): void
@@ -54,6 +59,7 @@ class ProcessAcceptation implements ShouldQueue
         $user = $userRepository->create([
             'email' => $this->application->email,
             'username' => $this->application->username,
+            'slug' => $this->generateSlug($this->application->username),
             'date_of_birth' => $this->application->date_of_birth,
             'steam_id' => $this->application->steam_data['steamID64'],
             'truckersmp_id' => $this->application->truckersmp_id,
@@ -61,9 +67,28 @@ class ProcessAcceptation implements ShouldQueue
             'welcome_valid_until' => now()->addDays(3),
             'welcome_token' => Str::random(64),
             'application_id' => $this->application->id,
+            'discord' => [
+                'id' => (string)$this->discordUser->id,
+                'name' => $this->discordUser->username,
+                'nickname' => "{$this->discordUser->username}#{$this->discordUser->discriminator}",
+                'avatar' => $this->discordUser->getAvatar('jpg'),
+            ],
         ]);
         $user->assignRole('driver');
 
         $user->notify(new WelcomeNotification($user));
+
+        $this->application->status = 'accepted';
+        $this->application->save();
+    }
+
+    protected function generateSlug(string $username): string
+    {
+        $slug = Str::slug($username);
+        while (User::whereSlug($slug)->exists()) {
+            $slug .= Str::random(3);
+        }
+
+        return $slug;
     }
 }

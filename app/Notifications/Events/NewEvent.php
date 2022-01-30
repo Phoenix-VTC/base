@@ -105,7 +105,7 @@ class NewEvent extends Notification implements ShouldQueue
         if ($this->event->distance) {
             $this->embed['fields'][] = [
                 'name' => 'Distance',
-                'value' => $this->event->distance . ' ' . $this->event->distance_metric ?? 'None',
+                'value' => $this->event->distance . ' ' . $this->event->distance_metric,
                 'inline' => true,
             ];
         }

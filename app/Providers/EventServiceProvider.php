@@ -2,13 +2,28 @@
 
 namespace App\Providers;
 
+use App\Events\BlocklistEntryDeleted;
+use App\Events\BlocklistEntryRestored;
+use App\Events\BlocklistEntryUpdated;
 use App\Events\EmailChanged;
+use App\Events\NewBlocklistEntry;
 use App\Events\PasswordChanged;
+use App\Events\UserInBlocklistAuthenticated;
+use App\Events\UserInBlocklistTriedToApply;
+use App\Listeners\ClearUserWelcomeFields;
+use App\Events\UserPointsChanged;
 use App\Listeners\SendAchievementUnlockedNotification;
+use App\Listeners\SendDeletedBlocklistEntryNotification;
 use App\Listeners\SendEmailChangedNotification;
 use App\Listeners\SendFailedJobDiscordNotification;
+use App\Listeners\SendNewBlocklistEntryNotification;
 use App\Listeners\SendPasswordChangedNotification;
 use App\Listeners\SendPasswordResetNotification;
+use App\Listeners\SendRestoredBlocklistEntryNotification;
+use App\Listeners\SendUpdatedBlocklistEntryNotification;
+use App\Listeners\SendUserInBlocklistAuthenticatedNotification;
+use App\Listeners\SendUserInBlocklistTriedToApplyNotification;
+use App\Listeners\TriggerUserLevelCheck;
 use App\Models\Download as DownloadModel;
 use App\Models\Screenshot as ScreenshotModel;
 use App\Observers\DownloadObserver;
@@ -16,6 +31,7 @@ use App\Models\Job as JobModel;
 use App\Observers\JobObserver;
 use App\Observers\ScreenshotObserver;
 use Assada\Achievements\Event\Unlocked as UnlockedAchievement;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -52,7 +68,31 @@ class EventServiceProvider extends ServiceProvider
         ],
         JobFailed::class => [
             SendFailedJobDiscordNotification::class,
-        ]
+        ],
+        UserInBlocklistTriedToApply::class => [
+            SendUserInBlocklistTriedToApplyNotification::class,
+        ],
+        NewBlocklistEntry::class => [
+            SendNewBlocklistEntryNotification::class,
+        ],
+        BlocklistEntryUpdated::class => [
+            SendUpdatedBlocklistEntryNotification::class,
+        ],
+        BlocklistEntryDeleted::class => [
+            SendDeletedBlocklistEntryNotification::class,
+        ],
+        BlocklistEntryRestored::class => [
+            SendRestoredBlocklistEntryNotification::class,
+        ],
+        UserInBlocklistAuthenticated::class => [
+            SendUserInBlocklistAuthenticatedNotification::class,
+        ],
+        Login::class => [
+            ClearUserWelcomeFields::class
+        ],
+        UserPointsChanged::class => [
+            TriggerUserLevelCheck::class,
+        ],
     ];
 
     /**

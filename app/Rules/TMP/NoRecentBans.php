@@ -3,8 +3,9 @@
 namespace App\Rules\TMP;
 
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Http;
 
 class NoRecentBans implements Rule
 {
@@ -14,22 +15,28 @@ class NoRecentBans implements Rule
      * @param string $attribute
      * @param mixed $value
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \JsonException
+     * @throws RequestException
      */
     public function passes($attribute, $value): bool
     {
-        $client = new Client();
+        $response = Http::timeout(3)
+            ->get("https://api.truckersmp.com/v2/bans/$value")
+            ->throw()
+            ->json();
 
-        $response = $client->request('GET', 'https://api.truckersmp.com/v2/bans/' . $value)->getBody();
-        $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
-
+        // Return true if the user has no bans
         if (!$response['error'] && !$response['response']) {
-            return true; // Return true if the user has no bans
+            return true;
         }
 
         $bans = collect($response['response']);
         $ban = $bans->firstWhere('timeAdded', '>', Carbon::now()->subMonths(3));
+
+        // Return true if the ban is a @BANBYMISTAKE
+        if (isset($ban) && $ban['reason'] === '@BANBYMISTAKE') {
+            return true;
+        }
+
         return is_null($ban);
     }
 

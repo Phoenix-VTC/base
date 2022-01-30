@@ -12,10 +12,10 @@ class Email extends Component
     use WithRateLimiting;
 
     /** @var string */
-    public $email;
+    public string $email;
 
-    /** @var string|null */
-    public $emailSentMessage = false;
+    /** @var string|bool|null */
+    public string|bool|null $emailSentMessage = false;
 
     public function sendResetPasswordLink()
     {
@@ -28,7 +28,7 @@ class Email extends Component
         }
 
         $this->validate([
-            'email' => ['required', 'email'],
+            'email' => ['bail', 'required', 'string', 'email'],
         ]);
 
         $response = $this->broker()->sendResetLink(['email' => $this->email]);

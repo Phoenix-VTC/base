@@ -6,6 +6,7 @@ use App\Mail\LeaveRequestApproved;
 use App\Models\VacationRequest;
 use App\Notifications\VacationRequestMarkedAsSeen;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -20,7 +21,7 @@ class ShowIndex extends Component
         return 'vendor.livewire.pagination-links';
     }
 
-    public function render()
+    public function render(): View
     {
         $vacation_requests = VacationRequest::withTrashed()
             ->with(['user', 'staff'])
@@ -47,6 +48,8 @@ class ShowIndex extends Component
         $vacation_request->handled_by = Auth::id();
         $vacation_request->save();
 
+        Cache::forget('vacation_request_count');
+
         // Send the user a notification if not leaving, and return
         if (!$vacation_request->leaving) {
             $vacation_request->user->notify(new VacationRequestMarkedAsSeen);
@@ -69,7 +72,7 @@ class ShowIndex extends Component
 
     public function cancel(int $id): void
     {
-        $vacation_request = VacationRequest::withTrashed()->find($id);
+        $vacation_request = VacationRequest::query()->withTrashed()->find($id);
 
         if ($vacation_request->deleted_at) {
             session()->now('alert', ['type' => 'danger', 'message' => 'This vacation request has already been cancelled.']);

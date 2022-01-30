@@ -19,16 +19,11 @@ class ShowWelcomeForm extends Component
     public User $user;
 
     public $password = '';
-    public $passwordConfirmation = '';
+    public $password_confirmation = '';
 
     protected $rules = [
-        'password' => ['required', 'min:8', 'same:passwordConfirmation']
+        'password' => ['bail', 'required', 'string', 'min:8', 'confirmed']
     ];
-
-    public function updated($propertyName): void
-    {
-        $this->validateOnly($propertyName);
-    }
 
     public function mount($token): void
     {
@@ -72,7 +67,7 @@ class ShowWelcomeForm extends Component
             abort(403, 'This welcome link has already been used.');
         }
 
-        if (is_null($this->user->welcome_valid_until || Carbon::create($this->user->welcome_valid_until)->isPast())) {
+        if (is_null($this->user->welcome_valid_until) || Carbon::parse($this->user->welcome_valid_until)->isPast()) {
             abort(403, 'This welcome link has expired.');
         }
     }

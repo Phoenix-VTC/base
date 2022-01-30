@@ -2,13 +2,14 @@
 
 namespace App\Http\Livewire\Recruitment;
 
-use App\Jobs\Recruitment\ProcessAcceptation;
 use App\Mail\DriverApplication\ApplicationDenied;
 use App\Models\Application;
 use App\Models\Comment;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -18,6 +19,8 @@ use Validator;
 
 class ShowApplication extends Component
 {
+    use AuthorizesRequests;
+
     public Application $application;
     public Collection $previousApplications;
     public string $comment = '';
@@ -40,8 +43,12 @@ class ShowApplication extends Component
 
     public function claim(): void
     {
+        $this->authorize('claim', $this->application);
+
         $this->application->claimed_by = Auth::id();
         $this->application->save();
+
+        $this->forgetPendingApplicationCount();
 
         $this->sendDiscordWebhook('Application Claimed', '**' . Auth::user()->username . '** claimed **' . $this->application->username . '\'s** application.', 14429954);
 
@@ -50,14 +57,12 @@ class ShowApplication extends Component
 
     public function unclaim(): void
     {
-        if ($this->application->claimed_by !== Auth::id()) {
-            session()->now('alert', ['type' => 'danger', 'message' => 'This application does not belong to you.']);
-
-            return;
-        }
+        $this->authorize('update', $this->application);
 
         $this->application->claimed_by = null;
         $this->application->save();
+
+        $this->forgetPendingApplicationCount();
 
         $this->sendDiscordWebhook('Application Unclaimed', '**' . Auth::user()->username . '** unclaimed **' . $this->application->username . '\'s** application.', 14429954);
 
@@ -85,11 +90,13 @@ class ShowApplication extends Component
 
     public function deleteComment($uuid): void
     {
-        $this->sendDiscordWebhook('Application Comment Deleted', 'By **' . Auth::user()->username . '**', 14429954);
-
         $comment = Comment::where('uuid', $uuid)->firstOrFail();
 
+        $this->authorize('delete', $comment);
+
         $comment->delete();
+
+        $this->sendDiscordWebhook('Application Comment Deleted', 'By **' . Auth::user()->username . '**', 14429954);
 
         session()->now('alert', ['type' => 'info', 'message' => 'Comment deleted!']);
     }
@@ -104,11 +111,7 @@ class ShowApplication extends Component
 
     public function accept(): void
     {
-        if ($this->application->claimed_by !== Auth::id()) {
-            session()->now('alert', ['type' => 'danger', 'message' => 'You need to claim the application before you can accept it.']);
-
-            return;
-        }
+        $this->authorize('update', $this->application);
 
         Validator::make($this->application->toArray(), [
             'username' => ['required', 'string', Rule::unique('users')->whereNull('deleted_at')],
@@ -117,23 +120,12 @@ class ShowApplication extends Component
             'steam_data.steamID64' => ['required', Rule::unique('users', 'steam_id')->whereNull('deleted_at')],
         ])->validate();
 
-        ProcessAcceptation::dispatch($this->application);
-
-        $this->application->status = 'accepted';
-        $this->application->save();
-
-        $this->sendDiscordWebhook('Application Accepted', 'By **' . Auth::user()->username . '**', 5763719);
-
-        session()->now('alert', ['type' => 'success', 'message' => 'Application successfully <b>accepted</b>!']);
+        $this->emit('openModal', 'recruitment.show-accept-modal', ['uuid' => $this->application->uuid]);
     }
 
     public function deny(): void
     {
-        if ($this->application->claimed_by !== Auth::id()) {
-            session()->now('alert', ['type' => 'danger', 'message' => 'You need to claim the application before you can deny it.']);
-
-            return;
-        }
+        $this->authorize('update', $this->application);
 
         $this->application->status = 'denied';
         $this->application->save();
@@ -150,17 +142,7 @@ class ShowApplication extends Component
 
     public function setStatus($status): void
     {
-        if ($this->application->claimed_by !== Auth::id()) {
-            session()->now('alert', ['type' => 'danger', 'message' => 'You need to claim the application before you can change its status.']);
-
-            return;
-        }
-
-        if (!in_array($status, ['pending', 'incomplete', 'awaiting_response', 'investigation'])) {
-            session()->now('alert', ['type' => 'danger', 'message' => 'Chosen status is invalid.']);
-
-            return;
-        }
+        $this->authorize('update', $this->application);
 
         $this->application->status = $status;
         $this->application->save();
@@ -168,20 +150,6 @@ class ShowApplication extends Component
         $this->sendDiscordWebhook('Application Status Changed: **' . ucwords(str_replace("_", " ", $status)) . '**', 'By **' . Auth::user()->username . '**', 5793266);
 
         session()->now('alert', ['type' => 'info', 'message' => 'Application status changed to <b>' . str_replace("_", " ", $status) . '</b>']);
-    }
-
-    public function blacklist(): void
-    {
-        if ($this->application->claimed_by !== Auth::id()) {
-            session()->now('alert', ['type' => 'danger', 'message' => 'You need to claim the application before you can blacklist it.']);
-
-            return;
-        }
-
-        $this->application->status = 'denied';
-        $this->application->save();
-
-        // Handle blacklist
     }
 
     public function hydrate(): void
@@ -223,5 +191,10 @@ class ShowApplication extends Component
             ->whereKeyNot($this->application->id)
             ->latest()
             ->get();
+    }
+
+    private function forgetPendingApplicationCount(): void
+    {
+        Cache::forget('pending_application_count');
     }
 }

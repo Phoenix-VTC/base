@@ -3,6 +3,7 @@
     'icon',
     'route',
     'activeRoute' => null,
+    'unreadCount' => 0,
 ])
 
 <a href="{{ route($route) }}"
@@ -13,5 +14,13 @@
         @svg('heroicon-' . $icon)
     </span>
 
-    {{ $title }}
+    <span class="flex-1">
+        {{ $title }}
+    </span>
+
+    @if($unreadCount > 0)
+        <span class="@if(Request::routeIs($activeRoute ?? $route)) bg-gray-800 @else bg-gray-900 group-hover:bg-gray-800 @endif ml-3 inline-block py-0.5 px-3 text-xs font-medium rounded-full">
+          {{ $unreadCount }}
+        </span>
+    @endif
 </a>

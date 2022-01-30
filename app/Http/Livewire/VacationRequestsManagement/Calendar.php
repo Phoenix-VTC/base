@@ -4,6 +4,7 @@ namespace App\Http\Livewire\VacationRequestsManagement;
 
 use App\Models\VacationRequest;
 use Asantibanez\LivewireCalendar\LivewireCalendar;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Livewire\Redirector;
 
@@ -24,10 +25,10 @@ class Calendar extends LivewireCalendar
             });
     }
 
-    public function onEventClick($eventId)
+    public function onEventClick($eventId): RedirectResponse|Redirector
     {
-        $userId = VacationRequest::findOrFail($eventId)->user_id;
+        $user = VacationRequest::findOrFail($eventId)->user;
 
-        return redirect()->route('users.profile', $userId);
+        return redirect()->route('users.profile', $user);
     }
 }

@@ -29,7 +29,7 @@
                                         Reason
                                     </th>
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        class="px-6 py-3 whitespace-nowrap text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Handled By
                                     </th>
                                     <th scope="col"
@@ -49,23 +49,26 @@
                                             {{ $vacation_request->user->username ?? 'Deleted User' }}
                                             ({{ $vacation_request->user_id }})
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <time datetime="{{ $vacation_request->start_date }}">
-                                                {{ $vacation_request->start_date }}
-                                            </time>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <time datetime="{{ $vacation_request->end_date }}">
-                                                {{ $vacation_request->end_date }}
-                                            </time>
-                                            @if($vacation_request->leaving)
+                                        @if($vacation_request->leaving)
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" colspan="2">
                                                 <span
                                                     class="px-2 ml-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                                     Leaving Phoenix
                                                 </span>
-                                            @endif
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            </td>
+                                        @else
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <time datetime="{{ $vacation_request->start_date }}">
+                                                    {{ $vacation_request->start_date->format('M d, Y') }}
+                                                </time>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <time datetime="{{ $vacation_request->end_date }}">
+                                                    {{ $vacation_request->end_date->format('M d, Y') }}
+                                                </time>
+                                            </td>
+                                        @endif
+                                        <td class="px-6 py-4 text-sm text-gray-500">
                                             {{ $vacation_request->reason }}
                                         </td>
                                         <td class="px-6 py-4 flex whitespace-nowrap text-sm text-gray-500">
@@ -128,11 +131,11 @@
                                                 <div x-show="openRowActions" x-cloak
                                                      @click.away="openRowActions = false"
                                                      x-transition:enter="transition ease-out duration-100"
-                                                     x-transition:enter-start="transform opacity-0 scale-95"
-                                                     x-transition:enter-end="transform opacity-100 scale-100"
+                                                     x-transition:enter-start="opacity-0 scale-95"
+                                                     x-transition:enter-end="opacity-100 scale-100"
                                                      x-transition:leave="transition ease-in duration-75"
-                                                     x-transition:leave-start="transform opacity-100 scale-100"
-                                                     x-transition:leave-end="transform opacity-0 scale-95"
+                                                     x-transition:leave-start="opacity-100 scale-100"
+                                                     x-transition:leave-end="opacity-0 scale-95"
                                                      class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200">
                                                     <div class="py-1" role="menu" aria-orientation="vertical"
                                                          aria-labelledby="options-menu">

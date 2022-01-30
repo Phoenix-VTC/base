@@ -33,7 +33,7 @@ class ShowIndexPage extends Component
             $q->whereMonth('finished_at', $this->month);
         }])->withSum(['jobs:distance' => function (Builder $q) {
             $q->whereMonth('finished_at', $this->month);
-        }])->with(['roles'])
+        }], 'distance')->with(['roles'])
             ->with([
                 "vacation_requests" => function ($q) {
                     $q->whereMonth('start_date', '<=', $this->month)

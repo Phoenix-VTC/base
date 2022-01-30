@@ -8,6 +8,18 @@
             return $unapprovedCargosCount + $unapprovedCitiesCount + $unapprovedCompaniesCount;
         });
     }
+
+    if(Auth::user()->can('handle driver applications')) {
+        $pendingApplicationCount = Cache::remember('pending_application_count', 300, function () {
+            return App\Models\Application::whereNull('claimed_by')->count();
+        });
+    }
+
+    if(Auth::user()->can('manage vacation requests')) {
+        $pendingVacationRequestCount = Cache::remember('vacation_request_count', 300, function () {
+            return App\Models\VacationRequest::whereNull('handled_by')->count();
+        });
+    }
 @endphp
 
 <x-sidebar.group>
@@ -15,10 +27,12 @@
 
     <livewire:components.dropdown title="My Jobs" icon="o-briefcase" activeRoute="jobs.*"
                                   :items="[
-                                    ['title' => 'Personal Overview', 'route' => 'jobs.personal-overview'],
+                                    ['title' => 'Personal Overview', 'route' => 'users.jobs-overview', 'parameters' => Auth::user()->slug],
                                     ['title' => 'Submit New Job', 'route' => 'jobs.choose-game'],
                                   ]">
     </livewire:components.dropdown>
+
+    <x-sidebar.item title="Tracker" icon="o-location-marker" route="tracker-information"/>
 
     <x-sidebar.item title="Events" icon="o-calendar" route="events.home"/>
 
@@ -35,27 +49,30 @@
                     activeRoute="screenshot-hub.*"/>
 </x-sidebar.group>
 
-@hasanyrole('super admin|management|human resources|events|media|modding|developer')
+@if(Auth::user()->isStaff() || Auth::user()->isUpperStaff())
     <x-sidebar.separator title="Management"/>
-@endhasanyrole
+@endif
 
 <x-sidebar.group>
     @can('handle driver applications')
-        <x-sidebar.item title="Recruitment" icon="o-inbox" route="recruitment.index" activeRoute="recruitment.*"/>
+        <x-sidebar.item title="Recruitment" icon="o-inbox" route="recruitment.index" activeRoute="recruitment.*"
+                        :unreadCount="$pendingApplicationCount ?? 0"/>
     @endcan
 
     @can('manage vacation requests')
         <x-sidebar.item title="Vacation Requests" icon="o-clock" route="vacation-requests.manage.index"
-                        activeRoute="vacation-requests.manage.*"/>
+                        activeRoute="vacation-requests.manage.*"
+                        :unreadCount="$pendingVacationRequestCount ?? 0"/>
     @endcan
 
-    @canany(['manage users', 'manage driver inactivity'])
+    @canany(['manage users', 'manage driver inactivity', 'view blocklist'])
         <livewire:components.dropdown title="User Management" icon="o-document-search" activeRoute="user-management.*"
                                       :items="[
-                                        ['title' => 'Users', 'route' => 'user-management.index'],
-                                        ['title' => 'Driver Inactivity', 'route' => 'user-management.driver-inactivity.index'],
-                                        ['title' => 'Roles', 'route' => 'user-management.roles.index'],
-                                        ['title' => 'Permissions', 'route' => 'user-management.permissions.index'],
+                                        ['title' => 'Users', 'route' => 'user-management.index', 'permission' => 'manage users'],
+                                        ['title' => 'Blocklist', 'route' => 'user-management.blocklist.index', 'permission' => 'view blocklist'],
+                                        ['title' => 'Driver Inactivity', 'route' => 'user-management.driver-inactivity.index', 'permission' => 'manage driver inactivity'],
+                                        ['title' => 'Roles', 'route' => 'user-management.roles.index', 'permission' => 'manage users'],
+                                        ['title' => 'Permissions', 'route' => 'user-management.permissions.index', 'permission' => 'manage users'],
                                       ]">
         </livewire:components.dropdown>
     @endcan

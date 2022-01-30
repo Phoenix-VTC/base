@@ -5,6 +5,10 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ScreenshotController;
 use App\Http\Controllers\UserManagement\UserController as UserManagementUserController;
 use App\Http\Livewire\Auth\ShowWelcomeForm;
+use App\Http\Livewire\Blocklist\ShowIndexPage as BlocklistShowIndexPage;
+use App\Http\Livewire\Blocklist\ShowCreatePage as BlocklistShowCreatePage;
+use App\Http\Livewire\Blocklist\ShowShowPage as BlocklistShowShowPage;
+use App\Http\Livewire\Blocklist\ShowEditPage as BlocklistShowEditPage;
 use App\Http\Livewire\Downloads\ShowIndexPage as DownloadsShowIndexPage;
 use App\Http\Livewire\DownloadsManagement\ShowEditPage as DownloadsManagementShowEditPage;
 use App\Http\Livewire\DownloadsManagement\ShowCreatePage as DownloadsManagementShowCreatePage;
@@ -27,8 +31,8 @@ use App\Http\Livewire\ScreenshotHub\ShowShowPage as ScreenshotHubShowShowPage;
 use App\Http\Livewire\ScreenshotHub\ShowCreatePage as ScreenshotHubShowCreatePage;
 use App\Http\Livewire\ScreenshotHub\ShowIndexPage as ScreenshotHubShowIndexPage;
 use App\Http\Livewire\ShowLeaderboardPage;
-use App\Http\Livewire\Jobs\ShowPersonalOverviewPage as JobsShowPersonalOverviewPage;
 use App\Http\Livewire\ShowNotificationsPage;
+use App\Http\Livewire\ShowTrackerInformationPage;
 use App\Http\Livewire\UserManagement\DriverInactivity\ShowIndexPage as DriverInactivityShowIndexPage;
 use App\Http\Livewire\Users\ShowAchievementsPage;
 use App\Http\Livewire\Users\ShowJobOverviewPage as UsersShowJobOverviewPage;
@@ -61,6 +65,7 @@ use App\Http\Livewire\UserManagement\Permissions\ShowIndexPage as UserManagement
 use App\Http\Livewire\Wallet\ShowIndexPage as WalletShowIndexPage;
 use App\Http\Controllers\Auth\SteamController as SteamAuthController;
 use App\Http\Controllers\Auth\DiscordController as DiscordAuthController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -79,15 +84,24 @@ Route::get('/', ShowDashboard::class)
     ->name('dashboard');
 
 Route::prefix('recruitment')->name('recruitment.')->middleware(['auth', 'can:handle driver applications'])->group(function () {
-    Route::get('index', RecruitmentShowIndex::class)->name('index');
+    Route::get('/', RecruitmentShowIndex::class)->name('index');
     Route::get('application/{uuid}', ShowApplication::class)->name('show');
 });
 
-Route::prefix('user-management')->name('user-management.')->middleware(['auth', 'can:manage users'])->group(function () {
-    Route::get('index', UserManagementShowIndex::class)->name('index');
-    Route::get('roles/index', UserManagementRolesShowIndex::class)->name('roles.index');
-    Route::get('permissions/index', UserManagementPermissionsShowIndex::class)->name('permissions.index');
-    Route::get('driver-inactivity/index', DriverInactivityShowIndexPage::class)->middleware('can:manage driver inactivity')->name('driver-inactivity.index');
+Route::prefix('user-management')->name('user-management.')->middleware('auth')->group(function () {
+    Route::middleware('can:manage users')->group(function () {
+        Route::get('/', UserManagementShowIndex::class)->name('index');
+        Route::get('roles', UserManagementRolesShowIndex::class)->name('roles.index');
+        Route::get('permissions', UserManagementPermissionsShowIndex::class)->name('permissions.index');
+        Route::get('driver-inactivity', DriverInactivityShowIndexPage::class)->middleware('can:manage driver inactivity')->name('driver-inactivity.index');
+    });
+
+    Route::prefix('blocklist')->name('blocklist.')->group(function () {
+        Route::get('/', BlocklistShowIndexPage::class)->middleware('can:view blocklist')->name('index');
+        Route::get('create', BlocklistShowCreatePage::class)->middleware('can:create blocklist')->name('create');
+        Route::get('{id}', BlocklistShowShowPage::class)->middleware('can:view blocklist')->name('show');
+        Route::get('{blocklist}/edit', BlocklistShowEditPage::class)->middleware('can:create blocklist')->name('edit');
+    });
 });
 
 Route::prefix('vacation-requests')->name('vacation-requests.')->middleware(['auth'])->group(function () {
@@ -96,7 +110,7 @@ Route::prefix('vacation-requests')->name('vacation-requests.')->middleware(['aut
 });
 
 Route::prefix('vacation-requests/manage')->name('vacation-requests.manage.')->middleware(['auth', 'can:manage vacation requests'])->group(function () {
-    Route::get('index', VacationRequestsManagementShowIndex::class)->name('index');
+    Route::get('/', VacationRequestsManagementShowIndex::class)->name('index');
 });
 
 Route::prefix('event-management')->name('event-management.')->middleware(['auth', 'can:manage events'])->group(function () {
@@ -121,7 +135,9 @@ Route::prefix('game-data')->name('game-data.')->middleware(['auth', 'can:manage 
 });
 
 Route::prefix('jobs')->name('jobs.')->middleware(['auth'])->group(function () {
-    Route::get('personal-overview', JobsShowPersonalOverviewPage::class)->name('personal-overview');
+    Route::get('personal-overview', function () {
+        return Redirect::route('users.jobs-overview', ['user' => Auth::user()]);
+    })->name('personal-overview');
     Route::get('choose-game', JobsShowSelectGamePage::class)->name('choose-game');
     Route::get('submit/{game_id}', JobsShowSubmitPage::class)
         ->whereNumber('game_id')
@@ -135,6 +151,8 @@ Route::prefix('jobs')->name('jobs.')->middleware(['auth'])->group(function () {
         Route::get('verify', JobsShowVerifyPage::class)->name('verify');
     });
 });
+
+Route::get('tracker', ShowTrackerInformationPage::class)->middleware('auth')->name('tracker-information');
 
 Route::get('leaderboard', ShowLeaderboardPage::class)->middleware('auth')->name('leaderboard');
 
@@ -151,26 +169,34 @@ Route::get('profile', function () {
     return redirect()->route('users.profile', Auth::user());
 })->middleware('auth')->name('profile');
 
-Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
-    Route::get('{id}', ShowProfilePage::class)->name('profile')->whereNumber('id');
+Route::get('@{user}', function (User $user) {
+    return redirect()->route('users.profile', $user);
+})->name('profile.fancy-redirect');
 
-    Route::get('{id}/achievements', ShowAchievementsPage::class)->name('achievements')->whereNumber('id');
+Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
+    Route::get('{id}', function ($id) {
+        return redirect()->route('users.profile', User::findOrFail($id));
+    })->whereNumber('id');
+
+    Route::get('{user}', ShowProfilePage::class)->withTrashed()->name('profile');
+
+    Route::get('{user}/achievements', ShowAchievementsPage::class)->name('achievements');
 
     Route::get('{user}/jobs', UsersShowJobOverviewPage::class)->name('jobs-overview');
 
-    Route::prefix('{id}')->middleware('can:manage users')->group(function () {
-        Route::get('edit', UserManagementShowEditPage::class)->name('edit')->whereNumber('id');
+    Route::prefix('{user}')->middleware('can:manage users')->group(function () {
+        Route::get('edit', UserManagementShowEditPage::class)->name('edit');
 
-        Route::get('remove-profile-picture', [UserManagementUserController::class, 'removeProfilePicture'])->name('removeProfilePicture')->whereNumber('id');
-        Route::get('remove-profile-banner', [UserManagementUserController::class, 'removeProfileBanner'])->name('removeProfileBanner')->whereNumber('id');
+        Route::get('remove-profile-picture', [UserManagementUserController::class, 'removeProfilePicture'])->name('removeProfilePicture');
+        Route::get('remove-profile-banner', [UserManagementUserController::class, 'removeProfileBanner'])->name('removeProfileBanner');
     });
 });
 
 Route::prefix('downloads')->name('downloads.')->middleware('auth')->group(function () {
-    Route::get('index', DownloadsShowIndexPage::class)->name('index');
+    Route::get('/', DownloadsShowIndexPage::class)->name('index');
 
     Route::prefix('management')->name('management.')->middleware(['auth', 'can:manage downloads'])->group(function () {
-        Route::get('index', DownloadsManagementShowIndexPage::class)->name('index');
+        Route::get('/', DownloadsManagementShowIndexPage::class)->name('index');
         Route::get('create', DownloadsManagementShowCreatePage::class)->name('create');
         Route::get('{download}/edit', DownloadsManagementShowEditPage::class)->name('edit');
         Route::get('{download}/revisions', DownloadsManagementShowRevisionsPage::class)->name('revisions');
