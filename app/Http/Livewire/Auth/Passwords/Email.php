@@ -12,7 +12,7 @@ class Email extends Component
     use WithRateLimiting;
 
     /** @var string */
-    public string $email;
+    public string $email = '';
 
     /** @var string|bool|null */
     public string|bool|null $emailSentMessage = false;
