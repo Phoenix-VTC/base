@@ -8,6 +8,7 @@ use App\Rules\Steam\HasGame;
 use App\Rules\Steam\MinHours;
 use App\Rules\TMP\AccountExists;
 use App\Rules\TMP\BanHistoryPublic;
+use App\Rules\TMP\MinimumAccountAge;
 use App\Rules\TMP\NoRecentBans;
 use App\Rules\TMP\NotInVTC;
 use App\Rules\TMP\UniqueInApplications;
@@ -69,6 +70,7 @@ class AuthController extends Controller
                         new HasGame,
                         new MinHours,
                         new AccountExists,
+                        new MinimumAccountAge,
                         new BanHistoryPublic,
                         new NoRecentBans,
                         new NotInVTC,
