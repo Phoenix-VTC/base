@@ -279,40 +279,51 @@
                         </div>
                     </fieldset>
 
-                    <div class="col-span-6 sm:col-span-4" x-data="{aboutCount: 0}"
-                         x-init="aboutCount = $refs.about.value.length">
+                    <div class="col-span-6 sm:col-span-4" x-data="{min: 200, count: 0}"
+                         x-init="count = $refs.about.value.length">
                         <label for="about" class="block text-sm font-medium text-gray-700">
                             {{ __('driver-application.additional_questions.about') }}
                         </label>
                         <div class="mt-1">
                             <textarea id="about" name="about" rows="3" x-ref="about"
-                                      x-on:keyup="aboutCount = $refs.about.value.length" wire:model.lazy="about"
+                                      x-on:keyup="count = $refs.about.value.length" wire:model.lazy="about"
                                       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('about') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror"
                                       placeholder="Anything will do! Tell us about your hobbies, work, favorite truck, games.."></textarea>
-                            <p class="mt-2 text-sm text-gray-500" x-show.transition.in.out="aboutCount > 0" x-cloak>
-                                <span x-html="aboutCount"></span> {{ __('slugs.characters') }}
-                            </p>
+                            <x-driver-application.character-counter/>
                         </div>
                         @error('about')
                         <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <div class="col-span-6 sm:col-span-4" x-data="{whyJoinCount: 0}"
-                         x-init="whyJoinCount = $refs.why_join.value.length">
+                    <div class="col-span-6 sm:col-span-4" x-data="{min: 200, count: 0}"
+                         x-init="count = $refs.why_join.value.length">
                         <label for="why_join" class="block text-sm font-medium text-gray-700">
                             {{ __('driver-application.additional_questions.why_join') }}
                         </label>
                         <div class="mt-1">
                             <textarea id="why_join" name="why_join" rows="3" x-ref="why_join"
-                                      x-on:keyup="whyJoinCount = $refs.why_join.value.length" wire:model.lazy="why_join"
+                                      x-on:keyup="count = $refs.why_join.value.length" wire:model.lazy="why_join"
                                       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('why_join') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror"
                                       placeholder="Nothing is too much! We don't mind reading :)"></textarea>
                         </div>
-                        <p class="mt-2 text-sm text-gray-500" x-show.transition.in.out="whyJoinCount > 0" x-cloak>
-                            <span x-html="whyJoinCount"></span> {{ __('slugs.characters') }}
-                        </p>
+                        <x-driver-application.character-counter/>
                         @error('why_join')
+                        <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="col-span-6 sm:col-span-4">
+                        <label for="monthly_truckersmp_play_time" class="block text-sm font-medium text-gray-700">
+                            {{ __('driver-application.additional_questions.monthly_truckersmp_play_time') }}
+                        </label>
+                        <div class="mt-1">
+                            <textarea id="monthly_truckersmp_play_time" name="monthly_truckersmp_play_time"
+                                      wire:model.lazy="monthly_truckersmp_play_time"
+                                      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('monthly_truckersmp_play_time') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror"
+                                      placeholder="If you only play on single-player, please let us know here!"></textarea>
+                        </div>
+                        @error('monthly_truckersmp_play_time')
                         <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
                         @enderror
                     </div>
@@ -350,20 +361,18 @@
                         </p>
                     </fieldset>
 
-                    <div class="col-span-6 sm:col-span-4" x-data="{findUsCount: 0}"
-                         x-init="findUsCount = $refs.find_us.value.length">
+                    <div class="col-span-6 sm:col-span-4" x-data="{count: 0}"
+                         x-init="count = $refs.find_us.value.length">
                         <label for="find_us" class="block text-sm font-medium text-gray-700">
                             {{ __('driver-application.default_questions.find_us') }}
                         </label>
                         <div class="mt-1">
                             <textarea id="find_us" name="find_us" x-ref="find_us"
-                                      x-on:keyup="findUsCount = $refs.find_us.value.length" wire:model.lazy="find_us"
+                                      x-on:keyup="count = $refs.find_us.value.length" wire:model.lazy="find_us"
                                       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('find_us') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror"
                                       placeholder="TruckersMP, Discord advertisements, TruckersFM, etc"></textarea>
                         </div>
-                        <p class="mt-2 text-sm text-gray-500" x-show.transition.in.out="findUsCount > 0" x-cloak>
-                            <span x-html="findUsCount"></span> {{ __('slugs.characters') }}
-                        </p>
+                        <x-driver-application.character-counter/>
                         @error('find_us')
                         <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
                         @enderror
