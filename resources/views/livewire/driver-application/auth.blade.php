@@ -13,7 +13,9 @@
             <p>
                 • Be over 16 years of age
                 <br>
-                • Have 75 Hours in ETS2 or ATS (this can be combined between both games)
+                • Have at least 75 hours in ETS2 or ATS (this can be combined between both games)
+                <br>
+                • Have a TruckersMP account that is at least three months old
                 <br>
                 • Have no TruckersMP bans within the past three months
                 <br>

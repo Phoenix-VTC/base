@@ -15,8 +15,6 @@ class ShowIndexPage extends Component
 
     public function mount(Request $request): void
     {
-        session()->now('alert', ['type' => 'info', 'title' => 'Heads-up!', 'message' => 'Make sure to check the inactivity on <a href="https://trucksbook.eu/drivers" target="_blank" class="font-bold">TrucksBook</a> as well.']);
-
         $month = $request->get('month');
         $orderBy = $request->get('orderBy');
 
