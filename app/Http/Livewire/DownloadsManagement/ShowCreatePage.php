@@ -19,8 +19,8 @@ class ShowCreatePage extends Component implements HasForms
     // Form fields
     public $name = '';
     public $description = '';
-    public $image;
-    public $file;
+    public $image = '';
+    public $file = '';
 
     public function render()
     {

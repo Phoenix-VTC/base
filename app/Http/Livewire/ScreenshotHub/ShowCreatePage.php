@@ -19,7 +19,7 @@ class ShowCreatePage extends Component implements HasForms
 
     // Form fields
     public $title;
-    public $screenshot;
+    public $screenshot = '';
     public $description;
     public $location;
 
