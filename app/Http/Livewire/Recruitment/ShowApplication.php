@@ -144,6 +144,12 @@ class ShowApplication extends Component
     {
         $this->authorize('update', $this->application);
 
+        if (!in_array($status, ['pending', 'incomplete', 'awaiting_response', 'investigation'])) {
+            session()->now('alert', ['type' => 'danger', 'message' => 'Chosen status is invalid.']);
+
+            return;
+        }
+
         $this->application->status = $status;
         $this->application->save();
 
@@ -186,7 +192,7 @@ class ShowApplication extends Component
                         return $q->orWhere('discord_username', $this->application->discord_username);
                     })
                     ->orWhere('truckersmp_id', $this->application->truckersmp_id)
-                    ->orWhere('steam_data->steamID64', $this->application->steam_data['steamID64']);
+                    ->orWhere('steam_data->steamID64', $this->application->steam_data['steamID64'] ?? null);
             })
             ->whereKeyNot($this->application->id)
             ->latest()

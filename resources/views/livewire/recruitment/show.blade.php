@@ -10,7 +10,7 @@
             <div class="flex-shrink-0">
                 <div class="relative">
                     <img class="w-16 h-16 rounded-full"
-                         src="{{ $application->steam_data['avatarfull'] }}"
+                         src="{{ $application->steam_data['avatarfull'] ?? '' }}"
                          alt="">
                     <span class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></span>
                 </div>
@@ -79,13 +79,13 @@
                                     Steam Username
                                 </dt>
                                 <dd class="mt-1 text-sm text-gray-900">
-                                    @if(empty($application->steam_data['personaname']) || empty($application->steam_data['steamID64']))
+                                    @if(empty($application->steam_data['personaname'] ?? null) || empty($application->steam_data['steamID64'] ?? null))
                                         Could not resolve Steam name
                                     @else
                                         <p class="flex items-center mt-2">
-                                            {{ $application->steam_data['personaname'] }}
+                                            {{ $application->steam_data['personaname'] ?? 'Unknown' }}
                                             <a target="_blank"
-                                               href="https://steamcommunity.com/profiles/{{ $application->steam_data['steamID64'] }}">
+                                               href="https://steamcommunity.com/profiles/{{ $application->steam_data['steamID64'] ?? '' }}">
                                                 <svg class="w-4 h-4 ml-1 text-orange-600"
                                                      xmlns="http://www.w3.org/2000/svg"
                                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">

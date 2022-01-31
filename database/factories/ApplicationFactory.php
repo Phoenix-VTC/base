@@ -56,7 +56,7 @@ class ApplicationFactory extends Factory
             'discord_username' => "{$this->faker->userName}#" . random_int(0001, 9999),
             'date_of_birth' => $this->faker->date(),
             'country' => $this->faker->countryCode,
-            'steam_data' => json_encode($steamData, JSON_THROW_ON_ERROR),
+            'steam_data' => $steamData,
             'truckersmp_id' => 3181778,
             'application_answers' => json_encode($application_answers, JSON_THROW_ON_ERROR),
         ];

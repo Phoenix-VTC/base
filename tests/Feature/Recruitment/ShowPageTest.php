@@ -1,12 +1,17 @@
 <?php
 
+use App\Events\NewBlocklistEntry;
+use App\Http\Livewire\Recruitment\ShowAcceptModal;
 use App\Http\Livewire\Recruitment\ShowApplication;
+use App\Http\Livewire\Recruitment\ShowBlocklistModal;
 use App\Jobs\Recruitment\ProcessAcceptation;
 use App\Mail\DriverApplication\ApplicationDenied;
 use App\Models\Application;
+use App\Models\Blocklist;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use function PHPUnit\Framework\assertEquals;
 
 uses(RefreshDatabase::class);
@@ -210,7 +215,7 @@ it('cannot change the application status if it doesn\'t belong to the user', fun
 
     Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
         ->call('setStatus', 'investigation')
-        ->assertSeeText('You need to claim the application before you can change its status.');
+        ->assertForbidden();
 });
 
 it('cannot unclaim the application if it doesn\'t belong to the user', function () {
@@ -221,7 +226,7 @@ it('cannot unclaim the application if it doesn\'t belong to the user', function 
 
     Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
         ->call('unclaim')
-        ->assertSeeText('This application does not belong to you.');
+        ->assertForbidden();
 });
 
 it('can post a comment', function () {
@@ -288,13 +293,18 @@ it('can accept an application', function () {
 
     Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
         ->call('accept')
-        ->assertSeeText('Application successfully');
+        ->assertHasNoErrors()
+        ->assertEmitted('openModal');
 
-    $application = $application->refresh();
+    $testingAccountDiscordId = '938403769916485683';
 
-    $this->assertEquals($application->status, 'accepted');
+    Livewire::test(ShowAcceptModal::class, ['uuid' => $application->uuid])
+        ->set('discord_id', $testingAccountDiscordId)
+        ->call('submit')
+        ->assertHasNoErrors();
 
     Queue::assertPushed(ProcessAcceptation::class);
+
     Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
         return $request->url() === config('services.discord.webhooks.human-resources');
     });
@@ -308,7 +318,7 @@ it('cannot accept the application if it doesn\'t belong to the user', function (
 
     Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
         ->call('accept')
-        ->assertSeeText('You need to claim the application before you can accept it.');
+        ->assertForbidden();
 });
 
 it('can deny an application', function () {
@@ -343,32 +353,46 @@ it('cannot deny the application if it doesn\'t belong to the user', function () 
 
     Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
         ->call('deny')
-        ->assertSeeText('You need to claim the application before you can deny it.');
+        ->assertForbidden();
 });
 
-it('can blacklist an application', function () {
+it('can blocklist an application', function () {
     $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
     $application->update(['claimed_by' => $user->id]);
 
-    Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
-        ->call('blacklist')
-        ->assertSuccessful();
+    Mail::fake();
+    Event::fake();
+
+    $livewire = Livewire::test(ShowBlocklistModal::class, ['uuid' => $application->uuid])
+        ->set('reason', 'Some reason')
+        ->call('submit')
+        ->assertHasNoErrors();
+
+    Mail::assertQueued(ApplicationDenied::class);
 
     $application = $application->refresh();
-
     $this->assertEquals($application->status, 'denied');
+
+    $blocklist = Blocklist::query()
+        ->exactSearch($application->truckersmp_id)
+        ->first();
+
+    $this->assertTrue($blocklist::exists());
+
+    $livewire->assertredirect(route('user-management.blocklist.show', $blocklist?->id));
+
+    Event::assertDispatched(NewBlocklistEntry::class);
 });
 
-it('cannot blacklist the application if it doesn\'t belong to the user', function () {
+it('cannot blocklist the application if it doesn\'t belong to the user', function () {
     $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
     $application = Application::factory()->create();
 
-    Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
-        ->call('blacklist')
-        ->assertSeeText('You need to claim the application before you can blacklist it.');
+    Livewire::test(ShowBlocklistModal::class, ['uuid' => $application->uuid])
+        ->assertForbidden();
 });
