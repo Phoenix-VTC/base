@@ -136,7 +136,7 @@
                                                      x-transition:leave="transition ease-in duration-75"
                                                      x-transition:leave-start="opacity-100 scale-100"
                                                      x-transition:leave-end="opacity-0 scale-95"
-                                                     class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200">
+                                                     class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200 z-50">
                                                     <div class="py-1" role="menu" aria-orientation="vertical"
                                                          aria-labelledby="options-menu">
                                                         <a @if(!$vacation_request->handled_by) wire:click="markAsSeen({{ $vacation_request->id }})"

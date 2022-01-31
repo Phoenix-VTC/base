@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Jobs\CheckDriverBans;
 use App\Jobs\CheckDriverVTC;
+use App\Jobs\VacationRequests\UpdateDiscordRoles;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -33,6 +34,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
 
         $schedule->job(new CheckDriverVTC)->dailyAt('23:00');
+
+        $schedule->job(new UpdateDiscordRoles)->daily();
     }
 
     /**
