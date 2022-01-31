@@ -53,5 +53,6 @@ return [
     "additional_questions" => [
         "about" => "Tell us a little bit about yourself",
         "why_join" => "Why do you want to join?",
+        "monthly_truckersmp_play_time" => "How often do you play TruckersMP per month?",
     ],
 ];

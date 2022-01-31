@@ -278,6 +278,7 @@ class ShowFormPage extends Component
     public string $fluent = '';
     public string $about = '';
     public string $why_join = '';
+    public string $monthly_truckersmp_play_time = '';
     public string $terms = '';
     public string $find_us = '';
 
@@ -294,6 +295,7 @@ class ShowFormPage extends Component
             'fluent' => 'required|boolean',
             'about' => 'required',
             'why_join' => 'required',
+            'monthly_truckersmp_play_time' => 'required',
             'terms' => 'required|boolean',
             'find_us' => 'required',
         ];
@@ -334,6 +336,7 @@ class ShowFormPage extends Component
             __('driver-application.default_questions.fluent') => $applicationData['fluent'],
             __('driver-application.additional_questions.about') => $applicationData['about'],
             __('driver-application.additional_questions.why_join') => $applicationData['why_join'],
+            __('driver-application.additional_questions.monthly_truckersmp_play_time') => $applicationData['monthly_truckersmp_play_time'],
             __('driver-application.default_questions.terms') => $applicationData['terms'],
             __('driver-application.default_questions.find_us') => $applicationData['find_us'],
         ];

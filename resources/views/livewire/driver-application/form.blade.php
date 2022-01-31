@@ -317,6 +317,21 @@
                         @enderror
                     </div>
 
+                    <div class="col-span-6 sm:col-span-4">
+                        <label for="monthly_truckersmp_play_time" class="block text-sm font-medium text-gray-700">
+                            {{ __('driver-application.additional_questions.monthly_truckersmp_play_time') }}
+                        </label>
+                        <div class="mt-1">
+                            <textarea id="monthly_truckersmp_play_time" name="monthly_truckersmp_play_time"
+                                      wire:model.lazy="monthly_truckersmp_play_time"
+                                      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md @error('monthly_truckersmp_play_time') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror"
+                                      placeholder="If you only play on single-player, please let us know here!"></textarea>
+                        </div>
+                        @error('monthly_truckersmp_play_time')
+                        <p class="mt-2 text-sm text-red-600 mb-0">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <fieldset class="col-span-6 sm:col-span-4">
                         <div>
                             <legend class="block text-sm font-medium text-gray-700">
