@@ -45,8 +45,8 @@ it('shows the user\'s vacation request', function () {
         ->assertSuccessful()
         ->assertSeeLivewire(ShowIndex::class)
         ->assertSeeText('Your Vacation Requests')
-        ->assertSeeText($vacationRequest->start_date)
-        ->assertSeeText($vacationRequest->end_date)
+        ->assertSeeText($vacationRequest->start_date->format('M d, Y'))
+        ->assertSeeText($vacationRequest->start_date->format('M d, Y'))
         ->assertSeeText($vacationRequest->reason)
         ->assertSeeText('Pending');
 });
@@ -81,10 +81,10 @@ it('shows the vacation request create page', function () {
         ->assertSuccessful()
         ->assertSeeLivewire(ShowCreate::class)
         ->assertSeeText('New Vacation Request')
-        ->assertSeeText('Start Date')
-        ->assertSeeText('End Date')
-        ->assertSeeText('Reason')
         ->assertSeeText('Will you be leaving Phoenix?')
+        ->assertSeeText('Start date')
+        ->assertSeeText('End date')
+        ->assertSeeText('Reason')
         ->assertSeeText('Cancel')
         ->assertSeeText('Submit');
 });
@@ -121,20 +121,20 @@ it('can submit a vacation request', function () {
         ->assertSessionHas('alert', ['type' => 'success', 'message' => 'Vacation request successfully submitted!']);
 });
 
-test('start date is required', function () {
+it('tests the validation rules', function ($field, $value, $rule) {
     Livewire::test(ShowCreate::class)
-        ->set('reason', 'Reason')
+        ->set($field, $value)
         ->call('submit')
-        ->assertHasErrors(['start_date' => 'required']);
-});
-
-test('start and end date must be after or equal to tomorrow', function () {
-    Livewire::test(ShowCreate::class)
-        ->set('start_date', Carbon::yesterday())
-        ->set('end_date', Carbon::yesterday())
-        ->call('submit')
-        ->assertHasErrors(['start_date' => 'after_or_equal', 'end_date' => 'after_or_equal']);
-});
+        ->assertHasErrors([$field => $rule]);
+})->with([
+    'start date is null' => ['start_date', null, 'required'],
+    'end date is null' => ['end_date', null, 'required'],
+    'reason is null' => ['reason', null, 'required'],
+    'start date is before tomorrow' => ['start_date', Carbon::yesterday(), 'after_or_equal'],
+    'end date is before tomorrow' => ['end_date', Carbon::yesterday(), 'after_or_equal'],
+    'reason is below 3 characters' => ['reason', 'a', 'min'],
+    'leaving is not a boolean' => ['leaving', 'not a boolean', 'boolean'],
+]);
 
 test('start and end date must be unique to user', function () {
     $user = User::factory()->create();
@@ -159,7 +159,7 @@ test('end date is required when not leaving', function () {
         ->set('start_date', Carbon::tomorrow())
         ->set('leaving', '0')
         ->call('submit')
-        ->assertHasErrors(['end_date' => 'required_unless']);
+        ->assertHasErrors(['end_date']);
 });
 
 test('end date is not required when leaving', function () {
@@ -175,7 +175,7 @@ test('end date must be after start date', function () {
         ->set('start_date', Carbon::tomorrow())
         ->set('end_date', Carbon::tomorrow())
         ->call('submit')
-        ->assertHasErrors(['end_date' => 'after']);
+        ->assertHasErrors(['end_date' => 'after_or_equal']);
 });
 
 test('end date must be at least a week after the start date', function () {
@@ -184,32 +184,6 @@ test('end date must be at least a week after the start date', function () {
         ->set('end_date', Carbon::tomorrow()->addDays(3))
         ->call('submit')
         ->assertHasErrors(['end_date' => 'after_or_equal']);
-});
-
-test('reason is required', function () {
-    Livewire::test(ShowCreate::class)
-        ->call('submit')
-        ->assertHasErrors(['reason' => 'required']);
-});
-
-test('reason must be at least 3 characters', function () {
-    Livewire::test(ShowCreate::class)
-        ->set('reason', 'a')
-        ->call('submit')
-        ->assertHasErrors(['reason' => 'min']);
-});
-
-test('leaving is required', function () {
-    Livewire::test(ShowCreate::class)
-        ->call('submit')
-        ->assertHasErrors(['leaving' => 'required']);
-});
-
-test('leaving must be boolean', function () {
-    Livewire::test(ShowCreate::class)
-        ->set('leaving', 'NotABoolean')
-        ->call('submit')
-        ->assertHasErrors(['leaving' => 'boolean']);
 });
 
 test('a user can only have one unhandled leaving request', function () {
