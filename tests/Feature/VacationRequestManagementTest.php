@@ -238,5 +238,5 @@ it('can click a vacation requests calendar item', function () {
 
     Livewire::test(Calendar::class)
         ->call('onEventClick', $vacationRequest->id)
-        ->assertRedirect(route('users.profile', $vacationRequest->user->id));
+        ->assertRedirect(route('users.profile', $vacationRequest->user));
 });
