@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\JobStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,6 +32,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property JobStatus|int $status
  * @property bool $tracker_job
  * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $verified_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Cargo $cargo
  * @property-read \App\Models\City $destinationCity
@@ -88,6 +90,7 @@ class Job extends Model
         'started_at' => 'datetime',
         'finished_at' => 'datetime',
         'created_at' => 'datetime',
+        'verified_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
@@ -203,32 +206,40 @@ class Job extends Model
         }
     }
 
-    public function getCanEditAttribute(): bool
+    /**
+     * Check if the job has any pending game data
+     *
+     * @return bool
+     */
+    public function hasPendingGameData(): bool
     {
-        // Return true if the user can manage users
-        if (Auth::user()->can('manage users')) {
-            return true;
-        }
-
-        // Return false if the job is pending verification
-        if ($this->status->value === JobStatus::PendingVerification) {
-            return false;
-        }
-
-        // Return true if the user owns the job, and an hour since creation hasn't passed
-        if ($this->user_id === Auth::id() && $this->created_at->addHour()->isFuture()) {
-            return true;
-        }
-
-        return false;
+        return !($this->pickupCompany->approved && $this->destinationCompany->approved && $this->pickupCity->approved && $this->destinationCity->approved && $this->cargo->approved);
     }
 
-    public function getHasPendingGameDataAttribute(): bool
+    /**
+     * Get the date the job was submitted.
+     *
+     * If a tracker job, verified_at should be returned.
+     * Otherwise, created_at should be returned.
+     *
+     * @return Carbon
+     */
+    public function submittedAt(): Carbon
     {
-        if ($this->pickupCompany->approved && $this->destinationCompany->approved && $this->pickupCity->approved && $this->destinationCity->approved && $this->cargo->approved) {
-            return false;
+        if ($this->tracker_job && $this->verified_at) {
+            return $this->verified_at;
         }
 
-        return true;
+        return $this->created_at;
+    }
+
+    /**
+     * Check if the job status is 'complete'
+     *
+     * @return bool
+     */
+    public function isCompleted(): bool
+    {
+        return $this->status->value === JobStatus::Complete;
     }
 }

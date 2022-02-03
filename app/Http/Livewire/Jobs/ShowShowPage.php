@@ -5,17 +5,22 @@ namespace App\Http\Livewire\Jobs;
 use App\Enums\JobStatus;
 use App\Models\Job;
 use Cornford\Googlmapper\Facades\MapperFacade as Mapper;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Component;
 
 class ShowShowPage extends Component
 {
+    use AuthorizesRequests;
+
     public Job $job;
     public array $gmaps_data;
 
     public function mount(Job $job): void
     {
+        $this->authorize('view', $job);
+
         $this->job = $job->load('user', 'pickupCity', 'destinationCity');
 
         $this->addGMapsData();
@@ -28,9 +33,7 @@ class ShowShowPage extends Component
 
     public function delete()
     {
-        if (!$this->job->canEdit) {
-            abort(403, 'You don\'t have permission to delete this job.');
-        }
+        $this->authorize('delete', $this->job);
 
         $job = $this->job;
         $this->job->delete();
@@ -41,9 +44,7 @@ class ShowShowPage extends Component
 
     public function approve(): void
     {
-        if (!Auth::user()->can('manage users')) {
-            abort(403, 'You don\'t have permission to approve jobs.');
-        }
+        $this->authorize('approve', $this->job);
 
         // Check if any of the game data entries are *not* approved
         if (!$this->job->pickupCity->approved || !$this->job->destinationCity->approved || !$this->job->pickupCompany->approved || !$this->job->destinationCompany->approved || !$this->job->cargo->approved) {

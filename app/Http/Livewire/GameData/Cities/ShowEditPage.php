@@ -136,13 +136,13 @@ class ShowEditPage extends Component implements HasForms
             // and change the status to incomplete if those jobs don't have any pending game data
             if ($this->city->pickupJobs->count() || $this->city->destinationJobs->count()) {
                 foreach ($this->city->pickupJobs as $job) {
-                    if (!$job->hasPendingGameData) {
+                    if (!$job->hasPendingGameData()) {
                         $job->update(['status' => JobStatus::Incomplete]);
                     }
                 }
 
                 foreach ($this->city->destinationJobs as $job) {
-                    if (!$job->hasPendingGameData) {
+                    if (!$job->hasPendingGameData()) {
                         $job->update(['status' => JobStatus::Incomplete]);
                     }
                 }
