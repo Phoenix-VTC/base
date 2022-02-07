@@ -39,9 +39,9 @@ class JobPolicy
      * Determine whether the user can create models.
      *
      * @param User $user
-     * @return Response|bool
+     * @return Response
      */
-    public function create(User $user)
+    public function create(User $user): Response
     {
         return Response::allow();
     }
@@ -110,9 +110,9 @@ class JobPolicy
      *
      * @param User $user
      * @param Job $job
-     * @return Response|bool
+     * @return Response
      */
-    public function delete(User $user, Job $job)
+    public function delete(User $user, Job $job): Response
     {
         // Allow if the user can manage users
         if ($user->can('manage users')) {
