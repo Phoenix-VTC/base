@@ -15,7 +15,7 @@
 
     <div class="ml-3">
         <span class="relative z-0 inline-flex shadow-sm rounded-md">
-            <a href="{{ route('user-management.driver-inactivity.index', ['month' => Carbon\Carbon::create()->month($month)->startOfMonth()->subMonth()->format('m'), 'orderBy' => $orderBy]) }}"
+            <a href="{{ route('user-management.driver-inactivity.index', ['month' => Carbon\Carbon::create()->month($month)->startOfMonth()->subMonth()->format('m')]) }}"
                class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
                 <span class="sr-only">Previous Month</span>
                 <x-heroicon-s-chevron-left class="h-5 w-5"/>
@@ -24,7 +24,7 @@
                 class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
                 {{ Carbon\Carbon::create()->month($month)->startOfMonth()->format('M') }}
             </span>
-            <a href="{{ route('user-management.driver-inactivity.index', ['month' => Carbon\Carbon::create()->month($month)->startOfMonth()->addMonth()->format('m'), 'orderBy' => $orderBy]) }}"
+            <a href="{{ route('user-management.driver-inactivity.index', ['month' => Carbon\Carbon::create()->month($month)->startOfMonth()->addMonth()->format('m')]) }}"
                disabled
                class="-ml-px relative inline-flex items-center px-4 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
                 <span class="sr-only">Next Month</span>

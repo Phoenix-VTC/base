@@ -43,3 +43,9 @@ function something()
 {
     // ..
 }
+
+uses()->group('driverApplication')->in('Feature/DriverApplication');
+uses()->group('recruitment')->in('Feature/Recruitment');
+uses()->group('userManagement')->in('Feature/UserManagement');
+uses()->group('jobs')->in('Feature/Jobs');
+uses()->group('auth')->in('Feature/Auth');

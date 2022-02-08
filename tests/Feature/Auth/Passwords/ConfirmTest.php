@@ -1,76 +1,62 @@
 <?php
 
-namespace Tests\Feature\Auth\Passwords;
-
+use App\Http\Livewire\Auth\Passwords\Confirm;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Route;
-use Livewire\Livewire;
-use Tests\TestCase;
 
-class ConfirmTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+it('shows the password confirm page', function () {
+    $user = User::factory()->create();
+    $this->be($user);
 
-        Route::get('/must-be-confirmed', function () {
-            return 'You must be confirmed to see this page.';
-        })->middleware(['web', 'password.confirm']);
-    }
+    $this->get(route('password.confirm'))
+        ->assertSuccessful()
+        ->assertSeeLivewire(Confirm::class)
+        ->assertSeeText('Confirm your password');
+});
 
-    /** @test */
-    public function a_user_must_confirm_their_password_before_visiting_a_protected_page()
-    {
-        $user = User::factory()->create();
-        $this->be($user);
+it('it prompts a user for their password before visiting a protected page', function () {
+    $user = User::factory()->create();
+    $this->be($user);
 
-        $this->get('/must-be-confirmed')
-            ->assertRedirect(route('password.confirm'));
+    $this->get(route('settings.security'))
+        ->assertRedirect(route('password.confirm'));
 
-        $this->followingRedirects()
-            ->get('/must-be-confirmed')
-            ->assertSeeLivewire('auth.passwords.confirm');
-    }
+    $this->followingRedirects()
+        ->get(route('settings.security'))
+        ->assertSeeLivewire(Confirm::class);
+});
 
-    /** @test */
-    public function a_user_must_enter_a_password_to_confirm_it()
-    {
-        Livewire::test('auth.passwords.confirm')
-            ->call('confirm')
-            ->assertHasErrors(['password' => 'required']);
-    }
+test('a user must enter a password to confirm it', function () {
+    Livewire::test(Confirm::class)
+        ->call('confirm')
+        ->assertHasErrors(['password' => 'required']);
+});
 
-    /** @test */
-    public function a_user_must_enter_their_own_password_to_confirm_it()
-    {
-        $user = User::factory()->create([
-            'password' => Hash::make('password'),
-        ]);
+test('a user must enter their own password to confirm it', function () {
+    User::factory()->create([
+        'password' => Hash::make('password'),
+    ]);
 
-        Livewire::test('auth.passwords.confirm')
-            ->set('password', 'not-password')
-            ->call('confirm')
-            ->assertHasErrors(['password' => 'password']);
-    }
+    Livewire::test('auth.passwords.confirm')
+        ->set('password', 'not-password')
+        ->call('confirm')
+        ->assertHasErrors(['password' => 'password']);
+});
 
-    /** @test */
-    public function a_user_who_confirms_their_password_will_get_redirected()
-    {
-        $user = User::factory()->create([
-            'password' => Hash::make('password'),
-        ]);
+test('a user who confirms their password gets redirected', function () {
+    $user = User::factory()->create([
+        'password' => Hash::make('password'),
+    ]);
 
-        $this->be($user);
+    $this->be($user);
 
-        $this->withSession(['url.intended' => '/must-be-confirmed']);
+    $this->withSession(['url.intended' => route('settings.security')]);
 
-        Livewire::test('auth.passwords.confirm')
-            ->set('password', 'password')
-            ->call('confirm')
-            ->assertRedirect('/must-be-confirmed');
-    }
-}
+    Livewire::test(Confirm::class)
+        ->set('password', 'password')
+        ->call('confirm')
+        ->assertRedirect(route('settings.security'))
+        ->assertSessionHasNoErrors();
+});
