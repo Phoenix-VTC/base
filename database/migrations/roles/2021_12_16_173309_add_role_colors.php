@@ -5,8 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\Models\Role;
 
-return new class extends Migration
-{
+return new class extends Migration {
     private array $roleColors = [
         'super admin' => ['#f3e8ff', '#6b21a8'],
         'management' => ['#df012f', '#ffffff'],
