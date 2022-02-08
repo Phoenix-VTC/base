@@ -24,7 +24,7 @@ class Confirm extends Component
         }
 
         $this->validate([
-            'password' => ['bail', 'required', 'string', 'password'],
+            'password' => ['bail', 'required', 'string', 'current_password'],
         ]);
 
         session()->put('auth.password_confirmed_at', time());
