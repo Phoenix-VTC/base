@@ -16,13 +16,15 @@ class ShowWelcomeForm extends Component
     use WithRateLimiting;
 
     public string $token;
+
     public User $user;
 
     public $password = '';
+
     public $password_confirmation = '';
 
     protected $rules = [
-        'password' => ['bail', 'required', 'string', 'min:8', 'confirmed']
+        'password' => ['bail', 'required', 'string', 'min:8', 'confirmed'],
     ];
 
     public function mount($token): void

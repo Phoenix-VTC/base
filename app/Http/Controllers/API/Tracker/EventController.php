@@ -70,7 +70,7 @@ class EventController extends Controller
             return response()->json($event);
         } catch (ModelNotFoundException) {
             return response()->json([
-                'error' => 'No upcoming events found.'
+                'error' => 'No upcoming events found.',
             ], 404);
         }
     }

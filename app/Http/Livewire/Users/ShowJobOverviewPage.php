@@ -27,7 +27,7 @@ class ShowJobOverviewPage extends Component
                     'cargo',
                 ])
                 ->orderByDesc('created_at')
-                ->paginate(15)
+                ->paginate(15),
         ])->extends('layouts.app');
     }
 }

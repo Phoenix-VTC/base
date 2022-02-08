@@ -27,7 +27,7 @@ class CheckDriverBans implements ShouldQueue
     {
         $this->sendDiscordStartedNotification();
 
-        $response = Http::get('https://api.truckersmp.com/v2/vtc/' . self::VTC_ID . '/members/banned');
+        $response = Http::get('https://api.truckersmp.com/v2/vtc/'.self::VTC_ID.'/members/banned');
 
         // Return if the request failed
         if ($response->failed()) {
@@ -64,37 +64,37 @@ class CheckDriverBans implements ShouldQueue
         Http::post(config('services.discord.webhooks.human-resources'), [
             'embeds' => [
                 [
-                    'title' => $user->username . ' is currently banned on TruckersMP',
+                    'title' => $user->username.' is currently banned on TruckersMP',
                     'description' => $banReason ?? 'Can\'t find the reason, ban history is private.',
                     'color' => 14429954, // #DC2F02
                     'fields' => [
                         [
                             'name' => 'PhoenixBase Profile',
-                            'value' => '[' . $user->username . '](' . route('users.profile', $user) . ')',
-                            'inline' => true
+                            'value' => '['.$user->username.']('.route('users.profile', $user).')',
+                            'inline' => true,
                         ],
                         [
                             'name' => 'TruckersMP Profile',
-                            'value' => '[' . $tmpData['name'] . '](https://truckersmp.com/user/' . $tmpData['id'] . ')',
-                            'inline' => true
+                            'value' => '['.$tmpData['name'].'](https://truckersmp.com/user/'.$tmpData['id'].')',
+                            'inline' => true,
                         ],
                         [
                             'name' => 'Banned Until',
                             'value' => $tmpData['bannedUntil'] ?: 'Permanent',
-                            'inline' => false
+                            'inline' => false,
                         ],
                         [
                             'name' => 'Active Bans',
                             'value' => $tmpData['bansCount'],
-                            'inline' => true
+                            'inline' => true,
                         ],
                     ],
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => Carbon::now(),
-                ]
+                ],
             ],
         ]);
     }
@@ -108,10 +108,10 @@ class CheckDriverBans implements ShouldQueue
                     'color' => 5793266, // #5865F2
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => Carbon::now(),
-                ]
+                ],
             ],
         ]);
     }
@@ -122,14 +122,14 @@ class CheckDriverBans implements ShouldQueue
             'embeds' => [
                 [
                     'title' => 'Daily ban check finished',
-                    'description' => 'Checked ' . User::count() . ' users.',
+                    'description' => 'Checked '.User::count().' users.',
                     'color' => 5763719, // #57F287
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => Carbon::now(),
-                ]
+                ],
             ],
         ]);
     }

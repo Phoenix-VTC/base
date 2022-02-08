@@ -79,7 +79,7 @@ class Cargo extends Model
     public function scopeSearch($query, string $term): Builder
     {
         return $query->where(
-            fn($query) => $query->where('name', 'like', '%' . $term . '%')
+            fn ($query) => $query->where('name', 'like', '%'.$term.'%')
         );
     }
 

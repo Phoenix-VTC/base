@@ -19,8 +19,11 @@ class ShowCreatePage extends Component implements HasForms
 
     // Form fields
     public $title;
+
     public $screenshot = '';
+
     public $description;
+
     public $location;
 
     public function mount()
@@ -31,7 +34,7 @@ class ShowCreatePage extends Component implements HasForms
             session()->flash('alert', [
                 'type' => 'danger',
                 'title' => 'You have already submitted a screenshot in the past 24 hours!',
-                'message' => 'A new screenshot can be submitted after <b>' . $screenshot->created_at->add('1 day')->toDayDateTimeString() . ' GMT</b>'
+                'message' => 'A new screenshot can be submitted after <b>'.$screenshot->created_at->add('1 day')->toDayDateTimeString().' GMT</b>',
             ]);
 
             return redirect()->route('screenshot-hub.index');
@@ -54,7 +57,7 @@ class ShowCreatePage extends Component implements HasForms
                             Forms\Components\TextInput::make('title')
                                 ->required()
                                 ->maxLength(30)
-                                ->placeholder('My awesome truck')
+                                ->placeholder('My awesome truck'),
                         ]),
 
                     Forms\Components\Grid::make()
@@ -67,7 +70,7 @@ class ShowCreatePage extends Component implements HasForms
                                 ->label('Screenshot')
                                 ->acceptedFileTypes(['image/jpeg', 'image/png'])
                                 ->hint('Max 10MB')
-                                ->maxSize(10240)
+                                ->maxSize(10240),
                         ]),
 
                     Forms\Components\Textarea::make('description')
@@ -85,7 +88,7 @@ class ShowCreatePage extends Component implements HasForms
                             Forms\Components\TextInput::make('location')
                                 ->maxLength(30)
                                 ->hint('Where the picture was taken, optional')
-                                ->placeholder('Amsterdam, the Netherlands')
+                                ->placeholder('Amsterdam, the Netherlands'),
                         ]),
                 ]),
         ];

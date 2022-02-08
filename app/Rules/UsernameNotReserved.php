@@ -33,7 +33,7 @@ class UsernameNotReserved implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        return !in_array($this->stripValue($value), $this->reserved_usernames, false);
+        return ! in_array($this->stripValue($value), $this->reserved_usernames, false);
     }
 
     /**
@@ -54,7 +54,7 @@ class UsernameNotReserved implements Rule
      */
     private function stripValue(string $value): string
     {
-        $stripped_value = preg_replace("/[^a-zA-Z0-9]/", "", $value);
+        $stripped_value = preg_replace('/[^a-zA-Z0-9]/', '', $value);
 
         return strtolower($stripped_value);
     }

@@ -16,14 +16,23 @@ class ShowCreatePage extends Component
     use AuthorizesRequests;
 
     public string $base_or_recruitment_id = '';
+
     public ?Application $driverApplication = null;
+
     public ?User $user = null;
+
     public array $usernames = [];
+
     public array $emails = [];
+
     public array $discord_ids = [];
+
     public array $truckersmp_ids = [];
+
     public array $steam_ids = [];
+
     public array $base_ids = [];
+
     public string $reason = '';
 
     public function rules(): array
@@ -68,7 +77,7 @@ class ShowCreatePage extends Component
                 'discord_ids',
                 'truckersmp_ids',
                 'steam_ids',
-                'base_ids'
+                'base_ids',
             ]);
 
             $this->validateBaseOrRecruitmentId();
@@ -90,22 +99,22 @@ class ShowCreatePage extends Component
             // If the blocklist entry is a chosen user
             $user = $this->user;
 
-            $blocklist->usernames = [(string)$user->username];
-            $blocklist->emails = [(string)$user->email];
+            $blocklist->usernames = [(string) $user->username];
+            $blocklist->emails = [(string) $user->email];
             if ($user->discord) {
-                $blocklist->discord_ids = [(string)$user->discord['id']];
+                $blocklist->discord_ids = [(string) $user->discord['id']];
             }
-            $blocklist->truckersmp_ids = [(string)$user->truckersmp_id];
-            $blocklist->steam_ids = [(string)$user->steam_id];
-            $blocklist->base_ids = [(string)$user->id];
+            $blocklist->truckersmp_ids = [(string) $user->truckersmp_id];
+            $blocklist->steam_ids = [(string) $user->steam_id];
+            $blocklist->base_ids = [(string) $user->id];
         } elseif ($this->base_or_recruitment_id && $this->driverApplication) {
             // If the blocklist entry is a chosen driver application
             $driverApplication = $this->driverApplication;
 
-            $blocklist->usernames = [(string)$driverApplication->username];
-            $blocklist->emails = [(string)$driverApplication->email];
-            $blocklist->truckersmp_ids = [(string)$driverApplication->truckersmp_id];
-            $blocklist->steam_ids = [(string)$driverApplication->steam_data['steamID64']];
+            $blocklist->usernames = [(string) $driverApplication->username];
+            $blocklist->emails = [(string) $driverApplication->email];
+            $blocklist->truckersmp_ids = [(string) $driverApplication->truckersmp_id];
+            $blocklist->steam_ids = [(string) $driverApplication->steam_data['steamID64']];
         } else {
             // If the blocklist entry is manual
             $blocklist->usernames = $validatedData['usernames'];
@@ -140,7 +149,7 @@ class ShowCreatePage extends Component
             }
 
             // Check if application is completed
-            if (!$this->driverApplication->is_completed) {
+            if (! $this->driverApplication->is_completed) {
                 $this->addError('base_or_recruitment_id', 'The chosen driver application is not completed yet. If you want to blocklist them, do this via the recruitment system instead.');
             }
 
@@ -158,7 +167,7 @@ class ShowCreatePage extends Component
             }
 
             // Check if user is deleted
-            if (!$this->user->deleted_at) {
+            if (! $this->user->deleted_at) {
                 $this->addError('base_or_recruitment_id', 'The chosen user is not deleted yet, therefore you cannot blocklist them.');
             }
 

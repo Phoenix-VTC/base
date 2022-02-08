@@ -86,7 +86,7 @@ class UpdateDiscordRoles implements ShouldQueue
     private function modifyUserDiscordRole(User $user, bool $remove = false): void
     {
         // Return if the user doesn't have a Discord account linked
-        if (!$user->discord) {
+        if (! $user->discord) {
             return;
         }
 
@@ -94,7 +94,7 @@ class UpdateDiscordRoles implements ShouldQueue
         $discord = new DiscordClient(['token' => config('services.discord.token')]);
 
         // Get and collect the guild roles
-        $guildRoles = $discord->guild->getGuildRoles(['guild.id' => (int)config('services.discord.server-id')]);
+        $guildRoles = $discord->guild->getGuildRoles(['guild.id' => (int) config('services.discord.server-id')]);
         $guildRoles = collect($guildRoles);
 
         // Get the correct LOA role name
@@ -104,7 +104,7 @@ class UpdateDiscordRoles implements ShouldQueue
         $role = $guildRoles->where('name', $discordRoleName)->first();
 
         // Return if the role doesn't exist
-        if (!$role) {
+        if (! $role) {
             return;
         }
 
@@ -112,16 +112,16 @@ class UpdateDiscordRoles implements ShouldQueue
         if ($remove) {
             // Remove the LOA role from the user
             $discord->guild->removeGuildMemberRole([
-                'guild.id' => (int)config('services.discord.server-id'),
-                'user.id' => (int)$user->discord['id'],
-                'role.id' => $role->id
+                'guild.id' => (int) config('services.discord.server-id'),
+                'user.id' => (int) $user->discord['id'],
+                'role.id' => $role->id,
             ]);
         } else {
             // Add the LOA role to the user
             $discord->guild->addGuildMemberRole([
-                'guild.id' => (int)config('services.discord.server-id'),
-                'user.id' => (int)$user->discord['id'],
-                'role.id' => $role->id
+                'guild.id' => (int) config('services.discord.server-id'),
+                'user.id' => (int) $user->discord['id'],
+                'role.id' => $role->id,
             ]);
         }
 
@@ -161,16 +161,16 @@ class UpdateDiscordRoles implements ShouldQueue
         Http::post(config('services.discord.webhooks.human-resources'), [
             'embeds' => [
                 [
-                    'title' => "{$user->username}'s vacation request has " . ($roleRemoved ? 'ended' : 'started'),
+                    'title' => "{$user->username}'s vacation request has ".($roleRemoved ? 'ended' : 'started'),
                     'url' => route('users.profile', $user->slug),
                     'description' => $roleRemoved ? "Their <@&{$roleId}> role has been removed." : "They have been given the <@&{$roleId}> role.",
                     'color' => $roleRemoved ? 15548997 : 5763719,
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => now(),
-                ]
+                ],
             ],
         ]);
     }

@@ -7,7 +7,7 @@ use Spatie\Permission\Models\Role;
 
 class AddRoleColors extends Migration
 {
-     private array $roleColors = [
+    private array $roleColors = [
         'super admin' => ['#f3e8ff', '#6b21a8'],
         'management' => ['#df012f', '#ffffff'],
         'human resources' => ['#a30000', '#ffffff'],

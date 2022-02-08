@@ -12,12 +12,19 @@ class ShowEditPage extends Component
     use AuthorizesRequests;
 
     public Blocklist $blocklist;
+
     public ?array $usernames = [];
+
     public ?array $emails = [];
+
     public ?array $discord_ids = [];
+
     public ?array $truckersmp_ids = [];
+
     public ?array $steam_ids = [];
+
     public ?array $base_ids = [];
+
     public string $reason = '';
 
     public function rules(): array
@@ -40,7 +47,8 @@ class ShowEditPage extends Component
         'base_ids' => 'PhoenixBase IDs',
     ];
 
-    public function mount() {
+    public function mount()
+    {
         $this->authorize('update', $this->blocklist);
 
         $this->fill([

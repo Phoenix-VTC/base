@@ -7,7 +7,7 @@ use App\Repositories\EloquentRepositoryInterface;
 class BaseRepository implements EloquentRepositoryInterface
 {
     /**
-     * @var Object
+     * @var object
      */
     protected Object $model;
 

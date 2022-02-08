@@ -8,8 +8,8 @@ use App\Models\Application;
 use App\Models\Blocklist;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use LivewireUI\Modal\ModalComponent;
 use Illuminate\Support\Facades\Mail;
+use LivewireUI\Modal\ModalComponent;
 
 class ShowBlocklistModal extends ModalComponent
 {
@@ -55,16 +55,16 @@ class ShowBlocklistModal extends ModalComponent
 
         Mail::to([[
             'email' => $this->application->email,
-            'name' => $this->application->username
+            'name' => $this->application->username,
         ]])->send(new ApplicationDenied($this->application));
 
         $blocklist = Blocklist::query()->create([
-            'usernames' => [(string)$this->application->username],
-            'emails' => [(string)$this->application->email],
-            'truckersmp_ids' => [(string)$this->application->truckersmp_id],
-            'steam_ids' => [(string)$this->application->steam_data['steamID64']],
+            'usernames' => [(string) $this->application->username],
+            'emails' => [(string) $this->application->email],
+            'truckersmp_ids' => [(string) $this->application->truckersmp_id],
+            'steam_ids' => [(string) $this->application->steam_data['steamID64']],
 
-            'reason' => $validatedData['reason']
+            'reason' => $validatedData['reason'],
         ]);
 
         event(new NewBlocklistEntry($blocklist));

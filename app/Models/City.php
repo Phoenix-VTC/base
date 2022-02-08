@@ -92,7 +92,7 @@ class City extends Model
     public function scopeSearch($query, string $term): Builder
     {
         return $query->where(
-            fn($query) => $query->where('real_name', 'like', '%' . $term . '%')
+            fn ($query) => $query->where('real_name', 'like', '%'.$term.'%')
         );
     }
 
@@ -101,7 +101,7 @@ class City extends Model
         return $this->search($term)
             ->limit(10)
             ->get()
-            ->mapWithKeys(function (City $city) {
+            ->mapWithKeys(function (self $city) {
                 return [
                     $city->id => $city->getDropdownName(),
                 ];
@@ -111,7 +111,7 @@ class City extends Model
     public function getDropdownName()
     {
         if ($this->mod) {
-            return $this->real_name . ' (' . $this->mod . ')';
+            return $this->real_name.' ('.$this->mod.')';
         }
 
         return $this->real_name;

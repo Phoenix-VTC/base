@@ -1,8 +1,7 @@
 <?php
 
+use App\Http\Livewire\DriverApplication\ShowAuthPage;
 use function Pest\Livewire\livewire;
-
-use \App\Http\Livewire\DriverApplication\ShowAuthPage;
 
 it('has authenticate page', function () {
     $this->get(route('driver-application.authenticate'))

@@ -8,9 +8,9 @@ use App\Events\EmailChanged;
 use App\Models\User;
 use App\Rules\IncludesLetters;
 use App\Rules\UsernameNotReserved;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -20,14 +20,22 @@ class ShowAccountPage extends Component
     use WithFileUploads;
 
     public User $user;
+
     // Form fields
     public $username = '';
+
     public string $slug = '';
+
     public $email = '';
+
     public string|int|null $steam_id = '';
+
     public string|int|null $truckersmp_id = '';
+
     public ?string $date_of_birth = '';
+
     public $profile_picture;
+
     public $profile_banner;
 
     public function rules(): array
@@ -58,7 +66,8 @@ class ShowAccountPage extends Component
         return view('livewire.settings.account-page')->extends('layouts.app');
     }
 
-    public function updatedSlug(string $slug) {
+    public function updatedSlug(string $slug)
+    {
         $this->slug = Str::slug($slug);
 
         if (! $this->slug) {
@@ -72,14 +81,14 @@ class ShowAccountPage extends Component
 
         if ($this->profile_picture) {
             Storage::disk('scaleway')->delete($this->user->profile_picture_path);
-            $profile_picture = $this->profile_picture->storePublicly('user/' . $this->user->id, 'scaleway');
+            $profile_picture = $this->profile_picture->storePublicly('user/'.$this->user->id, 'scaleway');
 
             $this->user->unlock(new UserSetAProfilePicture());
         }
 
         if ($this->profile_banner) {
             Storage::disk('scaleway')->delete($this->user->profile_banner_path);
-            $profile_banner = $this->profile_banner->storePublicly('user/' . $this->user->id, 'scaleway');
+            $profile_banner = $this->profile_banner->storePublicly('user/'.$this->user->id, 'scaleway');
 
             $this->user->unlock(new UserSetAProfileBanner());
         }

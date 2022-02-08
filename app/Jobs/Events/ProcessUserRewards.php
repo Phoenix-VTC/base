@@ -26,6 +26,7 @@ class ProcessUserRewards implements ShouldQueue
     use SerializesModels;
 
     public Event $event;
+
     public Collection $attendees;
 
     /**

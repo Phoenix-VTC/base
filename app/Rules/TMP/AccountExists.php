@@ -2,9 +2,9 @@
 
 namespace App\Rules\TMP;
 
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Contracts\Validation\Rule;
 
 class AccountExists implements Rule
 {
@@ -25,7 +25,7 @@ class AccountExists implements Rule
             ->throw()
             ->json();
 
-        return !$this->response['error'];
+        return ! $this->response['error'];
     }
 
     /**

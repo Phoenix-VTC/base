@@ -38,31 +38,31 @@ class BlocklistFactory extends Factory
         ];
 
         $discord_ids = [
-            (string)random_int(100000000000000000, 999999999999999999),
-            (string)random_int(100000000000000000, 999999999999999999),
-            (string)random_int(100000000000000000, 999999999999999999),
-            (string)random_int(100000000000000000, 999999999999999999),
+            (string) random_int(100000000000000000, 999999999999999999),
+            (string) random_int(100000000000000000, 999999999999999999),
+            (string) random_int(100000000000000000, 999999999999999999),
+            (string) random_int(100000000000000000, 999999999999999999),
         ];
 
         $truckersmp_ids = [
-            (string)random_int(1000, 4000000),
-            (string)random_int(1000, 4000000),
-            (string)random_int(1000, 4000000),
-            (string)random_int(1000, 4000000),
+            (string) random_int(1000, 4000000),
+            (string) random_int(1000, 4000000),
+            (string) random_int(1000, 4000000),
+            (string) random_int(1000, 4000000),
         ];
 
         $steam_ids = [
-            (string)random_int(10000000000000000, 99999999999999999),
-            (string)random_int(10000000000000000, 99999999999999999),
-            (string)random_int(10000000000000000, 99999999999999999),
-            (string)random_int(10000000000000000, 99999999999999999),
+            (string) random_int(10000000000000000, 99999999999999999),
+            (string) random_int(10000000000000000, 99999999999999999),
+            (string) random_int(10000000000000000, 99999999999999999),
+            (string) random_int(10000000000000000, 99999999999999999),
         ];
 
         $base_ids = [
-            (string)random_int(1, 5000),
-            (string)random_int(1, 5000),
-            (string)random_int(1, 5000),
-            (string)random_int(1, 5000),
+            (string) random_int(1, 5000),
+            (string) random_int(1, 5000),
+            (string) random_int(1, 5000),
+            (string) random_int(1, 5000),
         ];
 
         return [

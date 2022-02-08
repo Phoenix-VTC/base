@@ -269,17 +269,29 @@ class ShowFormPage extends Component
     ];
 
     public $username = '';
+
     public $discord_username = '';
+
     public $email = '';
+
     public string $date_of_birth = '';
+
     public string $country = '';
+
     public string $another_vtc = '';
+
     public string $games = '';
+
     public string $fluent = '';
+
     public string $about = '';
+
     public string $why_join = '';
+
     public string $monthly_truckersmp_play_time = '';
+
     public string $terms = '';
+
     public string $find_us = '';
 
     public function rules(): array
@@ -349,7 +361,7 @@ class ShowFormPage extends Component
 
         Mail::to([[
             'email' => $application->email,
-            'name' => $application->username
+            'name' => $application->username,
         ]])->send(new ApplicationReceived($application));
 
         $application->notify(new NewDriverApplication($application));

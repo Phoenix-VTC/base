@@ -24,7 +24,7 @@ class UniqueInUsers implements Rule
             ->throw()
             ->json();
 
-        return !(bool)User::where('steam_id', $response['response']['steamID64'])->orWhere('truckersmp_id', $response['response']['id'])->count();
+        return ! (bool) User::where('steam_id', $response['response']['steamID64'])->orWhere('truckersmp_id', $response['response']['id'])->count();
     }
 
     /**

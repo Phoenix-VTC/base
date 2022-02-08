@@ -12,12 +12,13 @@ use Livewire\Component;
 class ShowAttendeeManagement extends Component
 {
     public Event $event;
+
     public string $user_id = '';
 
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'string', 'exists:users,id']
+            'user_id' => ['required', 'string', 'exists:users,id'],
         ];
     }
 
@@ -41,14 +42,14 @@ class ShowAttendeeManagement extends Component
 
         $attendee->save();
 
-        session()->now('alert', ['type' => 'success', 'message' => 'User <b>' . $attendee->user->username . '</b> successfully marked as attending.']);
+        session()->now('alert', ['type' => 'success', 'message' => 'User <b>'.$attendee->user->username.'</b> successfully marked as attending.']);
     }
 
     public function removeAttendance(EventAttendee $attendee): void
     {
         $attendee->delete();
 
-        session()->now('alert', ['type' => 'success', 'message' => 'User <b>' . $attendee->user->username . '</b> successfully removed from event attendance.']);
+        session()->now('alert', ['type' => 'success', 'message' => 'User <b>'.$attendee->user->username.'</b> successfully removed from event attendance.']);
     }
 
     public function addAttendee(): void
@@ -59,19 +60,19 @@ class ShowAttendeeManagement extends Component
 
         // Check if the user is already marked as attending
         if ($this->event->attendees()->where('user_id', $user->id)->exists()) {
-            session()->now('alert', ['type' => 'danger', 'message' => 'User <b>' . $user->username . '</b> is already marked as attending.']);
+            session()->now('alert', ['type' => 'danger', 'message' => 'User <b>'.$user->username.'</b> is already marked as attending.']);
 
             return;
         }
 
         $this->event->attendees()->create([
             'user_id' => $user->id,
-            'attending' => Attending::Yes
+            'attending' => Attending::Yes,
         ]);
 
         unset($this->user_id);
 
-        session()->flash('alert', ['type' => 'success', 'message' => 'User <b>' . $user->username . '</b> successfully marked as attending.']);
+        session()->flash('alert', ['type' => 'success', 'message' => 'User <b>'.$user->username.'</b> successfully marked as attending.']);
     }
 
     public function hydrate(): void

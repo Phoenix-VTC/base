@@ -22,7 +22,9 @@ class ShowApplication extends Component
     use AuthorizesRequests;
 
     public Application $application;
+
     public Collection $previousApplications;
+
     public string $comment = '';
 
     protected array $rules = [
@@ -50,7 +52,7 @@ class ShowApplication extends Component
 
         $this->forgetPendingApplicationCount();
 
-        $this->sendDiscordWebhook('Application Claimed', '**' . Auth::user()->username . '** claimed **' . $this->application->username . '\'s** application.', 14429954);
+        $this->sendDiscordWebhook('Application Claimed', '**'.Auth::user()->username.'** claimed **'.$this->application->username.'\'s** application.', 14429954);
 
         session()->now('alert', ['type' => 'info', 'message' => 'Application claimed']);
     }
@@ -64,7 +66,7 @@ class ShowApplication extends Component
 
         $this->forgetPendingApplicationCount();
 
-        $this->sendDiscordWebhook('Application Unclaimed', '**' . Auth::user()->username . '** unclaimed **' . $this->application->username . '\'s** application.', 14429954);
+        $this->sendDiscordWebhook('Application Unclaimed', '**'.Auth::user()->username.'** unclaimed **'.$this->application->username.'\'s** application.', 14429954);
 
         session()->now('alert', ['type' => 'info', 'message' => 'Application unclaimed']);
     }
@@ -96,15 +98,15 @@ class ShowApplication extends Component
 
         $comment->delete();
 
-        $this->sendDiscordWebhook('Application Comment Deleted', 'By **' . Auth::user()->username . '**', 14429954);
+        $this->sendDiscordWebhook('Application Comment Deleted', 'By **'.Auth::user()->username.'**', 14429954);
 
         session()->now('alert', ['type' => 'info', 'message' => 'Comment deleted!']);
     }
 
     public function clearTMPData(): void
     {
-        \Cache::forget($this->application->truckersmp_id . "_truckersmp_data");
-        \Cache::forget($this->application->truckersmp_id . "_truckersmp_ban_history");
+        \Cache::forget($this->application->truckersmp_id.'_truckersmp_data');
+        \Cache::forget($this->application->truckersmp_id.'_truckersmp_ban_history');
 
         session()->now('alert', ['type' => 'success', 'message' => 'TruckersMP data successfully refreshed!']);
     }
@@ -132,10 +134,10 @@ class ShowApplication extends Component
 
         Mail::to([[
             'email' => $this->application->email,
-            'name' => $this->application->username
+            'name' => $this->application->username,
         ]])->send(new ApplicationDenied($this->application));
 
-        $this->sendDiscordWebhook('Application Denied', 'By **' . Auth::user()->username . '**', 15548997);
+        $this->sendDiscordWebhook('Application Denied', 'By **'.Auth::user()->username.'**', 15548997);
 
         session()->now('alert', ['type' => 'success', 'message' => 'Application successfully <b>denied</b>!']);
     }
@@ -144,7 +146,7 @@ class ShowApplication extends Component
     {
         $this->authorize('update', $this->application);
 
-        if (!in_array($status, ['pending', 'incomplete', 'awaiting_response', 'investigation'])) {
+        if (! in_array($status, ['pending', 'incomplete', 'awaiting_response', 'investigation'])) {
             session()->now('alert', ['type' => 'danger', 'message' => 'Chosen status is invalid.']);
 
             return;
@@ -153,9 +155,9 @@ class ShowApplication extends Component
         $this->application->status = $status;
         $this->application->save();
 
-        $this->sendDiscordWebhook('Application Status Changed: **' . ucwords(str_replace("_", " ", $status)) . '**', 'By **' . Auth::user()->username . '**', 5793266);
+        $this->sendDiscordWebhook('Application Status Changed: **'.ucwords(str_replace('_', ' ', $status)).'**', 'By **'.Auth::user()->username.'**', 5793266);
 
-        session()->now('alert', ['type' => 'info', 'message' => 'Application status changed to <b>' . str_replace("_", " ", $status) . '</b>']);
+        session()->now('alert', ['type' => 'info', 'message' => 'Application status changed to <b>'.str_replace('_', ' ', $status).'</b>']);
     }
 
     public function hydrate(): void
@@ -174,10 +176,10 @@ class ShowApplication extends Component
                     'color' => $color,
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => Carbon::now(),
-                ]
+                ],
             ],
         ]);
     }

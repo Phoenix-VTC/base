@@ -57,8 +57,7 @@ it('shows the user\'s jobs', function () {
         ->assertSeeText(ucwords($job->pickupCity->real_name))
         ->assertSeeText(ucwords($job->pickupCompany->name))
         ->assertSeeText(ucwords($job->destinationCity->real_name))
-        ->assertSeeText(ucwords($job->destinationCompany->name))
-    ;
+        ->assertSeeText(ucwords($job->destinationCompany->name));
 });
 
 it('doesn\'t show another user\'s jobs', function () {
@@ -90,11 +89,10 @@ it('doesn\'t show another user\'s jobs', function () {
         ->assertDontSeeText(ucwords($job->pickupCity->real_name))
         ->assertDontSeeText(ucwords($job->pickupCompany->name))
         ->assertDontSeeText(ucwords($job->destinationCity->real_name))
-        ->assertDontSeeText(ucwords($job->destinationCompany->name))
-    ;
+        ->assertDontSeeText(ucwords($job->destinationCompany->name));
 });
 
-it('shows the user\'s wallet balance', function() {
+it('shows the user\'s wallet balance', function () {
     $user = User::factory()->create()->assignRole('driver');
     $this->be($user);
 

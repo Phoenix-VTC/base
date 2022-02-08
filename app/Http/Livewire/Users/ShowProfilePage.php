@@ -13,13 +13,14 @@ class ShowProfilePage extends Component
     use AuthorizesRequests;
 
     public User $user;
+
     public $recent_jobs;
 
     public function mount(User $user): void
     {
         $this->user = $user;
 
-        if ($this->user->deleted_at && !Auth::user()->can('manage users')) {
+        if ($this->user->deleted_at && ! Auth::user()->can('manage users')) {
             abort(404);
         }
 
@@ -31,7 +32,7 @@ class ShowProfilePage extends Component
                 'application',
                 'vacation_requests',
                 'wallets',
-                'modelSettings'
+                'modelSettings',
             ])->get();
         } else {
             $this->user::query()->with([
@@ -59,7 +60,7 @@ class ShowProfilePage extends Component
             session()->now('alert', [
                 'type' => 'warning',
                 'title' => 'Heads-up!',
-                'message' => 'You\'re currently viewing the profile of a deleted user. This is a staff-only action.<br><br>Do <b>not</b> restore users unless given permission from Management.'
+                'message' => 'You\'re currently viewing the profile of a deleted user. This is a staff-only action.<br><br>Do <b>not</b> restore users unless given permission from Management.',
             ]);
         }
 

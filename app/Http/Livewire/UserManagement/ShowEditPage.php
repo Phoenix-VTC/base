@@ -25,13 +25,20 @@ class ShowEditPage extends Component implements HasForms
     use InteractsWithForms;
 
     public User $user;
+
     // Form fields
     public $username;
+
     public $slug;
+
     public $email;
+
     public $steam_id;
+
     public $truckersmp_id;
+
     public $date_of_birth;
+
     public $roles;
 
     public function mount(User $user): void
@@ -55,13 +62,13 @@ class ShowEditPage extends Component implements HasForms
     public function rules(): array
     {
         return [
-            'username' => ['bail', 'required', 'string', 'min:3', 'unique:users,username,' . $this->user->id, new UsernameNotReserved],
+            'username' => ['bail', 'required', 'string', 'min:3', 'unique:users,username,'.$this->user->id, new UsernameNotReserved],
             'slug' => ['bail', 'required', 'string', 'min:3', Rule::unique('users')->whereNull('deleted_at')->ignore($this->user->id), new IncludesLetters],
-            'email' => ['bail', 'required', 'string', 'email', 'unique:users,email,' . $this->user->id],
+            'email' => ['bail', 'required', 'string', 'email', 'unique:users,email,'.$this->user->id],
             'steam_id' => 'required|numeric',
             'truckersmp_id' => 'required|numeric',
-            'date_of_birth' => 'required|date|before_or_equal:' . Carbon::now()->subYears(16),
-            'user_roles' => 'required|array'
+            'date_of_birth' => 'required|date|before_or_equal:'.Carbon::now()->subYears(16),
+            'user_roles' => 'required|array',
         ];
     }
 
@@ -86,7 +93,7 @@ class ShowEditPage extends Component implements HasForms
                         ->email()
                         ->unique(table: User::class, ignorable: $this->user)
                         ->helperText(function () {
-                            return 'Account activated via the initial welcome email: **' . ($this->user->welcome_valid_until ? 'no' : 'yes') . '**';
+                            return 'Account activated via the initial welcome email: **'.($this->user->welcome_valid_until ? 'no' : 'yes').'**';
                         }),
 
                     Forms\Components\TextInput::make('slug')
@@ -102,7 +109,7 @@ class ShowEditPage extends Component implements HasForms
                         ->numeric()
                         ->helperText(function () {
                             return "<u><a href='https://steamidfinder.com/lookup/{$this->user->steam_id}' target='_blank'>**Steam account information**</a></u>"
-                                . '<br>Needs to be steamID64 (DEC)';
+                                .'<br>Needs to be steamID64 (DEC)';
                         }),
 
                     Forms\Components\TextInput::make('truckersmp_id')
@@ -120,7 +127,7 @@ class ShowEditPage extends Component implements HasForms
                         }),
 
                     Forms\Components\MultiSelect::make('roles')
-                        ->options($this->getAvailableRoles())
+                        ->options($this->getAvailableRoles()),
                 ]),
         ];
     }
@@ -157,12 +164,12 @@ class ShowEditPage extends Component implements HasForms
             ->where('level', '<=', Auth::user()->roleLevel());
 
         // If the user isn't upper staff, remove all staff roles
-        if (!Auth::user()->isUpperStaff()) {
+        if (! Auth::user()->isUpperStaff()) {
             $roles->where('is_staff', false);
         }
 
         // If the user isn't a super admin, remove all upper staff roles
-        if (!Auth::user()->isSuperAdmin()) {
+        if (! Auth::user()->isSuperAdmin()) {
             $roles->where('is_upper_staff', false);
         }
 

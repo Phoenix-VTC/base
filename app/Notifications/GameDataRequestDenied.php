@@ -44,7 +44,7 @@ class GameDataRequestDenied extends Notification
 
         return [
             'title' => 'Game data request denied',
-            'content' => 'Your game data request with the name "' . $name . '" has been denied. For any additional questions, please refer to our #member-support channel on Discord.'
+            'content' => 'Your game data request with the name "'.$name.'" has been denied. For any additional questions, please refer to our #member-support channel on Discord.',
         ];
     }
 }

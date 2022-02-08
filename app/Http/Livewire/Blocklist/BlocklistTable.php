@@ -2,14 +2,13 @@
 
 namespace App\Http\Livewire\Blocklist;
 
+use App\Models\Blocklist;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use App\Models\Blocklist;
 
 class BlocklistTable extends DataTableComponent
 {
-
     public function columns(): array
     {
         return [
@@ -39,7 +38,7 @@ class BlocklistTable extends DataTableComponent
     public function query(): Builder
     {
         return Blocklist::query()
-            ->when($this->getFilter('search'), fn($query, $term) => $query->likeSearch($term))
+            ->when($this->getFilter('search'), fn ($query, $term) => $query->likeSearch($term))
             ->latest();
     }
 

@@ -23,12 +23,19 @@ class ShowEditPage extends Component implements HasForms
     public City $city;
 
     public $real_name;
+
     public $name;
+
     public $country;
+
     public $dlc;
+
     public $mod;
+
     public $game_id;
+
     public $x;
+
     public $z;
 
     public function mount(): void
@@ -84,7 +91,7 @@ class ShowEditPage extends Component implements HasForms
                                     1 => 'Euro Truck Simulator 2',
                                     2 => 'American Truck Simulator',
                                 ])
-                                ->required()
+                                ->required(),
                         ]),
 
                     Forms\Components\TextInput::make('x')
@@ -104,10 +111,10 @@ class ShowEditPage extends Component implements HasForms
     {
         $validatedData = $this->form->getState();
 
-        if (!$this->city->approved) {
+        if (! $this->city->approved) {
             $this->forgetUnapprovedGameDataCount();
 
-            session()->flash('alert', ['type' => 'success', 'message' => 'City request <b>' . $this->city->real_name . '</b> successfully approved.']);
+            session()->flash('alert', ['type' => 'success', 'message' => 'City request <b>'.$this->city->real_name.'</b> successfully approved.']);
 
             // Only notify the user if the user still exists
             if ($this->city->requester()->exists()) {
@@ -116,7 +123,7 @@ class ShowEditPage extends Component implements HasForms
 
             $approved = true;
         } else {
-            session()->flash('alert', ['type' => 'success', 'message' => 'City <b>' . $this->city->name . '</b> successfully updated.']);
+            session()->flash('alert', ['type' => 'success', 'message' => 'City <b>'.$this->city->name.'</b> successfully updated.']);
         }
 
         $this->city->update([
@@ -136,13 +143,13 @@ class ShowEditPage extends Component implements HasForms
             // and change the status to incomplete if those jobs don't have any pending game data
             if ($this->city->pickupJobs->count() || $this->city->destinationJobs->count()) {
                 foreach ($this->city->pickupJobs as $job) {
-                    if (!$job->hasPendingGameData) {
+                    if (! $job->hasPendingGameData) {
                         $job->update(['status' => JobStatus::Incomplete]);
                     }
                 }
 
                 foreach ($this->city->destinationJobs as $job) {
-                    if (!$job->hasPendingGameData) {
+                    if (! $job->hasPendingGameData) {
                         $job->update(['status' => JobStatus::Incomplete]);
                     }
                 }
@@ -154,7 +161,7 @@ class ShowEditPage extends Component implements HasForms
 
     public function delete()
     {
-        if (!$this->city->approved) {
+        if (! $this->city->approved) {
             $this->forgetUnapprovedGameDataCount();
 
             // Only notify the user if the user still exists
@@ -162,7 +169,7 @@ class ShowEditPage extends Component implements HasForms
                 $this->city->requester->notify(new GameDataRequestDenied($this->city));
             }
 
-            session()->flash('alert', ['type' => 'success', 'message' => 'City request <b>' . $this->city->name . '</b> successfully denied.']);
+            session()->flash('alert', ['type' => 'success', 'message' => 'City request <b>'.$this->city->name.'</b> successfully denied.']);
         } else {
             session()->flash('alert', ['type' => 'success', 'message' => 'City successfully deleted!']);
         }

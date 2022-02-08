@@ -21,15 +21,15 @@ class MinHours implements Rule
         $playtime = $steamClient->player($value)
             ->GetOwnedGames()
             ->filter(function ($value) {
-                return (
+                return
                     $value->appId === 227300 || // ETS2
                     $value->appId === 270880 // ATS
-                );
+;
             })
             ->pluck('playtimeForever') // Playtime in minutes
             ->sum();
 
-        return ($playtime >= 4500); // 4500 minutes = 75 hours
+        return $playtime >= 4500; // 4500 minutes = 75 hours
     }
 
     /**

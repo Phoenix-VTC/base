@@ -22,12 +22,19 @@ use Laravel\Sanctum\PersonalAccessToken;
 class IncomingDataController extends Controller
 {
     private User $user;
+
     private City $pickupCity;
+
     private City $destinationCity;
+
     private Company $pickupCompany;
+
     private Company $destinationCompany;
+
     private Cargo $cargo;
+
     private int $gameId;
+
     private int|float $cargoDamage;
 
     /**
@@ -47,7 +54,7 @@ class IncomingDataController extends Controller
         } catch (JsonException $e) {
             return response()->json([
                 'error' => true,
-                'descriptor' => 'Invalid request content'
+                'descriptor' => 'Invalid request content',
             ], 400);
         }
 
@@ -57,7 +64,7 @@ class IncomingDataController extends Controller
             } catch (Exception $e) {
                 return response()->json([
                     'error' => true,
-                    'descriptor' => 'Invalid request content'
+                    'descriptor' => 'Invalid request content',
                 ], 400);
             }
         }
@@ -80,7 +87,7 @@ class IncomingDataController extends Controller
         }
 
         // Set the job to PendingVerification if a city/company/cargo is unapproved
-        if (!$this->pickupCity->approved || !$this->destinationCity->approved || !$this->pickupCompany->approved || !$this->destinationCompany->approved || !$this->cargo->approved) {
+        if (! $this->pickupCity->approved || ! $this->destinationCity->approved || ! $this->pickupCompany->approved || ! $this->destinationCompany->approved || ! $this->cargo->approved) {
             $job->status = JobStatus::PendingVerification;
         }
 
@@ -133,7 +140,7 @@ class IncomingDataController extends Controller
                 'tracker_job' => true,
                 'started_at' => Carbon::now(),
                 'load_damage' => $this->cargoDamage,
-                'distance' => $distance
+                'distance' => $distance,
             ]);
     }
 
@@ -145,7 +152,7 @@ class IncomingDataController extends Controller
         }
 
         // Request city data from Trucky
-        $request = Http::get('https://api.truckyapp.com/v2/map/cities/' . Game::getAbbreviationById($this->gameId));
+        $request = Http::get('https://api.truckyapp.com/v2/map/cities/'.Game::getAbbreviationById($this->gameId));
 
         // If the request returned a 200 & the response key exists
         if ($request->ok() && $request['response']) {

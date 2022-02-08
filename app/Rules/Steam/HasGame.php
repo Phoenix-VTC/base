@@ -20,10 +20,10 @@ class HasGame implements Rule
         $games = $steamClient->player($value)->GetOwnedGames();
 
         return $games->contains(function ($value) {
-            return (
+            return
                 $value->appId === 227300 || // ETS2
                 $value->appId === 270880 // ATS
-            );
+;
         });
     }
 

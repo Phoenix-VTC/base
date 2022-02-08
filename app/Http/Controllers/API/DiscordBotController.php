@@ -31,7 +31,7 @@ class DiscordBotController extends Controller
             'driver_points' => $user->totalDriverPoints(),
             'percentage_until_level_up' => $user->percentageUntilLevelUp(),
             'profile_picture' => $user->profile_picture,
-            'profile_link' => route('users.profile', $user->slug)
+            'profile_link' => route('users.profile', $user->slug),
         ]);
 
         return response()->json($user);

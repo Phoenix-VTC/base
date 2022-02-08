@@ -21,8 +21,8 @@ class Game extends Model
      * beginning with an abbreviation then followed by a fully qualified name.
      */
     public const GAMES = [
-        1 => ["ETS2", "Euro Truck Simulator 2"],
-        2 => ["ATS", "American Truck Simulator"]
+        1 => ['ETS2', 'Euro Truck Simulator 2'],
+        2 => ['ATS', 'American Truck Simulator'],
     ];
 
     /**

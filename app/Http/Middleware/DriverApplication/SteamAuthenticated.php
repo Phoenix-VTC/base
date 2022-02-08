@@ -18,7 +18,7 @@ class SteamAuthenticated
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!session()->has('steam_user')) {
+        if (! session()->has('steam_user')) {
             return redirect(route('driver-application.authenticate'));
         }
 

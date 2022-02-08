@@ -15,12 +15,12 @@ class GameDataController extends Controller
     {
         return City::where('game_id', $game)
             ->where('approved', true)
-            ->where('real_name', 'like', '%' . $request->input('q') . '%')
+            ->where('real_name', 'like', '%'.$request->input('q').'%')
             ->select([
                 'id',
                 // This is a fucking mess lol TODO: Find something better
                 // Anyway, this query concats the real_name + capitalizes the mod *if* it exists
-                DB::raw("CONCAT(real_name, ' ', UPPER(SUBSTRING(COALESCE(`mod`, ''), 1, 1)), LOWER(SUBSTRING(COALESCE(`mod`, ''), 2))) AS text")
+                DB::raw("CONCAT(real_name, ' ', UPPER(SUBSTRING(COALESCE(`mod`, ''), 1, 1)), LOWER(SUBSTRING(COALESCE(`mod`, ''), 2))) AS text"),
             ])->paginate(10);
     }
 
@@ -28,12 +28,12 @@ class GameDataController extends Controller
     {
         return Company::where('game_id', $game)
             ->where('approved', true)
-            ->where('name', 'like', '%' . $request->input('q') . '%')
+            ->where('name', 'like', '%'.$request->input('q').'%')
             ->select([
                 'id',
                 // This is a fucking mess lol TODO: Find something better
                 // Anyway, this query concats the name + capitalizes the mod *if* it exists
-                DB::raw("CONCAT(name, ' ', UPPER(SUBSTRING(COALESCE(`mod`, ''), 1, 1)), LOWER(SUBSTRING(COALESCE(`mod`, ''), 2))) AS text")
+                DB::raw("CONCAT(name, ' ', UPPER(SUBSTRING(COALESCE(`mod`, ''), 1, 1)), LOWER(SUBSTRING(COALESCE(`mod`, ''), 2))) AS text"),
             ])->paginate(10);
     }
 
@@ -41,12 +41,12 @@ class GameDataController extends Controller
     {
         return Cargo::where('game_id', $game)
             ->where('approved', true)
-            ->where('name', 'like', '%' . $request->input('q') . '%')
+            ->where('name', 'like', '%'.$request->input('q').'%')
             ->select([
                 'id',
                 // This is a fucking mess lol TODO: Find something better
                 // Anyway, this query concats the name + capitalizes the mod *if* it exists
-                DB::raw("CONCAT(name, ' ', UPPER(SUBSTRING(COALESCE(`mod`, ''), 1, 1)), LOWER(SUBSTRING(COALESCE(`mod`, ''), 2))) AS text")
+                DB::raw("CONCAT(name, ' ', UPPER(SUBSTRING(COALESCE(`mod`, ''), 1, 1)), LOWER(SUBSTRING(COALESCE(`mod`, ''), 2))) AS text"),
             ])->paginate(10);
     }
 }

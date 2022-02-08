@@ -6,13 +6,14 @@ use Alexmg86\LaravelSubQuery\Collection\LaravelSubQueryCollection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Livewire\Component;
 use Illuminate\Http\Request;
+use Livewire\Component;
 
 class ShowLeaderboardPage extends Component
 {
     // Request data
     public string $month;
+
     public string $orderBy;
 
     public LaravelSubQueryCollection|Collection $users;

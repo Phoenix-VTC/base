@@ -11,12 +11,13 @@ use Livewire\Component;
 class ShowLeaderboard extends Component
 {
     public Collection $event_wallets_all_time;
+
     public array $statistics;
 
     public function mount(): void
     {
         // Caches for 15 minutes
-        $this->event_wallets_all_time = Cache::remember("event_wallets_top_10_all_time", 900, function () {
+        $this->event_wallets_all_time = Cache::remember('event_wallets_top_10_all_time', 900, function () {
             return Wallet::with('holder')
                 ->where('slug', 'event-xp')
                 ->has('holder')

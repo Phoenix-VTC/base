@@ -46,7 +46,7 @@ class DiscordController extends Controller
                     session()->flash('alert', [
                         'type' => 'danger',
                         'title' => 'Hmm, this is strange.',
-                        'message' => 'It looks like this Discord account is already connected to another user.<br>Please contact support if this issue persists.'
+                        'message' => 'It looks like this Discord account is already connected to another user.<br>Please contact support if this issue persists.',
                     ]);
 
                     return redirect()->route('settings.socials');
@@ -72,7 +72,7 @@ class DiscordController extends Controller
                         We couldn\'t link any Phoenix accounts to the Discord account that you used.
                         <br>
                         If you\'re trying to apply to Phoenix, please do this <a href="https://phoenixvtc.com/en/apply" class="font-bold">here</a>.
-                    '
+                    ',
                     ]]);
             }
 
@@ -90,7 +90,7 @@ class DiscordController extends Controller
                         Something went wrong while trying to login with Discord
                         <br>
                         If this error keeps occurring, please contact our support.
-                    '
+                    ',
                 ]]);
         }
     }

@@ -42,7 +42,7 @@ class NewDriverApplication extends Notification implements ShouldQueue
      */
     public function toDiscord(): DiscordMessage
     {
-        $body = "<@&786313992020819989>"; // @Human Resources Team
+        $body = '<@&786313992020819989>'; // @Human Resources Team
 
         $embed = [
             'title' => 'New Driver Application!',
@@ -53,14 +53,14 @@ class NewDriverApplication extends Notification implements ShouldQueue
             'author' => [
                 'name' => config('app.name'),
                 'url' => route('recruitment.show', $this->application->uuid),
-                'icon_url' => 'https://phoenixvtc.com/assets/images/branding/logo.png'
+                'icon_url' => 'https://phoenixvtc.com/assets/images/branding/logo.png',
             ],
             'fields' => [
                 [
                     'name' => 'Username',
                     'value' => $this->application->username,
-                ]
-            ]
+                ],
+            ],
         ];
 
         return DiscordMessage::create($body, $embed);

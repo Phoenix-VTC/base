@@ -11,7 +11,7 @@ return [
     |
     */
 
-    "logout" => "Log Out",
-    "authenticate" => "Authenticate"
+    'logout' => 'Log Out',
+    'authenticate' => 'Authenticate',
 
 ];

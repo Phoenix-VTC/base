@@ -24,7 +24,7 @@ class EventManagementController extends Controller
             return redirect()->back()->with('alert', ['type' => 'danger', 'message' => 'This event is already completed.']);
         }
 
-        if (!$event->is_past) {
+        if (! $event->is_past) {
             return redirect()->back()->with('alert', ['type' => 'danger', 'message' => 'Please wait until the event is finished before rewarding Event XP.']);
         }
 
@@ -33,7 +33,7 @@ class EventManagementController extends Controller
         $event->completed = true;
         $event->save();
 
-        session()->flash('alert', ['type' => 'success', 'message' => 'Successfully submitted rewards for <b>' . $event->name . '</b>.']);
+        session()->flash('alert', ['type' => 'success', 'message' => 'Successfully submitted rewards for <b>'.$event->name.'</b>.']);
 
         return redirect()->route('event-management.index');
     }

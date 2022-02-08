@@ -39,7 +39,7 @@ class Login extends Component
 
         $this->validate();
 
-        if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+        if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             $this->addError('email', trans('auth.failed'));
 
             return;
@@ -59,9 +59,9 @@ class Login extends Component
     {
         $userValues = Auth::user()->only(['id', 'username', 'email', 'steam_id', 'truckersmp_id', 'discord']);
 
-        foreach($userValues as $value) {
+        foreach ($userValues as $value) {
             // Continue to next iteration if the value is null/empty
-            if (!isset($value)) {
+            if (! isset($value)) {
                 continue;
             }
 

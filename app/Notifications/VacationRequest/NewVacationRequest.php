@@ -43,7 +43,7 @@ class NewVacationRequest extends Notification implements ShouldQueue
      */
     public function toDiscord(): DiscordMessage
     {
-        $body = "<@&786313992020819989>"; // @Human Resources Team
+        $body = '<@&786313992020819989>'; // @Human Resources Team
 
         $embed = [
             'title' => 'New Vacation Request!',
@@ -54,7 +54,7 @@ class NewVacationRequest extends Notification implements ShouldQueue
             'author' => [
                 'name' => config('app.name'),
                 'url' => route('vacation-requests.manage.index'),
-                'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
             ],
             'fields' => [
                 [
@@ -65,10 +65,10 @@ class NewVacationRequest extends Notification implements ShouldQueue
                     'name' => 'Leaving Phoenix',
                     'value' => $this->vacation_request->leaving ? 'Yes' : 'No',
                 ],
-            ]
+            ],
         ];
 
-        if (!$this->vacation_request->leaving) {
+        if (! $this->vacation_request->leaving) {
             $embed['fields'][] = [
                 'name' => 'Starts In',
                 'value' => Carbon::parse($this->vacation_request->start_date)->diffForHumans(),

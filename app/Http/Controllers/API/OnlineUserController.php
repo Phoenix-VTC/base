@@ -24,7 +24,7 @@ class OnlineUserController extends Controller
         // Get the array of users
         $users = Cache::get($cacheKey);
 
-        if (!$users) {
+        if (! $users) {
             return [];
         }
 
@@ -44,7 +44,7 @@ class OnlineUserController extends Controller
                 'id' => $user->id,
                 'username' => $user->username,
                 'profile_picture' => $user->profile_picture,
-                'near' => $onlineUsers->firstWhere('id', $user->id)['near']
+                'near' => $onlineUsers->firstWhere('id', $user->id)['near'],
             ];
         }
 

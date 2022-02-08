@@ -7,6 +7,7 @@ use App\Models\User;
 class UserInBlocklistAuthenticated
 {
     public User $user;
+
     public string $triggerValue;
 
     /**

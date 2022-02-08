@@ -30,7 +30,7 @@ class LinkMissingDataToUser extends Command
      */
     public function handle(): void
     {
-        if (config('app.env') === 'production' && !$this->confirm('Are you SURE that you want to run this on a production environment?')) {
+        if (config('app.env') === 'production' && ! $this->confirm('Are you SURE that you want to run this on a production environment?')) {
             $this->info('Command cancelled.');
 
             exit;
@@ -52,7 +52,7 @@ class LinkMissingDataToUser extends Command
 
             $user->save();
 
-            $this->info('Application ID added to ' . $user->username);
+            $this->info('Application ID added to '.$user->username);
         }
 
         // Add missing date of birth
@@ -67,7 +67,7 @@ class LinkMissingDataToUser extends Command
 
             $user->save();
 
-            $this->info('Date of Birth added to ' . $user->username);
+            $this->info('Date of Birth added to '.$user->username);
         }
 
         $this->info('Finished linking data');

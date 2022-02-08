@@ -137,7 +137,7 @@ it('can claim applications', function () {
         ->assertSuccessful()
         ->assertSeeText('Application claimed');
 
-    Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+    Http::assertSent(function (Illuminate\Http\Client\Request $request) {
         return $request->url() === config('services.discord.webhooks.human-resources');
     });
 });
@@ -156,7 +156,7 @@ it('can unclaim applications', function () {
         ->assertSuccessful()
         ->assertSeeText('Application unclaimed');
 
-    Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+    Http::assertSent(function (Illuminate\Http\Client\Request $request) {
         return $request->url() === config('services.discord.webhooks.human-resources');
     });
 });
@@ -184,7 +184,7 @@ it('can change the application status', function () {
             ->assertSuccessful()
             ->assertSeeText('Application status changed');
 
-        Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+        Http::assertSent(function (Illuminate\Http\Client\Request $request) {
             return $request->url() === config('services.discord.webhooks.human-resources');
         });
 
@@ -244,7 +244,7 @@ it('can post a comment', function () {
         ->assertSeeText('Comment submitted!')
         ->assertSeeText('A random comment');
 
-    Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+    Http::assertSent(function (Illuminate\Http\Client\Request $request) {
         return $request->url() === config('services.discord.webhooks.human-resources');
     });
 });
@@ -258,7 +258,7 @@ test('comment field is required', function () {
     Livewire::test(ShowApplication::class, ['uuid' => $application->uuid])
         ->call('submitComment')
         ->assertHasErrors([
-            'comment' => 'required'
+            'comment' => 'required',
         ]);
 });
 
@@ -276,7 +276,7 @@ it('can delete a comment', function () {
         ->call('deleteComment', $application->comments->first()->uuid)
         ->assertSeeText('Comment deleted!');
 
-    Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+    Http::assertSent(function (Illuminate\Http\Client\Request $request) {
         return $request->url() === config('services.discord.webhooks.human-resources');
     });
 });
@@ -305,7 +305,7 @@ it('can accept an application', function () {
 
     Queue::assertPushed(ProcessAcceptation::class);
 
-    Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+    Http::assertSent(function (Illuminate\Http\Client\Request $request) {
         return $request->url() === config('services.discord.webhooks.human-resources');
     });
 });
@@ -340,7 +340,7 @@ it('can deny an application', function () {
     $this->assertEquals($application->status, 'denied');
 
     Mail::assertQueued(ApplicationDenied::class);
-    Http::assertSent(function (\Illuminate\Http\Client\Request $request) {
+    Http::assertSent(function (Illuminate\Http\Client\Request $request) {
         return $request->url() === config('services.discord.webhooks.human-resources');
     });
 });

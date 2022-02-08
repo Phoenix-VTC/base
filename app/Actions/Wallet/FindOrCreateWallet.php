@@ -17,7 +17,7 @@ class FindOrCreateWallet
     {
         $slug = Str::slug($walletName);
 
-        if (!$user->hasWallet($slug)) {
+        if (! $user->hasWallet($slug)) {
             $user->createWallet([
                 'name' => $walletName,
                 'slug' => $slug,

@@ -40,7 +40,7 @@ class CmsController extends Controller
 
             // Get a list of guild members
             $memberList = $client->guild->listGuildMembers([
-                'guild.id' => (int)config('services.discord.server-id'),
+                'guild.id' => (int) config('services.discord.server-id'),
                 'limit' => 1000,
             ]);
         } catch (Exception) {

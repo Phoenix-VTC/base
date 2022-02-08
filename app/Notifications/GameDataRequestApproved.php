@@ -45,7 +45,7 @@ class GameDataRequestApproved extends Notification implements ShouldQueue
 
         return [
             'title' => 'Game data request approved',
-            'content' => 'Your game data request with the name "' . $name . '" has been approved!'
+            'content' => 'Your game data request with the name "'.$name.'" has been approved!',
         ];
     }
 }

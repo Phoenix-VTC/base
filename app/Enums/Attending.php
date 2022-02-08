@@ -11,5 +11,6 @@ use BenSampo\Enum\Enum;
 final class Attending extends Enum
 {
     public const Yes = 1;
+
     public const Maybe = 2;
 }

@@ -19,7 +19,7 @@ class Calendar extends LivewireCalendar
                 return [
                     'id' => $vacationRequest->id,
                     'title' => $vacationRequest->user->username ?? 'Deleted User',
-                    'description' => $vacationRequest->staff()->exists() ? 'Handled by ' . $vacationRequest->staff->username : '',
+                    'description' => $vacationRequest->staff()->exists() ? 'Handled by '.$vacationRequest->staff->username : '',
                     'date' => $vacationRequest->start_date,
                 ];
             });

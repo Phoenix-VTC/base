@@ -34,8 +34,8 @@ class SeedCities extends Command
         $request = Http::withHeaders(['user-agent' => 'seeder'])
             ->get('https://api.truckyapp.com/v2/map/cities/all');
 
-        if (!$request->ok() || !$request['response']) {
-            $this->error("Failed to fetch cities from Trucky API");
+        if (! $request->ok() || ! $request['response']) {
+            $this->error('Failed to fetch cities from Trucky API');
 
             exit;
         }
@@ -52,12 +52,12 @@ class SeedCities extends Command
                 'z' => $city['z'],
             ]);
 
-            if (!$cityModel->wasRecentlyCreated) {
-                $this->line('Skipped ' . $city['realName'] . ', already exists.');
+            if (! $cityModel->wasRecentlyCreated) {
+                $this->line('Skipped '.$city['realName'].', already exists.');
             }
 
             if ($cityModel->wasRecentlyCreated) {
-                $this->info($cityModel->real_name . ' has been added.');
+                $this->info($cityModel->real_name.' has been added.');
             }
         });
 

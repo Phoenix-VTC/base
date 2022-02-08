@@ -31,7 +31,7 @@ class LeaveRequestApproved extends Mailable implements ShouldQueue
      *
      * @return $this
      */
-    public function build(): LeaveRequestApproved
+    public function build(): self
     {
         return $this->subject('Your request to leave Phoenix has been approved')
             ->markdown('emails.leave-request-approved');

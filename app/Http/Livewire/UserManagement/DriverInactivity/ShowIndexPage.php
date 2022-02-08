@@ -33,7 +33,7 @@ class ShowIndexPage extends Component
             $q->whereMonth('finished_at', $this->month);
         }], 'distance')->with(['roles'])
             ->with([
-                "vacation_requests" => function ($q) {
+                'vacation_requests' => function ($q) {
                     $q->whereMonth('start_date', '<=', $this->month)
                         ->whereMonth('end_date', '>=', $this->month);
                 },
@@ -42,7 +42,7 @@ class ShowIndexPage extends Component
             ->paginate(30);
 
         return view('livewire.user-management.driver-inactivity.index-page', [
-            'inactive_drivers' => $inactive_drivers
+            'inactive_drivers' => $inactive_drivers,
         ])->extends('layouts.app');
     }
 }

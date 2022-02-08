@@ -21,13 +21,13 @@ class CreateBlocklistPermissions extends Migration
         $management->givePermissionTo([
             $viewBlocklist,
             $createBlocklist,
-            $deleteBlocklist
+            $deleteBlocklist,
         ]);
 
         $humanResources = Role::findByName('human resources');
         $humanResources->givePermissionTo([
             $viewBlocklist,
-            $createBlocklist
+            $createBlocklist,
         ]);
     }
 

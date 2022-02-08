@@ -16,10 +16,15 @@ class ShowIndexPage extends Component implements HasForms
     use InteractsWithForms;
 
     public $name = '';
+
     public $dlc = '';
+
     public $mod = '';
+
     public $weight = '';
+
     public $game_id = 1;
+
     public $wot = 0;
 
     public function render()
@@ -36,7 +41,7 @@ class ShowIndexPage extends Component implements HasForms
                         ->columns(1)
                         ->schema([
                             Forms\Components\TextInput::make('name')
-                                ->required()
+                                ->required(),
                         ]),
 
                     Forms\Components\TextInput::make('dlc')
@@ -49,7 +54,7 @@ class ShowIndexPage extends Component implements HasForms
                             Forms\Components\TextInput::make('weight')
                                 ->numeric()
                                 ->minValue(1)
-                                ->helperText('Tonnes (t) for ETS2, pounds (lb) for ATS.')
+                                ->helperText('Tonnes (t) for ETS2, pounds (lb) for ATS.'),
                         ]),
 
                     Forms\Components\Grid::make()
@@ -60,14 +65,14 @@ class ShowIndexPage extends Component implements HasForms
                                     1 => 'Euro Truck Simulator 2',
                                     2 => 'American Truck Simulator',
                                 ])
-                                ->required()
+                                ->required(),
                         ]),
 
                     Forms\Components\Grid::make()
                         ->schema([
                             Forms\Components\Radio::make('wot')
                                 ->label('World of Trucks only')
-                                ->boolean()
+                                ->boolean(),
                         ]),
                 ]),
         ];

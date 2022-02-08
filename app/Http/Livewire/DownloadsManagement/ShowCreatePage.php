@@ -18,8 +18,11 @@ class ShowCreatePage extends Component implements HasForms
 
     // Form fields
     public $name = '';
+
     public $description = '';
+
     public $image = '';
+
     public $file = '';
 
     public function render()
@@ -37,7 +40,7 @@ class ShowCreatePage extends Component implements HasForms
                         ->schema([
                             Forms\Components\TextInput::make('name')
                                 ->required()
-                                ->placeholder('Kenji tuning mod')
+                                ->placeholder('Kenji tuning mod'),
                         ]),
 
                     Forms\Components\Grid::make()
@@ -60,7 +63,7 @@ class ShowCreatePage extends Component implements HasForms
                                 ->maxSize(102400),
 
                             Forms\Components\Textarea::make('description')
-                                ->rows(3)
+                                ->rows(3),
                         ]),
                 ]),
         ];

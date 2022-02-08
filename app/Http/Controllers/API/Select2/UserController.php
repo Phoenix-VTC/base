@@ -13,10 +13,10 @@ class UserController extends Controller
     {
         // @phpstan-ignore-next-line
         return User::query()
-            ->where('username', 'like', '%' . $request->input('q') . '%')
+            ->where('username', 'like', '%'.$request->input('q').'%')
             ->select([
                 'id',
-                'username as text'
+                'username as text',
             ])->paginate(10);
     }
 }

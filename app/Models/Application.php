@@ -6,13 +6,13 @@ use App\Concerns\HasComments;
 use App\Concerns\HasUuid;
 use Cache;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Venturecraft\Revisionable\Revisionable;
 
@@ -115,7 +115,7 @@ class Application extends Revisionable
      */
     public function getTruckersMPDataAttribute(): Collection
     {
-        return Cache::remember($this->truckersmp_id . "_truckersmp_data", 86400, function () {
+        return Cache::remember($this->truckersmp_id.'_truckersmp_data', 86400, function () {
             return Http::get("https://api.truckersmp.com/v2/player/$this->truckersmp_id")->collect('response');
         });
     }
@@ -127,7 +127,7 @@ class Application extends Revisionable
      */
     public function getBanHistoryAttribute(): Collection
     {
-        return Cache::remember($this->truckersmp_id . "_truckersmp_ban_history", 86400, function () {
+        return Cache::remember($this->truckersmp_id.'_truckersmp_ban_history', 86400, function () {
             return Http::get("https://api.truckersmp.com/v2/bans/$this->truckersmp_id")->collect();
         });
     }
@@ -164,7 +164,6 @@ class Application extends Revisionable
 
     /**
      * Get the time between application creation and completion.
-     *
      */
     public function getTimeUntilCompletionAttribute(): ?string
     {

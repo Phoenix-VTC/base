@@ -36,12 +36,12 @@ class UserPolicy
         }
 
         // Check if the user is trying to update staff, excluding themselves
-        if ($user->id !== $model->id && $model->isStaff() && !$user->isUpperStaff()) {
+        if ($user->id !== $model->id && $model->isStaff() && ! $user->isUpperStaff()) {
             return Response::deny('You cannot update staff.');
         }
 
         // Check if the user is trying to update upper staff, excluding themselves
-        if ($user->id !== $model->id && $model->isUpperStaff() && !$user->isSuperAdmin()) {
+        if ($user->id !== $model->id && $model->isUpperStaff() && ! $user->isSuperAdmin()) {
             return Response::deny('You cannot update upper staff.');
         }
 

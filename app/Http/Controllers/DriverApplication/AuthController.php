@@ -76,11 +76,11 @@ class AuthController extends Controller
                         new NotInVTC,
                         new VTCHistoryPublic,
                         new UniqueInUsers,
-                        new UniqueInApplications
+                        new UniqueInApplications,
                     ],
                     'personaname' => [
                         new NotInBlocklist,
-                    ]
+                    ],
                 ]);
 
                 if ($validator->fails()) {
@@ -108,7 +108,7 @@ class AuthController extends Controller
         } catch (GuzzleException | RequestException) {
             return redirect(route('driver-application.authenticate'))
                 ->withErrors([
-                    'TruckersMP API Error' => 'We couldn\'t contact the Steam or TruckersMP API, please try again. If this keeps happening, visit <a class="font-semibold" href="https://truckersmpstatus.com/">TruckersMPStatus.com</a>.'
+                    'TruckersMP API Error' => 'We couldn\'t contact the Steam or TruckersMP API, please try again. If this keeps happening, visit <a class="font-semibold" href="https://truckersmpstatus.com/">TruckersMPStatus.com</a>.',
                 ])
                 ->withInput();
         }
@@ -121,7 +121,7 @@ class AuthController extends Controller
      */
     public function storeTruckersMPAccount($steamId): void
     {
-        $response = Http::get('https://api.truckersmp.com/v2/player/' . $steamId);
+        $response = Http::get('https://api.truckersmp.com/v2/player/'.$steamId);
 
         // Throw an exception if a client or server error occurred
         $response->throw();
@@ -148,7 +148,7 @@ class AuthController extends Controller
      */
     private function checkBlocklistWithTruckersmpData(array $steamData): \Illuminate\Validation\Validator
     {
-        $response = Http::get('https://api.truckersmp.com/v2/player/' . $steamData['steamID64']);
+        $response = Http::get('https://api.truckersmp.com/v2/player/'.$steamData['steamID64']);
 
         // Throw an exception if a client or server error occurred
         $response->throw();

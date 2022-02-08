@@ -35,7 +35,7 @@ class ApplicationReceived extends Mailable implements ShouldQueue
      *
      * @return $this
      */
-    public function build(): ApplicationReceived
+    public function build(): self
     {
         return $this->markdown('emails.driver-application.application-received');
     }

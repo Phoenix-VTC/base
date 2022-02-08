@@ -8,6 +8,7 @@ use Illuminate\View\Component;
 class InfoCard extends Component
 {
     public string $title;
+
     public string $description;
 
     /**

@@ -42,7 +42,7 @@ class DriverLevelUp extends Notification implements ShouldQueue
     {
         return [
             'title' => 'You have levelled up!',
-            'content' => "Congrats! You are now Driver Level {$this->user->driver_level}."
+            'content' => "Congrats! You are now Driver Level {$this->user->driver_level}.",
         ];
     }
 }

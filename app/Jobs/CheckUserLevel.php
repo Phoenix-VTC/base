@@ -24,6 +24,7 @@ class CheckUserLevel implements ShouldQueue
     use SerializesModels;
 
     protected User $user;
+
     protected bool $notifyOnDiscord;
 
     /**
@@ -104,10 +105,10 @@ class CheckUserLevel implements ShouldQueue
                             'color' => 15228164, // #E85D04
                             'footer' => [
                                 'text' => 'PhoenixBase',
-                                'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                                'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                             ],
                             'timestamp' => Carbon::now(),
-                        ]
+                        ],
                     ],
                 ]);
             }
@@ -127,10 +128,10 @@ class CheckUserLevel implements ShouldQueue
                         'color' => 15228164, // #E85D04
                         'footer' => [
                             'text' => 'PhoenixBase',
-                            'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                            'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                         ],
                         'timestamp' => Carbon::now(),
-                    ]
+                    ],
                 ],
             ]);
         }
@@ -145,7 +146,7 @@ class CheckUserLevel implements ShouldQueue
     private function changeDiscordRank(int $level): void
     {
         // Return if the user doesn't have a Discord account linked
-        if (!$this->user->discord) {
+        if (! $this->user->discord) {
             return;
         }
 
@@ -153,7 +154,7 @@ class CheckUserLevel implements ShouldQueue
         $discord = new DiscordClient(['token' => config('services.discord.token')]);
 
         // Get and collect the guild roles
-        $roles = $discord->guild->getGuildRoles(['guild.id' => (int)config('services.discord.server-id')]);
+        $roles = $discord->guild->getGuildRoles(['guild.id' => (int) config('services.discord.server-id')]);
         $roles = collect($roles);
 
         // Find all the Driver Level roles
@@ -162,27 +163,27 @@ class CheckUserLevel implements ShouldQueue
         });
 
         // Try to find the new Driver Level role
-        $driverRole = $driverRoles->where('name', 'Driver Level ' . $level)->first();
+        $driverRole = $driverRoles->where('name', 'Driver Level '.$level)->first();
 
         // Return if the Driver Level role couldn't be found.
-        if (!$driverRole) {
+        if (! $driverRole) {
             return;
         }
 
         // Remove all Driver Level roles from the user
         foreach ($driverRoles as $role) {
             $discord->guild->removeGuildMemberRole([
-                'guild.id' => (int)config('services.discord.server-id'),
-                'user.id' => (int)$this->user->discord['id'],
-                'role.id' => $role->id
+                'guild.id' => (int) config('services.discord.server-id'),
+                'user.id' => (int) $this->user->discord['id'],
+                'role.id' => $role->id,
             ]);
         }
 
         // Add the Driver Level role to the user
         $discord->guild->addGuildMemberRole([
-            'guild.id' => (int)config('services.discord.server-id'),
-            'user.id' => (int)$this->user->discord['id'],
-            'role.id' => $driverRole->id
+            'guild.id' => (int) config('services.discord.server-id'),
+            'user.id' => (int) $this->user->discord['id'],
+            'role.id' => $driverRole->id,
         ]);
     }
 }

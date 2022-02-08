@@ -11,6 +11,7 @@ use Livewire\Component;
 class Home extends Component
 {
     public Collection $featured_events;
+
     public Collection $upcoming_events;
 
     public function mount(): void

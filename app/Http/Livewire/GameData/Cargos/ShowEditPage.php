@@ -23,10 +23,15 @@ class ShowEditPage extends Component implements HasForms
     public Cargo $cargo;
 
     public $name;
+
     public $dlc;
+
     public $mod;
+
     public $weight;
+
     public $game_id;
+
     public $wot;
 
     public function mount(): void
@@ -55,7 +60,7 @@ class ShowEditPage extends Component implements HasForms
                         ->columns(1)
                         ->schema([
                             Forms\Components\TextInput::make('name')
-                                ->required()
+                                ->required(),
                         ]),
 
                     Forms\Components\TextInput::make('dlc')
@@ -68,7 +73,7 @@ class ShowEditPage extends Component implements HasForms
                             Forms\Components\TextInput::make('weight')
                                 ->numeric()
                                 ->minValue(1)
-                                ->helperText('Tonnes (t) for ETS2, pounds (lb) for ATS.')
+                                ->helperText('Tonnes (t) for ETS2, pounds (lb) for ATS.'),
                         ]),
 
                     Forms\Components\Grid::make()
@@ -79,14 +84,14 @@ class ShowEditPage extends Component implements HasForms
                                     1 => 'Euro Truck Simulator 2',
                                     2 => 'American Truck Simulator',
                                 ])
-                                ->required()
+                                ->required(),
                         ]),
 
                     Forms\Components\Grid::make()
                         ->schema([
                             Forms\Components\Radio::make('wot')
                                 ->label('World of Trucks only')
-                                ->boolean()
+                                ->boolean(),
                         ]),
                 ]),
         ];
@@ -96,10 +101,10 @@ class ShowEditPage extends Component implements HasForms
     {
         $validatedData = $this->form->getState();
 
-        if (!$this->cargo->approved) {
+        if (! $this->cargo->approved) {
             $this->forgetUnapprovedGameDataCount();
 
-            session()->flash('alert', ['type' => 'success', 'message' => 'Cargo request <b>' . $this->cargo->name . '</b> successfully approved.']);
+            session()->flash('alert', ['type' => 'success', 'message' => 'Cargo request <b>'.$this->cargo->name.'</b> successfully approved.']);
 
             // Only notify the user if the user still exists
             if ($this->cargo->requester()->exists()) {
@@ -108,7 +113,7 @@ class ShowEditPage extends Component implements HasForms
 
             $approved = true;
         } else {
-            session()->flash('alert', ['type' => 'success', 'message' => 'Cargo <b>' . $this->cargo->name . '</b> successfully updated.']);
+            session()->flash('alert', ['type' => 'success', 'message' => 'Cargo <b>'.$this->cargo->name.'</b> successfully updated.']);
         }
 
         $this->cargo->update([
@@ -126,7 +131,7 @@ class ShowEditPage extends Component implements HasForms
             // and change the status to incomplete if those jobs don't have any pending game data
             if ($this->cargo->jobs->count()) {
                 foreach ($this->cargo->jobs as $job) {
-                    if (!$job->hasPendingGameData) {
+                    if (! $job->hasPendingGameData) {
                         $job->update(['status' => JobStatus::Incomplete]);
                     }
                 }
@@ -138,7 +143,7 @@ class ShowEditPage extends Component implements HasForms
 
     public function delete()
     {
-        if (!$this->cargo->approved) {
+        if (! $this->cargo->approved) {
             $this->forgetUnapprovedGameDataCount();
 
             // Only notify the user if the user still exists
@@ -146,7 +151,7 @@ class ShowEditPage extends Component implements HasForms
                 $this->cargo->requester->notify(new GameDataRequestDenied($this->cargo));
             }
 
-            session()->flash('alert', ['type' => 'success', 'message' => 'Cargo request <b>' . $this->cargo->name . '</b> successfully denied.']);
+            session()->flash('alert', ['type' => 'success', 'message' => 'Cargo request <b>'.$this->cargo->name.'</b> successfully denied.']);
         } else {
             session()->flash('alert', ['type' => 'success', 'message' => 'Cargo successfully deleted!']);
         }

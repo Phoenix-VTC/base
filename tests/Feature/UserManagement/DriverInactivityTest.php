@@ -33,7 +33,6 @@ it('can display the chosen month', function () {
     $user = User::factory()->create()->assignRole('human resources team');
     $this->be($user);
 
-
     for ($monthNumber = 1; $monthNumber < 12; $monthNumber++) {
         $this->get(route('user-management.driver-inactivity.index', ['month' => $monthNumber]))
             ->assertSeeText(Carbon\Carbon::create()->month($monthNumber)->startOfMonth()->isoFormat('MMMM'));

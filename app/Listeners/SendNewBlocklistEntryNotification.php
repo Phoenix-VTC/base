@@ -23,14 +23,14 @@ class SendNewBlocklistEntryNotification implements ShouldQueue
                 [
                     'title' => 'New blocklist entry created',
                     'url' => route('user-management.blocklist.show', $event->blocklist->id),
-                    'description' => "**Reason:** \n" . Str::words($event->blocklist->reason),
+                    'description' => "**Reason:** \n".Str::words($event->blocklist->reason),
                     'color' => 14429954, // #DC2F02
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => Carbon::now(),
-                ]
+                ],
             ],
         ]);
     }

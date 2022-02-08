@@ -18,10 +18,14 @@ class ShowEditPage extends Component implements HasForms
     use InteractsWithForms;
 
     public Download $download;
+
     // Form fields
     public $name = '';
+
     public $description = '';
+
     public $image;
+
     public $file;
 
     public function mount(): void
@@ -47,7 +51,7 @@ class ShowEditPage extends Component implements HasForms
                         ->schema([
                             Forms\Components\TextInput::make('name')
                                 ->required()
-                                ->placeholder('Kenji tuning mod')
+                                ->placeholder('Kenji tuning mod'),
                         ]),
 
                     Forms\Components\Grid::make()
@@ -70,7 +74,7 @@ class ShowEditPage extends Component implements HasForms
                                 ->maxSize(102400),
 
                             Forms\Components\Textarea::make('description')
-                                ->rows(3)
+                                ->rows(3),
                         ]),
                 ]),
         ];
@@ -85,7 +89,7 @@ class ShowEditPage extends Component implements HasForms
         $this->download->updated_by = Auth::id();
 
         // Update the image if it's changed
-        if (!is_null($validatedData['image'])) {
+        if (! is_null($validatedData['image'])) {
             // Delete the old image
             Storage::disk('scaleway')->delete($this->download->image_path);
 
@@ -94,7 +98,7 @@ class ShowEditPage extends Component implements HasForms
         }
 
         // Update the file if it's changed
-        if (!is_null($validatedData['file'])) {
+        if (! is_null($validatedData['file'])) {
             // Delete the old file
             Storage::disk('scaleway')->delete($this->download->file_path);
 
@@ -104,7 +108,7 @@ class ShowEditPage extends Component implements HasForms
 
         $this->download->save();
 
-        session()->flash('alert', ['type' => 'success', 'message' => 'Download <b>' . $this->download->name . '</b> successfully updated!']);
+        session()->flash('alert', ['type' => 'success', 'message' => 'Download <b>'.$this->download->name.'</b> successfully updated!']);
 
         return redirect()->route('downloads.management.index');
     }

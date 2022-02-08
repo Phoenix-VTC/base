@@ -23,7 +23,7 @@ class ShowEvent extends Component
             ->where('published', true)
             ->findOrFail($id);
 
-        if (!$this->event->public_event && !$this->event->external_event && Auth::guest()) {
+        if (! $this->event->public_event && ! $this->event->external_event && Auth::guest()) {
             return redirect(route('login'));
         }
     }
@@ -39,10 +39,11 @@ class ShowEvent extends Component
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
             session()->now('alert', ['type' => 'danger', 'message' => "Slow down! Please wait another $exception->secondsUntilAvailable seconds."]);
+
             return;
         }
 
-        if (!$this->event->is_past && Auth::check()) {
+        if (! $this->event->is_past && Auth::check()) {
             EventAttendee::updateOrCreate(
                 ['user_id' => Auth::id(), 'event_id' => $this->event->id],
                 ['attending' => Attending::Yes]
@@ -58,10 +59,11 @@ class ShowEvent extends Component
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
             session()->now('alert', ['type' => 'danger', 'message' => "Slow down! Please wait another $exception->secondsUntilAvailable seconds."]);
+
             return;
         }
 
-        if (!$this->event->is_past && Auth::check()) {
+        if (! $this->event->is_past && Auth::check()) {
             EventAttendee::updateOrCreate(
                 ['user_id' => Auth::id(), 'event_id' => $this->event->id],
                 ['attending' => Attending::Maybe]
@@ -77,10 +79,11 @@ class ShowEvent extends Component
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
             session()->now('alert', ['type' => 'danger', 'message' => "Slow down! Please wait another $exception->secondsUntilAvailable seconds."]);
+
             return;
         }
 
-        if (!$this->event->is_past && Auth::check()) {
+        if (! $this->event->is_past && Auth::check()) {
             $event_attendee = EventAttendee::where('user_id', Auth::id())
                 ->where('event_id', $this->event->id)
                 ->first();

@@ -13,9 +13,9 @@ return [
     |
     */
 
-    "form_validation_fail" => [
-        "title" => "Whoops, something went wrong!",
-        "description" => "Please check the errors and try again.",
+    'form_validation_fail' => [
+        'title' => 'Whoops, something went wrong!',
+        'description' => 'Please check the errors and try again.',
     ],
 
     'accepted' => 'The :attribute must be accepted.',

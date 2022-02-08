@@ -9,7 +9,6 @@ use Livewire\Component;
 
 class ShowOverview extends Component
 {
-
     public function render(): View
     {
         return view('livewire.events.overview', [

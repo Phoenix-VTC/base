@@ -29,7 +29,7 @@ class EventFactory extends Factory
             'featured_image_url' => 'https://via.placeholder.com/1080x720/18181B/FFFFFF?text=Phoenix+Events',
             'map_image_url' => 'https://via.placeholder.com/1080x720/18181B/FFFFFF?text=Phoenix+Events',
             'description' => $this->faker->paragraphs(5, true),
-            'server' => 'Simulation ' . random_int(1, 3),
+            'server' => 'Simulation '.random_int(1, 3),
             'required_dlcs' => $this->faker->words(3, true),
             'departure_location' => $this->faker->word,
             'arrival_location' => $this->faker->word,

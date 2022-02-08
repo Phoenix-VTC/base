@@ -2,7 +2,6 @@
 
 return [
 
-
     /*
     |--------------------------------------------------------------------------
     | API Key
@@ -25,7 +24,7 @@ return [
     | SSL peer (SSL certificate validation)
     |
      */
-    'ssl_verify_peer' => FALSE,
+    'ssl_verify_peer' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -64,10 +63,9 @@ return [
                     'administrative_area' => null,
                     'postal_code' => null,
                     'country' => null,
-                ]
-            ]
+                ],
+            ],
         ],
-
 
         'directions' => [
             'url' => 'https://maps.googleapis.com/maps/api/directions/',
@@ -91,9 +89,8 @@ return [
                 'arrival_time' => null,
                 'transit_mode' => null,
                 'transit_routing_preference' => null,
-            ]
+            ],
         ],
-
 
         'distancematrix' => [
             'url' => 'https://maps.googleapis.com/maps/api/distancematrix/',
@@ -114,9 +111,8 @@ return [
                 'transit_mode' => null,
                 'transit_routing_preference' => null,
 
-            ]
+            ],
         ],
-
 
         'elevation' => [
             'url' => 'https://maps.googleapis.com/maps/api/elevation/',
@@ -129,9 +125,8 @@ return [
                 'path' => null,
                 'samples' => null,
                 'key' => null,
-            ]
+            ],
         ],
-
 
         'geolocate' => [
             'url' => 'https://www.googleapis.com/geolocation/v1/geolocate?',
@@ -161,9 +156,8 @@ return [
                     'channel' => null,
                     'signalToNoiseRatio' => null,
                 ],
-            ]
+            ],
         ],
-
 
         'snapToRoads' => [
             'url' => 'https://roads.googleapis.com/v1/snapToRoads?',
@@ -176,9 +170,8 @@ return [
                 'path' => null,
                 'samples' => null,
                 'key' => null,
-            ]
+            ],
         ],
-
 
         'speedLimits' => [
             'url' => 'https://roads.googleapis.com/v1/speedLimits?',
@@ -191,9 +184,8 @@ return [
                 'placeId' => null,
                 'units' => null,
                 'key' => null,
-            ]
+            ],
         ],
-
 
         'timezone' => [
             'url' => 'https://maps.googleapis.com/maps/api/timezone/',
@@ -207,9 +199,8 @@ return [
                 'key' => null,
                 'language' => null,
 
-            ]
+            ],
         ],
-
 
         'nearbysearch' => [
             'url' => 'https://maps.googleapis.com/maps/api/place/nearbysearch/',
@@ -231,9 +222,8 @@ return [
                 'type' => null, // types depricated, one type may be specified
                 'pagetoken' => null,
                 'zagatselected' => null,
-            ]
+            ],
         ],
-
 
         'textsearch' => [
             'url' => 'https://maps.googleapis.com/maps/api/place/textsearch/',
@@ -253,9 +243,8 @@ return [
                 'type' => null, // types deprecated, one type may be specified
                 'pagetoken' => null,
                 'zagatselected' => null,
-            ]
+            ],
         ],
-
 
         'radarsearch' => [
             'url' => 'https://maps.googleapis.com/maps/api/place/radarsearch/',
@@ -274,9 +263,8 @@ return [
                 'name' => null,
                 'type' => null, // types depricated, one type may be specified
                 'zagatselected' => null,
-            ]
+            ],
         ],
-
 
         'placedetails' => [
             'url' => 'https://maps.googleapis.com/maps/api/place/details/',
@@ -289,9 +277,8 @@ return [
                 'placeid' => null,
                 'extensions' => null,
                 'language' => null,
-            ]
+            ],
         ],
-
 
         'placeadd' => [
             'url' => 'https://maps.googleapis.com/maps/api/place/add/',
@@ -307,12 +294,11 @@ return [
                 'location' => null,
                 'name' => null,
                 'phone_number' => null,
-                'types' => null,// according to docs types still required as string parameter
+                'types' => null, // according to docs types still required as string parameter
                 'type' => null, // types deprecated, one type may be specified
                 'website' => null,
-            ]
+            ],
         ],
-
 
         'placedelete' => [
             'url' => 'https://maps.googleapis.com/maps/api/place/delete/',
@@ -324,9 +310,8 @@ return [
                 'key' => null,
                 'place_id' => null,
 
-            ]
+            ],
         ],
-
 
         'placephoto' => [
             'url' => 'https://maps.googleapis.com/maps/api/place/photo?',
@@ -339,9 +324,8 @@ return [
                 'photoreference' => null,
                 'maxheight' => null,
                 'maxwidth' => null,
-            ]
+            ],
         ],
-
 
         'placeautocomplete' => [
             'url' => 'https://maps.googleapis.com/maps/api/place/autocomplete/',
@@ -359,9 +343,8 @@ return [
                 'types' => null, // use string as parameter
                 'type' => null, // types deprecated, one type may be specified
                 'components' => null,
-            ]
+            ],
         ],
-
 
         'placequeryautocomplete' => [
             'url' => 'https://maps.googleapis.com/maps/api/place/queryautocomplete/',
@@ -376,11 +359,10 @@ return [
                 'location' => null,
                 'radius' => null,
                 'language' => null,
-            ]
+            ],
         ],
 
     ],
-
 
     /*
     |--------------------------------------------------------------------------
@@ -394,6 +376,5 @@ return [
         'xml' => 'xml?',
         'json' => 'json?',
     ],
-
 
 ];

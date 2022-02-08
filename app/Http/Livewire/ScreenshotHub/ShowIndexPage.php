@@ -4,15 +4,17 @@ namespace App\Http\Livewire\ScreenshotHub;
 
 use App\Models\Screenshot;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Request;
 use Livewire\Component;
 
 class ShowIndexPage extends Component
 {
     // Request data
     public string $range;
+
     public string $orderBy;
+
     public bool $desc;
 
     private LengthAwarePaginator $screenshots;
@@ -34,13 +36,13 @@ class ShowIndexPage extends Component
             $this->orderBy = 'created_at';
         }
 
-        $this->desc = (bool)$request->get('desc', false);
+        $this->desc = (bool) $request->get('desc', false);
 
         $this->screenshots = Screenshot::with(['user', 'votes'])
             ->has('user')
             ->withCount('votes')
             ->whereDate('created_at', '>', Carbon::parse("-1 $this->range"))
-            ->orderByRaw("$this->orderBy " . ($this->desc ? 'DESC' : ''))
+            ->orderByRaw("$this->orderBy ".($this->desc ? 'DESC' : ''))
             ->paginate(9);
     }
 

@@ -175,7 +175,7 @@ class User extends Authenticatable implements Wallet
         'discord',
         'profile_picture_path',
         'profile_banner_path',
-        'driver_level'
+        'driver_level',
     ];
 
     /**
@@ -259,7 +259,7 @@ class User extends Authenticatable implements Wallet
         try {
             return Storage::disk('scaleway')->url($this->profile_banner_path);
         } catch (\Exception $e) {
-            return "https://phoenix-base.s3.nl-ams.scw.cloud/images/227300_20210216162827_1.png";
+            return 'https://phoenix-base.s3.nl-ams.scw.cloud/images/227300_20210216162827_1.png';
         }
     }
 
@@ -287,7 +287,7 @@ class User extends Authenticatable implements Wallet
 
     public function getPreferredCurrencySymbolAttribute(): ?string
     {
-        return strip_tags('&' . $this->settings()->get('preferences.currency') . ';');
+        return strip_tags('&'.$this->settings()->get('preferences.currency').';');
     }
 
     public function getQualifiedPreferredDistanceAttribute(): ?string
@@ -313,7 +313,7 @@ class User extends Authenticatable implements Wallet
     public function getSteamPlayerSummaryAttribute(): ?Player
     {
         // Cached for 15 minutes
-        return Cache::remember($this->id . '_steam', 900, function () {
+        return Cache::remember($this->id.'_steam', 900, function () {
             $steamClient = new SteamClient();
 
             return $steamClient->user($this->steam_id ?? 0)->GetPlayerSummaries()[0] ?? null;
@@ -323,7 +323,7 @@ class User extends Authenticatable implements Wallet
     public function getTruckersMpDataAttribute(): array
     {
         // Cached for 15 minutes
-        return Cache::remember($this->id . '_truckersmp', 900, function () {
+        return Cache::remember($this->id.'_truckersmp', 900, function () {
             $response = Http::get("https://api.truckersmp.com/v2/player/$this->truckersmp_id")->collect();
 
             if ($response['error']) {

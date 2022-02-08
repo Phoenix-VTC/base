@@ -170,7 +170,7 @@ class Event extends Model
     public function getTruckersMPEventDataAttribute()
     {
         if ($this->tmp_event_id) {
-            return Cache::remember($this->tmp_event_id . "_tmp_event_data", 86400, function () {
+            return Cache::remember($this->tmp_event_id.'_tmp_event_data', 86400, function () {
                 return Http::get("https://api.truckersmp.com/v2/events/$this->tmp_event_id")->collect();
             });
         }
@@ -181,7 +181,7 @@ class Event extends Model
     public function getTruckersMPEventVTCDataAttribute()
     {
         if (isset($this->truckersmp_event_data['response']['vtc']['name'])) {
-            return Cache::remember($this->truckersmp_event_data['response']['vtc']['id'] . "_tmp_event_vtc_data", 86400, function () {
+            return Cache::remember($this->truckersmp_event_data['response']['vtc']['id'].'_tmp_event_vtc_data', 86400, function () {
                 return Http::get("https://api.truckersmp.com/v2/vtc/{$this->truckersmp_event_data['response']['vtc']['id']}")->collect();
             });
         }
@@ -196,7 +196,7 @@ class Event extends Model
 
     public function game(bool $abbreviation = true): ?string
     {
-        if (!$abbreviation) {
+        if (! $abbreviation) {
             return Game::getQualifiedName($this->game_id);
         }
 
@@ -205,7 +205,7 @@ class Event extends Model
 
     public function getIsHighRewardingAttribute(): bool
     {
-        return ($this->points >= 400);
+        return $this->points >= 400;
     }
 
     public function getIsPastAttribute(): bool
@@ -232,7 +232,7 @@ class Event extends Model
      */
     public static function getTotalEventsAttended(): int
     {
-        return Cache::remember("total_events_attended", 86400, function () {
+        return Cache::remember('total_events_attended', 86400, function () {
             return self::where('external_event', true)->count();
         });
     }
@@ -246,7 +246,7 @@ class Event extends Model
      */
     public static function getTotalEventsHosted(): int
     {
-        return Cache::remember("total_events_hosted", 86400, function () {
+        return Cache::remember('total_events_hosted', 86400, function () {
             return self::where('external_event', false)->count();
         });
     }
@@ -260,7 +260,7 @@ class Event extends Model
      */
     public static function getTotalEventsDistance(): int
     {
-        return Cache::remember("total_event_distance", 86400, function () {
+        return Cache::remember('total_event_distance', 86400, function () {
             $ets = self::where('game_id', 1)->sum('distance');
             $ats = self::where('game_id', 2)->sum('distance') * 1.60934;
 

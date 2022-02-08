@@ -16,7 +16,7 @@ class CanSubmitJobs
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->user()->tokenCan('jobs:submit')) {
+        if (! $request->user()->tokenCan('jobs:submit')) {
             abort(403, 'This token does not have permission to submit jobs.');
         }
 

@@ -23,7 +23,7 @@ class ShowIndex extends Component
             'upcoming_events' => Event::with('host')
                 ->where('start_date', '>=', Carbon::now()->toDateTimeString())
                 ->orderBy('start_date')
-                ->paginate(10)
+                ->paginate(10),
         ])->extends('layouts.app');
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Achievements;
@@ -7,8 +8,6 @@ use Assada\Achievements\AchievementChain;
 
 /**
  * Class Registered
- *
- * @package App\Achievements
  */
 class EventAttendedChain extends AchievementChain
 {

@@ -10,8 +10,8 @@ use App\Events\NewBlocklistEntry;
 use App\Events\PasswordChanged;
 use App\Events\UserInBlocklistAuthenticated;
 use App\Events\UserInBlocklistTriedToApply;
-use App\Listeners\ClearUserWelcomeFields;
 use App\Events\UserPointsChanged;
+use App\Listeners\ClearUserWelcomeFields;
 use App\Listeners\SendAchievementUnlockedNotification;
 use App\Listeners\SendDeletedBlocklistEntryNotification;
 use App\Listeners\SendEmailChangedNotification;
@@ -25,9 +25,9 @@ use App\Listeners\SendUserInBlocklistAuthenticatedNotification;
 use App\Listeners\SendUserInBlocklistTriedToApplyNotification;
 use App\Listeners\TriggerUserLevelCheck;
 use App\Models\Download as DownloadModel;
+use App\Models\Job as JobModel;
 use App\Models\Screenshot as ScreenshotModel;
 use App\Observers\DownloadObserver;
-use App\Models\Job as JobModel;
 use App\Observers\JobObserver;
 use App\Observers\ScreenshotObserver;
 use Assada\Achievements\Event\Unlocked as UnlockedAchievement;
@@ -88,7 +88,7 @@ class EventServiceProvider extends ServiceProvider
             SendUserInBlocklistAuthenticatedNotification::class,
         ],
         Login::class => [
-            ClearUserWelcomeFields::class
+            ClearUserWelcomeFields::class,
         ],
         UserPointsChanged::class => [
             TriggerUserLevelCheck::class,

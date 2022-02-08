@@ -13,9 +13,12 @@ use Livewire\Component;
 class ShowPreferencesPage extends Component
 {
     public User $user;
+
     // Form fields
     public string $preferred_distance = '';
+
     public string $preferred_currency = '';
+
     public string $preferred_weight = '';
 
     public function rules(): array
@@ -51,7 +54,7 @@ class ShowPreferencesPage extends Component
             'preferences.weight' => $validatedData['preferred_weight'],
         ]);
 
-        Cache::forget('user_stats_' . Auth::id());
+        Cache::forget('user_stats_'.Auth::id());
 
         Auth::user()->unlock(new ImSpecial());
 

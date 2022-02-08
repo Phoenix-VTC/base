@@ -97,7 +97,7 @@ class VacationRequest extends Model
 
     public function getIsActiveAttribute(): bool
     {
-        return (Carbon::parse($this->start_date)->isPast() && Carbon::parse($this->end_date)->isFuture());
+        return Carbon::parse($this->start_date)->isPast() && Carbon::parse($this->end_date)->isFuture();
     }
 
     public function getIsUpcomingAttribute(): bool

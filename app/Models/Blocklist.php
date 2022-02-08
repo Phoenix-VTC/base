@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\Traits\RevisionUserTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
-use App\Traits\RevisionUserTrait;
 
 /**
  * App\Models\Blocklist
@@ -75,18 +75,18 @@ class Blocklist extends Model
     public function scopeLikeSearch($query, string $term): Builder
     {
         return $query->where(
-            fn($query) => $query->where('usernames', 'like', '%' . $term . '%')
-                ->orWhere('emails', 'like', '%' . $term . '%')
-                ->orWhere('discord_ids', 'like', '%' . $term . '%')
-                ->orWhere('truckersmp_ids', 'like', '%' . $term . '%')
-                ->orWhere('steam_ids', 'like', '%' . $term . '%')
+            fn ($query) => $query->where('usernames', 'like', '%'.$term.'%')
+                ->orWhere('emails', 'like', '%'.$term.'%')
+                ->orWhere('discord_ids', 'like', '%'.$term.'%')
+                ->orWhere('truckersmp_ids', 'like', '%'.$term.'%')
+                ->orWhere('steam_ids', 'like', '%'.$term.'%')
         );
     }
 
     public function scopeExactSearch($query, string $term): Builder
     {
         return $query->where(
-            fn($query) => $query->whereJsonContains('usernames', $term)
+            fn ($query) => $query->whereJsonContains('usernames', $term)
                 ->orWhereJsonContains('emails', $term)
                 ->orWhereJsonContains('discord_ids', $term)
                 ->orWhereJsonContains('truckersmp_ids', $term)

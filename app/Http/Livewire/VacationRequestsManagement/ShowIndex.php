@@ -51,10 +51,10 @@ class ShowIndex extends Component
         Cache::forget('vacation_request_count');
 
         // Send the user a notification if not leaving, and return
-        if (!$vacation_request->leaving) {
+        if (! $vacation_request->leaving) {
             $vacation_request->user->notify(new VacationRequestMarkedAsSeen);
 
-            session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? 'Unknown User') . '\'s vacation request successfully marked as seen!']);
+            session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? 'Unknown User').'\'s vacation request successfully marked as seen!']);
 
             return;
         }
@@ -62,7 +62,7 @@ class ShowIndex extends Component
         // Send the user an email about their leaving request, and handle the account deletion
         Mail::to([[
             'email' => $vacation_request->user->email,
-            'name' => $vacation_request->user->username
+            'name' => $vacation_request->user->username,
         ]])->queue(new LeaveRequestApproved($vacation_request->user));
 
         $vacation_request->user->delete();
@@ -82,6 +82,6 @@ class ShowIndex extends Component
 
         $vacation_request->delete();
 
-        session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? 'Unknown User') . '\'s vacation request successfully cancelled!']);
+        session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? 'Unknown User').'\'s vacation request successfully cancelled!']);
     }
 }

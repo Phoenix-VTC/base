@@ -20,21 +20,31 @@ class ShowEditPage extends Component implements HasForms
     use InteractsWithForms;
 
     public Job $job;
+
     // Form fields
     public $pickup_city;
+
     public $destination_city;
+
     public $pickup_company;
+
     public $destination_company;
+
     public $cargo;
+
     public $distance;
+
     public $load_damage;
+
     public $estimated_income;
+
     public $total_income;
+
     public $comments;
 
     public function mount(): void
     {
-        if (!$this->job->canEdit) {
+        if (! $this->job->canEdit) {
             abort(403, 'You don\'t have permission to edit this job.');
         }
 
@@ -74,7 +84,7 @@ class ShowEditPage extends Component implements HasForms
             'distance' => ['required', 'integer', 'min:1', 'max:5000'],
             'load_damage' => ['required', 'integer', 'min:0', 'max:100'],
             'estimated_income' => ['required', 'integer', 'min:1', 'max:400000'],
-            'total_income' => ['required', 'integer', 'min:1', 'max:' . $this->estimated_income],
+            'total_income' => ['required', 'integer', 'min:1', 'max:'.$this->estimated_income],
             'comments' => ['sometimes', 'string'],
         ];
     }
@@ -90,31 +100,31 @@ class ShowEditPage extends Component implements HasForms
             Forms\Components\Grid::make()
                 ->schema([
                     Forms\Components\Select::make('pickup_city')
-                        ->getSearchResultsUsing(fn($query) => City::dropdownSearch($query))
-                        ->getOptionLabelUsing(fn($value) => City::find($value)?->getDropdownName())
+                        ->getSearchResultsUsing(fn ($query) => City::dropdownSearch($query))
+                        ->getOptionLabelUsing(fn ($value) => City::find($value)?->getDropdownName())
                         ->exists(table: City::class, column: 'id')
                         ->searchable()
                         ->required(),
 
                     Forms\Components\Select::make('destination_city')
-                        ->getSearchResultsUsing(fn($query) => City::dropdownSearch($query))
-                        ->getOptionLabelUsing(fn($value) => City::find($value)?->real_name)
+                        ->getSearchResultsUsing(fn ($query) => City::dropdownSearch($query))
+                        ->getOptionLabelUsing(fn ($value) => City::find($value)?->real_name)
                         ->exists(table: City::class, column: 'id')
                         ->searchable()
                         ->required(),
 
                     Forms\Components\Select::make('pickup_company')
                         ->columnSpan(1)
-                        ->getSearchResultsUsing(fn($query) => Company::dropdownSearch($query))
-                        ->getOptionLabelUsing(fn($value) => Company::find($value)?->name)
+                        ->getSearchResultsUsing(fn ($query) => Company::dropdownSearch($query))
+                        ->getOptionLabelUsing(fn ($value) => Company::find($value)?->name)
                         ->exists(table: Company::class, column: 'id')
                         ->searchable()
                         ->required(),
 
                     Forms\Components\Select::make('destination_company')
                         ->columnSpan(1)
-                        ->getSearchResultsUsing(fn($query) => Company::dropdownSearch($query))
-                        ->getOptionLabelUsing(fn($value) => Company::find($value)?->name)
+                        ->getSearchResultsUsing(fn ($query) => Company::dropdownSearch($query))
+                        ->getOptionLabelUsing(fn ($value) => Company::find($value)?->name)
                         ->exists(table: Company::class, column: 'id')
                         ->searchable()
                         ->required(),
@@ -123,8 +133,8 @@ class ShowEditPage extends Component implements HasForms
                         ->columns()
                         ->schema([
                             Forms\Components\Select::make('cargo')
-                                ->getSearchResultsUsing(fn($query) => Cargo::dropdownSearch($query))
-                                ->getOptionLabelUsing(fn($value) => Cargo::find($value)?->name)
+                                ->getSearchResultsUsing(fn ($query) => Cargo::dropdownSearch($query))
+                                ->getOptionLabelUsing(fn ($value) => Cargo::find($value)?->name)
                                 ->exists(table: Cargo::class, column: 'id')
                                 ->searchable()
                                 ->required(),
@@ -137,8 +147,8 @@ class ShowEditPage extends Component implements HasForms
                                 ->numeric()
                                 ->minValue(1)
                                 ->maxValue(5000)
-                                ->placeholder("1200")
-                                ->hint(fn() => 'In ' . Game::getQualifiedDistanceMetric($this->job->game_id))
+                                ->placeholder('1200')
+                                ->hint(fn () => 'In '.Game::getQualifiedDistanceMetric($this->job->game_id))
                                 ->required(),
                         ]),
 

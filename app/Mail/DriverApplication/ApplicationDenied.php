@@ -35,7 +35,7 @@ class ApplicationDenied extends Mailable implements ShouldQueue
      *
      * @return ApplicationDenied
      */
-    public function build(): ApplicationDenied
+    public function build(): self
     {
         return $this->markdown('emails.driver-application.application-denied');
     }

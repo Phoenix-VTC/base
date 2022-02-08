@@ -12,6 +12,7 @@ use Livewire\Component;
 class ShowShowPage extends Component
 {
     public Job $job;
+
     public array $gmaps_data;
 
     public function mount(Job $job): void
@@ -28,7 +29,7 @@ class ShowShowPage extends Component
 
     public function delete()
     {
-        if (!$this->job->canEdit) {
+        if (! $this->job->canEdit) {
             abort(403, 'You don\'t have permission to delete this job.');
         }
 
@@ -36,17 +37,18 @@ class ShowShowPage extends Component
         $this->job->delete();
 
         session()->flash('alert', ['type' => 'success', 'message' => 'Job successfully deleted!']);
+
         return redirect()->route('users.jobs-overview', $job->user_id);
     }
 
     public function approve(): void
     {
-        if (!Auth::user()->can('manage users')) {
+        if (! Auth::user()->can('manage users')) {
             abort(403, 'You don\'t have permission to approve jobs.');
         }
 
         // Check if any of the game data entries are *not* approved
-        if (!$this->job->pickupCity->approved || !$this->job->destinationCity->approved || !$this->job->pickupCompany->approved || !$this->job->destinationCompany->approved || !$this->job->cargo->approved) {
+        if (! $this->job->pickupCity->approved || ! $this->job->destinationCity->approved || ! $this->job->pickupCompany->approved || ! $this->job->destinationCompany->approved || ! $this->job->cargo->approved) {
             session()->now('alert', ['type' => 'danger', 'title' => 'You can\'t approve this job yet!', 'message' => 'First, make sure that none of the used game data entries are pending approval.']);
 
             return;
@@ -79,7 +81,7 @@ class ShowShowPage extends Component
 
             $this->gmaps_data = [
                 'origin' => $pickup_city->predictions[0]->description,
-                'destination' => $destination_city->predictions[0]->description
+                'destination' => $destination_city->predictions[0]->description,
             ];
         } catch (\Exception $e) {
             session()->now('alert', ['type' => 'info', 'title' => 'We couldn\'t load the route map.', 'message' => 'We had some issues trying to parse the location.<br>Perhaps the pickup and/or destintion city doesn\'t exist in real-life?']);

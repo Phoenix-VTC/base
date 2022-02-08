@@ -16,7 +16,7 @@ class VTCHistoryPublic implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        $request = Http::get('https://api.truckersmp.com/v2/player/' . $value);
+        $request = Http::get('https://api.truckersmp.com/v2/player/'.$value);
 
         // Pass if the request failed because this isn't an important validation rule.
         if ($request->failed()) {

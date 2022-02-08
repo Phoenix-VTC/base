@@ -72,32 +72,33 @@ class CheckDriverVTC implements ShouldQueue
 
         $this->sendDiscordFinishedNotification();
     }
+
     private function sendDiscordErrorNotification(User $user, array $tmpData): void
     {
         Http::post(config('services.discord.webhooks.human-resources'), [
             'embeds' => [
                 [
-                    'title' => 'Failed to resolve TruckersMP data for ' . $user->username,
-                    'description' => 'Error message: `' . $tmpData['response'] . '`',
+                    'title' => 'Failed to resolve TruckersMP data for '.$user->username,
+                    'description' => 'Error message: `'.$tmpData['response'].'`',
                     'color' => 14429954, // #DC2F02
                     'fields' => [
                         [
                             'name' => 'PhoenixBase Profile',
-                            'value' => '[' . $user->username . '](' . route('users.profile', $user) . ')',
-                            'inline' => true
+                            'value' => '['.$user->username.']('.route('users.profile', $user).')',
+                            'inline' => true,
                         ],
                         [
                             'name' => 'TruckersMP Profile',
-                            'value' => '[' . $user->truckersmp_id . '](https://truckersmp.com/user/' . $user->truckersmp_id . ')',
-                            'inline' => true
-                        ]
+                            'value' => '['.$user->truckersmp_id.'](https://truckersmp.com/user/'.$user->truckersmp_id.')',
+                            'inline' => true,
+                        ],
                     ],
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => Carbon::now(),
-                ]
+                ],
             ],
         ]);
     }
@@ -111,10 +112,10 @@ class CheckDriverVTC implements ShouldQueue
                     'color' => 5793266, // #5865F2
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => Carbon::now(),
-                ]
+                ],
             ],
         ]);
     }
@@ -125,14 +126,14 @@ class CheckDriverVTC implements ShouldQueue
             'embeds' => [
                 [
                     'title' => 'Daily VTC check finished',
-                    'description' => 'Checked ' . User::count() . ' users.',
+                    'description' => 'Checked '.User::count().' users.',
                     'color' => 5763719, // #57F287
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => Carbon::now(),
-                ]
+                ],
             ],
         ]);
     }
@@ -142,26 +143,26 @@ class CheckDriverVTC implements ShouldQueue
         Http::post(config('services.discord.webhooks.human-resources'), [
             'embeds' => [
                 [
-                    'title' => $user->username . ' is currently not in a VTC',
+                    'title' => $user->username.' is currently not in a VTC',
                     'color' => 14429954, // #DC2F02
                     'fields' => [
                         [
                             'name' => 'PhoenixBase Profile',
-                            'value' => '[' . $user->username . '](' . route('users.profile', $user) . ')',
-                            'inline' => true
+                            'value' => '['.$user->username.']('.route('users.profile', $user).')',
+                            'inline' => true,
                         ],
                         [
                             'name' => 'TruckersMP Profile',
-                            'value' => '[' . $user->truckersmp_id . '](https://truckersmp.com/user/' . $user->truckersmp_id . ')',
-                            'inline' => true
-                        ]
+                            'value' => '['.$user->truckersmp_id.'](https://truckersmp.com/user/'.$user->truckersmp_id.')',
+                            'inline' => true,
+                        ],
                     ],
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => Carbon::now(),
-                ]
+                ],
             ],
         ]);
     }
@@ -176,26 +177,26 @@ class CheckDriverVTC implements ShouldQueue
                     'fields' => [
                         [
                             'name' => 'PhoenixBase Profile',
-                            'value' => '[' . $user->username . '](' . route('users.profile', $user) . ')',
-                            'inline' => true
+                            'value' => '['.$user->username.']('.route('users.profile', $user).')',
+                            'inline' => true,
                         ],
                         [
                             'name' => 'TruckersMP Profile',
                             'value' => "[{$user->truckersmp_id}](https://truckersmp.com/user/{$user->truckersmp_id})",
-                            'inline' => true
+                            'inline' => true,
                         ],
                         [
                             'name' => 'VTC',
                             'value' => "[{$response['vtc']['name']}](https://truckersmp.com/vtc/{$response['vtc']['id']})",
-                            'inline' => false
-                        ]
+                            'inline' => false,
+                        ],
                     ],
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => Carbon::now(),
-                ]
+                ],
             ],
         ]);
     }

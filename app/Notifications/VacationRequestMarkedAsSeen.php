@@ -30,7 +30,7 @@ class VacationRequestMarkedAsSeen extends Notification implements ShouldQueue
     {
         return [
             'title' => 'Vacation request marked as seen',
-            'content' => 'Your vacation request has been marked as seen by one of our staff members.'
+            'content' => 'Your vacation request has been marked as seen by one of our staff members.',
         ];
     }
 }

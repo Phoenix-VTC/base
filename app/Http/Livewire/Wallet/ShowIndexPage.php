@@ -11,6 +11,7 @@ use Livewire\Component;
 class ShowIndexPage extends Component
 {
     public User $user;
+
     public Collection $wallets;
 
     public function mount(): void

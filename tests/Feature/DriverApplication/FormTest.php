@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\DriverApplication\ShowFormPage;
 use App\Mail\DriverApplication\ApplicationReceived;
 use App\Models\Application;
 use App\Models\User;
@@ -9,68 +10,66 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 
-use App\Http\Livewire\DriverApplication\ShowFormPage;
-
 uses(RefreshDatabase::class);
 
 $steamUser = [
-    "communityvisibilitystate" => 3,
-    "profilestate" => 1,
-    "personaname" => "Dot",
-    "profileurl" => "https://steamcommunity.com/id/DoggoDot/",
-    "avatar" => "https://steamcdn-a.akamaihd.net/steamcommunity/public/images,/avatars/19/19c01f1ad0c2d40ae82543247e06a1906e96fbcf.jpg",
-    "avatarmedium" => "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/19/19c01f1ad0c2d40ae82543247e06a1906e96fbcf_medium.jpg",
-    "avatarfull" => "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/19/19c01f1ad0c2d40ae82543247e06a1906e96fbcf_full.jpg",
-    "avatarhash" => "19c01f1ad0c2d40ae82543247e06a1906e96fbcf",
-    "lastlogoff" => 1634177511,
-    "personastate" => 1,
-    "realname" => "Diego",
-    "primaryclanid" => "103582791468856849",
-    "timecreated" => 1391349319,
-    "personastateflags" => 0,
-    "loccountrycode" => "NL",
-    "steamID64" => "76561198125147009",
+    'communityvisibilitystate' => 3,
+    'profilestate' => 1,
+    'personaname' => 'Dot',
+    'profileurl' => 'https://steamcommunity.com/id/DoggoDot/',
+    'avatar' => 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images,/avatars/19/19c01f1ad0c2d40ae82543247e06a1906e96fbcf.jpg',
+    'avatarmedium' => 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/19/19c01f1ad0c2d40ae82543247e06a1906e96fbcf_medium.jpg',
+    'avatarfull' => 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/19/19c01f1ad0c2d40ae82543247e06a1906e96fbcf_full.jpg',
+    'avatarhash' => '19c01f1ad0c2d40ae82543247e06a1906e96fbcf',
+    'lastlogoff' => 1634177511,
+    'personastate' => 1,
+    'realname' => 'Diego',
+    'primaryclanid' => '103582791468856849',
+    'timecreated' => 1391349319,
+    'personastateflags' => 0,
+    'loccountrycode' => 'NL',
+    'steamID64' => '76561198125147009',
 ];
 $truckersmpUser = [
-    "id" => 3181778,
-    "name" => "Doggo.",
-    "avatar" => "https://static.truckersmp.com/avatarsN/3181778.1633185937.png",
-    "smallAvatar" => "https://static.truckersmp.com/avatarsN/small/3181778.1633185937.png",
-    "joinDate" => "2020-01-06 20:33:34",
-    "steamID64" => 76561198125147009,
-    "steamID" => "76561198125147009",
-    "discordSnowflake" => "112928994340384768",
-    "displayVTCHistory" => true,
-    "groupName" => "Translator",
-    "groupColor" => "#00e5ff",
-    "groupID" => 25,
-    "banned" => false,
-    "bannedUntil" => null,
-    "bansCount" => null,
-    "displayBans" => false,
-    "patreon" => [
-        "isPatron" => true,
-        "active" => true,
-        "color" => "#DAA520",
-        "tierId" => 3894844,
-        "currentPledge" => 500,
-        "lifetimePledge" => 8500,
-        "nextPledge" => 500,
-        "hidden" => false,
+    'id' => 3181778,
+    'name' => 'Doggo.',
+    'avatar' => 'https://static.truckersmp.com/avatarsN/3181778.1633185937.png',
+    'smallAvatar' => 'https://static.truckersmp.com/avatarsN/small/3181778.1633185937.png',
+    'joinDate' => '2020-01-06 20:33:34',
+    'steamID64' => 76561198125147009,
+    'steamID' => '76561198125147009',
+    'discordSnowflake' => '112928994340384768',
+    'displayVTCHistory' => true,
+    'groupName' => 'Translator',
+    'groupColor' => '#00e5ff',
+    'groupID' => 25,
+    'banned' => false,
+    'bannedUntil' => null,
+    'bansCount' => null,
+    'displayBans' => false,
+    'patreon' => [
+        'isPatron' => true,
+        'active' => true,
+        'color' => '#DAA520',
+        'tierId' => 3894844,
+        'currentPledge' => 500,
+        'lifetimePledge' => 8500,
+        'nextPledge' => 500,
+        'hidden' => false,
     ],
-    "permissions" => [
-        "isStaff" => true,
-        "isUpperStaff" => false,
-        "isGameAdmin" => false,
-        "showDetailedOnWebMaps" => false,
+    'permissions' => [
+        'isStaff' => true,
+        'isUpperStaff' => false,
+        'isGameAdmin' => false,
+        'showDetailedOnWebMaps' => false,
     ],
-    "vtc" => [
-        "id" => 30294,
-        "name" => "Phoenix",
-        "tag" => "Phoenix |",
-        "inVTC" => true,
-        "memberID" => 116827,
-    ]
+    'vtc' => [
+        'id' => 30294,
+        'name' => 'Phoenix',
+        'tag' => 'Phoenix |',
+        'inVTC' => true,
+        'memberID' => 116827,
+    ],
 ];
 
 it('shows the application form', function () use ($steamUser) {
@@ -172,7 +171,7 @@ test('username hasn\'t been taken already', function () {
         ->set('username', 'Diego')
         ->call('submit')
         ->assertHasErrors([
-            'username' => 'unique'
+            'username' => 'unique',
         ]);
 });
 
@@ -192,7 +191,7 @@ test('email hasn\'t been taken already', function () {
         ->set('email', 'diego@phoenixvtc.com')
         ->call('submit')
         ->assertHasErrors([
-            'email' => 'unique'
+            'email' => 'unique',
         ]);
 });
 

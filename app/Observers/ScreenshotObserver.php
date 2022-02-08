@@ -23,35 +23,35 @@ class ScreenshotObserver
             'embeds' => [
                 [
                     'url' => route('screenshot-hub.show', $screenshot->id),
-                    'title' => $screenshot->user->username . ' uploaded a new screenshot!',
+                    'title' => $screenshot->user->username.' uploaded a new screenshot!',
                     'description' => $screenshot->description ?: null,
                     'color' => 14429954, // #DC2F02
                     'fields' => [
                         [
                             'name' => 'Title',
                             'value' => $screenshot->title,
-                            'inline' => true
+                            'inline' => true,
                         ],
                         [
                             'name' => 'Vote',
-                            'value' => '[<:Upvote:841965071071707156> **Upvote**](' . route('screenshot-hub.show', $screenshot->id) . ')',
-                            'inline' => true
+                            'value' => '[<:Upvote:841965071071707156> **Upvote**]('.route('screenshot-hub.show', $screenshot->id).')',
+                            'inline' => true,
                         ],
                     ],
                     'author' => [
                         'name' => $screenshot->user->username,
                         'url' => route('users.profile', $screenshot->user),
-                        'icon_url' => $screenshot->user->profile_picture
+                        'icon_url' => $screenshot->user->profile_picture,
                     ],
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => $screenshot->created_at,
                     'image' => [
-                        'url' => $screenshot->image_url
+                        'url' => $screenshot->image_url,
                     ],
-                ]
+                ],
             ],
         ]);
     }

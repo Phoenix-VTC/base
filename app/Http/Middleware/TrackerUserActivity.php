@@ -22,7 +22,7 @@ class TrackerUserActivity
     public function handle(Request $request, Closure $next): mixed
     {
         // Return next request if not authenticated
-        if (!$request->user()) {
+        if (! $request->user()) {
             return $next($request);
         }
 
@@ -64,7 +64,7 @@ class TrackerUserActivity
     private function getNearbyLocation(object $data): string|null
     {
         // Check if game, X and Z values are set
-        if (!isset($data->game->game->name, $data->truck->position->X, $data->truck->position->Z)) {
+        if (! isset($data->game->game->name, $data->truck->position->X, $data->truck->position->Z)) {
             return null;
         }
 
@@ -78,7 +78,7 @@ class TrackerUserActivity
         $response = $response->collect();
 
         // Return null if the response has an error, or the location was not resolved
-        if ($response['error'] || !$response['response']['resolved']) {
+        if ($response['error'] || ! $response['response']['resolved']) {
             return null;
         }
 

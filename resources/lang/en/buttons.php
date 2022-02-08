@@ -11,8 +11,8 @@ return [
     |
     */
 
-    "continue" => "Continue",
-    "back" => "Back",
-    "apply" => "Apply"
+    'continue' => 'Continue',
+    'back' => 'Back',
+    'apply' => 'Apply',
 
 ];

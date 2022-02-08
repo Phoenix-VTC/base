@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\API\CmsController;
 use App\Http\Controllers\API\DiscordBotController;
+use App\Http\Controllers\API\OnlineUserController;
 use App\Http\Controllers\API\Select2\GameDataController;
 use App\Http\Controllers\API\Select2\UserController;
 use App\Http\Controllers\API\Tracker\EventController;
 use App\Http\Controllers\API\Tracker\IncomingDataController;
 use App\Http\Controllers\API\Tracker\JobController;
-use App\Http\Controllers\API\OnlineUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('game-data/{game}')->name('game-data.')->group(function ($group) {
@@ -36,7 +36,7 @@ Route::prefix('tracker')->middleware(['auth:sanctum', 'sanctum.canSubmitJobs'])-
 
     Route::get('online-users', [OnlineUserController::class, 'onlineTrackerUsers']);
 
-    Route::get('pending-jobs-count', function (\Illuminate\Http\Request $request) {
+    Route::get('pending-jobs-count', function (Illuminate\Http\Request $request) {
         return Cache::remember("pending-jobs-count-{$request->user()->id}", 900, function () use ($request) {
             return $request->user()
                 ->jobs()
@@ -52,7 +52,7 @@ Route::prefix('tracker')->middleware(['auth:sanctum', 'sanctum.canSubmitJobs'])-
     ]);
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Illuminate\Http\Request $request) {
     $user = $request->user();
 
     return [
@@ -62,11 +62,10 @@ Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Reque
         'wallet_balance' => $user->getWallet('default')->balance ?? 0,
         'event_xp' => $user->getWallet('event-xp')->balance ?? 0,
         'profile_picture' => $user->profile_picture,
-        'profile_link' => route('users.profile', $user)
+        'profile_link' => route('users.profile', $user),
     ];
 });
 
 Route::prefix('cms')->group(function () {
     Route::get('statistics', [CmsController::class, 'statistics']);
 });
-

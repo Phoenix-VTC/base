@@ -30,25 +30,45 @@ class ShowCreate extends Component implements HasForms
     public Collection $tmp_event_data;
 
     public $tmp_event_url;
+
     public $tmp_event_id;
+
     public $tmp_event_description = '';
+
     public $name = '';
+
     public $featured_image_url = '';
+
     public $map_image_url = '';
+
     public $description = '';
+
     public $server = '';
+
     public $required_dlcs = [];
+
     public $departure_location = '';
+
     public $arrival_location = '';
+
     public $start_date = '';
+
     public $distance = '';
+
     public $points = '';
+
     public $game_id = '';
+
     public $published = '';
+
     public $featured = '';
+
     public $external_event = '';
+
     public $public_event = '';
+
     public $hosted_by = '';
+
     public $announce = '';
 
     protected array $validationAttributes = [
@@ -86,23 +106,23 @@ class ShowCreate extends Component implements HasForms
                                 ->rule('starts_with:https://')
                                 ->placeholder('https://truckersmp.com/events/123-event-name')
                                 ->reactive()
-                                ->afterStateUpdated(fn() => $this->setTruckersMpFormData())
+                                ->afterStateUpdated(fn () => $this->setTruckersMpFormData())
                                 ->helperText(function (Closure $get) {
-                                    if (!$get('tmp_event_url')) {
+                                    if (! $get('tmp_event_url')) {
                                         return null;
                                     }
 
-                                    if (!$this->tmp_event_id) {
+                                    if (! $this->tmp_event_id) {
                                         return '<p class="text-red-600">Could not resolve TruckersMP Event ID.</p>';
                                     }
 
-                                    return 'TruckersMP Event ID: ' . $this->tmp_event_id;
+                                    return 'TruckersMP Event ID: '.$this->tmp_event_id;
                                 }),
 
                             Forms\Components\TextInput::make('name')
                                 ->label('Event name')
                                 ->required()
-                                ->placeholder("Kenji's weekly drive")
+                                ->placeholder("Kenji's weekly drive"),
                         ]),
 
                     Forms\Components\TextInput::make('featured_image_url')
@@ -113,9 +133,10 @@ class ShowCreate extends Component implements HasForms
                         ->rule('ends_with:.png,.jpg,.jpeg')
                         ->placeholder('https://i.imgur.com/Uv6fmAq.png')
                         ->helperText(function (Closure $get) {
-                            if (!$get('featured_image_url')) {
+                            if (! $get('featured_image_url')) {
                                 return null;
                             }
+
                             return "<a href='{$get('featured_image_url')}' target='_blank'>View image</a>";
                         })
                         ->reactive(),
@@ -128,9 +149,10 @@ class ShowCreate extends Component implements HasForms
                         ->rule('ends_with:.png,.jpg,.jpeg')
                         ->placeholder('https://i.imgur.com/vJOyb72.png')
                         ->helperText(function (Closure $get) {
-                            if (!$get('map_image_url')) {
+                            if (! $get('map_image_url')) {
                                 return null;
                             }
+
                             return "<a href='{$get('map_image_url')}' target='_blank'>View image</a>";
                         })
                         ->reactive(),
@@ -141,7 +163,7 @@ class ShowCreate extends Component implements HasForms
                             Forms\Components\RichEditor::make('description')
                                 ->required()
                                 ->fileAttachmentsDisk('scaleway')
-                                ->fileAttachmentsDirectory('event-images')
+                                ->fileAttachmentsDirectory('event-images'),
                         ]),
 
                     Forms\Components\Grid::make()
@@ -172,9 +194,9 @@ class ShowCreate extends Component implements HasForms
                                 ->minDate(now())
                                 ->placeholder('Please choose a date and time')
                                 ->helperText(function () {
-                                    return 'Current UTC date & time: **' . Carbon::now('UTC') . '**';
+                                    return 'Current UTC date & time: **'.Carbon::now('UTC').'**';
                                 })
-                                ->required()
+                                ->required(),
                         ]),
 
                     Forms\Components\TextInput::make('distance')
@@ -245,7 +267,7 @@ class ShowCreate extends Component implements HasForms
                                 ->onIcon('heroicon-o-bell')
                                 ->offIcon('heroicon-s-x')
                                 ->hint("If the event should be announced on Discord. If skipped, it can't be done afterwards.")
-                                ->hidden(fn(Closure $get) => !$get('published')),
+                                ->hidden(fn (Closure $get) => ! $get('published')),
                         ]),
                 ]),
         ];
@@ -266,14 +288,14 @@ class ShowCreate extends Component implements HasForms
             'departure_location' => $validatedData['departure_location'],
             'arrival_location' => $validatedData['arrival_location'],
             'start_date' => $validatedData['start_date'],
-            'distance' => (int)$validatedData['distance'],
-            'points' => (int)$validatedData['points'],
-            'game_id' => (int)$validatedData['game_id'],
+            'distance' => (int) $validatedData['distance'],
+            'points' => (int) $validatedData['points'],
+            'game_id' => (int) $validatedData['game_id'],
             'tmp_event_id' => $this->tmp_event_id ?: null,
-            'published' => (bool)$validatedData['published'],
-            'featured' => (bool)$validatedData['featured'],
-            'external_event' => (bool)$validatedData['external_event'],
-            'public_event' => (bool)$validatedData['public_event'],
+            'published' => (bool) $validatedData['published'],
+            'featured' => (bool) $validatedData['featured'],
+            'external_event' => (bool) $validatedData['external_event'],
+            'public_event' => (bool) $validatedData['public_event'],
             'created_by' => Auth::id(),
         ]);
 
@@ -295,7 +317,7 @@ class ShowCreate extends Component implements HasForms
     private function parseTruckersMPEventID($string, $start, $end): int|string|null
     {
         try {
-            $string = ' ' . $string;
+            $string = ' '.$string;
             $ini = strpos($string, $start);
             if ($ini === 0) {
                 return '';
@@ -303,7 +325,7 @@ class ShowCreate extends Component implements HasForms
             $ini += strlen($start);
             $len = strpos($string, $end, $ini) - $ini;
 
-            return (int)substr($string, $ini, $len);
+            return (int) substr($string, $ini, $len);
         } catch (\ValueError) {
             return null;
         }
@@ -311,7 +333,7 @@ class ShowCreate extends Component implements HasForms
 
     public function getTruckersMpEventData(): Collection
     {
-        return Cache::remember($this->tmp_event_id . "_tmp_event_data", 86400, function () {
+        return Cache::remember($this->tmp_event_id.'_tmp_event_data', 86400, function () {
             $response = Http::get("https://api.truckersmp.com/v2/events/{$this->tmp_event_id}");
 
             // Return an empty collection if the response failed.
@@ -350,8 +372,8 @@ class ShowCreate extends Component implements HasForms
             'tmp_event_description' => Markdown::convertToHtml($this->tmp_event_data['response']['description'] ?? ''),
             'server' => $this->tmp_event_data['response']['server']['name'] ?? '',
             'required_dlcs' => array_values($this->tmp_event_data['response']['dlcs'] ?? []), // Only the array values, not keys
-            'departure_location' => $this->tmp_event_data['response']['departure']['location'] . ", " . $this->tmp_event_data['response']['departure']['city'],
-            'arrival_location' => $this->tmp_event_data['response']['arrive']['location'] . ", " . $this->tmp_event_data['response']['arrive']['city'],
+            'departure_location' => $this->tmp_event_data['response']['departure']['location'].', '.$this->tmp_event_data['response']['departure']['city'],
+            'arrival_location' => $this->tmp_event_data['response']['arrive']['location'].', '.$this->tmp_event_data['response']['arrive']['city'],
             'start_date' => $this->tmp_event_data['response']['start_at'] ?? '',
             'game_id' => $this->gameNameToId($this->tmp_event_data['response']['game']),
         ]);

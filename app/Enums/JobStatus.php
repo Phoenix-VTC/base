@@ -12,6 +12,8 @@ use BenSampo\Enum\Enum;
 final class JobStatus extends Enum
 {
     public const Incomplete = 0;
+
     public const PendingVerification = 1;
+
     public const Complete = 2;
 }

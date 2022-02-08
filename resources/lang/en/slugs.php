@@ -11,8 +11,8 @@ return [
     |
     */
 
-    "characters" => "characters",
-    "login_steam" => "Log in with Steam",
-    "step" => "Step"
+    'characters' => 'characters',
+    'login_steam' => 'Log in with Steam',
+    'step' => 'Step',
 
 ];

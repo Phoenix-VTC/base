@@ -8,6 +8,7 @@ use Illuminate\View\Component;
 class emptyState extends Component
 {
     public string $image;
+
     public string $alt;
 
     /**

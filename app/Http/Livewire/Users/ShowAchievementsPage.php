@@ -9,6 +9,7 @@ use Livewire\Component;
 class ShowAchievementsPage extends Component
 {
     public User $user;
+
     public Collection $achievements;
 
     public function mount(User $user): void

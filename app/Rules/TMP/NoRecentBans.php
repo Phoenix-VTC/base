@@ -25,7 +25,7 @@ class NoRecentBans implements Rule
             ->json();
 
         // Return true if the user has no bans
-        if (!$response['error'] && !$response['response']) {
+        if (! $response['error'] && ! $response['response']) {
             return true;
         }
 

@@ -11,8 +11,8 @@ return [
     |
     */
 
-    "yes" => "Yes",
-    "no" => "No",
-    "both" => "Both",
+    'yes' => 'Yes',
+    'no' => 'No',
+    'both' => 'Both',
 
 ];

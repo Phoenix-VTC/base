@@ -21,7 +21,7 @@ class AddSlugToUsersTable extends Migration
         User::all()->each(function (User $user) {
             $slug = Str::slug($user->username);
             while (User::whereSlug($slug)->exists()) {
-                $slug .= '_' . Str::random(3);
+                $slug .= '_'.Str::random(3);
             }
             $user->slug = $slug;
             $user->save();
@@ -30,7 +30,7 @@ class AddSlugToUsersTable extends Migration
         User::onlyTrashed()->get()->each(function (User $user) {
             $slug = Str::slug($user->username);
             while (User::whereSlug($slug)->exists()) {
-                $slug .= '_' . Str::random(3);
+                $slug .= '_'.Str::random(3);
             }
             $user->slug = $slug;
             $user->save();

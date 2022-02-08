@@ -51,7 +51,7 @@ class JobController extends Controller
                 'destinationCity:id,real_name,name,country,dlc,mod,game_id',
                 'pickupCompany:id,name,category,specialization,dlc,mod,game_id',
                 'destinationCompany:id,name,category,specialization,dlc,mod,game_id',
-                'cargo:id,name,dlc,mod,weight,game_id,world_of_trucks'
+                'cargo:id,name,dlc,mod,weight,game_id,world_of_trucks',
             ])
             ->orderByDesc('created_at')
             ->get()

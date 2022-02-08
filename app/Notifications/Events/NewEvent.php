@@ -48,7 +48,7 @@ class NewEvent extends Notification implements ShouldQueue
         $route = route('events.show', ['id' => $this->event->id, 'slug' => $this->event->slug]);
 
         $this->embed = [
-            'title' => 'New Event: ' . $this->event->name,
+            'title' => 'New Event: '.$this->event->name,
             'description' => Str::words(strip_tags($this->event->description), 40),
             'url' => $route,
             'color' => 14429954, // #DC2F02
@@ -56,16 +56,16 @@ class NewEvent extends Notification implements ShouldQueue
             'author' => [
                 'name' => $this->event->host->username,
                 'url' => $route,
-                'icon_url' => $this->event->host->profile_picture
+                'icon_url' => $this->event->host->profile_picture,
             ],
             'fields' => [],
             'image' => [
-                'url' => $this->event->featured_image_url
+                'url' => $this->event->featured_image_url,
             ],
             'footer' => [
                 'text' => 'PhoenixEvents',
                 'icon_url' => 'https://phoenixvtc.com/assets/images/branding/logo.png',
-            ]
+            ],
         ];
 
         $this->addEmbedFields();
@@ -108,7 +108,7 @@ class NewEvent extends Notification implements ShouldQueue
         if ($this->event->distance) {
             $this->embed['fields'][] = [
                 'name' => 'Distance',
-                'value' => $this->event->distance . ' ' . $this->event->distance_metric,
+                'value' => $this->event->distance.' '.$this->event->distance_metric,
                 'inline' => true,
             ];
         }
@@ -116,12 +116,12 @@ class NewEvent extends Notification implements ShouldQueue
         if ($this->event->is_high_rewarding) {
             $this->embed['fields'][] = [
                 'name' => 'Event XP',
-                'value' => $this->event->points . ' 🔥',
+                'value' => $this->event->points.' 🔥',
                 'inline' => true,
             ];
         }
 
-        if (!$this->event->is_high_rewarding) {
+        if (! $this->event->is_high_rewarding) {
             $this->embed['fields'][] = [
                 'name' => 'Event XP',
                 'value' => $this->event->points,

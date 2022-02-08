@@ -22,8 +22,11 @@ class ShowCreate extends Component implements HasForms
     use InteractsWithForms;
 
     public $start_date;
+
     public $end_date;
+
     public $reason;
+
     public $leaving;
 
     public function mount(): void
@@ -67,12 +70,12 @@ class ShowCreate extends Component implements HasForms
                                     return $rule->where('user_id', Auth::id())
                                         ->where('leaving', 1)
                                         ->whereNull('handled_by');
-                                })
+                                }),
                         ]),
 
                     Forms\Components\DatePicker::make('start_date')
                         ->required()
-                        ->hidden(fn(Closure $get) => $get('leaving')) // Hide if leaving
+                        ->hidden(fn (Closure $get) => $get('leaving')) // Hide if leaving
                         ->minDate(now()->addDay())
                         ->afterOrEqual('tomorrow')
                         ->unique(table: 'vacation_requests', callback: function (Unique $rule) {
@@ -81,9 +84,9 @@ class ShowCreate extends Component implements HasForms
 
                     Forms\Components\DatePicker::make('end_date')
                         ->required()
-                        ->hidden(fn(Closure $get) => $get('leaving')) // Hide if leaving
+                        ->hidden(fn (Closure $get) => $get('leaving')) // Hide if leaving
                         ->minDate(now()->addDay())
-                        ->afterOrEqual(fn(Closure $get) => Carbon::parse($get('start_date'))->addWeek()) // Must be at least a week after the start date
+                        ->afterOrEqual(fn (Closure $get) => Carbon::parse($get('start_date'))->addWeek()) // Must be at least a week after the start date
                         ->unique(table: 'vacation_requests', callback: function (Unique $rule) {
                             return $rule->where('user_id', Auth::id());
                         }),

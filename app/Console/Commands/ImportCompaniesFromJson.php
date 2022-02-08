@@ -30,13 +30,13 @@ class ImportCompaniesFromJson extends Command
      */
     public function handle(): void
     {
-        if (!filter_var($this->argument('url'), FILTER_VALIDATE_URL)) {
+        if (! filter_var($this->argument('url'), FILTER_VALIDATE_URL)) {
             $this->error('The provided URL is invalid.');
             exit;
         }
 
         // Check if the Game ID is either 1 or 2
-        if (!in_array($this->argument('game_id'), [1, 2], false)) {
+        if (! in_array($this->argument('game_id'), [1, 2], false)) {
             $this->error('The Game ID must be either 1 (ETS2) or 2 (ATS).');
             exit;
         }
@@ -76,7 +76,7 @@ class ImportCompaniesFromJson extends Command
             'mod' => $this->option('mod'),
         ]);
 
-        if (!$companyModel->wasRecentlyCreated) {
+        if (! $companyModel->wasRecentlyCreated) {
             $this->line("Skipped $companyName, already exists.");
         }
 

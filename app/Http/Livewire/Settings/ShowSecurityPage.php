@@ -11,8 +11,11 @@ class ShowSecurityPage extends Component
 {
     // Form fields
     public $old_password = '';
+
     public $new_password = '';
+
     public $new_password_confirmation = '';
+
     public string $tracker_token = '******************************************';
 
     public function rules(): array
@@ -27,7 +30,7 @@ class ShowSecurityPage extends Component
     public function messages(): array
     {
         return [
-            'new_password.not_in' => 'The new password must be different than the old password.'
+            'new_password.not_in' => 'The new password must be different than the old password.',
         ];
     }
 
@@ -41,7 +44,7 @@ class ShowSecurityPage extends Component
         $this->validate();
 
         Auth::user()->update([
-            'password' => Hash::make($this->new_password)
+            'password' => Hash::make($this->new_password),
         ]);
 
         event(new PasswordChanged(Auth::user()));

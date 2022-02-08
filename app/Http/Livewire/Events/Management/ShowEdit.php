@@ -23,22 +23,39 @@ class ShowEdit extends Component implements HasForms
     public EloquentCollection $manage_event_users;
 
     public $tmp_event_id = '';
+
     public $name = '';
+
     public $featured_image_url = '';
+
     public $map_image_url = '';
+
     public $description = '';
+
     public $server = '';
+
     public $required_dlcs = [];
+
     public $departure_location = '';
+
     public $arrival_location = '';
+
     public $start_date = '';
+
     public $distance = '';
+
     public $points = '';
+
     public $game_id = '';
+
     public $published = '1';
+
     public $featured = '';
+
     public $external_event = '';
+
     public $public_event = '';
+
     public $hosted_by = '';
 
     public function mount(Event $event): void
@@ -92,7 +109,7 @@ class ShowEdit extends Component implements HasForms
                             Forms\Components\TextInput::make('name')
                                 ->label('Event name')
                                 ->required()
-                                ->placeholder("Kenji's weekly drive")
+                                ->placeholder("Kenji's weekly drive"),
                         ]),
 
                     Forms\Components\TextInput::make('featured_image_url')
@@ -103,9 +120,10 @@ class ShowEdit extends Component implements HasForms
                         ->rule('ends_with:.png,.jpg,.jpeg')
                         ->placeholder('https://i.imgur.com/Uv6fmAq.png')
                         ->helperText(function (Closure $get) {
-                            if (!$get('featured_image_url')) {
+                            if (! $get('featured_image_url')) {
                                 return null;
                             }
+
                             return "<a href='{$get('featured_image_url')}' target='_blank'>View image</a>";
                         })
                         ->reactive(),
@@ -118,9 +136,10 @@ class ShowEdit extends Component implements HasForms
                         ->rule('ends_with:.png,.jpg,.jpeg')
                         ->placeholder('https://i.imgur.com/vJOyb72.png')
                         ->helperText(function (Closure $get) {
-                            if (!$get('map_image_url')) {
+                            if (! $get('map_image_url')) {
                                 return null;
                             }
+
                             return "<a href='{$get('map_image_url')}' target='_blank'>View image</a>";
                         })
                         ->reactive(),
@@ -131,7 +150,7 @@ class ShowEdit extends Component implements HasForms
                             Forms\Components\RichEditor::make('description')
                                 ->required()
                                 ->fileAttachmentsDisk('scaleway')
-                                ->fileAttachmentsDirectory('event-images')
+                                ->fileAttachmentsDirectory('event-images'),
                         ]),
 
                     Forms\Components\Grid::make()
@@ -162,9 +181,9 @@ class ShowEdit extends Component implements HasForms
                                 ->minDate(Carbon::parse($this->start_date))
                                 ->placeholder('Please choose a date and time')
                                 ->helperText(function () {
-                                    return 'Current UTC date & time: **' . Carbon::now('UTC') . '**';
+                                    return 'Current UTC date & time: **'.Carbon::now('UTC').'**';
                                 })
-                                ->required()
+                                ->required(),
                         ]),
 
                     Forms\Components\TextInput::make('distance')
@@ -241,12 +260,13 @@ class ShowEdit extends Component implements HasForms
                             Forms\Components\TextInput::make('tmp_event_id')
                                 ->label('TruckersMP event ID')
                                 ->helperText(function (Closure $get) {
-                                    if (!$get('tmp_event_id')) {
+                                    if (! $get('tmp_event_id')) {
                                         return null;
                                     }
+
                                     return "<a href='https://truckersmp.com/events/{$get('tmp_event_id')}' target='_blank'>View event post</a>";
                                 })
-                                ->hidden(fn(Closure $get) => !$get('change_tmp_event_id'))
+                                ->hidden(fn (Closure $get) => ! $get('change_tmp_event_id'))
                                 ->reactive(),
                         ]),
                 ]),
@@ -268,14 +288,14 @@ class ShowEdit extends Component implements HasForms
         $event->departure_location = $validatedData['departure_location'];
         $event->arrival_location = $validatedData['arrival_location'];
         $event->start_date = $validatedData['start_date'];
-        $event->distance = (int)$validatedData['distance'];
-        $event->points = (int)$validatedData['points'];
-        $event->game_id = (int)$validatedData['game_id'];
-        $event->published = (bool)$validatedData['published'];
-        $event->featured = (bool)$validatedData['featured'];
-        $event->external_event = (bool)$validatedData['external_event'];
-        $event->public_event = (bool)$validatedData['public_event'];
-        $event->hosted_by = (int)$validatedData['hosted_by'];
+        $event->distance = (int) $validatedData['distance'];
+        $event->points = (int) $validatedData['points'];
+        $event->game_id = (int) $validatedData['game_id'];
+        $event->published = (bool) $validatedData['published'];
+        $event->featured = (bool) $validatedData['featured'];
+        $event->external_event = (bool) $validatedData['external_event'];
+        $event->public_event = (bool) $validatedData['public_event'];
+        $event->hosted_by = (int) $validatedData['hosted_by'];
 
         $event->save();
 

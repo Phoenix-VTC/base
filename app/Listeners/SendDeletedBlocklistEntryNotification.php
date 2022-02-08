@@ -24,10 +24,10 @@ class SendDeletedBlocklistEntryNotification
                     'color' => 14429954, // #DC2F02
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => Carbon::now(),
-                ]
+                ],
             ],
         ]);
     }

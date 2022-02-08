@@ -32,7 +32,7 @@ class ShowAcceptModal extends ModalComponent
     }
 
     protected array $validationAttributes = [
-        'discord_id' => 'Discord ID'
+        'discord_id' => 'Discord ID',
     ];
 
     /**
@@ -65,8 +65,8 @@ class ShowAcceptModal extends ModalComponent
         // Try to find the user in the guild
         try {
             $member = $client->guild->getGuildMember([
-                'guild.id' => (int)config('services.discord.server-id'),
-                'user.id' => (int)$validatedData['discord_id']
+                'guild.id' => (int) config('services.discord.server-id'),
+                'user.id' => (int) $validatedData['discord_id'],
             ]);
         } catch (CommandClientException $e) {
             return $this->addError('foo', 'This user is not in the Phoenix guild.');
@@ -87,7 +87,7 @@ class ShowAcceptModal extends ModalComponent
         }
 
         // Check if the user already has the Phoenix Member role, but only if the code isn't being executed in a test
-        if (!App::runningUnitTests() && in_array($memberRole->id, $member->roles, true)) {
+        if (! App::runningUnitTests() && in_array($memberRole->id, $member->roles, true)) {
             return $this->addError('bam', 'This user already has the Phoenix Member role.');
         }
 
@@ -97,23 +97,23 @@ class ShowAcceptModal extends ModalComponent
         // Remove the user's Community Member role, if they have it
         if (in_array($communityRole->id, $member->roles, true)) {
             $client->guild->removeGuildMemberRole([
-                'guild.id' => (int)config('services.discord.server-id'),
-                'user.id' => (int)$validatedData['discord_id'],
-                'role.id' => $communityRole->id
+                'guild.id' => (int) config('services.discord.server-id'),
+                'user.id' => (int) $validatedData['discord_id'],
+                'role.id' => $communityRole->id,
             ]);
         }
 
         // Give the user the Phoenix Member role
         $client->guild->addGuildMemberRole([
-            'guild.id' => (int)config('services.discord.server-id'),
-            'user.id' => (int)$validatedData['discord_id'],
-            'role.id' => (int)$memberRole->id
+            'guild.id' => (int) config('services.discord.server-id'),
+            'user.id' => (int) $validatedData['discord_id'],
+            'role.id' => (int) $memberRole->id,
         ]);
 
         // Send the welcome message in #member-chat
         $this->sendWelcomeMessage($client, $member);
 
-        $this->sendDiscordWebhook('Application Accepted', 'By **' . Auth::user()->username . '**', 5763719);
+        $this->sendDiscordWebhook('Application Accepted', 'By **'.Auth::user()->username.'**', 5763719);
 
         session()->flash('alert', ['type' => 'success', 'message' => 'Application successfully <b>accepted</b>!']);
 
@@ -131,10 +131,10 @@ class ShowAcceptModal extends ModalComponent
                     'color' => $color,
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => Carbon::now(),
-                ]
+                ],
             ],
         ]);
     }
@@ -142,7 +142,7 @@ class ShowAcceptModal extends ModalComponent
     private function getCommunityMemberRole(DiscordClient $client)
     {
         // Get and collect the guild roles
-        $roles = $client->guild->getGuildRoles(['guild.id' => (int)config('services.discord.server-id')]);
+        $roles = $client->guild->getGuildRoles(['guild.id' => (int) config('services.discord.server-id')]);
         $roles = collect($roles);
 
         return $roles->where('name', 'Community Member')->firstOrFail();
@@ -151,7 +151,7 @@ class ShowAcceptModal extends ModalComponent
     private function getPhoenixMemberRole(DiscordClient $client)
     {
         // Get and collect the guild roles
-        $roles = $client->guild->getGuildRoles(['guild.id' => (int)config('services.discord.server-id')]);
+        $roles = $client->guild->getGuildRoles(['guild.id' => (int) config('services.discord.server-id')]);
         $roles = collect($roles);
 
         return $roles->where('name', 'Phoenix Member')->firstOrFail();
@@ -160,7 +160,7 @@ class ShowAcceptModal extends ModalComponent
     private function sendWelcomeMessage(DiscordClient $client, GuildMember $member): void
     {
         $client->channel->createMessage([
-            'channel.id' => (int)config('services.discord.channels.member-chat'),
+            'channel.id' => (int) config('services.discord.channels.member-chat'),
             'content' => "<@{$member->user->id}>",
             'embed' => [
                 'title' => 'A new driver joined our company!',
@@ -172,14 +172,14 @@ class ShowAcceptModal extends ModalComponent
                 ",
                 'color' => 14429954,
                 'thumbnail' => [
-                    'url' => 'https://base.phoenixvtc.com/img/logo.png'
+                    'url' => 'https://base.phoenixvtc.com/img/logo.png',
                 ],
                 'image' => [
-                    'url' => 'https://media1.giphy.com/media/9qxqNBtyucNqyFccMJ/giphy.gif'
+                    'url' => 'https://media1.giphy.com/media/9qxqNBtyucNqyFccMJ/giphy.gif',
                 ],
                 'footer' => [
                     'text' => 'Member Updates',
-                    'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                    'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                 ],
                 'timestamp' => Carbon::now(),
             ],

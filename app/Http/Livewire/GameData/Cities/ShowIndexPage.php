@@ -16,12 +16,19 @@ class ShowIndexPage extends Component implements HasForms
     use InteractsWithForms;
 
     public $real_name;
+
     public $name;
+
     public $country;
+
     public $dlc;
+
     public $mod;
+
     public $game_id = 1;
+
     public $x;
+
     public $z;
 
     public function render()
@@ -63,7 +70,7 @@ class ShowIndexPage extends Component implements HasForms
                                     1 => 'Euro Truck Simulator 2',
                                     2 => 'American Truck Simulator',
                                 ])
-                                ->required()
+                                ->required(),
                         ]),
 
                     Forms\Components\TextInput::make('x')

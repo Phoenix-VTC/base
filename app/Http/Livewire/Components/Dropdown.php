@@ -2,16 +2,21 @@
 
 namespace App\Http\Livewire\Components;
 
-use Request;
 use Livewire\Component;
+use Request;
 
 class Dropdown extends Component
 {
     public string $title;
+
     public string $activeRoute;
+
     public string $icon;
+
     public array $items;
+
     public bool $showDropdown = false;
+
     public int $unreadCount = 0;
 
     public function mount(): void

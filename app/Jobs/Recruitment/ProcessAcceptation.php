@@ -4,7 +4,6 @@ namespace App\Jobs\Recruitment;
 
 use App\Models\Application;
 use App\Models\User;
-use RestCord\Model\User\User as DiscordUser;
 use App\Notifications\DriverApplication\WelcomeNotification;
 use App\Repositories\UserRepositoryInterface;
 use Illuminate\Bus\Queueable;
@@ -13,8 +12,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Hash;
-use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
+use RestCord\Model\User\User as DiscordUser;
 
 class ProcessAcceptation implements ShouldQueue
 {
@@ -53,7 +53,7 @@ class ProcessAcceptation implements ShouldQueue
     public function handle(UserRepositoryInterface $userRepository): void
     {
         if (User::where('username', '=', $this->application->username)->exists()) {
-            $this->application->username .= "-" . Uuid::uuid4()->getHex();
+            $this->application->username .= '-'.Uuid::uuid4()->getHex();
         }
 
         $user = $userRepository->create([
@@ -68,7 +68,7 @@ class ProcessAcceptation implements ShouldQueue
             'welcome_token' => Str::random(64),
             'application_id' => $this->application->id,
             'discord' => [
-                'id' => (string)$this->discordUser->id,
+                'id' => (string) $this->discordUser->id,
                 'name' => $this->discordUser->username,
                 'nickname' => "{$this->discordUser->username}#{$this->discordUser->discriminator}",
                 'avatar' => $this->discordUser->getAvatar('jpg'),

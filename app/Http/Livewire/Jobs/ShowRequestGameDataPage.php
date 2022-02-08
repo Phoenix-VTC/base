@@ -21,20 +21,31 @@ class ShowRequestGameDataPage extends Component implements HasForms
     use InteractsWithForms;
 
     public $type;
+
     public $game_id;
+
     public $name;
+
     public $category;
+
     public $specialization;
+
     public $country;
+
     public $dlc;
+
     public $mod;
+
     public $weight;
+
     public $wot;
+
     public $x;
+
     public $z;
 
     protected array $validationAttributes = [
-        'wot' => 'World of Trucks'
+        'wot' => 'World of Trucks',
     ];
 
     public function render()
@@ -65,20 +76,20 @@ class ShowRequestGameDataPage extends Component implements HasForms
                             1 => 'Euro Truck Simulator 2',
                             2 => 'American Truck Simulator',
                         ])
-                        ->hidden(fn(Closure $get) => !$get('type')),
+                        ->hidden(fn (Closure $get) => ! $get('type')),
 
                     Forms\Components\Grid::make()
                         ->schema([
                             Forms\Components\TextInput::make('name')
                                 ->placeholder('MiniMarket')
                                 ->required()
-                                ->hidden(fn(Closure $get) => !$get('type')),
+                                ->hidden(fn (Closure $get) => ! $get('type')),
 
                             Forms\Components\TextInput::make('country')
                                 ->label('Country or US state')
                                 ->placeholder('Germany')
                                 ->required()
-                                ->hidden(fn(Closure $get) => $get('type') !== 'city'),
+                                ->hidden(fn (Closure $get) => $get('type') !== 'city'),
 
                             Forms\Components\Grid::make()
                                 ->schema([
@@ -88,7 +99,7 @@ class ShowRequestGameDataPage extends Component implements HasForms
                                     Forms\Components\TextInput::make('specialization')
                                         ->placeholder('Supermarket chain'),
                                 ])
-                                ->hidden(fn(Closure $get) => $get('type') !== 'company'),
+                                ->hidden(fn (Closure $get) => $get('type') !== 'company'),
 
                             Forms\Components\Grid::make()
                                 ->schema([
@@ -100,7 +111,7 @@ class ShowRequestGameDataPage extends Component implements HasForms
                                     Forms\Components\TextInput::make('mod')
                                         ->placeholder('ProMods'),
                                 ])
-                                ->hidden(fn(Closure $get) => !$get('type')),
+                                ->hidden(fn (Closure $get) => ! $get('type')),
 
                             Forms\Components\Grid::make()
                                 ->schema([
@@ -108,17 +119,17 @@ class ShowRequestGameDataPage extends Component implements HasForms
                                         ->numeric()
                                         ->minValue(1)
                                         ->placeholder('12')
-                                        ->helperText('Tonnes (t) for ETS2, pounds (lb) for ATS.')
+                                        ->helperText('Tonnes (t) for ETS2, pounds (lb) for ATS.'),
                                 ])
-                                ->hidden(fn(Closure $get) => $get('type') !== 'cargo'),
+                                ->hidden(fn (Closure $get) => $get('type') !== 'cargo'),
 
                             Forms\Components\Grid::make()
                                 ->schema([
                                     Forms\Components\Radio::make('wot')
                                         ->label('World of Trucks only')
-                                        ->boolean()
+                                        ->boolean(),
                                 ])
-                                ->hidden(fn(Closure $get) => $get('type') !== 'cargo'),
+                                ->hidden(fn (Closure $get) => $get('type') !== 'cargo'),
 
                             Forms\Components\Grid::make()
                                 ->schema([
@@ -134,7 +145,7 @@ class ShowRequestGameDataPage extends Component implements HasForms
                                         ->helperText('The **in-game** coordinates.<br>Optional, but please try to specify.')
                                         ->placeholder('2532'),
                                 ])
-                                ->hidden(fn(Closure $get) => $get('type') !== 'city'),
+                                ->hidden(fn (Closure $get) => $get('type') !== 'city'),
                         ]),
                 ]),
         ];
@@ -178,7 +189,7 @@ class ShowRequestGameDataPage extends Component implements HasForms
                     'mod' => ucwords($validatedData['mod']),
                     'weight' => $validatedData['weight'] ?: null,
                     'game_id' => $validatedData['game_id'],
-                    'world_of_trucks' => (bool)$this->wot,
+                    'world_of_trucks' => (bool) $this->wot,
                     'approved' => false,
                     'requested_by' => Auth::id(),
                 ]);
@@ -187,7 +198,7 @@ class ShowRequestGameDataPage extends Component implements HasForms
 
         $name = $validatedData['name'];
 
-        session()->now('alert', ['type' => 'success', 'message' => ucfirst($validatedData['type']) . " <b>$name</b> successfully requested.<br>You will receive a notification on the Base when your request has been approved or denied."]);
+        session()->now('alert', ['type' => 'success', 'message' => ucfirst($validatedData['type'])." <b>$name</b> successfully requested.<br>You will receive a notification on the Base when your request has been approved or denied."]);
 
         $this->reset();
     }

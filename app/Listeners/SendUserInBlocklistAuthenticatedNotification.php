@@ -35,21 +35,21 @@ class SendUserInBlocklistAuthenticatedNotification implements ShouldQueue
                     'fields' => [
                         [
                             'name' => 'PhoenixBase Profile',
-                            'value' => '[' . $user->username . '](' . route('users.profile', $user) . ')',
-                            'inline' => true
+                            'value' => '['.$user->username.']('.route('users.profile', $user).')',
+                            'inline' => true,
                         ],
                         [
                             'name' => 'Blocklist Entry',
-                            'value' => '[View blocklist entry](' . route('user-management.blocklist.show', $blocklist->id) . ')',
-                            'inline' => true
+                            'value' => '[View blocklist entry]('.route('user-management.blocklist.show', $blocklist->id).')',
+                            'inline' => true,
                         ],
                     ],
                     'footer' => [
                         'text' => 'PhoenixBase',
-                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png'
+                        'icon_url' => 'https://base.phoenixvtc.com/img/logo.png',
                     ],
                     'timestamp' => Carbon::now(),
-                ]
+                ],
             ],
         ]);
     }

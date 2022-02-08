@@ -42,7 +42,7 @@ class EventXPRewarded extends Notification implements ShouldQueue
     {
         return [
             'title' => 'Event XP rewarded!',
-            'content' => 'Your Event XP for "<b>' . $this->attendee->event->name . '</b>" has been rewarded!',
+            'content' => 'Your Event XP for "<b>'.$this->attendee->event->name.'</b>" has been rewarded!',
             'link' => route('my-wallet'),
         ];
     }

@@ -74,13 +74,13 @@ class Download extends Model
 
     public function getFileNameAttribute(): string
     {
-        return str_replace(' ', '_', $this->name) . '.' . File::extension($this->file_path);
+        return str_replace(' ', '_', $this->name).'.'.File::extension($this->file_path);
     }
 
     public function getFileSizeAttribute(): int|float|null
     {
         try {
-            return (int)number_format(Storage::disk('scaleway')->size($this->file_path) / 1048576, 2);
+            return (int) number_format(Storage::disk('scaleway')->size($this->file_path) / 1048576, 2);
         } catch (\Exception $e) {
             return null;
         }

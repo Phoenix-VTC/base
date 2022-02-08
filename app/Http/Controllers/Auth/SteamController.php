@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
-use Invisnik\LaravelSteamAuth\SteamAuth;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Invisnik\LaravelSteamAuth\SteamAuth;
 use Invisnik\LaravelSteamAuth\SteamInfo;
 
 class SteamController extends Controller
@@ -71,7 +71,7 @@ class SteamController extends Controller
                                     We couldn\'t link any Phoenix accounts to the Steam account that you used.
                                     <br>
                                     If you\'re trying to apply to Phoenix, please do this <a href="https://phoenixvtc.com/en/apply" class="font-bold">here</a>.
-                                '
+                                ',
                         ]]);
                 }
 
@@ -88,7 +88,7 @@ class SteamController extends Controller
                         Something went wrong while trying to login with Steam
                         <br>
                         If this error keeps occurring, please contact our support.
-                    '
+                    ',
                 ]]);
         }
 

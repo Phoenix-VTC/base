@@ -182,7 +182,7 @@ class JobObserver
         $truckCargos = [
             'kenworth trucks',
             'volvo trucks',
-            'scania trucks'
+            'scania trucks',
         ];
 
         if (in_array(strtolower($job->cargo->name), $truckCargos, true)) {

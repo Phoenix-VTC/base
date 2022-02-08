@@ -28,7 +28,7 @@ class NotInVTC implements Rule
             return true;
         }
 
-        return !$response['response']['vtc']['inVTC'];
+        return ! $response['response']['vtc']['inVTC'];
     }
 
     /**
