@@ -34,8 +34,8 @@ class JobFactory extends Factory
         return [
             'user_id' => User::factory()->create()->id,
             'game_id' => random_int(1, 2),
-            'pickup_city_id' => City::inRandomOrder()->first('id'),
-            'destination_city_id' => City::inRandomOrder()->first('id'),
+            'pickup_city_id' => City::factory()->create()->id,
+            'destination_city_id' => City::factory()->create()->id,
             'pickup_company_id' => Company::factory()->create()->id,
             'destination_company_id' => Company::factory()->create()->id,
             'cargo_id' => Cargo::factory()->create()->id,
