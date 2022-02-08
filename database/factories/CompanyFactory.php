@@ -23,23 +23,23 @@ class CompanyFactory extends Factory
     public function definition(): array
     {
         if (random_int(0, 1) === 1) {
-            $category = $this->faker->word;
+            $category = $this->faker->word();
         }
 
         if (random_int(0, 1) === 1) {
-            $specialization = $this->faker->sentence;
+            $specialization = $this->faker->sentence();
         }
 
         if (random_int(0, 1) === 1) {
-            $dlc = $this->faker->word;
+            $dlc = $this->faker->word();
         }
 
         if (random_int(0, 1) === 1) {
-            $mod = $this->faker->word;
+            $mod = $this->faker->word();
         }
 
         return [
-            'name' => $this->faker->domainWord,
+            'name' => $this->faker->domainWord(),
             'category' => $category ?? null,
             'specialization' => $specialization ?? null,
             'dlc' => $dlc ?? null,

@@ -24,17 +24,17 @@ class CityFactory extends Factory
     public function definition(): array
     {
         if (random_int(0, 1) === 1) {
-            $dlc = $this->faker->word;
+            $dlc = $this->faker->word();
         }
 
         if (random_int(0, 1) === 1) {
-            $mod = $this->faker->word;
+            $mod = $this->faker->word();
         }
 
         return [
-            'real_name' => $this->faker->word,
-            'name' => $this->faker->word,
-            'country' => $this->faker->word,
+            'real_name' => $this->faker->word(),
+            'name' => $this->faker->word(),
+            'country' => $this->faker->word(),
             'dlc' => $dlc ?? null,
             'mod' => $mod ?? null,
             'game_id' => random_int(1, 2),

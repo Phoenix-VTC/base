@@ -24,15 +24,15 @@ class CargoFactory extends Factory
     public function definition(): array
     {
         if (random_int(0, 1) === 1) {
-            $dlc = $this->faker->word;
+            $dlc = $this->faker->word();
         }
 
         if (random_int(0, 1) === 1) {
-            $mod = $this->faker->word;
+            $mod = $this->faker->word();
         }
 
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->word(),
             'dlc' => $dlc ?? null,
             'mod' => $mod ?? null,
             'weight' => random_int(1, 60),

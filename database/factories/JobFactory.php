@@ -28,7 +28,7 @@ class JobFactory extends Factory
     public function definition(): array
     {
         if (random_int(0, 1) === 1) {
-            $comments = $this->faker->paragraph;
+            $comments = $this->faker->paragraph();
         }
 
         return [
@@ -39,7 +39,7 @@ class JobFactory extends Factory
             'pickup_company_id' => Company::factory()->create()->id,
             'destination_company_id' => Company::factory()->create()->id,
             'cargo_id' => Cargo::factory()->create()->id,
-            'started_at' => $this->faker->dateTime,
+            'started_at' => $this->faker->dateTime(),
             'finished_at' => $this->faker->dateTimeBetween($startDate = 'now', $endDate = '2 hours'),
             'distance' => random_int(1, 3000),
             'load_damage' => random_int(0, 100),

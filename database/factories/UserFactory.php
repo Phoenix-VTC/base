@@ -25,7 +25,7 @@ class UserFactory extends Factory
         return [
             'username' => $username = $this->faker->unique()->userName(),
             'slug' => \Illuminate\Support\Str::slug($username),
-            'email' => $this->faker->unique()->safeEmail,
+            'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'steam_id' => random_int(1000000, 10000000000000000),
             'truckersmp_id' => random_int(1, 10000000),
