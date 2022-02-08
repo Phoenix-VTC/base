@@ -32,24 +32,20 @@ class RouteServiceProvider extends ServiceProvider
             Route::prefix('api')
                 ->name('api.')
                 ->middleware('api')
-                ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
                 ->domain(config('app.url'))
-                ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
 
             Route::middleware('web')
                 ->domain(config('app.apply_url'))
                 ->name('driver-application.')
-                ->namespace($this->namespace)
                 ->group(base_path('routes/driver-application.php'));
 
             Route::middleware('web')
                 ->domain(config('app.events_url'))
                 ->name('events.')
-                ->namespace($this->namespace)
                 ->group(base_path('routes/events.php'));
         });
     }
