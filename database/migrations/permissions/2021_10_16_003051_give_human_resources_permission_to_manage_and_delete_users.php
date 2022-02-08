@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Spatie\Permission\Models\Role;
 
-class GiveHumanResourcesPermissionToManageAndDeleteUsers extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -28,4 +28,4 @@ class GiveHumanResourcesPermissionToManageAndDeleteUsers extends Migration
         $humanResources->revokePermissionTo('manage users');
         $humanResources->revokePermissionTo('delete users');
     }
-}
+};

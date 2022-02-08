@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class CreateSubmitJobsPermission extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -33,4 +33,4 @@ class CreateSubmitJobsPermission extends Migration
             ->firstOrFail()
             ->delete();
     }
-}
+};

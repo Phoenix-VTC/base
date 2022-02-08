@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class CreateManageVacationRequestsPermission extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -30,4 +30,4 @@ class CreateManageVacationRequestsPermission extends Migration
     {
         //
     }
-}
+};

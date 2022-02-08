@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\Models\Role;
 
-class GiveDeveloperPermissionToManageUsers extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -28,4 +28,4 @@ class GiveDeveloperPermissionToManageUsers extends Migration
         $developer = Role::findByName('developer');
         $developer->revokePermissionTo('manage users');
     }
-}
+};

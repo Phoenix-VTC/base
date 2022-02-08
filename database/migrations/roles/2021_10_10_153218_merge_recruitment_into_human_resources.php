@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Spatie\Permission\Models\Role;
 
-class MergeRecruitmentIntoHumanResources extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -32,4 +32,4 @@ class MergeRecruitmentIntoHumanResources extends Migration
         $humanResources = Role::findByName('human resources');
         $humanResources->revokePermissionTo('handle driver applications');
     }
-}
+};

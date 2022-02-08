@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Spatie\Permission\Models\Role;
 
-class CreateStaffRole extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -26,4 +26,4 @@ class CreateStaffRole extends Migration
             ->firstOrFail()
             ->delete();
     }
-}
+};
