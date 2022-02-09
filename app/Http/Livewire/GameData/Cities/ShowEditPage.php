@@ -9,6 +9,7 @@ use App\Notifications\GameDataRequestDenied;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Throwable;
@@ -18,6 +19,7 @@ use Throwable;
  */
 class ShowEditPage extends Component implements HasForms
 {
+    use AuthorizesRequests;
     use InteractsWithForms;
 
     public City $city;
@@ -33,6 +35,8 @@ class ShowEditPage extends Component implements HasForms
 
     public function mount(): void
     {
+        $this->authorize('update', $this->city);
+
         $this->form->fill([
             'real_name' => $this->city->real_name,
             'name' => $this->city->name,

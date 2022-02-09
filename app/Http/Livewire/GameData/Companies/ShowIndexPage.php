@@ -6,6 +6,7 @@ use App\Models\Company;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -15,6 +16,7 @@ use Livewire\Component;
  */
 class ShowIndexPage extends Component implements HasForms
 {
+    use AuthorizesRequests;
     use InteractsWithForms;
 
     public $name;
@@ -23,6 +25,11 @@ class ShowIndexPage extends Component implements HasForms
     public $dlc;
     public $mod;
     public $game_id = 1;
+
+    public function mount()
+    {
+        $this->authorize('viewAny', Company::class);
+    }
 
     public function render()
     {
