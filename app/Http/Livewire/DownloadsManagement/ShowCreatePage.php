@@ -6,6 +6,7 @@ use App\Models\Download;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -14,6 +15,7 @@ use Livewire\Component;
  */
 class ShowCreatePage extends Component implements HasForms
 {
+    use AuthorizesRequests;
     use InteractsWithForms;
 
     // Form fields
@@ -21,6 +23,11 @@ class ShowCreatePage extends Component implements HasForms
     public $description = '';
     public $image = '';
     public $file = '';
+
+    public function mount()
+    {
+        $this->authorize('create', Download::class);
+    }
 
     public function render()
     {

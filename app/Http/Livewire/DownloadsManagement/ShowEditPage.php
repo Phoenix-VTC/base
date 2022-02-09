@@ -6,6 +6,7 @@ use App\Models\Download;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -15,6 +16,7 @@ use Livewire\Component;
  */
 class ShowEditPage extends Component implements HasForms
 {
+    use AuthorizesRequests;
     use InteractsWithForms;
 
     public Download $download;
@@ -26,6 +28,8 @@ class ShowEditPage extends Component implements HasForms
 
     public function mount(): void
     {
+        $this->authorize('update', $this->download);
+
         $this->form->fill([
             'name' => $this->download->name,
             'description' => $this->download->description,

@@ -6,18 +6,22 @@ use App\Models\Download;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ShowIndexPage extends Component
 {
+    use AuthorizesRequests;
     use WithRateLimiting;
 
     public Collection $downloads;
 
     public function mount(): void
     {
+        $this->authorize('viewAny', Download::class);
+
         $this->downloads = Download::where('image_path', '!=', '')
             ->where('file_path', '!=', '')
             ->get();
@@ -30,6 +34,8 @@ class ShowIndexPage extends Component
 
     public function downloadFile(Download $download): ?StreamedResponse
     {
+        $this->authorize('download', $download);
+
         try {
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
