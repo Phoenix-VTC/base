@@ -4,12 +4,15 @@ namespace App\Http\Livewire\ScreenshotHub;
 
 use App\Models\Screenshot;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 
 class ShowIndexPage extends Component
 {
+    use AuthorizesRequests;
+
     // Request data
     public string $range;
     public string $orderBy;
@@ -19,6 +22,8 @@ class ShowIndexPage extends Component
 
     public function mount(Request $request): void
     {
+        $this->authorize('viewAny', Screenshot::class);
+
         $range = $request->get('range');
         $orderBy = $request->get('orderBy');
 
