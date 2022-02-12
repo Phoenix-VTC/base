@@ -38,10 +38,10 @@ class ShowIndexPage extends Component
             return null;
         }
 
-        $download->update(['download_count' => ++$download->download_count]);
-
         try {
-            return Storage::disk('scaleway')->download($download->file_path, $download->file_name);
+            $response = Storage::disk('scaleway')->download($download->file_path, $download->file_name);
+            $download->update(['download_count' => ++$download->download_count]);
+            return $response;
         } catch (\Exception $e) {
             session()->now('alert', ['type' => 'danger', 'title' => 'Well, this is awkward.', 'message' => 'Something went wrong while trying to download this file. Please try again later.']);
         }
