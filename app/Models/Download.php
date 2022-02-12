@@ -68,7 +68,7 @@ class Download extends Model
         try {
             return Storage::disk('scaleway')->url($this->image_path);
         } catch (\Exception $e) {
-            return null;
+            return '//via.placeholder.com/500?text=Missing Image File :(';
         }
     }
 
