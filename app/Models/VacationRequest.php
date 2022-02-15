@@ -110,6 +110,49 @@ class VacationRequest extends Model
         return Carbon::parse($this->end_date)->diffForHumans($this->start_date, short: true);
     }
 
+    public function getStatus(): array
+    {
+        if (!$this->handled_by) {
+            return [
+                'status' => 'unclaimed',
+                'color' => 'yellow',
+            ];
+        }
+
+        if ($this->deleted_at) {
+            return [
+                'status' => 'cancelled',
+                'color' => 'red',
+            ];
+        }
+
+        if ($this->is_upcoming) {
+            return [
+                'status' => 'upcoming',
+                'color' => 'blue',
+            ];
+        }
+
+        if ($this->is_active) {
+            return [
+                'status' => 'active',
+                'color' => 'green',
+            ];
+        }
+
+        if ($this->is_expired) {
+            return [
+                'status' => 'expired',
+                'color' => 'gray',
+            ];
+        }
+
+        return [
+            'status' => 'unknown',
+            'color' => 'gray',
+        ];
+    }
+
     /**
      * Scope a query to only include popular users.
      *

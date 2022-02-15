@@ -5,6 +5,7 @@ namespace App\Http\Livewire\VacationRequestsManagement;
 use App\Mail\LeaveRequestApproved;
 use App\Models\VacationRequest;
 use App\Notifications\VacationRequestMarkedAsSeen;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
@@ -14,6 +15,7 @@ use Livewire\WithPagination;
 
 class ShowIndex extends Component
 {
+    use AuthorizesRequests;
     use WithPagination;
 
     public function paginationView(): string
@@ -35,49 +37,48 @@ class ShowIndex extends Component
 
     public function markAsSeen(int $id): void
     {
-        $vacation_request = VacationRequest::find($id);
+        $vacation_request = VacationRequest::withTrashed()->find($id);
 
-        if ($vacation_request->handled_by) {
-            session()->now('alert', ['type' => 'danger', 'message' => 'This vacation request has already been handled.']);
+        $this->authorize('markAsSeen', $vacation_request);
+
+        $vacation_request->update([
+            'handled_by' => Auth::id(),
+        ]);
+
+        Cache::forget('vacation_request_count');
+
+        if (!$vacation_request->leaving) {
+            $vacation_request->user->notify(new VacationRequestMarkedAsSeen);
+
+            session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? "Unknown User") . '\'s vacation request successfully marked as seen!']);
+
+            return;
         }
 
-        if (!$vacation_request->handled_by) {
-            $vacation_request->handled_by = Auth::id();
-            $vacation_request->save();
+        // If the code reaches this point, the user is leaving Phoenix.
+        Mail::to([[
+            'email' => $vacation_request->user->email,
+            'name' => $vacation_request->user->username
+        ]])->queue(new LeaveRequestApproved($vacation_request->user));
 
-            Cache::forget('vacation_request_count');
+        $vacation_request->user->delete();
 
-            if (!$vacation_request->leaving) {
-                $vacation_request->user->notify(new VacationRequestMarkedAsSeen);
-
-                session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? "Unknown User") . '\'s vacation request successfully marked as seen!']);
-            }
-
-            if ($vacation_request->leaving) {
-                Mail::to([[
-                    'email' => $vacation_request->user->email,
-                    'name' => $vacation_request->user->username
-                ]])->queue(new LeaveRequestApproved($vacation_request->user));
-
-                $vacation_request->user->delete();
-
-                session()->now('alert', ['type' => 'success', 'message' => 'Request to leave successfully processed, and the PhoenixBase account has been deleted.']);
-            }
-        }
+        session()->now('alert', ['type' => 'success', 'message' => 'Request to leave successfully processed, and their PhoenixBase account has been deleted.']);
     }
 
     public function cancel(int $id): void
     {
-        $vacation_request = VacationRequest::find($id);
+        $vacation_request = VacationRequest::withTrashed()->find($id);
 
-        if ($vacation_request->deleted_at) {
-            session()->now('alert', ['type' => 'danger', 'message' => 'This vacation request has already been cancelled.']);
-        }
+        $this->authorize('cancel', $vacation_request);
 
-        if (!$vacation_request->deleted_at) {
-            $vacation_request->delete();
+        $vacation_request->update([
+            'handled_by' => Auth::id(),
+            'deleted_at' => now(),
+        ]);
 
-            session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? "Unknown User") . '\'s vacation request successfully cancelled!']);
-        }
+        $vacation_request->delete();
+
+        session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? "Unknown User") . '\'s vacation request successfully cancelled!']);
     }
 }

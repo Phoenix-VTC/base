@@ -53,15 +53,22 @@ class ShowCreate extends Component implements HasForms
             Forms\Components\Grid::make()
                 ->schema([
                     Forms\Components\Grid::make()
-                        ->columns()
+                        ->columns(1)
                         ->schema([
                             Forms\Components\Toggle::make('leaving')
                                 ->required()
                                 ->inline(false)
                                 ->label('Will you be leaving Phoenix?')
-                                ->helperText('Please note that we will not re-activate accounts once they have been terminated.')
                                 ->offIcon('heroicon-s-x')
                                 ->onIcon('heroicon-s-check')
+                                ->disabled(fn () => Auth::user()->isStaff())
+                                ->helperText(function () {
+                                    if (Auth::user()->isStaff()) {
+                                        return '**You cannot submit a request to leave as a staff member. Please contact management if you wish to leave.**';
+                                    }
+
+                                    return 'Please note that we will not re-activate accounts once they have been terminated.';
+                                })
                                 ->reactive() // Reload the component when it updates, so that the `hidden` functions work
                                 ->unique(table: 'vacation_requests', callback: function (Unique $rule) {
                                     return $rule->where('user_id', Auth::id())

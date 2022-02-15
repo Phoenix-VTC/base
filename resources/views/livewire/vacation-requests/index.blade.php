@@ -74,38 +74,10 @@
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 text-sm">
-                                            @empty($vacation_request->handled_by)
-                                                <span
-                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                                    Pending
-                                                </span>
-                                            @elseif($vacation_request->deleted_at)
-                                                <span
-                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                                    Cancelled
-                                                </span>
-                                            @else
-                                                @if($vacation_request->is_upcoming)
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                                        Upcoming
-                                                    </span>
-                                                @endif
-
-                                                @if($vacation_request->is_active)
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Active
-                                                    </span>
-                                                @endif
-
-                                                @if($vacation_request->is_expired)
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                                                        Expired
-                                                    </span>
-                                                @endif
-                                            @endif
+                                            <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-{{ $vacation_request->getStatus()['color'] }}-100 text-{{ $vacation_request->getStatus()['color'] }}-800">
+                                                {{ ucwords($vacation_request->getStatus()['status']) }}
+                                            </span>
                                         </td>
                                     </tr>
                                 @endforeach
