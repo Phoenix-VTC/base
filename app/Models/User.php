@@ -264,7 +264,7 @@ class User extends Authenticatable implements Wallet
     }
 
     /**
-     * Get all of the jobs of the user.
+     * Get all jobs of the user.
      *
      * @returns HasMany
      */

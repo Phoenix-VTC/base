@@ -106,7 +106,7 @@ class ShowApplication extends Component
         \Cache::forget($this->application->truckersmp_id . "_truckersmp_data");
         \Cache::forget($this->application->truckersmp_id . "_truckersmp_ban_history");
 
-        session()->now('alert', ['type' => 'success', 'message' => 'TruckersMP successfully refreshed!']);
+        session()->now('alert', ['type' => 'success', 'message' => 'TruckersMP data successfully refreshed!']);
     }
 
     public function accept(): void
@@ -114,8 +114,8 @@ class ShowApplication extends Component
         $this->authorize('update', $this->application);
 
         Validator::make($this->application->toArray(), [
-            'username' => [Rule::unique('users')->whereNull('deleted_at')],
-            'email' => ['email', Rule::unique('users')->whereNull('deleted_at')],
+            'username' => ['required', 'string', Rule::unique('users')->whereNull('deleted_at')],
+            'email' => ['required', 'email', Rule::unique('users')->whereNull('deleted_at')],
             'truckersmp_id' => [Rule::unique('users')->whereNull('deleted_at')],
             'steam_data.steamID64' => ['required', Rule::unique('users', 'steam_id')->whereNull('deleted_at')],
         ])->validate();
@@ -143,6 +143,12 @@ class ShowApplication extends Component
     public function setStatus($status): void
     {
         $this->authorize('update', $this->application);
+
+        if (!in_array($status, ['pending', 'incomplete', 'awaiting_response', 'investigation'])) {
+            session()->now('alert', ['type' => 'danger', 'message' => 'Chosen status is invalid.']);
+
+            return;
+        }
 
         $this->application->status = $status;
         $this->application->save();
@@ -186,7 +192,7 @@ class ShowApplication extends Component
                         return $q->orWhere('discord_username', $this->application->discord_username);
                     })
                     ->orWhere('truckersmp_id', $this->application->truckersmp_id)
-                    ->orWhere('steam_data->steamID64', $this->application->steam_data['steamID64']);
+                    ->orWhere('steam_data->steamID64', $this->application->steam_data['steamID64'] ?? null);
             })
             ->whereKeyNot($this->application->id)
             ->latest()

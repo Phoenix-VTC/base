@@ -47,6 +47,7 @@ class ShowIndex extends Component
 
         Cache::forget('vacation_request_count');
 
+        // Send the user a notification if not leaving
         if (!$vacation_request->leaving) {
             $vacation_request->user->notify(new VacationRequestMarkedAsSeen);
 
@@ -56,6 +57,7 @@ class ShowIndex extends Component
         }
 
         // If the code reaches this point, the user is leaving Phoenix.
+        // Send the user an email about their leaving request, and handle the account deletion
         Mail::to([[
             'email' => $vacation_request->user->email,
             'name' => $vacation_request->user->username

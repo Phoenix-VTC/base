@@ -10,7 +10,7 @@
                         <div class="min-w-0 flex-1 flex items-center">
                             <div class="flex-shrink-0">
                                 <img class="h-12 w-12 rounded-full"
-                                     src="{{ $application->steam_data['avatarfull'] }}"
+                                     src="{{ $application->steam_data['avatarfull'] ?? '' }}"
                                      alt="">
                             </div>
                             <div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
@@ -32,7 +32,7 @@
                                             @else
                                                 {{ $application->truckersmp_data['name'] }}
                                             @endempty
-                                                / {{ $application->steam_data['personaname'] }}
+                                                / {{ $application->steam_data['personaname'] ?? 'Unknown' }}
                                         </span>
                                     </p>
                                 </div>

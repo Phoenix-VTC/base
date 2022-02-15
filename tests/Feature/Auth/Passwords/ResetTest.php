@@ -1,133 +1,75 @@
 <?php
 
-namespace Tests\Feature\Auth\Passwords;
-
+use App\Http\Livewire\Auth\Passwords\Reset;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Livewire\Livewire;
-use Tests\TestCase;
 
-class ResetTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    /** @test */
-    public function can_view_password_reset_page()
-    {
-        $user = User::factory()->create();
+it('shows the password reset page', function () {
+    $user = User::factory()->create();
 
-        $token = Str::random(16);
+    $token = Str::random();
 
-        DB::table('password_resets')->insert([
-            'email' => $user->email,
-            'token' => Hash::make($token),
-            'created_at' => Carbon::now(),
-        ]);
+    DB::table('password_resets')->insert([
+        'email' => $user->email,
+        'token' => Hash::make($token),
+        'created_at' => Carbon::now(),
+    ]);
 
-        $this->get(route('password.reset', [
-            'email' => $user->email,
-            'token' => $token,
-        ]))
-            ->assertSuccessful()
-            ->assertSee($user->email)
-            ->assertSeeLivewire('auth.passwords.reset');
-    }
+    $this->get(route('password.reset', [
+        'email' => $user->email,
+        'token' => $token,
+    ]))
+        ->assertSuccessful()
+        ->assertSee($user->email)
+        ->assertSeeLivewire(Reset::class);
+});
 
-    /** @test */
-    public function can_reset_password()
-    {
-        $user = User::factory()->create();
+it('can reset the password', function () {
+    $user = User::factory()->create();
 
-        $token = Str::random(16);
+    $token = Str::random();
 
-        DB::table('password_resets')->insert([
-            'email' => $user->email,
-            'token' => Hash::make($token),
-            'created_at' => Carbon::now(),
-        ]);
+    DB::table('password_resets')->insert([
+        'email' => $user->email,
+        'token' => Hash::make($token),
+        'created_at' => Carbon::now(),
+    ]);
 
-        Livewire::test('auth.passwords.reset', [
-            'token' => $token,
-        ])
-            ->set('email', $user->email)
-            ->set('password', 'new-password')
-            ->set('password_confirmation', 'new-password')
-            ->call('resetPassword');
+    Livewire::test(Reset::class, [
+        'token' => $token,
+    ])
+        ->set('email', $user->email)
+        ->set('password', 'new-password')
+        ->set('password_confirmation', 'new-password')
+        ->call('resetPassword');
 
-        $this->assertTrue(Auth::attempt([
-            'email' => $user->email,
-            'password' => 'new-password',
-        ]));
-    }
+    $this->assertTrue(Auth::attempt([
+        'email' => $user->email,
+        'password' => 'new-password',
+    ]));
+});
 
-    /** @test */
-    public function token_is_required()
-    {
-        Livewire::test('auth.passwords.reset', [
-            'token' => null,
-        ])
-            ->call('resetPassword')
-            ->assertHasErrors(['token' => 'required']);
-    }
+it('tests the validation rules', function ($field, $value, $rule) {
+    Livewire::test(Reset::class, [
+        'token' => Str::random(),
+    ])
+        ->set($field, $value)
+        ->call('resetPassword')
+        ->assertHasErrors([$field => $rule]);
+})->with([
+    'token is null' => ['token', null, 'required'],
 
-    /** @test */
-    public function email_is_required()
-    {
-        Livewire::test('auth.passwords.reset', [
-            'token' => Str::random(16),
-        ])
-            ->set('email', null)
-            ->call('resetPassword')
-            ->assertHasErrors(['email' => 'required']);
-    }
+    'email is not a string' => ['email', ['something'], 'string'],
+    'email is null' => ['email', null, 'required'],
+    'email is invalid' => ['email', 'invalid', 'email'],
 
-    /** @test */
-    public function email_is_valid_email()
-    {
-        Livewire::test('auth.passwords.reset', [
-            'token' => Str::random(16),
-        ])
-            ->set('email', 'email')
-            ->call('resetPassword')
-            ->assertHasErrors(['email' => 'email']);
-    }
-
-    /** @test */
-    function password_is_required()
-    {
-        Livewire::test('auth.passwords.reset', [
-            'token' => Str::random(16),
-        ])
-            ->set('password', '')
-            ->call('resetPassword')
-            ->assertHasErrors(['password' => 'required']);
-    }
-
-    /** @test */
-    function password_is_minimum_of_eight_characters()
-    {
-        Livewire::test('auth.passwords.reset', [
-            'token' => Str::random(16),
-        ])
-            ->set('password', 'secret')
-            ->call('resetPassword')
-            ->assertHasErrors(['password' => 'min']);
-    }
-
-    /** @test */
-    function password_matches_password_confirmation()
-    {
-        Livewire::test('auth.passwords.reset', [
-            'token' => Str::random(16),
-        ])
-            ->set('password', 'new-password')
-            ->set('password_confirmation', 'not-new-password')
-            ->call('resetPassword')
-            ->assertHasErrors(['password' => 'confirmed']);
-    }
-}
+    'password is not a string' => ['password', ['something'], 'string'],
+    'password is null' => ['password', null, 'required'],
+    'password is too short' => ['password', 'short', 'min'],
+]);

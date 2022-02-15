@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class ShowPersonalOverviewPage extends Component
 {
-    public function render(): View
+    public function render()
     {
         return view('livewire.jobs.personal-overview-page', [
             'jobs' => Job::where('user_id', Auth::id())

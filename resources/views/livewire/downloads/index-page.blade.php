@@ -6,26 +6,24 @@
     <x-alert/>
 
     @if($downloads->count())
-        <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8" wire:loading.remove wire:target="downloadFile">
+        <ul role="list" class="flex flex-wrap w-full gap-x-4 gap-y-8 sm:gap-x-6 xl:gap-x-8" wire:loading.remove wire:target="downloadFile">
             @foreach($downloads as $download)
-                <li class="relative cursor-pointer" wire:click="downloadFile({{ $download }})">
+                <li class="relative flex flex-col w-64 sm:w-56">
                     <div
-                        class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
+                        class="overflow-hidden bg-gray-100 rounded-lg aspect-w-10 aspect-h-7 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500">
                         <img
                             src="{{ $download->image_url }}"
                             alt="{{ $download->name }} thumbnail"
-                            class="object-cover pointer-events-none group-hover:opacity-75">
-                        <button type="button" class="absolute inset-0 focus:outline-none">
-                            <span class="sr-only">Download {{ $download->name }}</span>
-                        </button>
+                            class="object-cover pointer-events-none">
                     </div>
-                    <p class="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">{{ $download->name }}</p>
+                    <p class="block mt-2 text-sm font-medium text-gray-900 truncate pointer-events-none">{{ $download->name }}</p>
                     <p class="block text-xs font-medium text-gray-900 truncate pointer-events-none">
                         {{ $download->download_count }} downloads
                     </p>
                     @isset($download->description)
-                        <p class="block text-sm font-medium text-gray-500 pointer-events-none">{{ $download->description }}</p>
+                        <p class="flex-1 block text-sm font-medium text-gray-500 pointer-events-none">{{ $download->description }}</p>
                     @endisset
+                    <button wire:click="downloadFile({{ $download }})" class="w-full px-4 py-2 mt-2 text-sm font-medium text-center text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Download</button>
                 </li>
             @endforeach
         </ul>

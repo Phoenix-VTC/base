@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Application;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class ApplicationPolicy
 {
@@ -27,11 +28,13 @@ class ApplicationPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Application  $application
-     * @return bool
+     * @return Response
      */
-    public function update(User $user, Application $application): bool
+    public function update(User $user, Application $application): Response
     {
-        return $application->claimed_by === $user->id;
+        return ($application->claimed_by === $user->id)
+            ? Response::allow()
+            : Response::deny('You need to claim this application before you can update it.');
     }
 
     /**

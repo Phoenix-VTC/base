@@ -97,6 +97,7 @@ class ShowCreate extends Component implements HasForms
 
                     Forms\Components\Textarea::make('reason')
                         ->required()
+                        ->minLength(3)
                         ->rows(5)
                         ->columnSpan([
                             'sm' => 1,
