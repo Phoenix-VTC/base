@@ -47,7 +47,7 @@ class ScreenshotPolicy
         $screenshot = Screenshot::where('user_id', $user->id)->where('created_at', '>', Carbon::parse('-24 hours'))->first();
 
         if ($screenshot) {
-            return Response::deny("You have already submitted a screenshot within the last 24 hours. You can submit a new screenshot in {$screenshot?->created_at->addDay()->diffForHumans()}.");
+            return Response::deny("You have already submitted a screenshot within the last 24 hours. You can submit a new screenshot in {$screenshot->created_at->addDay()->diffForHumans()}.");
         }
 
         return true;
