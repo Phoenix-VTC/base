@@ -92,6 +92,10 @@ class VacationRequest extends Model
 
     public function getIsExpiredAttribute(): bool
     {
+        if (!$this->end_date) {
+            return false;
+        }
+
         return Carbon::parse($this->end_date)->isPast();
     }
 

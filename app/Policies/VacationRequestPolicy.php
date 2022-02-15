@@ -77,6 +77,10 @@ class VacationRequestPolicy
      */
     public function cancel(User $user, VacationRequest $vacationRequest): Response
     {
+        if ($vacationRequest->leaving) {
+            return Response::deny('You cannot cancel a leaving request once it has been approved.');
+        }
+
         return $this->update($user, $vacationRequest);
     }
 }

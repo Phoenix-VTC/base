@@ -50,6 +50,9 @@ it('can submit jobs', function () {
 });
 
 it('tests the validation rules', function ($field, $value, $rule) {
+    $user = User::factory()->create()->assignRole('driver');
+    $this->actingAs($user);
+
     Livewire::test(ShowSubmitPage::class, ['game_id' => 1])
         ->set($field, $value)
         ->call('submit')
