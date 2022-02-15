@@ -12,7 +12,9 @@ class Calendar extends LivewireCalendar
 {
     public function events(): Collection
     {
-        return VacationRequest::where('leaving', false)
+        return VacationRequest::query()
+            ->withTrashed()
+            ->where('leaving', false)
             ->with(['user', 'staff'])
             ->get()
             ->map(function (VacationRequest $vacationRequest) {
@@ -21,6 +23,7 @@ class Calendar extends LivewireCalendar
                     'title' => $vacationRequest->user->username ?? 'Deleted User',
                     'description' => $vacationRequest->staff()->exists() ? 'Handled by ' . $vacationRequest->staff->username : '',
                     'date' => $vacationRequest->start_date,
+                    'color' => $vacationRequest->getStatus()['color'],
                 ];
             });
     }
