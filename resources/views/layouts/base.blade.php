@@ -41,6 +41,11 @@
     <!-- Scripts -->
     <script src="{{ url(mix('js/app.js')) }}" defer></script>
 
+    @production
+        <script defer data-domain="{{ request()->getHost() }}" src="https://plausible.io/js/plausible.outbound-links.js"></script>
+        <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+    @endproduction
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
