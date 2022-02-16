@@ -11,7 +11,6 @@
     Feel free to browse through our upcoming events here.
 @endsection
 
-{{-- TEMP-WINTER --}}
 @section('hero-image', 'https://phoenix-base.s3.nl-ams.scw.cloud/images/snow_background.png')
 
 <div>
