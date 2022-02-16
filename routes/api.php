@@ -53,6 +53,7 @@ Route::prefix('tracker')->middleware(['auth:sanctum', 'sanctum.canSubmitJobs'])-
     ]);
 
     Route::get('resolve-truckersmp-player-data', [MultiplayerController::class, 'resolveTruckersmpPlayerData']);
+    Route::get('resolve-location', [MultiplayerController::class, 'resolveNearestCityFromCoordinates']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {

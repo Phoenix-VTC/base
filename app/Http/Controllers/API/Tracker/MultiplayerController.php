@@ -6,8 +6,10 @@ use App\Actions\Game\GetNearestCity;
 use App\Actions\Multiplayer\FindPlayer;
 use App\Actions\Multiplayer\FindServer;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Multiplayer\ResolveLocationRequest;
 use App\Http\Resources\Multiplayer\PlayerResource;
 use App\Http\Resources\Multiplayer\ServerResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class MultiplayerController extends Controller
@@ -44,4 +46,21 @@ class MultiplayerController extends Controller
                 'error' => false,
             ]);
     }
-}
+
+    public function resolveNearestCityFromCoordinates(
+        ResolveLocationRequest $request,
+        GetNearestCity $getNearestCity
+    ): JsonResponse
+    {
+        $location = $getNearestCity->execute(
+            x: $request->input('x'),
+            y: $request->input('y'),
+            game: $request->input('game'),
+            promods: false,
+        );
+
+        return response()->json([
+            'near' => $location,
+            'error' => false,
+        ]);
+    }}
