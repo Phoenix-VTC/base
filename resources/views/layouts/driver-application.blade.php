@@ -1,21 +1,7 @@
 @extends('layouts.base')
 
-@push('scripts')
-    {{-- TEMP-WINTER --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Snowstorm/20131208/snowstorm-min.js"
-            integrity="sha512-rMkLONrw50boYG/6Ku0E8VstfWMRn5D0dX3QZS26Mg0rspYq4EHxYOULuPbv9Be2HBbrrmN8dpPgYUeJ4bINCA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <script>
-        // snowStorm.targetElement = 'cover-image'; // Render it in the cover-image div
-        snowStorm.followMouse = false; // Snowflakes won't follow the mouse
-        snowStorm.snowStick = false; // Snowflakes won't stick to the bottom of the window
-        snowStorm.animationInterval = 100; // Set the interval for the snow to fall (lower value = more snow)
-    </script>
-@endpush
-
 @section('body')
-    <div class="flex flex-col justify-center min-h-screen py-12 sm:px-6 lg:px-8" style="background-image: url('https://phoenix-base.s3.nl-ams.scw.cloud/images/snow_background.png'); background-size: cover;"> {{-- TEMP-WINTER --}}
+    <div class="flex flex-col justify-center min-h-screen py-12 sm:px-6 lg:px-8" style="background-image: url('https://phoenix-base.s3.nl-ams.scw.cloud/images/snow_background.png'); background-size: cover;">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-gray-50 overflow-hidden shadow rounded-lg divide-y divide-gray-200">
                 @hasSection('steps')

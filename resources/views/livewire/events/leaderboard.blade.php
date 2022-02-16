@@ -13,7 +13,6 @@
     On this page, you can view our most active event attendees, as well as taking an in-depth look into our event numbers.
 @endsection
 
-{{-- TEMP-WINTER --}}
 @section('hero-image', 'https://phoenix-base.s3.nl-ams.scw.cloud/images/snow_background.png')
 
 <div>
