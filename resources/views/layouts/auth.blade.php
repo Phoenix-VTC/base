@@ -28,7 +28,6 @@
             </div>
         </div>
         <div class="hidden lg:block relative w-0 flex-1" id="cover-image">
-            {{-- TEMP-WINTER --}}
             <img class="absolute inset-0 h-full w-full object-cover"
                  src="https://phoenix-base.s3.nl-ams.scw.cloud/images/snow_background.png"
                  alt="A Phoenix truck and trailer driving on a snowy road">
