@@ -8,6 +8,7 @@ use App\Http\Controllers\API\Tracker\EventController;
 use App\Http\Controllers\API\Tracker\IncomingDataController;
 use App\Http\Controllers\API\Tracker\JobController;
 use App\Http\Controllers\API\OnlineUserController;
+use App\Http\Controllers\API\Tracker\MultiplayerController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('game-data/{game}')->name('game-data.')->group(function ($group) {
@@ -50,6 +51,8 @@ Route::prefix('tracker')->middleware(['auth:sanctum', 'sanctum.canSubmitJobs'])-
         'index',
         'show',
     ]);
+
+    Route::get('resolve-truckersmp-player-data', [MultiplayerController::class, 'resolveTruckersmpPlayerData']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {
