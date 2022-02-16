@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Http;
 
 class GetNearestCity
 {
-    public string $game;
-    public bool $promods;
+    private string $game;
+    private bool $promods;
 
     /**
      * Attempt to find the nearest point of interest with the given X and Y coordinates.
@@ -28,11 +28,11 @@ class GetNearestCity
         $this->promods = $promods;
 
         // Get the correct JSON URL for the game with/without ProMods
-        if ($game === 'ETS2' && $promods === false) {
+        if (strtolower($game) === 'ets2' && $promods === false) {
             $url = 'https://map.truckersmp.com/locations_ets2.min.json';
-        } elseif ($game === 'ETS2' && $promods === true) {
+        } elseif (strtolower($game) === 'ets2' && $promods === true) {
             $url = 'https://map.truckersmp.com/locations_promods.min.json';
-        } elseif ($game === 'ATS') {
+        } elseif (strtolower($game) === 'ats') {
             $url = 'https://map.truckersmp.com/locations_ats.min.json';
         } else {
             return null;
