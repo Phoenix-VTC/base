@@ -12,9 +12,12 @@ class GiveHumanResourcesPermissionToManageAndDeleteUsers extends Migration
      */
     public function up(): void
     {
-        $humanResources = Role::findByName('human resources');
-        $humanResources->givePermissionTo('manage users');
-        $humanResources->givePermissionTo('delete users');
+        $humanResources = Role::query()
+            ->where('name', 'human resources')
+            ->orWhere('name', 'human resources team')
+            ->first();
+        $humanResources?->givePermissionTo('manage users');
+        $humanResources?->givePermissionTo('delete users');
     }
 
     /**
@@ -24,8 +27,11 @@ class GiveHumanResourcesPermissionToManageAndDeleteUsers extends Migration
      */
     public function down(): void
     {
-        $humanResources = Role::findByName('human resources');
-        $humanResources->revokePermissionTo('manage users');
-        $humanResources->revokePermissionTo('delete users');
+        $humanResources = Role::query()
+            ->where('name', 'human resources')
+            ->orWhere('name', 'human resources team')
+            ->first();
+        $humanResources?->revokePermissionTo('manage users');
+        $humanResources?->revokePermissionTo('delete users');
     }
 }
