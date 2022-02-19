@@ -11,6 +11,8 @@
 |
 */
 
+use Database\Seeders\RolesAndPermissionsSeeder;
+
 uses(Tests\TestCase::class)->in('Feature');
 
 /*
@@ -43,6 +45,10 @@ function something()
 {
     // ..
 }
+
+beforeEach(function () {
+    $this->seed(RolesAndPermissionsSeeder::class);
+});
 
 uses()->group('driverApplication')->in('Feature/DriverApplication');
 uses()->group('recruitment')->in('Feature/Recruitment');

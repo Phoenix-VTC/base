@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Cargo;
+use App\Models\City;
+use App\Models\Company;
+use App\Policies\GameDataPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -13,7 +17,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+         Cargo::class => GameDataPolicy::class,
+         City::class => GameDataPolicy::class,
+         Company::class => GameDataPolicy::class,
     ];
 
     /**

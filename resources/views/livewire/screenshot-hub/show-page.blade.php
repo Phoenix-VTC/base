@@ -77,7 +77,7 @@
 
                     </dl>
                 </div>
-                @if(Auth::id() === $screenshot->user_id || Auth::user()->can('manage users'))
+                @can('delete', $screenshot)
                     <div class="mt-6 flex flex-col justify-stretch space-y-2">
                         <button type="button" wire:click="delete" wire:loading.attr="disabled"
                                 wire:loading.class="opacity-50 cursor-wait"
@@ -89,7 +89,7 @@
                             This action is irreversible.
                         </p>
                     </div>
-                @endif
+                @endcan
             </section>
         </div>
     </div>

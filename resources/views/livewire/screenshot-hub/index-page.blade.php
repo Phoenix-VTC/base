@@ -45,25 +45,41 @@
            href="{{ route('screenshot-hub.index', ['range' => $range, 'orderBy' => $orderBy, 'desc' => !$desc]) }}">
             @if(!$desc)
                 <span class="sr-only">Descending</span>
-                <x-heroicon-o-sort-descending class="h-5 w-5"/>
+                <x-heroicon-o-sort-descending class="h-5 w-5" />
             @else
                 <span class="sr-only">Ascending</span>
-                <x-heroicon-o-sort-ascending class="h-5 w-5"/>
+                <x-heroicon-o-sort-ascending class="h-5 w-5" />
             @endif
         </a>
     </div>
 
-    <div class="ml-3">
-        <a href="{{ route('screenshot-hub.create') }}"
-           class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5"/>
-            New Screenshot
-        </a>
-    </div>
+    @can('create', App\Models\Screenshot::class)
+        <div class="ml-3">
+            <a href="{{ route('screenshot-hub.create') }}"
+               class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
+                New Screenshot
+            </a>
+        </div>
+    @endcan
 @endsection
 
 <div>
-    <x-alert/>
+    <x-alert />
+
+    @php
+        $response = Gate::inspect('create', App\Models\Screenshot::class);
+    @endphp
+
+    @if($response->denied() && $response->message())
+        <x-app-ui::alert icon="iconic-information" class="mb-4">
+            <x-slot name="heading">
+                You can't submit a new screenshot yet.
+            </x-slot>
+
+            {{ $response->message() }}
+        </x-app-ui::alert>
+    @endif
 
     @if($screenshots->count())
         <ul class="space-y-12 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-3 lg:gap-x-8">
@@ -101,9 +117,9 @@
                                 <a class="text-red-500" href="{{ route('screenshot-hub.toggleVote', $screenshot) }}">
                                     <span class="sr-only">Votes</span>
                                     @if($screenshot->votes()->where('user_id', Auth::id())->exists())
-                                        <x-heroicon-s-heart class="w-5 h-5"/>
+                                        <x-heroicon-s-heart class="w-5 h-5" />
                                     @else
-                                        <x-heroicon-o-heart class="w-5 h-5"/>
+                                        <x-heroicon-o-heart class="w-5 h-5" />
                                     @endif
                                 </a>
                                 <span>

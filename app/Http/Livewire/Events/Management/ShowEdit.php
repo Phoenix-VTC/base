@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
 /**
@@ -16,6 +17,7 @@ use Livewire\Component;
  */
 class ShowEdit extends Component implements HasForms
 {
+    use AuthorizesRequests;
     use InteractsWithForms;
 
     public Event $event;
@@ -43,6 +45,8 @@ class ShowEdit extends Component implements HasForms
 
     public function mount(Event $event): void
     {
+        $this->authorize('update', $event);
+
         $this->event = $event;
 
         // Fill the form with the event data

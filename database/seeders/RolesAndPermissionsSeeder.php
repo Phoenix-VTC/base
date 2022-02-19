@@ -154,6 +154,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'view blocklist',
             'create blocklist',
             'delete blocklist',
+            'manage screenshots',
         ];
 
         foreach ($permissionList as $permission) {
@@ -188,6 +189,7 @@ class RolesAndPermissionsSeeder extends Seeder
             $permissions['view blocklist'],
             $permissions['create blocklist'],
             $permissions['delete blocklist'],
+            $permissions['manage screenshots'],
         ]);
 
         $roles['developer']->syncPermissions([
@@ -203,6 +205,7 @@ class RolesAndPermissionsSeeder extends Seeder
             $permissions['manage driver inactivity'],
             $permissions['view blocklist'],
             $permissions['create blocklist'],
+            $permissions['manage screenshots'],
         ]);
 
         $roles['event team']->syncPermissions([

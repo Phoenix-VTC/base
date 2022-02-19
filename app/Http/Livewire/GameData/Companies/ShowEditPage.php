@@ -9,6 +9,7 @@ use App\Notifications\GameDataRequestDenied;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Throwable;
@@ -18,6 +19,7 @@ use Throwable;
  */
 class ShowEditPage extends Component implements HasForms
 {
+    use AuthorizesRequests;
     use InteractsWithForms;
 
     public Company $company;
@@ -31,6 +33,8 @@ class ShowEditPage extends Component implements HasForms
 
     public function mount(): void
     {
+        $this->authorize('update', $this->company);
+
         $this->form->fill([
             'name' => $this->company->name,
             'category' => $this->company->category,
@@ -115,13 +119,13 @@ class ShowEditPage extends Component implements HasForms
             // and change the status to incomplete if those jobs don't have any pending game data
             if ($this->company->pickupJobs->count() || $this->company->destinationJobs->count()) {
                 foreach ($this->company->pickupJobs as $job) {
-                    if (!$job->hasPendingGameData) {
+                    if (!$job->hasPendingGameData()) {
                         $job->update(['status' => JobStatus::Incomplete]);
                     }
                 }
 
                 foreach ($this->company->destinationJobs as $job) {
-                    if (!$job->hasPendingGameData) {
+                    if (!$job->hasPendingGameData()) {
                         $job->update(['status' => JobStatus::Incomplete]);
                     }
                 }

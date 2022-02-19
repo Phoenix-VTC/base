@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Notifications\VacationRequestMarkedAsSeen;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use function Pest\Laravel\assertSoftDeleted;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertTrue;
 
@@ -82,7 +81,8 @@ it('cannot process a vacation request if already processed', function () {
 
     Livewire::test(ShowIndex::class)
         ->call('markAsSeen', $vacationRequest->id)
-        ->assertSessionHas('alert', ['type' => 'danger', 'message' => 'This vacation request has already been handled.']);
+        ->assertForbidden()
+        ->assertSeeText('This vacation request has already been handled.');
 });
 
 it('can process a leaving request', function () {
@@ -130,7 +130,8 @@ it('cannot process a leaving request if already processed', function () {
 
     Livewire::test(ShowIndex::class)
         ->call('markAsSeen', $vacationRequest->id)
-        ->assertSessionHas('alert', ['type' => 'danger', 'message' => 'This vacation request has already been handled.']);
+        ->assertForbidden()
+        ->assertSeeText('This vacation request has already been handled.');
 });
 
 it('can cancel a new vacation request', function () {
@@ -224,7 +225,8 @@ it('cannot cancel a vacation request if already cancelled', function () {
 
     Livewire::test(ShowIndex::class)
         ->call('cancel', $vacationRequest->id)
-        ->assertSessionHas('alert', ['type' => 'danger', 'message' => 'This vacation request has already been cancelled.']);
+        ->assertForbidden()
+        ->assertSeeText('This vacation request has already been cancelled.');
 });
 
 it('can click a vacation requests calendar item', function () {

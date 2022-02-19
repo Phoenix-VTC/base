@@ -4,13 +4,20 @@ namespace App\Http\Livewire\Events\Management;
 
 use App\Models\Event;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class ShowIndex extends Component
 {
+    use AuthorizesRequests;
     use WithPagination;
+
+    public function mount(): void
+    {
+        $this->authorize('viewAny', Event::class);
+    }
 
     public function paginationView(): string
     {

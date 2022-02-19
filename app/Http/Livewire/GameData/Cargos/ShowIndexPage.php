@@ -6,6 +6,7 @@ use App\Models\Cargo;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
 /**
@@ -13,6 +14,7 @@ use Livewire\Component;
  */
 class ShowIndexPage extends Component implements HasForms
 {
+    use AuthorizesRequests;
     use InteractsWithForms;
 
     public $name = '';
@@ -21,6 +23,11 @@ class ShowIndexPage extends Component implements HasForms
     public $weight = '';
     public $game_id = 1;
     public $wot = 0;
+
+    public function mount()
+    {
+        $this->authorize('viewAny', Cargo::class);
+    }
 
     public function render()
     {

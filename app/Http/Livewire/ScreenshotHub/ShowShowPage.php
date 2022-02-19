@@ -3,16 +3,21 @@
 namespace App\Http\Livewire\ScreenshotHub;
 
 use App\Models\Screenshot;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ShowShowPage extends Component
 {
+    use AuthorizesRequests;
+
     public Screenshot $screenshot;
 
     public function mount(): void
     {
-        $this->screenshot->has('user')->findOrFail($this->screenshot->id);
+        $this->authorize('view', $this->screenshot);
+
+        $this->screenshot::has('user')->findOrFail($this->screenshot->id);
     }
 
     public function render()
@@ -22,9 +27,7 @@ class ShowShowPage extends Component
 
     public function delete()
     {
-        if (Auth::id() !== $this->screenshot->user_id && Auth::user()->cannot('manage users')) {
-            abort(403, 'You don\'t have permission to delete this screenshot.');
-        }
+        $this->authorize('delete', $this->screenshot);
 
         $this->screenshot->delete();
 
