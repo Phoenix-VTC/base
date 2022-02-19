@@ -1,6 +1,6 @@
 {{-- Be like water. --}}
 
-@section('title', 'Events Management')
+@section('title', 'Event Management')
 
 @section('actions')
     <div class="ml-3">

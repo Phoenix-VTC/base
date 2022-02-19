@@ -102,11 +102,14 @@ test('a user can apply', function () use ($steamUser, $truckersmpUser) {
         ->set('another_vtc', 0)
         ->set('games', 'both')
         ->set('fluent', 1)
-        ->set('about', 'Beep boop')
-        ->set('why_join', 'Boop beep')
+        ->set('about', Str::random(210))
+        ->set('why_join', Str::random(210))
+        ->set('monthly_truckersmp_play_time', 'Beep boop')
         ->set('terms', 1)
         ->set('find_us', 'git clone git@github.com:Phoenix-VTC/base.git')
-        ->call('submit');
+        ->call('submit')
+        ->assertSuccessful()
+        ->assertHasNoErrors();
 
     $this->assertTrue(($application = Application::query()->where('email', 'automatictest@example.com'))->exists());
 

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -15,6 +16,7 @@ use Livewire\Component;
  */
 class ShowCreatePage extends Component implements HasForms
 {
+    use AuthorizesRequests;
     use InteractsWithForms;
 
     // Form fields
@@ -25,17 +27,7 @@ class ShowCreatePage extends Component implements HasForms
 
     public function mount()
     {
-        if (Screenshot::where('user_id', Auth::id())->where('created_at', '>', Carbon::parse('-24 hours'))->count()) {
-            $screenshot = Screenshot::where('user_id', Auth::id())->where('created_at', '>', Carbon::parse('-24 hours'))->first();
-
-            session()->flash('alert', [
-                'type' => 'danger',
-                'title' => 'You have already submitted a screenshot in the past 24 hours!',
-                'message' => 'A new screenshot can be submitted after <b>' . $screenshot->created_at->add('1 day')->toDayDateTimeString() . ' GMT</b>'
-            ]);
-
-            return redirect()->route('screenshot-hub.index');
-        }
+        $this->authorize('create', Screenshot::class);
     }
 
     public function render()

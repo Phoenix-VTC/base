@@ -6,11 +6,14 @@ use App\Enums\Attending;
 use App\Models\Event;
 use App\Models\EventAttendee;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\View\View;
 use Livewire\Component;
 
 class ShowAttendeeManagement extends Component
 {
+    use AuthorizesRequests;
+
     public Event $event;
     public string $user_id = '';
 
@@ -28,6 +31,8 @@ class ShowAttendeeManagement extends Component
     public function mount($id): void
     {
         $this->event = Event::with('attendees', 'attendees.user')->findOrFail($id);
+
+        $this->authorize('update', $this->event);
     }
 
     public function render(): View

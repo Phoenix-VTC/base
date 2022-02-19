@@ -11,6 +11,7 @@ use App\Models\Job;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -19,6 +20,7 @@ use Livewire\Component;
  */
 class ShowSubmitPage extends Component implements HasForms
 {
+    use AuthorizesRequests;
     use InteractsWithForms;
 
     public int $game_id;
@@ -37,6 +39,8 @@ class ShowSubmitPage extends Component implements HasForms
 
     public function mount(): void
     {
+        $this->authorize('create', Job::class);
+
         $this->form->fill();
     }
 

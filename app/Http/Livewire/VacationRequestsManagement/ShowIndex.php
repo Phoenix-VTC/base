@@ -5,6 +5,7 @@ namespace App\Http\Livewire\VacationRequestsManagement;
 use App\Mail\LeaveRequestApproved;
 use App\Models\VacationRequest;
 use App\Notifications\VacationRequestMarkedAsSeen;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
@@ -14,6 +15,7 @@ use Livewire\WithPagination;
 
 class ShowIndex extends Component
 {
+    use AuthorizesRequests;
     use WithPagination;
 
     public function paginationView(): string
@@ -35,30 +37,26 @@ class ShowIndex extends Component
 
     public function markAsSeen(int $id): void
     {
-        $vacation_request = VacationRequest::query()->find($id);
+        $vacation_request = VacationRequest::withTrashed()->find($id);
 
-        // Return if the vacation request is already handled
-        if ($vacation_request->handled_by) {
-            session()->now('alert', ['type' => 'danger', 'message' => 'This vacation request has already been handled.']);
+        $this->authorize('markAsSeen', $vacation_request);
 
-            return;
-        }
-
-        // Handle the vacation request
-        $vacation_request->handled_by = Auth::id();
-        $vacation_request->save();
+        $vacation_request->update([
+            'handled_by' => Auth::id(),
+        ]);
 
         Cache::forget('vacation_request_count');
 
-        // Send the user a notification if not leaving, and return
+        // Send the user a notification if not leaving
         if (!$vacation_request->leaving) {
             $vacation_request->user->notify(new VacationRequestMarkedAsSeen);
 
-            session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? 'Unknown User') . '\'s vacation request successfully marked as seen!']);
+            session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? "Unknown User") . '\'s vacation request successfully marked as seen!']);
 
             return;
         }
 
+        // If the code reaches this point, the user is leaving Phoenix.
         // Send the user an email about their leaving request, and handle the account deletion
         Mail::to([[
             'email' => $vacation_request->user->email,
@@ -72,16 +70,17 @@ class ShowIndex extends Component
 
     public function cancel(int $id): void
     {
-        $vacation_request = VacationRequest::query()->withTrashed()->find($id);
+        $vacation_request = VacationRequest::withTrashed()->find($id);
 
-        if ($vacation_request->deleted_at) {
-            session()->now('alert', ['type' => 'danger', 'message' => 'This vacation request has already been cancelled.']);
+        $this->authorize('cancel', $vacation_request);
 
-            return;
-        }
+        $vacation_request->update([
+            'handled_by' => Auth::id(),
+            'deleted_at' => now(),
+        ]);
 
         $vacation_request->delete();
 
-        session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? 'Unknown User') . '\'s vacation request successfully cancelled!']);
+        session()->now('alert', ['type' => 'success', 'message' => ($vacation_request->user->username ?? "Unknown User") . '\'s vacation request successfully cancelled!']);
     }
 }

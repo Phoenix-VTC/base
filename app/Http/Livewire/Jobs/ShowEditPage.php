@@ -10,6 +10,7 @@ use App\Models\Job;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
 /**
@@ -17,6 +18,7 @@ use Livewire\Component;
  */
 class ShowEditPage extends Component implements HasForms
 {
+    use AuthorizesRequests;
     use InteractsWithForms;
 
     public Job $job;
@@ -34,9 +36,7 @@ class ShowEditPage extends Component implements HasForms
 
     public function mount(): void
     {
-        if (!$this->job->canEdit) {
-            abort(403, 'You don\'t have permission to edit this job.');
-        }
+        $this->authorize('update', $this->job);
 
         $this->form->fill([
             'pickup_city' => $this->job->pickup_city_id,

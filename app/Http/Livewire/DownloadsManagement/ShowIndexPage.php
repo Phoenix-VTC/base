@@ -4,16 +4,20 @@ namespace App\Http\Livewire\DownloadsManagement;
 
 use App\Models\Download;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ShowIndexPage extends Component
 {
+    use AuthorizesRequests;
     public Collection $downloads;
 
     public function mount(): void
     {
+        $this->authorize('viewManagement', Download::class);
+
         $this->downloads = Download::all();
     }
 
@@ -24,6 +28,8 @@ class ShowIndexPage extends Component
 
     public function downloadFile(Download $download): ?StreamedResponse
     {
+        $this->authorize('download', $download);
+
         try {
             return Storage::disk('scaleway')->download($download->file_path, $download->file_name);
         } catch (\Exception $e) {
@@ -35,6 +41,8 @@ class ShowIndexPage extends Component
 
     public function delete(Download $download)
     {
+        $this->authorize('delete', $download);
+
         $download->delete();
 
         $this->downloads = Download::all();

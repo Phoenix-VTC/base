@@ -46,9 +46,9 @@ it('shows the user\'s vacation request', function () {
         ->assertSeeLivewire(ShowIndex::class)
         ->assertSeeText('Your Vacation Requests')
         ->assertSeeText($vacationRequest->start_date->format('M d, Y'))
-        ->assertSeeText($vacationRequest->start_date->format('M d, Y'))
+        ->assertSeeText($vacationRequest->end_date->format('M d, Y'))
         ->assertSeeText($vacationRequest->reason)
-        ->assertSeeText('Pending');
+        ->assertSeeText('Unclaimed');
 });
 
 it('doesn\'t show another user\'s vacation request', function () {
@@ -122,6 +122,8 @@ it('can submit a vacation request', function () {
 });
 
 it('tests the validation rules', function ($field, $value, $rule) {
+    $this->be(User::factory()->create());
+
     Livewire::test(ShowCreate::class)
         ->set($field, $value)
         ->call('submit')
@@ -155,6 +157,8 @@ test('start and end date must be unique to user', function () {
 });
 
 test('end date is required when not leaving', function () {
+    $this->be(User::factory()->create());
+
     Livewire::test(ShowCreate::class)
         ->set('start_date', Carbon::tomorrow())
         ->set('leaving', '0')
@@ -163,6 +167,8 @@ test('end date is required when not leaving', function () {
 });
 
 test('end date is not required when leaving', function () {
+    $this->be(User::factory()->create());
+
     Livewire::test(ShowCreate::class)
         ->set('start_date', Carbon::tomorrow())
         ->set('leaving', '1')
@@ -171,6 +177,8 @@ test('end date is not required when leaving', function () {
 });
 
 test('end date must be after start date', function () {
+    $this->be(User::factory()->create());
+
     Livewire::test(ShowCreate::class)
         ->set('start_date', Carbon::tomorrow())
         ->set('end_date', Carbon::tomorrow())
@@ -179,6 +187,8 @@ test('end date must be after start date', function () {
 });
 
 test('end date must be at least a week after the start date', function () {
+    $this->be(User::factory()->create());
+
     Livewire::test(ShowCreate::class)
         ->set('start_date', Carbon::tomorrow())
         ->set('end_date', Carbon::tomorrow()->addDays(3))

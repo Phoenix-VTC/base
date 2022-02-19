@@ -1,7 +1,7 @@
 @section('title', 'Manage Vacation Requests')
 
 <div class="mt-5">
-    <x-alert/>
+    <x-alert />
 
     <div class="mt-5">
         <div class="flex flex-col">
@@ -77,107 +77,62 @@
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                            @empty($vacation_request->handled_by)
-                                                <span
-                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                                    Unclaimed
-                                                </span>
-                                            @elseif($vacation_request->deleted_at)
-                                                <span
-                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                                    Cancelled
-                                                </span>
-                                            @else
-                                                @if($vacation_request->is_upcoming)
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                                        Upcoming
-                                                    </span>
-                                                @endif
-
-                                                @if($vacation_request->is_active)
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Active
-                                                    </span>
-                                                @endif
-
-                                                @if($vacation_request->is_expired)
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                                                        Expired
-                                                    </span>
-                                                @endif
-                                            @endif
+                                            <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-{{ $vacation_request->getStatus()['color'] }}-100 text-{{ $vacation_request->getStatus()['color'] }}-800">
+                                                {{ ucwords($vacation_request->getStatus()['status']) }}
+                                            </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
-                                            <div class="relative inline-block text-left"
-                                                 x-data="{ openRowActions: false }">
-                                                <div>
-                                                    <button @click="openRowActions = !openRowActions"
-                                                            class="rounded-full flex items-center text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-600"
-                                                            id="options-menu" aria-haspopup="true" aria-expanded="true"
-                                                            type="button">
-                                                        <span class="sr-only">Open options</span>
-                                                        {{-- dots-vertical --}}
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                             viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                            <path
-                                                                d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-
-                                                <div x-show="openRowActions" x-cloak
-                                                     @click.away="openRowActions = false"
-                                                     x-transition:enter="transition ease-out duration-100"
-                                                     x-transition:enter-start="opacity-0 scale-95"
-                                                     x-transition:enter-end="opacity-100 scale-100"
-                                                     x-transition:leave="transition ease-in duration-75"
-                                                     x-transition:leave-start="opacity-100 scale-100"
-                                                     x-transition:leave-end="opacity-0 scale-95"
-                                                     class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200 z-50">
-                                                    <div class="py-1" role="menu" aria-orientation="vertical"
-                                                         aria-labelledby="options-menu">
-                                                        <a @if(!$vacation_request->handled_by) wire:click="markAsSeen({{ $vacation_request->id }})"
-                                                           @endif
-                                                           class="group flex items-center px-4 py-2 text-sm text-gray-700 @if($vacation_request->handled_by) cursor-not-allowed @endif hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
-                                                           role="menuitem">
-                                                            {{-- eye --}}
-                                                            <svg
-                                                                class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                                                                xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                      stroke-width="2"
-                                                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                      stroke-width="2"
-                                                                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                                            </svg>
-                                                            Mark as seen
-                                                        </a>
+                                            @canany(['markAsSeen', 'cancel'], $vacation_request)
+                                                <div class="relative inline-block text-left"
+                                                     x-data="{ openRowActions: false }">
+                                                    <div>
+                                                        <button @click="openRowActions = !openRowActions"
+                                                                class="rounded-full flex items-center text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-600"
+                                                                id="options-menu" aria-haspopup="true"
+                                                                aria-expanded="true"
+                                                                type="button">
+                                                            <span class="sr-only">Open options</span>
+                                                            <x-heroicon-s-dots-vertical class="h-5 w-5" />
+                                                        </button>
                                                     </div>
 
-                                                    <div class="py-1">
-                                                        <a @if(!$vacation_request->isExpired && !$vacation_request->deleted_at) wire:click="cancel({{ $vacation_request->id }})"
-                                                           @endif
-                                                           class="group flex items-center px-4 py-2 text-sm text-gray-700 @if($vacation_request->isExpired || $vacation_request->deleted_at) cursor-not-allowed @endif hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
-                                                           role="menuitem">
-                                                            {{-- trash --}}
-                                                            <svg
-                                                                class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                                                                xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                      stroke-width="2"
-                                                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                            </svg>
-                                                            Cancel
-                                                        </a>
+                                                    <div x-show="openRowActions" x-cloak
+                                                         @click.away="openRowActions = false"
+                                                         x-transition:enter="transition ease-out duration-100"
+                                                         x-transition:enter-start="opacity-0 scale-95"
+                                                         x-transition:enter-end="opacity-100 scale-100"
+                                                         x-transition:leave="transition ease-in duration-75"
+                                                         x-transition:leave-start="opacity-100 scale-100"
+                                                         x-transition:leave-end="opacity-0 scale-95"
+                                                         class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200 z-50">
+                                                        @can('markAsSeen', $vacation_request)
+                                                            <div class="py-1" role="menu" aria-orientation="vertical"
+                                                                 aria-labelledby="options-menu">
+                                                                <a wire:click="markAsSeen({{ $vacation_request->id }})"
+                                                                   class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
+                                                                   role="menuitem">
+                                                                    <x-heroicon-o-eye
+                                                                        class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" />
+                                                                    Mark as seen
+                                                                </a>
+                                                            </div>
+                                                        @endcan
+
+                                                        @can('cancel', $vacation_request)
+                                                            <div class="py-1">
+                                                                <a wire:click="cancel({{ $vacation_request->id }})"
+                                                                   class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
+                                                                   role="menuitem">
+                                                                    <x-heroicon-o-trash
+                                                                        class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" />
+                                                                    Cancel
+                                                                </a>
+                                                            </div>
+                                                        @endcan
                                                     </div>
                                                 </div>
-                                            </div>
+                                            @endcanany
                                         </td>
                                     </tr>
                                 @endforeach
@@ -192,14 +147,14 @@
                         {{ $vacation_requests->links() }}
                     </div>
 
-                    <x-page-divider title="Vacation Calendar"/>
+                    <x-page-divider title="Vacation Calendar" />
 
                     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                         <livewire:vacation-requests-management.calendar
                             :day-click-enabled="false"
                             :drag-and-drop-enabled="false"
                             week-starts-at="1"
-                            before-calendar-view="livewire/components/calendar-header"/>
+                            before-calendar-view="livewire/components/calendar-header" />
                     </div>
                 </div>
             </div>

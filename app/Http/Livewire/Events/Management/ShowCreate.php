@@ -11,6 +11,7 @@ use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use GrahamCampbell\Markdown\Facades\Markdown;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -24,6 +25,7 @@ use Livewire\WithFileUploads;
  */
 class ShowCreate extends Component implements HasForms
 {
+    use AuthorizesRequests;
     use WithFileUploads;
     use InteractsWithForms;
 
@@ -66,6 +68,11 @@ class ShowCreate extends Component implements HasForms
     protected array $messages = [
         'starts_with' => 'The URL must begin with https://',
     ];
+
+    public function mount(): void
+    {
+        $this->authorize('create', Event::class);
+    }
 
     public function render(): View
     {

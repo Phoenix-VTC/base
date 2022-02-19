@@ -3,13 +3,13 @@
 @section('title', "Viewing Job #$job->id")
 
 @section('actions')
-    @if($job->status->value === \App\Enums\JobStatus::Incomplete && $job->user_id === Auth::id())
+    @can('verify', $job)
         <div class="ml-3">
             <x-app-ui::button tag="a" href="{{ route('jobs.verify', $job->id) }}" icon="iconic-check">
                 Verify job
             </x-app-ui::button>
         </div>
-    @endif
+    @endcan
 @endsection
 
 @push('scripts')
@@ -262,8 +262,8 @@
                                     @forelse($job->revisionHistoryWithUser as $revision)
                                         <tr class="@if($loop->odd) bg-white @else bg-gray-50 @endif">
                                             <td class="px-6 py-4 text-sm prose-sm prose text-gray-900 whitespace-nowrap">
-                                                @if($revision->user)
-                                                    <a href="{{ route('users.profile', $revision->user) }}">
+                                                @if($revision->user_id)
+                                                    <a href="{{ $revision->user ? route('users.profile', $revision->user) : '#' }}">
                                                         {{ $revision->user->username ?? 'Deleted User' }}
                                                     </a>
                                                 @else
@@ -390,7 +390,7 @@
                             </div>
 
                             <div class="flex items-center mt-6">
-                                <a class="flex-shrink-0" href="{{ route('users.profile', $job->user) }}">
+                                <a class="flex-shrink-0" href="{{ $job->user ? route('users.profile', $job->user) : '#' }}">
                                     <img class="w-10 h-10 rounded-full"
                                          src="{{ $job->user->profile_picture ?? asset('svg/unknown_avatar.svg') }}"
                                          alt="{{ $job->user->username ?? 'Deleted User' }}" height="40" width="40">
@@ -400,7 +400,7 @@
                                         <span>Submitted By</span>
                                     </div>
                                     <a class="text-sm font-medium text-gray-900 capitalize"
-                                       href="{{ route('users.profile', $job->user) }}">
+                                       href="{{ $job->user ? route('users.profile', $job->user) : '#' }}">
                                         {{ $job->user->username ?? 'Deleted User' }}
                                     </a>
                                 </div>
@@ -410,7 +410,7 @@
                 </div>
             </section>
 
-            @if($job->canEdit)
+            @canany(['update', 'delete', 'approve'], $job)
                 <section aria-labelledby="actions-title" class="lg:col-start-3 lg:col-span-1">
                     <div class="px-4 py-5 bg-white shadow sm:rounded-lg sm:px-6">
                         @if(Auth::user()->can('manage users'))
@@ -420,31 +420,35 @@
                         @endif
 
                         <div class="flex flex-col mt-6 space-y-3 justify-stretch">
-                            <a class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                               href="{{ route('jobs.edit', $job) }}">
-                                <x-heroicon-s-pencil-alt class="w-5 h-5 mr-3 -ml-1"/>
-                                Edit
-                            </a>
+                            @can('update', $job)
+                                <a class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                   href="{{ route('jobs.edit', $job) }}">
+                                    <x-heroicon-s-pencil-alt class="w-5 h-5 mr-3 -ml-1" />
+                                    Edit
+                                </a>
+                            @endcan
 
-                            <button
-                                class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                                onclick="confirm('Are you sure you want to delete this job? This action is irreversible.') || event.stopImmediatePropagation()"
-                                wire:click="delete">
-                                <x-heroicon-s-trash class="w-5 h-5 mr-3 -ml-1"/>
-                                Delete
-                            </button>
+                            @can('delete', $job)
+                                <button
+                                    class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                    onclick="confirm('Are you sure you want to delete this job? This action is irreversible.') || event.stopImmediatePropagation()"
+                                    wire:click="delete">
+                                    <x-heroicon-s-trash class="w-5 h-5 mr-3 -ml-1" />
+                                    Delete
+                                </button>
+                            @endcan
 
-                            @if($job->status->value === \App\Enums\JobStatus::PendingVerification && Auth::user()->can('manage users'))
+                            @can('approve', $job)
                                 <button
                                     class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                                     onclick="confirm('Are you sure you want to approve this job?') || event.stopImmediatePropagation()"
                                     wire:click="approve">
-                                    <x-heroicon-s-check class="w-5 h-5 mr-3 -ml-1"/>
+                                    <x-heroicon-s-check class="w-5 h-5 mr-3 -ml-1" />
                                     Approve
                                 </button>
-                            @endif
+                            @endcan
 
-                            @if(Auth::user()->cannot('manage users'))
+                            @if($job->isCompleted() && Auth::user()->canAny(['update', 'delete'], $job) && Auth::user()->cannot('manage users'))
                                 <p class="text-sm text-center text-gray-500">
                                     You have
                                     <strong>{{ Carbon\Carbon::now()->diffInMinutes($job->created_at->addHour(), false) . ' minute(s)' }}</strong>
@@ -454,7 +458,7 @@
                         </div>
                     </div>
                 </section>
-            @endif
+            @endcanany
         </div>
     </div>
 </div>

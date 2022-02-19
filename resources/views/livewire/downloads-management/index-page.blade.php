@@ -1,6 +1,6 @@
 {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day --}}
 
-@section('title', 'Downloads Management')
+@section('title', 'Download Management')
 
 @section('actions')
     <div class="ml-3">
