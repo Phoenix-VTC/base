@@ -6,9 +6,9 @@
     <x-alert/>
 
     @if($downloads->count())
-        <ul role="list" class="flex flex-wrap w-full gap-x-4 gap-y-8 sm:gap-x-6 xl:gap-x-8" wire:loading.remove wire:target="downloadFile">
+        <ul role="list" class="flex flex-wrap gap-6 justify-evenly" wire:loading.remove wire:target="downloadFile">
             @foreach($downloads as $download)
-                <li class="relative flex flex-col w-64 sm:w-56">
+                <li class="relative flex flex-col w-full md:w-56">
                     <div
                         class="overflow-hidden bg-gray-100 rounded-lg aspect-w-10 aspect-h-7 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500">
                         <img
