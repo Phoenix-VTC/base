@@ -60,6 +60,9 @@ class ShowCreatePage extends Component implements HasForms
                                 ->maxSize(102400),
 
                             Forms\Components\Textarea::make('description')
+                                ->required()
+                                ->placeholder('Super mod for all everyone to download')
+                                ->maxLength(255)
                                 ->rows(3)
                         ]),
                 ]),
@@ -72,7 +75,7 @@ class ShowCreatePage extends Component implements HasForms
 
         $download = Download::create([
             'name' => $validatedData['name'],
-            'description' => $validatedData['description'] ?: null,
+            'description' => $validatedData['description'],
             'image_path' => $validatedData['image'],
             'file_path' => $validatedData['file'],
             'updated_by' => Auth::id(),
