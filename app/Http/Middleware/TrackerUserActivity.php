@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Actions\Game\GetNearestCity;
 use Closure;
 use Http;
 use Illuminate\Http\Request;
@@ -68,20 +69,13 @@ class TrackerUserActivity
             return null;
         }
 
-        $response = Http::get("https://api.truckyapp.com/v2/map/{$data->game->game->name}/resolve?x={$data->truck->position->X}&y={$data->truck->position->Z}");
+        $near = (new GetNearestCity)->execute(
+            x: $data->truck->position->X,
+            y: $data->truck->position->Z,
+            game: $data->game->game->name,
+            promods: false,
+        );
 
-        // Return null if the request failed
-        if ($response->failed()) {
-            return null;
-        }
-
-        $response = $response->collect();
-
-        // Return null if the response has an error, or the location was not resolved
-        if ($response['error'] || !$response['response']['resolved']) {
-            return null;
-        }
-
-        return $response['response']['poi']['realName'];
+        return $near['city'] ?? null;
     }
 }
