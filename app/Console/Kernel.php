@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Console\Commands\Multiplayer\UpdateServerList;
+use App\Console\Commands\UpdateMultiplayerServerList;
 use App\Jobs\CheckDriverBans;
 use App\Jobs\CheckDriverVTC;
 use App\Jobs\VacationRequests\UpdateDiscordRoles;
@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->job(new UpdateDiscordRoles)->daily();
 
-        $schedule->job(new UpdateServerList)->everyFifteenMinutes();
+        $schedule->job(new UpdateMultiplayerServerList)->everyFifteenMinutes();
     }
 
     /**
