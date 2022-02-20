@@ -62,8 +62,12 @@ class TrackerUserActivity
         return $next($request);
     }
 
-    private function getNearbyLocation(object $data): string|null
+    private function getNearbyLocation(object|null $data): string|null
     {
+        if (!$data) {
+            return null;
+        }
+
         // Check if game, X and Z values are set
         if (!isset($data->game->game->name, $data->truck->position->X, $data->truck->position->Z)) {
             return null;
