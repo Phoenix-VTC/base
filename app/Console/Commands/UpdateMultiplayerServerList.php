@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Console\Commands\Multiplayer;
+namespace App\Console\Commands;
 
 use Cache;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
-class UpdateServerList extends Command
+class UpdateMultiplayerServerList extends Command
 {
     /**
      * The name and signature of the console command.
