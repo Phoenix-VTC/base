@@ -266,7 +266,7 @@
                             @if($blocklist->firstEditor())
                                 <div class="flex items-center mt-6">
                                     <a class="flex-shrink-0"
-                                       href="{{ route('users.profile', $blocklist->firstEditor) }}">
+                                       href="{{ route('users.profile', $blocklist->firstEditor()) }}">
                                         <img class="w-10 h-10 rounded-full"
                                              src="{{ $blocklist->firstEditor()->profile_picture ?? asset('svg/unknown_avatar.svg') }}"
                                              alt="{{ $blocklist->firstEditor()->username ?? 'Deleted User' }}"
@@ -277,7 +277,7 @@
                                             <span>Created by</span>
                                         </div>
                                         <a class="text-sm font-medium text-gray-900 capitalize"
-                                           href="{{ route('users.profile', $blocklist->firstEditor) }}">
+                                           href="{{ route('users.profile', $blocklist->firstEditor()) }}">
                                             {{ $blocklist->firstEditor()->username ?? 'Deleted User' }}
                                         </a>
                                     </div>
@@ -288,7 +288,7 @@
                             @if($blocklist->updated_at->ne($blocklist->created_at) && $blocklist->latestEditor())
                                 <div class="flex items-center mt-6">
                                     <a class="flex-shrink-0"
-                                       href="{{ route('users.profile', $blocklist->latestEditor) }}">
+                                       href="{{ route('users.profile', $blocklist->latestEditor()) }}">
                                         <img class="w-10 h-10 rounded-full"
                                              src="{{ $blocklist->latestEditor()->profile_picture ?? asset('svg/unknown_avatar.svg') }}"
                                              alt="{{ $blocklist->latestEditor()->username ?? 'Deleted User' }}"
@@ -299,7 +299,7 @@
                                             <span>Last edit by</span>
                                         </div>
                                         <a class="text-sm font-medium text-gray-900 capitalize"
-                                           href="{{ route('users.profile', $blocklist->latestEditor) }}">
+                                           href="{{ route('users.profile', $blocklist->latestEditor()) }}">
                                             {{ $blocklist->latestEditor()->username ?? 'Deleted User' }}
                                         </a>
                                     </div>
